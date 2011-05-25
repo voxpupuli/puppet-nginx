@@ -1,0 +1,19 @@
+nginx
+
+This is the nginx module.
+
+User Stories:
+	* Must be able to be used on a major linux system
+		- Ubuntu (LTS/Current)
+		- Debian (stable)
+		- CentOS/RHEL/Fedora
+		- SLES
+		- Solaris (optional goal)
+	* Must be able to install NGINX
+		- must have an option to perform a base install
+		- must have an option to install a PHP/MySQL Stack
+		- must have an option to install a Perl/MySQL stack
+	* Must be able to create a new vhost
+		- vhost must be able to be ssl enabled
+		- vhost must be able to point to N proxies
+		- vhost must be able to create a rewrite rule
