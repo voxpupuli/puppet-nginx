@@ -1,0 +1,17 @@
+2011-05-24  James Fryman <james@frymanet.com>
+
+  * LICENSE, Modulefile, README, files/README.markdown,
+  files/centos/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL, lib/facter/README.markdown,
+  lib/puppet/parser/functions/README.markdown,
+  lib/puppet/provider/README.markdown, lib/puppet/type/README.markdown,
+  manifests/README.markdown, manifests/config.pp, manifests/init.pp,
+  manifests/install.pp, manifests/params.pp, manifests/service.pp,
+  manifests/vhost.pp, metadata.json, spec/README.markdown, spec/spec.opts,
+  spec/spec_helper.rb, spec/unit/puppet/provider/README.markdown,
+  spec/unit/puppet/type/README.markdown, templates/README.markdown,
+  templates/nginx.conf.erb, templates/vhost.pp, tests/init.pp, tests/vhost.pp:
+  20110524 Work Snapshot
+
+2011-05-23  James Fryman <james@frymanet.com>
+
+  * : Initial Repository Initilization

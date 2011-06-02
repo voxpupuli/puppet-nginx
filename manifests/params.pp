@@ -10,19 +10,24 @@
 #######################################################################
 
 class nginx::params {
-	$worker_processes = 1
-	$worker_connections = 1024
-	$multi_accept = off
-	$sendfile = on
-	$keepalive_timeout = 65
-	$tcp_nodelay = on
-	$gzip = on
+	$nx_worker_processes = 1
+	$nx_worker_connections = 1024
+	$nx_multi_accept = off
+	$nx_sendfile = on
+	$nx_keepalive_timeout = 65
+	$nx_tcp_nodelay = on
+	$nx_gzip = on
 	
-	# Setup OS Specific Logging Directories and PID files. 
-	case $kernel {
-		default { 
-			$log_dir = '/var/log/nginx'
-			$pid 	 = '/var/run/nginx.pid'
-		}
+	$nx_logdir = $kernel ? {
+		/(?i-mx:linux)/ => '/var/log/nginx',
+	}
+	
+	$nx_pid = $kernel ? {
+		/(?i-mx:linux)/  => '/var/run/nginx.pid',
+	}
+	
+	$nx_daemon_user = $operatingsystem ? {
+		/(?i-mx:debian|ubuntu)/ 	   => 'www-data',
+		/(?i-mx:fedora|rhel|centos)/ => 'nginx',
 	}
 }

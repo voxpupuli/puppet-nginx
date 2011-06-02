@@ -12,5 +12,10 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class nginx {
-	include nginx::service, nginx::install, nginx::config,
+	include nginx::package
+	include nginx::config
+	include nginx::service
+	
+	Class['nginx::package'] -> Class['nginx::config'] ~> Class['nginx::service']
+
 }
