@@ -1,5 +1,13 @@
 2011-06-06  James Fryman <james@frymanet.com>
 
+  * Modulefile, README, files/README.markdown, lib/facter/README.markdown,
+  lib/puppet/parser/functions/README.markdown,
+  lib/puppet/provider/README.markdown, lib/puppet/type/README.markdown,
+  manifests/README.markdown, templates/README.markdown, tests/upstream.pp,
+  tests/vhost.pp, tests/vhost_ssl.erb: Updated Documentation
+
+  * ChangeLog: Updated Changelog
+
   * lib/facter/ipv6.rb, manifests/config.pp, manifests/init.pp,
   manifests/package.pp, manifests/package/suse.pp, manifests/params.pp,
   manifests/resource/location.pp, manifests/resource/upstream.pp,
