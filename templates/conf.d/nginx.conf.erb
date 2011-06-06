@@ -1,0 +1,33 @@
+user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
+worker_processes <%= scope.lookupvar('nginx::params::nx_worker_processes')%>;
+
+error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
+pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
+
+events {
+  worker_connections <%= scope.lookupvar('nginx::params::nx_worker_connections') %>;
+  <% if scope.lookupvar('nginx::params::nx_multi_accept' == 'on') %>multi_accept on;<% end %>
+}
+
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+
+  access_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log;
+
+  sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
+
+  <% if scope.lookupvar('nginx::params::nx_tcp_nopush' == 'on') %>
+  tcp_nopush  on;
+  <% end %>
+
+  keepalive_timeout  <%= scope.lookupvar('nginx::params::nx_keepalive_timeout')%>;
+  tcp_nodelay        <%= scope.lookupvar('nginx::params::nx_tcp_nodelay')%>;
+
+  <% if scope.lookupvar('nginx::params::nx_gzip' == 'on') %> 
+  gzip         on;
+  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+  <% end %>
+
+  include /etc/nginx/conf.d/*.conf;
+}

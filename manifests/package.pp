@@ -5,6 +5,9 @@ class nginx::package {
     }
     debian,ubuntu: {
 	  include nginx::package::debian
-    }	
+    }
+    opensuse,suse: {
+	  include nginx::package::suse
+    }
   }
 }
