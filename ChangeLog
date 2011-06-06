@@ -1,3 +1,31 @@
+2011-06-06  James Fryman <james@frymanet.com>
+
+  * lib/facter/ipv6.rb, manifests/config.pp, manifests/init.pp,
+  manifests/package.pp, manifests/package/suse.pp, manifests/params.pp,
+  manifests/resource/location.pp, manifests/resource/upstream.pp,
+  manifests/resource/vhost.pp, manifests/service.pp, manifests/vhost.pp,
+  templates/conf.d/nginx.conf.erb, templates/conf.d/proxy.conf.erb,
+  templates/conf.d/upstream.erb, templates/nginx.conf.erb, templates/vhost.erb,
+  templates/vhost/vhost_footer.erb, templates/vhost/vhost_header.erb,
+  templates/vhost/vhost_location_directory.erb,
+  templates/vhost/vhost_location_proxy.erb,
+  templates/vhost/vhost_ssl_header.erb: Added SuSE Support
+
+  * README, manifests/init.pp, manifests/package.pp,
+  manifests/package/debian.pp, manifests/package/redhat.pp, manifests/vhost.pp,
+  templates/vhost.erb: Updated Package Layout
+
+  * lib/facter/ipv6.rb: Added IPV6 Fact Check for Linux distros
+
+2011-06-02  James Fryman <james@frymanet.com>
+
+  * .gitignore, ChangeLog, Modulefile,
+  files/centos/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL, manifests/config.pp,
+  manifests/init.pp, manifests/install.pp, manifests/package.pp,
+  manifests/params.pp, manifests/service.pp, manifests/vhost.pp, metadata.json,
+  templates/nginx.conf.erb, templates/vhost.erb, templates/vhost.pp: Added
+  vhost support
+
 2011-05-24  James Fryman <james@frymanet.com>
 
   * LICENSE, Modulefile, README, files/README.markdown,
