@@ -23,6 +23,7 @@ Setup a new virtual host
     }
 
 Add a Proxy Server(s)
+
    node default {
      class { 'mcollective': }
 	 nginx::resource::upstream { 'puppet_rack_app':
