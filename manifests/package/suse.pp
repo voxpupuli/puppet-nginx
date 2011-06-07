@@ -7,7 +7,9 @@
 # There are no default parameters for this class. 
 #
 # Actions:
-#
+#  This module contains all of the required package for SuSE. Apache and all
+#  other packages listed below are built into the packaged RPM spec for 
+#  SuSE and OpenSuSE. 
 # Requires:
 #
 # Sample Usage:
