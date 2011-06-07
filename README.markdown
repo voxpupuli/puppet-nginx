@@ -34,6 +34,7 @@ Add a Proxy Server(s)
          'localhost:3002',
        ],
      }
+
      nginx::resource::vhost { 'rack.puppetlabs.com':
        ensure   => present,
        proxy  => 'http://puppet_rack_app',
