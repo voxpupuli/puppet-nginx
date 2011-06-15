@@ -29,4 +29,9 @@ class nginx {
 	include nginx::service
 	
 	Class['nginx::package'] -> Class['nginx::config'] ~> Class['nginx::service']
+  # Allow the end user to establish relationships to the "main" class
+  # and preserve the relationship to the implementation classes through
+  # a transitive relationship to the composite class.
+  Class['nginx::service'] -> Class['nginx']
+
 }
