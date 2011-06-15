@@ -3,8 +3,8 @@
 # This module manages NGINX package installation on debian based systems
 #
 # Parameters:
-# 
-# There are no default parameters for this class. 
+#
+# There are no default parameters for this class.
 #
 # Actions:
 #
@@ -14,7 +14,7 @@
 #
 # This class file is not called directly
 class nginx::package::debian {
-	package { 'nginx':
-		ensure => present,
-	}
+  package { 'nginx':
+    ensure => present,
+  }
 }
