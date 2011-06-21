@@ -24,8 +24,5 @@ class nginx::service {
     enable	   => true,
     hasstatus  => true,
     hasrestart => true,
-    subscribe  => Class['nginx'],
   }
-
-  Exec['rebuild-nginx-vhosts'] ~> Service['nginx']
 }

@@ -10,7 +10,8 @@
 # Actions:
 #
 # Requires:
-#
+#  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
+#  
 #  Packaged NGINX
 #    - RHEL: EPEL or custom package
 #    - Debian/Ubuntu: Default Install or custom package
@@ -24,16 +25,26 @@
 #   include nginx
 # }
 class nginx {
+  
+  class { 'stdlib': }
 
-  include nginx::package
-  include nginx::config
-  include nginx::service
+  anchor{ 'nginx::begin': 
+    before => Class['nginx::package'],
+    notify => Class['nginx::service'],
+  }
+  
+  class { 'nginx::package': 
+    notify => Class['nginx::service'],
+  }
 
-  Class['nginx::package'] -> Class['nginx::config'] ~> Class['nginx::service']
+  class { 'nginx::config':
+    require => Class['nginx::package'],
+    notify  => Class['nginx::service'],
+  }
 
-  # Allow the end user to establish relationships to the "main" class
-  # and preserve the relationship to the implementation classes through
-  # a transitive relationship to the composite class.
-  Class['nginx::service'] -> Class['nginx']
+  class { 'nginx::service': }
 
+  anchor { 'nginx::end':
+    require => Class['nginx::service'],
+  }
 }

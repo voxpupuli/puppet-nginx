@@ -14,15 +14,27 @@
 #
 # This class file is not called directly
 class nginx::package {
+  anchor { 'nginx::package::begin': }
+  anchor { 'nginx::package::end': }
+
   case $operatingsystem {
     centos,fedora,rhel: {
-      include nginx::package::redhat
+      class { 'nginx::package::redhat':
+        require => Anchor['nginx::package::begin'],
+        before  => Anchor['nginx::package::end'],
+      }
     }
     debian,ubuntu: {
-      include nginx::package::debian
+      class { 'nginx::package::debian': 
+        require => Anchor['nginx::package::begin'],
+        before  => Anchor['nginx::package::end'],
+      }
     }
     opensuse,suse: {
-      include nginx::package::suse
+      class { 'nginx::package::suse':
+        require => Anchor['nginx::package::begin'],
+        before  => Anchor['nginx::package::end'],
+      }
     }
   }
 }

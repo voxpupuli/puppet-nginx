@@ -6,3 +6,5 @@ license 'Apache License Version 2.0'
 summary 'Puppet NGINX management module'
 description 'This module can be used for basic NGINX Management'
 project_page 'http://github.com/puppetlabs/puppetlabs-nginx'
+
+dependency 'puppetlabs/stdlib', '>= 0.1.6'
