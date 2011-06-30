@@ -8,12 +8,15 @@ This module manages NGINX from within Puppet.
 
 Install and bootstrap an NGINX instance
 
+<pre>
     node default {
       class { 'nginx': }
     }
+</pre>
 
 Setup a new virtual host
 
+<pre>
     node default {
       class { 'mcollective': }
       nginx::resource::vhost { 'www.puppetlabs.com':
@@ -21,9 +24,11 @@ Setup a new virtual host
         www_root => '/var/www/www.puppetlabs.com',
       }
     }
+</pre>
 
 Add a Proxy Server(s)
 
+<pre>
    node default {
      class { 'mcollective': }
 	 nginx::resource::upstream { 'puppet_rack_app':
@@ -40,3 +45,4 @@ Add a Proxy Server(s)
        proxy  => 'http://puppet_rack_app',
      }
    } 
+</pre>
