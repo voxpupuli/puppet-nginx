@@ -3,6 +3,7 @@
 # This definition creates a virtual host
 #
 # Parameters:
+#   [*server_name*]      - Server name (value to match in Host: header). Defaults to the resource's name.
 #   [*ensure*]           - Enables or disables the specified vhost (present|absent)
 #   [*listen_ip*]        - Default IP Address for NGINX to listen with this vHost on. Defaults to all interfaces (*)
 #   [*listen_port*]      - Default IP Port for NGINX to listen with this vHost on. Defaults to TCP 80
@@ -31,6 +32,7 @@
 #    ssl_key  => '/tmp/server.pem',
 #  }
 define nginx::resource::vhost(
+  $server_name      = $name,
   $ensure           = 'enable',
   $listen_ip        = '*',
   $listen_port      = '80',
