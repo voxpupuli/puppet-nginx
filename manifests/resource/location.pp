@@ -11,6 +11,7 @@
 #   [*proxy*]       - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
 #                     with nginx::resource::upstream
 #   [*ssl*]         - Indicates whether to setup SSL bindings for this location.
+#   [*try_files*]   - An array of file locations to try
 #   [*option*]      - Reserved for future use
 #
 # Actions:
@@ -31,6 +32,7 @@ define nginx::resource::location(
   $index_files = ['index.html', 'index.htm', 'index.php'],
   $proxy       = undef,
   $ssl         = false,
+  $try_files   = undef,
   $option      = undef,
   $location
 ) {

@@ -1,4 +1,8 @@
   location <%= location %> {
     root  <%= www_root %>;
     index <% index_files.each do |i| %> <%= i %> <% end %>; 
+
+    <% if has_variable?("try_files") then %>
+    try_files <% try_files.each do |try| -%> <%= try %> <% end -%>; 
+    <% end %> 
   }
