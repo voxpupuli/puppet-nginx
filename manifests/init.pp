@@ -11,6 +11,7 @@
 #
 # Requires:
 #  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
+#  pupmod-concat - https://github.com/zertico/pupmod-concat
 #
 #  Packaged NGINX
 #    - RHEL: EPEL or custom package

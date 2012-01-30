@@ -1,4 +1,4 @@
-include nginix
+include nginx
 
 nginx::resource::vhost { 'test.local':
   ensure       => present,

@@ -30,7 +30,7 @@ define nginx::resource::location(
   $www_root    = undef,
   $index_files = ['index.html', 'index.htm', 'index.php'],
   $proxy       = undef,
-  $ssl         = false,
+  $ssl         = absent,
   $option      = undef,
   $location
 ) {
@@ -66,16 +66,14 @@ define nginx::resource::location(
   }
 
   ## Create stubs for vHost File Fragment Pattern
-  file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
-    ensure  => $ensure_real,
+  concat_fragment { "${vhost}+500.tmp":
     content => $content_real,
+    ensure  => $ensure,
   }
 
   ## Only create SSL Specific locations if $ssl is true.
-  if ($ssl == 'true') {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
-      ensure  => $ensure_real,
-      content => $content_real,
-    }
+  concat_fragment { "${vhost}+800-ssl.tmp":
+    content => $content_real,
+    ensure => $ssl
   }
 }
