@@ -41,15 +41,15 @@ class nginx::params {
   $nx_proxy_read_timeout      = '90'
   $nx_proxy_buffers           = '32 4k'
 
-  $nx_logdir = $kernel ? {
+  $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
   }
 
-  $nx_pid = $kernel ? {
+  $nx_pid = $::kernel ? {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
   }
 
-  $nx_daemon_user = $operatingsystem ? {
+  $nx_daemon_user = $::operatingsystem ? {
     /(?i-mx:debian|ubuntu)/                    => 'www-data',
     /(?i-mx:fedora|rhel|centos|suse|opensuse)/ => 'nginx',
   }
