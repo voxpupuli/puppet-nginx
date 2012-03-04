@@ -103,7 +103,7 @@ define nginx::resource::vhost(
   if ($ssl == 'true') {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
-	'absent' => absent,
+        'absent' => absent,
         default  => 'file',
       },
       content => template('nginx/vhost/vhost_ssl_header.erb'),
@@ -112,7 +112,7 @@ define nginx::resource::vhost(
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
       ensure => $ensure ? {
         'absent' => absent,
-	default  => 'file',
+        default  => 'file',
       },
       content => template('nginx/vhost/vhost_footer.erb'),
       notify => Class['nginx::service'],
