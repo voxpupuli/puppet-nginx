@@ -31,9 +31,9 @@ Add a Proxy Server(s)
 <pre>
    node default {
      class { 'mcollective': }
-	 nginx::resource::upstream { 'puppet_rack_app':
-	   ensure  => present,
-	   members => [
+     nginx::resource::upstream { 'puppet_rack_app':
+       ensure  => present,
+       members => [
          'localhost:3000', 
          'localhost:3001',
          'localhost:3002',
