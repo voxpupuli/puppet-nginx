@@ -76,7 +76,7 @@ define nginx::resource::location(
 	if ($ssl == 'true') {
 	  file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
 		  ensure  => $ensure_real,
-		  content => $content_re,
+		  content => $content_real,
 	  }
     }
 }
