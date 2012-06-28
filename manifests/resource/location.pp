@@ -10,6 +10,8 @@
 #   [*index_files*] - Default index files for NGINX to read when traversing a directory
 #   [*proxy*]       - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
 #                     with nginx::resource::upstream
+#   [*ssl_proxy*]   - Proxy server(s) for a location to connect to for SSL vHosts. Accepts a single value, can be used in conjunction
+#                     with nginx::resource::upstream
 #   [*ssl*]         - Indicates whether to setup SSL bindings for this location.
 #   [*option*]      - Reserved for future use
 #
@@ -25,12 +27,13 @@
 #    vhost    => 'test2.local',
 #  }
 define nginx::resource::location( 
+    $location,
 	$ensure         = 'present',
     $vhost          = undef,
-    $location,
 	$www_root       = undef,
 	$index_files    = ['index.html', 'index.htm', 'index.php'],
 	$proxy          = undef,
+	$ssl_proxy      = undef,
 	$ssl		    = 'false',
     $option	        = undef
 ){
@@ -53,6 +56,13 @@ define nginx::resource::location(
 	} else {
 		$content_real = template('nginx/vhost/vhost_location_directory.erb')
 	}
+
+    # check if ssl is enabled AND a different proxy is assigned
+    if (($ssl == 'true') and ($ssl_proxy != undef)) {
+        $content_ssl_real = template('nginx/vhost/vhost_location_ssl_proxy.erb')
+    } else {
+        $content_ssl_real = template('nginx/vhost/vhost_location_proxy.erb')
+    }
 	
 	## Check for various error condtiions
 	if ($vhost == undef) {
@@ -74,9 +84,9 @@ define nginx::resource::location(
 	
 	## Only create SSL Specific locations if $ssl is true. 
 	if ($ssl == 'true') {
-	  file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
-		  ensure  => $ensure_real,
-		  content => $content_real,
+        file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
+            ensure  => $ensure_real,
+		    content => $content_ssl_real,
 	  }
     }
 }
