@@ -1,8 +1,4 @@
   location <%= location %> {
-  <% if ssl == 'true' and has_variable?("ssl_proxy") %>
-    proxy_pass <%= ssl_proxy %>;
-  <% else %>
     proxy_pass <%= proxy %>;
-  <% end %>
   }
 
