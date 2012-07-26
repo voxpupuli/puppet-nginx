@@ -3,8 +3,8 @@
 # This module manages NGINX package installation
 #
 # Parameters:
-# 
-# There are no default parameters for this class. 
+#
+# There are no default parameters for this class.
 #
 # Actions:
 #
@@ -14,15 +14,18 @@
 #
 # This class file is not called directly
 class nginx::package {
-  case $operatingsystem {
+  case $::operatingsystem {
     centos,fedora,rhel: {
-	  include nginx::package::redhat
+      include nginx::package::redhat
     }
     debian,ubuntu: {
-	  include nginx::package::debian
+      include nginx::package::debian
     }
     opensuse,suse: {
-	  include nginx::package::suse
+      include nginx::package::suse
+    }
+    default: {
+      err "module nginx is not supported for operating system ${::operatingsystem}"
     }
   }
 }

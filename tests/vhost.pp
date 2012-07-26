@@ -1,8 +1,8 @@
-include nginix
+include nginx
 
 nginx::resource::vhost { 'test.local':
   ensure       => present,
-  ipv6_enable  => 'true',
+  ipv6_enable  => true,
   proxy        => 'http://proxypass',
 }
 
