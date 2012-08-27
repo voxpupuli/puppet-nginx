@@ -25,6 +25,7 @@
 #    location => '/bob',
 #    vhost    => 'test2.local',
 #  }
+<<<<<<< HEAD
 define nginx::resource::location(
   $ensure             = present,
   $vhost              = undef,

@@ -27,7 +27,6 @@ Setup a new virtual host
 </pre>
 
 Add a Proxy Server(s)
-
 <pre>
    node default {
      class { 'mcollective': }
