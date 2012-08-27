@@ -17,7 +17,7 @@ class nginx::package::redhat {
   $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
 
   yumrepo { "nginx-release":
-    baseurl  => 'http://nginx.org/packages/OS/OSRELEASE/$basearch/'
+    baseurl  => 'http://nginx.org/packages/OS/OSRELEASE/$basearch/',
     descr    => 'nginx repo',
     enabled  => '1',
     gpgcheck => '0',
