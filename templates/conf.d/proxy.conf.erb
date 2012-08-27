@@ -8,3 +8,6 @@ proxy_buffers           <%= scope.lookupvar('nginx::params::nx_proxy_buffers') %
 <% scope.lookupvar('nginx::params::nx_proxy_set_header').each do |header| %>
 proxy_set_header        <%= header %>;
 <% end %>
+<% scope.lookupvar('nginx::params::nx_proxy_hide_header').each do |header| %>
+proxy_hide_header       <%= header %>;
+<% end %>
