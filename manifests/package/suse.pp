@@ -3,8 +3,8 @@
 # This module manages NGINX package installation for SuSE based systems
 #
 # Parameters:
-# 
-# There are no default parameters for this class. 
+#
+# There are no default parameters for this class.
 #
 # Actions:
 #
@@ -29,43 +29,43 @@ class nginx::package::suse {
 	package { 'gd':
 		ensure => present,
 	}
-	package { "libapr1":
+	package { 'libapr1':
 		ensure => installed,
 	}
-	package { "libapr-util1":
+	package { 'libapr-util1':
 		ensure => installed,
 	}
-	package { "libjpeg62":
+	package { 'libjpeg62':
 		ensure => installed,
 	}
-	package { "libpng14-14":
+	package { 'libpng14-14':
 		ensure => installed,
 	}
-	package { "libxslt":
+	package { 'libxslt':
 		ensure => installed,
 	}
-	package { "rubygem-daemon_controller":
+	package { 'rubygem-daemon_controller':
 		ensure => installed,
 	}
-	package { "rubygem-fastthread":
+	package { 'rubygem-fastthread':
 		ensure => installed,
 	}
-	package { "rubygem-file-tail":
+	package { 'rubygem-file-tail':
 		ensure => installed,
 	}
-	package { "rubygem-passenger":
+	package { 'rubygem-passenger':
 		ensure => installed,
 	}
-	package { "rubygem-passenger-nginx":
+	package { 'rubygem-passenger-nginx':
 		ensure => installed,
 	}
-	package { "rubygem-rack":
+	package { 'rubygem-rack':
 		ensure => installed,
 	}
-	package { "rubygem-rake":
+	package { 'rubygem-rake':
 		ensure => installed,
 	}
-	package { "rubygem-spruz":
+	package { 'rubygem-spruz':
 		ensure => installed,
 	}
 }
