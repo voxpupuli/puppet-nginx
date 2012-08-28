@@ -19,6 +19,7 @@
 #   [*ssl_client*]       - BOOL value to enable/disable client side certificate authentication.
 #   [*ssl_client_cert*]  - Specifies a file with CA certificates in the PEM format used for client certificate verification.
 #   [*ssl_verify_client*]- Enables the client certificate verification. (on/off/optional)
+#   [*ssl_depth*] - This directive sets how deep the server should go in the client provided certificate chain in order to verify the client identity.
 #   [*www_root*]         - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
 #
 # Actions:
@@ -46,6 +47,7 @@ define nginx::resource::vhost(
 	$ssl_client       = undef,
 	$ssl_client_cert  = undef,
 	$ssl_verify_client= undef,
+	$ssl_depth        = '1',
     $proxy            = undef,
 	$index_files      = ['index.html', 'index.htm', 'index.php'],
 	$www_root         = undef
