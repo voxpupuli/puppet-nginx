@@ -15,7 +15,7 @@
 # This class file is not called directly
 class nginx::package::redhat {
   $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
-  
+
   $os_type = downcase($::operatingsystem)
 
   yumrepo { "nginx-release":
