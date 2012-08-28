@@ -19,7 +19,7 @@ class nginx::package::redhat {
   $os_type = downcase($::operatingsystem)
 
   yumrepo { "nginx-release":
-    baseurl  => "http://nginx.org/packages/${os_type}/${::lsbmajdistrelease}/$basearch/"
+    baseurl  => "http://nginx.org/packages/${os_type}/${::lsbmajdistrelease}/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
     gpgcheck => '0',
