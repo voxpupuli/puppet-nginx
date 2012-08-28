@@ -131,4 +131,15 @@ define nginx::resource::vhost(
 			notify => Class['nginx::service'],
 		}
 	}
+
+  if ($ssl_client == true) {
+    file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-701-ssl":
+      ensure => $ensure ? {
+        'absent' => absent,
+        default  => 'file',
+      },
+      content => template('nginx/vhost/vhost_ssl_client_header.erb'),
+      notify => Class['nginx::service'],
+    }
+  }
 }

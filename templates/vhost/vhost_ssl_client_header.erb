@@ -1,0 +1,4 @@
+  <% if ssl_client == 'true' && (defined? ssl_client_cert) && (defined? ssl_verify_client) %>
+  ssl_client_certificate <%= ssl_client_cert %>;
+  ssl_verify_client      <%= ssl_verify_client %>;<% end %>
+  
