@@ -6,6 +6,7 @@
 #   [*ensure*]           - Enables or disables the specified location (present|absent)
 #   [*listen_ip*]        - Default IP Address for NGINX to listen with this vHost on. Defaults to all interfaces (*)
 #   [*listen_port*]      - Default IP Port for NGINX to listen with this vHost on. Defaults to TCP 80
+#   [*default_vhost*]    - Specify the default vhost server directive
 #   [*ipv6_enable*]      - BOOL value to enable/disable IPv6 support (false|true). Module will check to see if IPv6
 #                          support exists on your system before enabling.
 #   [*ipv6_listen_ip*]   - Default IPv6 Address for NGINX to listen with this vHost on. Defaults to all interfaces (::)
@@ -38,6 +39,7 @@ define nginx::resource::vhost(
 	$ensure           = 'enable',
 	$listen_ip        = '*',
 	$listen_port      = '80',
+	$default_vhost    = false,
 	$ipv6_enable      = false,
 	$ipv6_listen_ip   = '::',
 	$ipv6_listen_port = '80',
