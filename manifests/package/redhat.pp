@@ -16,7 +16,11 @@
 class nginx::package::redhat {
   $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
 
-  $os_type = downcase($::operatingsystem)
+  if downcase($::operatingsystem) == "redhat" {
+    $os_type = "rhel"
+  } else {
+    $os_type = downcase($::operatingsystem)
+  }
 
   yumrepo { "nginx-release":
     baseurl  => "http://nginx.org/packages/${os_type}/${::lsbmajdistrelease}/\$basearch/",
