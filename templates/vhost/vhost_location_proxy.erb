@@ -1,4 +1,7 @@
   location <%= location %> {
     proxy_pass <%= proxy %>;
+    <% scope.lookupvar('nginx::params::nx_proxy_set_https_header').each do |header| %>
+    proxy_set_header <%= header %>
+    <% end %>
   }
 

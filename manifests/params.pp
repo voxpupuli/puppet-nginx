@@ -22,12 +22,13 @@ class nginx::params {
 	$nx_worker_connections     = 1024
 	$nx_multi_accept           = off
 	$nx_sendfile               = on
-	$nx_keepalive_timeout      = 65
+	$nx_keepalive_timeout      = 6000
 	$nx_tcp_nodelay            = on
 	$nx_gzip                   = on
 
 	$nx_proxy_redirect             = off
-	$nx_proxy_set_header           = ['Host $host', 'X-Real-IP $remote_addr', 'X-Forwarded-For $proxy_add_x_forwarded_for', 'HTTPS https', 'X-SSL-CERTIFICATE $ssl_client_cert']
+	$nx_proxy_set_header           = ['Host $host', 'X-Real-IP $remote_addr', 'X-Forwarded-For $proxy_add_x_forwarded_for', 'X-SSL-CERTIFICATE $ssl_client_cert']
+	$nx_proxy_set_https_header     = ['Host $host', 'HTTPS https']
 	$nx_proxy_hide_header          = ['HTTPS', 'X-Client-Verify.*']
 	$nx_client_body_temp_path      = "${nx_run_dir}/client_body_temp"
 	$nx_client_body_buffer_size    = '128k'
