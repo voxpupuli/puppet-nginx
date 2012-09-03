@@ -22,8 +22,14 @@ class nginx::package::redhat {
     $os_type = downcase($::operatingsystem)
   }
 
+  if $::lsbmajdistrelease == undef {
+    $os_rel = regsubst($::operatingsystemrelease, '\..*$', '')
+  } else {
+    $os_rel = $::lsbmajdistrelease
+  }
+
   yumrepo { "nginx-release":
-    baseurl  => "http://nginx.org/packages/${os_type}/${::lsbmajdistrelease}/\$basearch/",
+    baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
     gpgcheck => '0',
