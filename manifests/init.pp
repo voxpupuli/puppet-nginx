@@ -30,7 +30,7 @@
 # }
 class nginx {
 
-  class { 'stdlib': }
+  include stdlib
 
   class { 'nginx::package':
     notify => Class['nginx::service'],
