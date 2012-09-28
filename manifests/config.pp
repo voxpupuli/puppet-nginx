@@ -13,7 +13,11 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::config inherits nginx::params {
+class nginx::config(
+	$worker_processes	= $nginx::params::nx_worker_processes,
+	$worker_connections	= $nginx::params::nx_worker_connections,
+	$proxy_set_header	= $nginx::params::nx_proxy_set_header
+) inherits nginx::params {
   File {
     owner => 'root',
     group => 'root',

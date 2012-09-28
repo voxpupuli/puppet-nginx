@@ -1,11 +1,11 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
-worker_processes <%= scope.lookupvar('nginx::params::nx_worker_processes')%>;
+worker_processes <%= worker_processes %>;
 
 error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
-  worker_connections <%= scope.lookupvar('nginx::params::nx_worker_connections') %>;
+  worker_connections <%= worker_connections %>;
   <% if scope.lookupvar('nginx::params::nx_multi_accept' == 'on') %>multi_accept on;<% end %>
 }
 
