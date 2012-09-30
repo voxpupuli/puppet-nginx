@@ -33,6 +33,7 @@ class nginx (
 	$worker_connections	= $nginx::params::nx_worker_connections,
 	$proxy_set_header	= $nginx::params::nx_proxy_set_header,
         $confd_purge            = $nginx::params::nx_confd_purge,
+        $configtest_enable      = $nginx::params::nx_configtest_enable,
 ) inherits nginx::params {
 
   include stdlib
@@ -50,7 +51,9 @@ class nginx (
     notify  		=> Class['nginx::service'],
   }
 
-  class { 'nginx::service': }
+  class { 'nginx::service': 
+    configtest_enable => $configtest_enable,
+  }
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through

@@ -13,7 +13,9 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::service {
+class nginx::service(
+  $configtest_enable   = $nginx::params::nx_configtest_enable,
+) {
   exec { 'rebuild-nginx-vhosts':
     command     => "/bin/cat ${nginx::params::nx_temp_dir}/nginx.d/* > ${nginx::params::nx_conf_dir}/conf.d/vhost_autogen.conf",
     refreshonly => true,
@@ -26,5 +28,10 @@ class nginx::service {
     hasstatus  => true,
     hasrestart => true,
     subscribe  => Exec['rebuild-nginx-vhosts'],
+  }
+  if $configtest_enable == true {
+    Service["nginx"] {
+      restart => "/etc/init.d/nginx configtest && /etc/init.d/nginx restart",
+    }
   }
 }
