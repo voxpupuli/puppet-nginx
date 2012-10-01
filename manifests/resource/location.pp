@@ -12,6 +12,7 @@
 #                            with nginx::resource::upstream
 #   [*proxy_read_timeout*] - Override the default the proxy read timeout value of 90 seconds
 #   [*ssl*]                - Indicates whether to setup SSL bindings for this location.
+#   [*location_alias*]     - Path to be used as basis for serving requests for this location
 #   [*option*]             - Reserved for future use
 #
 # Actions:
@@ -34,6 +35,7 @@ define nginx::resource::location(
   $proxy              = undef,
   $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
   $ssl                = false,
+  $location_alias     = undef,
   $option             = undef,
   $location
 ) {
@@ -53,6 +55,8 @@ define nginx::resource::location(
   # Use proxy template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
+  } elsif ($location_alias != undef) {
+    $content_real = template('nginx/vhost/vhost_location_alias.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
   }
@@ -61,8 +65,8 @@ define nginx::resource::location(
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef)) {
-    fail('Cannot create a location reference without a www_root or proxy defined')
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy or location_alias defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
