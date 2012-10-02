@@ -14,10 +14,10 @@
 #
 # This class file is not called directly
 class nginx::config(
-	$worker_processes	= $nginx::params::nx_worker_processes,
-	$worker_connections	= $nginx::params::nx_worker_connections,
-        $proxy_set_header       = $nginx::params::nx_proxy_set_header,
-        $confd_purge            = $nginx::params::nx_confd_purge,
+  $worker_processes    = $nginx::params::nx_worker_processes,
+  $worker_connections  = $nginx::params::nx_worker_connections,
+  $proxy_set_header    = $nginx::params::nx_proxy_set_header,
+  $confd_purge         = $nginx::params::nx_confd_purge,
 ) inherits nginx::params {
   File {
     owner => 'root',
@@ -34,6 +34,7 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.d"] {
+      ignore => "vhost_autogen.conf",
       purge => true,
       recurse => true,
     }

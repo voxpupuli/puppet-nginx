@@ -19,7 +19,6 @@ class nginx::params {
 
   $nx_conf_dir           = '/etc/nginx'
   $nx_confd_purge        = false
-  $nx_configtest_enable	 = false
   $nx_worker_processes   = 1
   $nx_worker_connections = 1024
   $nx_multi_accept       = off
@@ -55,4 +54,11 @@ class nginx::params {
     /(?i-mx:debian|ubuntu)/                           => 'www-data',
     /(?i-mx:fedora|rhel|redhat|centos|suse|opensuse)/ => 'nginx',
   }
+
+  # Service restart after Nginx 0.7.53 could also be just "/path/to/nginx/bin -s HUP"
+  # Some init scripts do a configtest, some don't. If configtest_enable it's true
+  # then service restart will take $nx_service_restart value, forcing configtest.
+  $nx_configtest_enable	 = false
+  $nx_service_restart = "/etc/init.d/nginx configtest && /etc/init.d/nginx restart"
+
 }
