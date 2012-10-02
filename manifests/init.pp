@@ -28,7 +28,11 @@
 # node default {
 #   include nginx
 # }
-class nginx {
+class nginx (
+	$worker_processes	= $nginx::params::nx_worker_processes,
+	$worker_connections	= $nginx::params::nx_worker_connections,
+	$proxy_set_header	= $nginx::params::nx_proxy_set_header
+) inherits nginx::params {
 
   include stdlib
 
@@ -37,8 +41,11 @@ class nginx {
   }
 
   class { 'nginx::config':
-    require => Class['nginx::package'],
-    notify  => Class['nginx::service'],
+    worker_processes 	=> $worker_processes,
+    worker_connections 	=> $worker_connections,
+    proxy_set_header 	=> $proxy_set_header,
+    require 		=> Class['nginx::package'],
+    notify  		=> Class['nginx::service'],
   }
 
   class { 'nginx::service': }
