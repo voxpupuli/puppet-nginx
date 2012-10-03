@@ -13,6 +13,7 @@
 #   [*proxy_read_timeout*] - Override the default the proxy read timeout value of 90 seconds
 #   [*ssl*]                - Indicates whether to setup SSL bindings for this location.
 #   [*location_alias*]     - Path to be used as basis for serving requests for this location
+#   [*stub_status*]        - If true it will point configure module stub_status to provide nginx stats on location
 #   [*option*]             - Reserved for future use
 #
 # Actions:
@@ -37,6 +38,7 @@ define nginx::resource::location(
   $ssl                = false,
   $location_alias     = undef,
   $option             = undef,
+  $stub_status        = undef,
   $location
 ) {
   File {
@@ -57,6 +59,8 @@ define nginx::resource::location(
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
   } elsif ($location_alias != undef) {
     $content_real = template('nginx/vhost/vhost_location_alias.erb')
+  } elsif ($stub_status != undef) {
+    $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
   }
@@ -65,8 +69,8 @@ define nginx::resource::location(
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy or location_alias defined')
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) ) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias or stub_status defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
