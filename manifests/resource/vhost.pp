@@ -35,21 +35,23 @@
 #    ssl_key  => '/tmp/server.pem',
 #  }
 define nginx::resource::vhost(
-  $ensure             = 'enable',
-  $listen_ip          = '*',
-  $listen_port        = '80',
-  $ipv6_enable        = false,
-  $ipv6_listen_ip     = '::',
-  $ipv6_listen_port   = '80',
-  $ssl                = false,
-  $ssl_cert           = undef,
-  $ssl_key            = undef,
-  $proxy              = undef,
-  $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
-  $index_files        = ['index.html', 'index.htm', 'index.php'],
-  $server_name        = [$name],
-  $www_root           = undef,
+  $ensure                 = 'enable',
+  $listen_ip              = '*',
+  $listen_port            = '80',
+  $ipv6_enable            = false,
+  $ipv6_listen_ip         = '::',
+  $ipv6_listen_port       = '80',
+  $ssl                    = false,
+  $ssl_cert               = undef,
+  $ssl_key                = undef,
+  $proxy                  = undef,
+  $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
+  $index_files            = ['index.html', 'index.htm', 'index.php'],
+  $server_name            = [$name],
+  $www_root               = undef,
   $rewrite_www_to_non_www = false,
+  $location_cfg_prepend   = undef,
+  $location_cfg_append    = undef,
 ) {
 
   File {
@@ -84,16 +86,27 @@ define nginx::resource::vhost(
 
   # Create the default location reference for the vHost
   nginx::resource::location {"${name}-default":
-    ensure             => $ensure,
-    vhost              => $name,
-    ssl                => $ssl,
-    location           => '/',
-    proxy              => $proxy,
-    proxy_read_timeout => $proxy_read_timeout,
-    www_root           => $www_root,
-    notify             => Class['nginx::service'],
+    ensure               => $ensure,
+    vhost                => $name,
+    ssl                  => $ssl,
+    location             => '/',
+    proxy                => $proxy,
+    proxy_read_timeout   => $proxy_read_timeout,
+    www_root             => $www_root,
+    notify               => Class['nginx::service'],
   }
 
+  # Support location_cfg_prepend and location_cfg_append on default location created by vhost
+  if $location_cfg_prepend {
+    Nginx::Resource::Location["${name}-default"] {
+      location_cfg_prepend => $location_cfg_prepend
+    }
+  }
+  if $location_cfg_append {
+    Nginx::Resource::Location["${name}-default"] {
+      location_cfg_append => $location_cfg_append
+    }
+  }
   # Create a proper file close stub.
   file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699":
     ensure  => $ensure ? {
