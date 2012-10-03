@@ -6,10 +6,13 @@
 #   [*ensure*]              - Enables or disables the specified vhost (present|absent)
 #   [*listen_ip*]           - Default IP Address for NGINX to listen with this vHost on. Defaults to all interfaces (*)
 #   [*listen_port*]         - Default IP Port for NGINX to listen with this vHost on. Defaults to TCP 80
+#   [*listen_options*]      - Extra options for listen directive like 'default' to catchall. Undef by default.
 #   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support (false|true). Module will check to see if IPv6
 #                             support exists on your system before enabling.
 #   [*ipv6_listen_ip*]      - Default IPv6 Address for NGINX to listen with this vHost on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this vHost on. Defaults to TCP 80
+#   [*ipv6_listen_options*] - Extra options for listen directive like 'default' to catchall. Template will allways add ipv6only=on.
+#                             While issue jfryman/puppet-nginx#30 is discussed, default value is 'default'.
 #   [*index_files*]         - Default index files for NGINX to read when traversing a directory
 #   [*proxy*]               - Proxy server(s) for the root location to connect to.  Accepts a single value, can be used in
 #                             conjunction with nginx::resource::upstream
@@ -38,9 +41,11 @@ define nginx::resource::vhost(
   $ensure                 = 'enable',
   $listen_ip              = '*',
   $listen_port            = '80',
+  $listen_options         = undef,
   $ipv6_enable            = false,
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
+  $ipv6_listen_options    = 'default',
   $ssl                    = false,
   $ssl_cert               = undef,
   $ssl_key                = undef,
