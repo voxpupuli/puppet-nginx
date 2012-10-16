@@ -51,6 +51,6 @@ class nginx::params {
 
   $nx_daemon_user = $::operatingsystem ? {
     /(?i-mx:debian|ubuntu)/                    => 'www-data',
-    /(?i-mx:fedora|rhel|centos|suse|opensuse)/ => 'nginx',
+    /(?i-mx:fedora|rhel|centos|scientific|suse|opensuse)/ => 'nginx',
   }
 }
