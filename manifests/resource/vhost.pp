@@ -3,6 +3,7 @@
 # This definition creates a virtual host
 #
 # Parameters:
+#   [*server_name*]      - Server name (value to match in Host: header). Defaults to the resource's name.
 #   [*ensure*]           - Enables or disables the specified vhost (present|absent)
 #   [*listen_ip*]        - Default IP Address for NGINX to listen with this vHost on. Defaults to all interfaces (*)
 #   [*listen_port*]      - Default IP Port for NGINX to listen with this vHost on. Defaults to TCP 80
@@ -32,19 +33,20 @@
 #    ssl_key  => '/tmp/server.pem',
 #  }
 define nginx::resource::vhost(
-  $ensure             = 'enable',
-  $listen_ip          = '*',
-  $listen_port        = '80',
-  $ipv6_enable        = false,
-  $ipv6_listen_ip     = '::',
-  $ipv6_listen_port   = '80',
-  $ssl                = false,
-  $ssl_cert           = undef,
-  $ssl_key            = undef,
-  $proxy              = undef,
+  $server_name      = $name,
+  $ensure           = 'enable',
+  $listen_ip        = '*',
+  $listen_port      = '80',
+  $ipv6_enable      = false,
+  $ipv6_listen_ip   = '::',
+  $ipv6_listen_port = '80',
+  $ssl              = false,
+  $ssl_cert         = undef,
+  $ssl_key          = undef,
+  $proxy            = undef,
   $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
-  $index_files        = ['index.html', 'index.htm', 'index.php'],
-  $www_root           = undef
+  $index_files      = ['index.html', 'index.htm', 'index.php'],
+  $www_root         = undef
 ) {
 
   File {
