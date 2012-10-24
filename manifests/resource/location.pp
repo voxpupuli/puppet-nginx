@@ -12,6 +12,7 @@
 #                              with nginx::resource::upstream
 #   [*proxy_read_timeout*]   - Override the default the proxy read timeout value of 90 seconds
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for this location.
+#   [*ssl_only*]	     - Required if the SSL and normal vHost have the same port.
 #   [*location_alias*]       - Path to be used as basis for serving requests for this location
 #   [*stub_status*]          - If true it will point configure module stub_status to provide nginx stats on location
 #   [*location_cfg_prepend*] - It expects a hash with custom directives to put before anything else inside location
@@ -53,6 +54,7 @@ define nginx::resource::location(
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $ssl                  = false,
+  $ssl_only		= false,
   $location_alias       = undef,
   $option               = undef,
   $stub_status          = undef,
@@ -96,9 +98,11 @@ define nginx::resource::location(
   }
 
   ## Create stubs for vHost File Fragment Pattern
-  file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
-    ensure  => $ensure_real,
-    content => $content_real,
+  if ($ssl_only != 'true') {
+    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
+      ensure  => $ensure_real,
+      content => $content_real,
+    }
   }
 
   ## Only create SSL Specific locations if $ssl is true.
