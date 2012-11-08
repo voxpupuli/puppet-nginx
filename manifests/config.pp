@@ -13,7 +13,12 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::config inherits nginx::params {
+class nginx::config(
+  $worker_processes    = $nginx::params::nx_worker_processes,
+  $worker_connections  = $nginx::params::nx_worker_connections,
+  $proxy_set_header    = $nginx::params::nx_proxy_set_header,
+  $confd_purge         = $nginx::params::nx_confd_purge
+) inherits nginx::params {
   File {
     owner => 'root',
     group => 'root',
@@ -27,6 +32,14 @@ class nginx::config inherits nginx::params {
   file { "${nginx::params::nx_conf_dir}/conf.d":
     ensure => directory,
   }
+  if $confd_purge == true {
+    File["${nginx::params::nx_conf_dir}/conf.d"] {
+      ignore => "vhost_autogen.conf",
+      purge => true,
+      recurse => true,
+    }
+  }
+
 
   file { "${nginx::config::nx_run_dir}":
     ensure => directory,
