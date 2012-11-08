@@ -17,6 +17,7 @@
 #   [*stub_status*]          - If true it will point configure module stub_status to provide nginx stats on location
 #   [*location_cfg_prepend*] - It expects a hash with custom directives to put before anything else inside location
 #   [*location_cfg_append*]  - It expects a hash with custom directives to put after everything else inside location   
+#   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
 #
 # Actions:
@@ -60,6 +61,7 @@ define nginx::resource::location(
   $stub_status          = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
+  $try_files            = undef,
   $location
 ) {
   File {
