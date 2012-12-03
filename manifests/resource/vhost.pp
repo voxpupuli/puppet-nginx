@@ -48,7 +48,8 @@ define nginx::resource::vhost(
   $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
   $index_files      = ['index.html', 'index.htm', 'index.php'],
   $www_root         = undef,
-  $try_files        = undef
+  $try_files        = undef,
+  $rewrite_rules    = undef
 ) {
 
   File {
@@ -92,6 +93,7 @@ define nginx::resource::vhost(
     try_files          => $try_files,
     www_root           => $www_root,
     notify             => Class['nginx::service'],
+    rewrite_rules      => $rewrite_rules,
   }
 
   # Create a proper file close stub.

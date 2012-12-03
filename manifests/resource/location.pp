@@ -27,6 +27,7 @@
 #    vhost    => 'test2.local',
 #  }
 define nginx::resource::location(
+  $location,
   $ensure             = present,
   $vhost              = undef,
   $www_root           = undef,
@@ -35,8 +36,9 @@ define nginx::resource::location(
   $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
   $ssl                = false,
   $try_files          = undef,
+  $extra              = undef,
+  $rewrite_rules      = undef,
   $option             = undef,
-  $location
 ) {
   File {
     owner  => 'root',
@@ -62,8 +64,8 @@ define nginx::resource::location(
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef)) {
-    fail('Cannot create a location reference without a www_root or proxy defined')
+  if (($www_root == undef) and ($proxy == undef) and ($extra == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, or extra defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
