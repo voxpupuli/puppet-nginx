@@ -17,14 +17,14 @@ http {
 
   sendfile    <%= scope.lookupvar(['nginx::params::nx_sendfile'])%>;
 
-  <% if scope.lookupvar(['nginx::params::nx_tcp_nopush']) == 'on' %>
+  <% if scope.lookupvar(['nginx::params::nx_tcp_nopush']) %>
   tcp_nopush  on;
   <% end %>
 
   keepalive_timeout  <%= scope.lookupvar(['nginx::params::nx_keepalive_timeout'])%>;
   tcp_nodelay        <%= scope.lookupvar(['nginx::params::nx_tcp_nodelay'])%>;
 
-  <% if scope.lookupvar(['nginx::params::nx_gzip']) == 'on' %> 
+  <% if scope.lookupvar(['nginx::params::nx_gzip']) %> 
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
   <% end %>
