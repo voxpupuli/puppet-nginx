@@ -59,7 +59,7 @@ define nginx::resource::vhost(
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable == 'true') and ($ipaddress6)  {
+  if ($::ipv6_enable == 'true') and ($::ipaddress6)  {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
@@ -72,7 +72,7 @@ define nginx::resource::vhost(
 
   # Use the File Fragment Pattern to construct the configuration files.
   # Create the base configuration file reference.
-  file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
+  file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-001":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',
@@ -95,7 +95,7 @@ define nginx::resource::vhost(
   }
 
   # Create a proper file close stub.
-  file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699":
+  file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-699":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',
@@ -106,7 +106,7 @@ define nginx::resource::vhost(
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == 'true') {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
+    file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -114,7 +114,7 @@ define nginx::resource::vhost(
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       notify => Class['nginx::service'],
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
+    file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-999-ssl":
       ensure => $ensure ? {
         'absent' => absent,
         default  => 'file',

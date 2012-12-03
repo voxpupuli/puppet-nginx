@@ -28,16 +28,16 @@ class nginx::config inherits nginx::params {
     ensure => directory,
   }
 
-  file { "${nginx::config::nx_run_dir}":
+  file { "${nginx::params::nx_run_dir}":
     ensure => directory,
   }
 
-  file { "${nginx::config::nx_client_body_temp_path}":
+  file { "${nginx::params::nx_client_body_temp_path}":
     ensure => directory,
     owner  => $nginx::params::nx_daemon_user,
   }
 
-  file {"${nginx::config::nx_proxy_temp_path}":
+  file {"${nginx::params::nx_proxy_temp_path}":
     ensure => directory,
     owner  => $nginx::params::nx_daemon_user,
   }
@@ -56,7 +56,7 @@ class nginx::config inherits nginx::params {
     content => template('nginx/conf.d/proxy.conf.erb'),
   }
 
-  file { "${nginx::config::nx_temp_dir}/nginx.d":
+  file { "${nginx::params::nx_temp_dir}/nginx.d":
     ensure  => directory,
     purge   => true,
     recurse => true,
