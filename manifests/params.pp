@@ -20,11 +20,11 @@ class nginx::params {
   $nx_conf_dir           = '/etc/nginx'
   $nx_worker_processes   = 1
   $nx_worker_connections = 1024
-  $nx_multi_accept       = off
-  $nx_sendfile           = on
+  $nx_multi_accept       = 'off'
+  $nx_sendfile           = 'on'
   $nx_keepalive_timeout  = 65
-  $nx_tcp_nodelay        = on
-  $nx_gzip               = on
+  $nx_tcp_nodelay        = 'on'
+  $nx_gzip               = 'on'
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
