@@ -65,7 +65,7 @@ define nginx::resource::vhost(
   }
 
   # Check to see if SSL Certificates are properly defined.
-  if ($ssl == 'true') {
+  if ($ssl == true) {
     if ($ssl_cert == undef) or ($ssl_key == undef) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_cert) and/or SSL Private must be defined and exist on the target system(s)')
     }
@@ -107,7 +107,7 @@ define nginx::resource::vhost(
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl == 'true') {
+  if ($ssl == true) {
     file { "${nginx::params::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
         'absent' => absent,
