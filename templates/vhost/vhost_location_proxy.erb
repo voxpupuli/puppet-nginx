@@ -1,12 +1,6 @@
   location <%= location %> {
     proxy_pass <%= proxy %>;
     proxy_read_timeout <%= proxy_read_timeout %>;
-    <% if rewrite_rules.respond_to?("each") -%>
-    <% rewrite_rules.each do |rule| %>
-    rewrite <%= rule %>;
-    <% end %>
-    <% elsif rewrite_rules.respond_to("to_s") -%>
-    <%= rewrite_rules %>;
-    <% end %>
+    #Removed rewrite stuff
   }
 
