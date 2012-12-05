@@ -7,20 +7,6 @@
     index <% index_files.each do |i| %> <%= i %> <% end %>;
     <% end %>
 
-    <% if rewrite_rules.respond_to?("each") %>
-    <% rewrite_rules.each do |rule| %>
-    rewrite <%= rule %>;
-    <% end %>
-    <% elsif rewrite_rules.respond_to("to_s") %>
-    <%= rewrite_rules %>;
-    <% end %>
-
-    <% if has_variable?("extra") then %>
-    <% extra.each do |ex| %>
-    <%= ex %>;
-    <% end %>
-    <% end %>
-
     <% if has_variable?("try_files") then %>
     try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
     <% end %> 
