@@ -3,17 +3,20 @@
 # This definition creates a new location entry within a virtual host
 #
 # Parameters:
-#   [*ensure*]      - Enables or disables the specified location (present|absent)
-#   [*vhost*]       - Defines the default vHost for this location entry to include with
-#   [*location*]    - Specifies the URI associated with this location entry
-#   [*www_root*]    - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*index_files*] - Default index files for NGINX to read when traversing a directory
-#   [*proxy*]       - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
-#                     with nginx::resource::upstream
+#   [*ensure*]             - Enables or disables the specified location (present|absent)
+#   [*vhost*]              - Defines the default vHost for this location entry to include with
+#   [*location*]           - Specifies the URI associated with this location entry
+#   [*www_root*]           - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
+#   [*index_files*]        - Default index files for NGINX to read when traversing a directory
+#   [*proxy*]              - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
+#                            with nginx::resource::upstream
 #   [*proxy_read_timeout*] - Override the default the proxy read timeout value of 90 seconds
-#   [*ssl*]         - Indicates whether to setup SSL bindings for this location.
-#   [*try_files*]   - An array of file locations to try
-#   [*option*]      - Reserved for future use
+#   [*fastcgi*]            - location of fastcgi (host:port)
+#   [*fastcgi_params*]     - optional alternative fastcgi_params file to use
+#   [*fastcgi_script*]     - optional SCRIPT_FILE parameter
+#   [*ssl*]                - Indicates whether to setup SSL bindings for this location.
+#   [*try_files*]          - An array of file locations to try
+#   [*option*]             - Reserved for future use
 #
 # Actions:
 #
@@ -33,6 +36,9 @@ define nginx::resource::location(
   $index_files        = ['index.html', 'index.htm', 'index.php'],
   $proxy              = undef,
   $proxy_read_timeout = $nginx::params::nx_proxy_read_timeout,
+  $fastcgi            = undef,
+  $fastcgi_params     = '/etc/nginx/fastcgi_params',
+  $fastcgi_script     = undef,
   $ssl                = false,
   $try_files          = undef,
   $option             = undef,
@@ -51,9 +57,11 @@ define nginx::resource::location(
     default  => file,
   }
 
-  # Use proxy template if $proxy is defined, otherwise use directory template.
+  # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
+  } elsif ($fastcgi != undef) {
+    $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
   }
@@ -62,8 +70,8 @@ define nginx::resource::location(
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef)) {
-    fail('Cannot create a location reference without a www_root or proxy defined')
+  if (($www_root == undef) and ($proxy == undef) and ($fastcgi == undef)) {
+    fail('Cannot create a location reference without a www_root or proxy or fastcgi defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
