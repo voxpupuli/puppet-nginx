@@ -1,6 +1,7 @@
   location <%= location %> {
     proxy_pass <%= proxy %>;
     proxy_read_timeout <%= proxy_read_timeout %>;
+    proxy_set_header Host $http_host;
     #Removed rewrite stuff
   }
 
