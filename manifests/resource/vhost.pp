@@ -49,7 +49,8 @@ define nginx::resource::vhost(
   $index_files      = ['index.html', 'index.htm', 'index.php'],
   $www_root         = undef,
   $try_files        = undef,
-  $rewrite_rules    = undef
+  $rewrite_rules    = undef,
+  $options          = []
 ) {
 
   File {
