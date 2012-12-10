@@ -18,7 +18,7 @@ Setup a new virtual host
 
 <pre>
     node default {
-      class { 'mcollective': }
+      class { 'nginx': }
       nginx::resource::vhost { 'www.puppetlabs.com':
         ensure   => present,
         www_root => '/var/www/www.puppetlabs.com',
@@ -27,10 +27,9 @@ Setup a new virtual host
 </pre>
 
 Add a Proxy Server(s)
-
 <pre>
    node default {
-     class { 'mcollective': }
+     class { 'nginx': }
      nginx::resource::upstream { 'puppet_rack_app':
        ensure  => present,
        members => [
