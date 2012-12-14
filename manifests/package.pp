@@ -18,7 +18,7 @@ class nginx::package {
   anchor { 'nginx::package::end': }
 
   case $::operatingsystem {
-    centos,fedora,rhel,redhat: {
+    centos,fedora,rhel,redhat,scientific: {
       class { 'nginx::package::redhat':
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
