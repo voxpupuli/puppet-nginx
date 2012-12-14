@@ -25,6 +25,7 @@
 #   [*www_root*]            - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
 #   [*rewrite_www_to_non_www*]  - Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
 #                             duplicate content (SEO);
+#   [*try_files*]           - Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
 #
 # Actions:
 #
@@ -59,6 +60,7 @@ define nginx::resource::vhost(
   $rewrite_www_to_non_www = false,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $try_files              = undef
 ) {
 
   File {
@@ -106,6 +108,7 @@ define nginx::resource::vhost(
     location             => '/',
     proxy                => $proxy,
     proxy_read_timeout   => $proxy_read_timeout,
+    try_files            => $try_files,
     www_root             => $www_root,
     notify               => Class['nginx::service'],
   }
