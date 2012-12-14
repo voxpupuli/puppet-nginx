@@ -1,6 +1,6 @@
 # NGINX Module
 
-James Fryman <jamison@puppetlabs.com>
+James Fryman <james@frymanet.com>
 
 This module manages NGINX from within Puppet.
 
