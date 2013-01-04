@@ -3,8 +3,8 @@
     <%= key %> <%= value %>;
 <% end -%><% end -%>
     root  <%= www_root %>;
-    <% if has_variable?("try_files") then %>
-    try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
+    <% if @try_files then %>
+    try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
     <% end %>
     index <% index_files.each do |i| %> <%= i %> <% end %>; 
 <% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
