@@ -2,8 +2,7 @@
 <% if @location_cfg_prepend -%><% location_cfg_prepend.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
-    proxy_pass <%= proxy %>;
-    proxy_read_timeout <%= proxy_read_timeout %>;
+    stub_status on;
 <% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
