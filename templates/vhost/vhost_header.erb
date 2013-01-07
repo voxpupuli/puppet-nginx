@@ -1,7 +1,7 @@
 server {
-  <% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
-    <%= key %> <%= value %>
-  <% end -%><% end -%>
+<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>
+<% end -%><% end -%>
   listen                <%= listen_ip %>:<%= listen_port %> <% if @listen_options %><%= listen_options %><% end %>;
   <% # check to see if ipv6 support exists in the kernel before applying %>
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
@@ -9,6 +9,6 @@ server {
   <% end %>
   server_name           <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
   access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log;
-  <% if @vhost_cfg_append -%><% vhost_cfg_append.each do |key,value| -%>
-    <%= key %> <%= value %>
-  <% end -%><% end -%>
+<% if @vhost_cfg_append -%><% vhost_cfg_append.each do |key,value| -%>
+  <%= key %> <%= value %>
+<% end -%><% end -%>
