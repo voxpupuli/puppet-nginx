@@ -1,6 +1,6 @@
   location <%= location %> {
 <% if @location_cfg_prepend -%><% location_cfg_prepend.each do |key,value| -%>
-    <%= key %> <%= value %>;
+    <%= key %> <%= value %>
 <% end -%><% end -%>
     root  <%= www_root %>;
     <% if @try_files then %>
@@ -8,7 +8,7 @@
     <% end %>
     index <% index_files.each do |i| %> <%= i %> <% end %>; 
 <% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
-    <%= key %> <%= value %>;
+    <%= key %> <%= value %>
 <% end -%><% end -%>
   }
 
