@@ -110,6 +110,7 @@ define nginx::resource::vhost(
     location             => '/',
     proxy                => $proxy,
     proxy_read_timeout   => $proxy_read_timeout,
+    index_files          => $index_files,
     try_files            => $try_files,
     www_root             => $www_root,
     notify               => Class['nginx::service'],
