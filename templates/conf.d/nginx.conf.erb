@@ -10,6 +10,9 @@ events {
 }
 
 http {
+<% if @http_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>
+<% end -%><% end -%>
   include       /etc/nginx/mime.types;
   default_type  application/octet-stream;
 
@@ -30,4 +33,7 @@ http {
   <% end %>
 
   include /etc/nginx/conf.d/*.conf;
+<% if @http_cfg_append -%><% vhost_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>
+<% end -%><% end -%>
 }
