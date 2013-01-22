@@ -23,12 +23,13 @@ class nginx::package {
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
+    }
     amazon: {
       class { 'nginx::package::amazon':
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
-    }   }
+    }
     debian,ubuntu: {
       class { 'nginx::package::debian': 
         require => Anchor['nginx::package::begin'],
