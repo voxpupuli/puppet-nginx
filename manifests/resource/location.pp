@@ -100,7 +100,7 @@ define nginx::resource::location(
   }
 
   ## Create stubs for vHost File Fragment Pattern
-  if ($ssl_only != 'true') {
+  if ($ssl_only != true) {
     file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
       ensure  => $ensure_real,
       content => $content_real,
