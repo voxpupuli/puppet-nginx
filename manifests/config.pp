@@ -40,6 +40,17 @@ class nginx::config(
     }
   }
 
+  file { "${nginx::params::nx_conf_dir}/conf.mail.d":
+    ensure => directory,
+  }
+  if $confd_purge == true {
+    File["${nginx::params::nx_conf_dir}/conf.mail.d"] {
+      ignore => "vhost_autogen.conf",
+      purge => true,
+      recurse => true,
+    }
+  }
+
 
   file { "${nginx::config::nx_run_dir}":
     ensure => directory,
@@ -70,6 +81,12 @@ class nginx::config(
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
+  }
+
+  file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
     ensure  => directory,
     purge   => true,
     recurse => true,
