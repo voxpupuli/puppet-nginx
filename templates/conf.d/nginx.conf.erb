@@ -24,6 +24,8 @@ http {
   keepalive_timeout  <%= scope.lookupvar('nginx::params::nx_keepalive_timeout')%>;
   tcp_nodelay        <%= scope.lookupvar('nginx::params::nx_tcp_nodelay')%>;
 
+  types_hash_max_size <%= scope.lookupvar('nginx::params::nx_types_hash_max_size')%>;
+
   <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";

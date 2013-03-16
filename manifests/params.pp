@@ -27,6 +27,7 @@ class nginx::params {
   $nx_tcp_nodelay        = on
   $nx_gzip               = on
 
+  $nx_types_hash_max_size     = 2048
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
     'Host $host', 'X-Real-IP $remote_addr',
@@ -58,7 +59,7 @@ class nginx::params {
   # Service restart after Nginx 0.7.53 could also be just "/path/to/nginx/bin -s HUP"
   # Some init scripts do a configtest, some don't. If configtest_enable it's true
   # then service restart will take $nx_service_restart value, forcing configtest.
-  $nx_configtest_enable	 = false
-  $nx_service_restart = "/etc/init.d/nginx configtest && /etc/init.d/nginx restart"
+  $nx_configtest_enable = false
+  $nx_service_restart   = "/etc/init.d/nginx configtest && /etc/init.d/nginx restart"
 
 }
