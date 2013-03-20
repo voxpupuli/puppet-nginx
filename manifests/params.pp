@@ -53,7 +53,7 @@ class nginx::params {
 
   $nx_daemon_user = $::operatingsystem ? {
     /(?i-mx:debian|ubuntu)/                                      => 'www-data',
-    /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse)/ => 'nginx',
+    /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon)/ => 'nginx',
   }
 
   # Service restart after Nginx 0.7.53 could also be just "/path/to/nginx/bin -s HUP"
