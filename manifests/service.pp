@@ -28,6 +28,7 @@ class nginx::service(
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+    restart    => '/etc/init.d/nginx reload',
     subscribe  => Exec['rebuild-nginx-vhosts'],
   }
   if $configtest_enable == true {
