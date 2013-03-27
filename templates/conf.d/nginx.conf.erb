@@ -29,7 +29,11 @@ http {
   <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-  <% end %>
+  <% end -%>
+
+<% if proxy_cache_path -%>
+  proxy_cache_path    <%= proxy_cache_path %> levels=<%= proxy_cache_levels %> keys_zone=<%= proxy_cache_keys_zone %> max_size=<%= proxy_cache_max_size %> inactive=<%= proxy_cache_inactive %>;
+<% end -%>
 
   include /etc/nginx/conf.d/*.conf;
 }

@@ -14,10 +14,16 @@
 #
 # This class file is not called directly
 class nginx::config(
-  $worker_processes    = $nginx::params::nx_worker_processes,
-  $worker_connections  = $nginx::params::nx_worker_connections,
-  $proxy_set_header    = $nginx::params::nx_proxy_set_header,
-  $confd_purge         = $nginx::params::nx_confd_purge
+  $worker_processes       = $nginx::params::nx_worker_processes,
+  $worker_connections     = $nginx::params::nx_worker_connections,
+  $proxy_set_header       = $nginx::params::nx_proxy_set_header,
+  $confd_purge            = $nginx::params::nx_confd_purge,
+  $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
+  $proxy_cache_levels     = $nginx::params::nx_proxy_cache_levels,
+  $proxy_cache_keys_zone  = $nginx::params::nx_proxy_cache_keys_zone,
+  $proxy_cache_max_size   = $nginx::params::nx_proxy_cache_max_size,
+  $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
+
 ) inherits nginx::params {
   File {
     owner => 'root',
@@ -25,7 +31,7 @@ class nginx::config(
     mode  => '0644',
   }
 
-  file { "${nginx::params::nx_conf_dir}":
+  file { $nginx::params::nx_conf_dir:
     ensure => directory,
   }
 
@@ -34,23 +40,22 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.d"] {
-      ignore  => "vhost_autogen.conf",
+      ignore  => 'vhost_autogen.conf',
       purge   => true,
       recurse => true,
     }
   }
 
-
-  file { "${nginx::config::nx_run_dir}":
+  file {$nginx::config::nx_run_dir:
     ensure => directory,
   }
 
-  file { "${nginx::config::nx_client_body_temp_path}":
+  file {$nginx::config::nx_client_body_temp_path:
     ensure => directory,
     owner  => $nginx::params::nx_daemon_user,
   }
 
-  file {"${nginx::config::nx_proxy_temp_path}":
+  file {$nginx::config::nx_proxy_temp_path:
     ensure => directory,
     owner  => $nginx::params::nx_daemon_user,
   }

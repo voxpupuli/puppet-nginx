@@ -14,18 +14,18 @@
 #
 # This class file is not called directly
 class nginx::params {
-  $nx_temp_dir = '/tmp'
-  $nx_run_dir  = '/var/nginx'
+  $nx_temp_dir                = '/tmp'
+  $nx_run_dir                 = '/var/nginx'
 
-  $nx_conf_dir           = '/etc/nginx'
-  $nx_confd_purge        = false
-  $nx_worker_processes   = 1
-  $nx_worker_connections = 1024
-  $nx_multi_accept       = off
-  $nx_sendfile           = on
-  $nx_keepalive_timeout  = 65
-  $nx_tcp_nodelay        = on
-  $nx_gzip               = on
+  $nx_conf_dir                = '/etc/nginx'
+  $nx_confd_purge             = false
+  $nx_worker_processes        = 1
+  $nx_worker_connections      = 1024
+  $nx_multi_accept            = off
+  $nx_sendfile                = on
+  $nx_keepalive_timeout       = 65
+  $nx_tcp_nodelay             = on
+  $nx_gzip                    = on
 
   $nx_types_hash_max_size     = 2048
   $nx_proxy_redirect          = off
@@ -42,6 +42,13 @@ class nginx::params {
   $nx_proxy_send_timeout      = '90'
   $nx_proxy_read_timeout      = '90'
   $nx_proxy_buffers           = '32 4k'
+
+  $nx_proxy_cache_path        = false
+  $nx_proxy_cache_levels      = 1
+  $nx_proxy_cache_keys_zone   = 'd2:100m'
+  $nx_proxy_cache_max_size    = '500m'
+  $nx_proxy_cache_inactive    = '20m'
+
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
@@ -60,6 +67,6 @@ class nginx::params {
   # Some init scripts do a configtest, some don't. If configtest_enable it's true
   # then service restart will take $nx_service_restart value, forcing configtest.
   $nx_configtest_enable = false
-  $nx_service_restart   = "/etc/init.d/nginx configtest && /etc/init.d/nginx restart"
+  $nx_service_restart   = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
 
 }

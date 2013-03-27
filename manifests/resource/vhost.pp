@@ -66,7 +66,9 @@ define nginx::resource::vhost(
   $rewrite_www_to_non_www = false,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
-  $try_files              = undef
+  $try_files              = undef,
+  $proxy_cache            = false,
+  $proxy_cache_valid      = false,
 ) {
 
   File {
@@ -97,7 +99,7 @@ define nginx::resource::vhost(
         default  => 'file',
       },
       content => template('nginx/vhost/vhost_header.erb'),
-      notify => Class['nginx::service'],
+      notify  => Class['nginx::service'],
     }
   }
 
@@ -119,6 +121,8 @@ define nginx::resource::vhost(
     fastcgi_script       => $fastcgi_script,
     try_files            => $try_files,
     www_root             => $www_root,
+    proxy_cache          => $proxy_cache,
+    proxy_cache_valid    => $proxy_cache_valid,
     notify               => Class['nginx::service'],
   }
 
@@ -153,7 +157,7 @@ define nginx::resource::vhost(
         default  => 'file',
       },
       content => template('nginx/vhost/vhost_ssl_header.erb'),
-      notify => Class['nginx::service'],
+      notify  => Class['nginx::service'],
     }
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
       ensure => $ensure ? {
@@ -161,7 +165,7 @@ define nginx::resource::vhost(
         default  => 'file',
       },
       content => template('nginx/vhost/vhost_footer.erb'),
-      notify => Class['nginx::service'],
+      notify  => Class['nginx::service'],
     }
   }
 }
