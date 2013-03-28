@@ -1,7 +1,8 @@
 location <%= location %> {
   include <%= fastcgi_params %>;
   fastcgi_pass <%= fastcgi %>;
-  <% unless fastcgi_script == :undef %>
+<% unless fastcgi_script == :undef %>
     fastcgi_param SCRIPT_FILENAME <%= fastcgi_script %>;
-  <% end %>
-} 
+<% end -%>
+}
+
