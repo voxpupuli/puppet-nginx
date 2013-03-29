@@ -2,4 +2,7 @@ upstream <%= name %> {
   <% members.each do |i| %>
   server <%= i %>;
   <% end %>
+<% if @upstream_cfg_append -%><% upstream_cfg_append.each do |key,value| -%>
+  <%= key %> <%= value %>
+<% end -%><% end -%>
 }
