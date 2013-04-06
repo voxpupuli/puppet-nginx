@@ -31,3 +31,8 @@ http {
 
   include /etc/nginx/conf.d/*.conf;
 }
+<% if scope.lookupvar('nginx::mail') %>
+mail {
+  include /etc/nginx/conf.mail.d/*.conf;
+}
+<% end -%>
