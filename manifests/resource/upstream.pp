@@ -19,10 +19,7 @@
 #      'localhost:3002',
 #    ],
 #  }
-define nginx::resource::upstream (
-  $ensure = 'present',
-  $members
-) {
+define nginx::resource::upstream ($ensure = 'present', $members) {
   File {
     owner => 'root',
     group => 'root',
@@ -30,11 +27,11 @@ define nginx::resource::upstream (
   }
 
   file { "/etc/nginx/conf.d/${name}-upstream.conf":
-    ensure   => $ensure ? {
+    ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',
     },
-    content  => template('nginx/conf.d/upstream.erb'),
-    notify   => Class['nginx::service'],
+    content => template('nginx/conf.d/upstream.erb'),
+    notify  => Class['nginx::service'],
   }
 }
