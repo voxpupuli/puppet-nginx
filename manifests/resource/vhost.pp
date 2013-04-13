@@ -137,7 +137,7 @@ define nginx::resource::vhost(
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl == true) {
+  if ($ssl) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
         'absent' => absent,
