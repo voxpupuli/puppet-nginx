@@ -41,25 +41,24 @@
 #    ssl_cert    => '/tmp/server.crt',
 #    ssl_key     => '/tmp/server.pem',
 #  }
-define nginx::resource::mailhost(
-  $ensure                 = 'enable',
-  $listen_ip              = '*',
+define nginx::resource::mailhost (
+  $ensure              = 'enable',
+  $listen_ip           = '*',
   $listen_port,
-  $listen_options         = undef,
-  $ipv6_enable            = false,
-  $ipv6_listen_ip         = '::',
-  $ipv6_listen_port       = '80',
-  $ipv6_listen_options    = 'default',
-  $ssl                    = false,
-  $ssl_cert               = undef,
-  $ssl_key                = undef,
-  $ssl_port               = undef,
-  $starttls               = 'off',
-  $protocol               = undef,
-  $auth_http              = undef,
-  $xclient                = 'on',
-  $server_name            = [$name]
-) {
+  $listen_options      = undef,
+  $ipv6_enable         = false,
+  $ipv6_listen_ip      = '::',
+  $ipv6_listen_port    = '80',
+  $ipv6_listen_options = 'default',
+  $ssl                 = false,
+  $ssl_cert            = undef,
+  $ssl_key             = undef,
+  $ssl_port            = undef,
+  $starttls            = 'off',
+  $protocol            = undef,
+  $auth_http           = undef,
+  $xclient             = 'on',
+  $server_name         = [$name]) {
   File {
     owner => 'root',
     group => 'root',
@@ -68,7 +67,7 @@ define nginx::resource::mailhost(
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable and !$::ipaddress6)  {
+  if ($ipv6_enable and !$::ipaddress6) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
@@ -88,19 +87,19 @@ define nginx::resource::mailhost(
         default  => 'file',
       },
       content => template('nginx/mailhost/mailhost.erb'),
-      notify => Class['nginx::service'],
+      notify  => Class['nginx::service'],
     }
   }
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
     file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-700-ssl":
-      ensure => $ensure ? {
+      ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
       },
       content => template('nginx/mailhost/mailhost_ssl.erb'),
-      notify => Class['nginx::service'],
+      notify  => Class['nginx::service'],
     }
   }
 }
