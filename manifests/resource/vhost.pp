@@ -167,5 +167,16 @@ define nginx::resource::vhost(
       content => template('nginx/vhost/vhost_footer.erb'),
       notify  => Class['nginx::service'],
     }
+    #Generate ssl key/cert with provided file-locations
+    file { "${nginx::params::nx_conf_dir}/${name}.crt":
+      ensure => $ensure,
+      mode   => '0644',
+      source => $ssl_cert,
+    }
+    file { "${nginx::params::nx_conf_dir}/${name}.key":
+      ensure => $ensure,
+      mode   => '0644',
+      source => $ssl_key,
+    }
   }
 }

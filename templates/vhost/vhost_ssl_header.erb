@@ -6,8 +6,9 @@ server {
   server_name  <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
 
   ssl on;
-  ssl_certificate      <%= ssl_cert %>;
-  ssl_certificate_key  <%= ssl_key %>;
+
+  ssl_certificate      <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= scope.lookupvar('name') %>.crt;
+  ssl_certificate_key  <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= scope.lookupvar('name') %>.key;
 
   ssl_session_timeout  5m;
 

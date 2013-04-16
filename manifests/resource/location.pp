@@ -98,7 +98,7 @@ define nginx::resource::location(
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
   }
 
-  ## Check for various error condtiions
+  ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
