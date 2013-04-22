@@ -1,4 +1,7 @@
 upstream <%= name %> {
+<% if @upstream_cfg_prepend -%><% upstream_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
   <% members.each do |i| %>
   server <%= i %>;
   <% end %>
