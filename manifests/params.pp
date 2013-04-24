@@ -22,14 +22,17 @@ class nginx::params {
   $nx_worker_processes   = 1
   $nx_worker_connections = 1024
   $nx_multi_accept       = off
+  $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
   $nx_sendfile           = on
   $nx_keepalive_timeout  = 65
   $nx_tcp_nodelay        = on
   $nx_gzip               = on
+  $nx_server_tokens      = on
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
-    'Host $host', 'X-Real-IP $remote_addr',
+    'Host $host',
+    'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
   ]
 
@@ -51,7 +54,7 @@ class nginx::params {
   }
 
   $nx_daemon_user = $::operatingsystem ? {
-    /(?i-mx:debian|ubuntu)/                                      => 'www-data',
+    /(?i-mx:debian|ubuntu)/                                             => 'www-data',
     /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon)/ => 'nginx',
   }
 
