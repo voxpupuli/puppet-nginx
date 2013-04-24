@@ -21,13 +21,13 @@ class nginx::params {
   $nx_confd_purge        = false
   $nx_worker_processes   = 1
   $nx_worker_connections = 1024
-  $nx_multi_accept       = off
-  $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
+  $nx_multi_accept       = on
+  $nx_events_use         = epoll # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
   $nx_sendfile           = on
   $nx_keepalive_timeout  = 65
   $nx_tcp_nodelay        = on
   $nx_gzip               = on
-  $nx_server_tokens      = on
+  $nx_server_tokens      = off
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
