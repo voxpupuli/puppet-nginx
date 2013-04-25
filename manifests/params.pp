@@ -29,6 +29,7 @@ class nginx::params {
   $nx_gzip               = on
   $nx_server_tokens      = off
   $nx_spdy               = on
+  $nx_ssl_stapling       = on
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
