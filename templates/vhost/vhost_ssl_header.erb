@@ -12,7 +12,7 @@ server {
   ssl_session_timeout       10m;
   ssl_ciphers               RC4:HIGH:!aNULL:!MD5;
   ssl_prefer_server_ciphers on;
-  <% if scope.lookupvar('nginx::params::nx_ssl_stapling') == 'on' %>ssl_stapling              1;<% end %>
+  <% if scope.lookupvar('nginx::params::nx_ssl_stapling') == 'on' %>ssl_stapling              on;<% end %>
   <% if scope.lookupvar('nginx::params::nx_spdy') == 'on' %>spdy_headers_comp         1;<% end %>
 
   <% proxy_set_header.each do |header| %>
