@@ -35,7 +35,8 @@ class nginx (
   $confd_purge        = $nginx::params::nx_confd_purge,
   $configtest_enable  = $nginx::params::nx_configtest_enable,
   $service_restart    = $nginx::params::nx_service_restart,
-  $mail               = $nginx::params::nx_mail
+  $mail               = $nginx::params::nx_mail,
+  $server_tokens      = $nginx::params::nx_server_tokens
 ) inherits nginx::params {
 
   include stdlib
@@ -45,12 +46,13 @@ class nginx (
   }
 
   class { 'nginx::config':
-    worker_processes 	=> $worker_processes,
-    worker_connections 	=> $worker_connections,
-    proxy_set_header 	=> $proxy_set_header,
-    confd_purge         => $confd_purge,
-    require 		=> Class['nginx::package'],
-    notify  		=> Class['nginx::service'],
+    worker_processes   => $worker_processes,
+    worker_connections => $worker_connections,
+    proxy_set_header   => $proxy_set_header,
+    confd_purge        => $confd_purge,
+    server_tokens      => $server_tokens,
+    require            => Class['nginx::package'],
+    notify             => Class['nginx::service'],
   }
 
   class { 'nginx::service': 
