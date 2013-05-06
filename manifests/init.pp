@@ -4,8 +4,8 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class. All module parameters are managed
-# via the nginx::params class
+# There are no default parameters for this class. All module parameters are
+# managed via the nginx::params class
 #
 # Actions:
 #
@@ -49,15 +49,16 @@ class nginx (
     worker_processes   => $worker_processes,
     worker_connections => $worker_connections,
     proxy_set_header   => $proxy_set_header,
+    proxy_http_version => $proxy_http_version,
     confd_purge        => $confd_purge,
     server_tokens      => $server_tokens,
     require            => Class['nginx::package'],
     notify             => Class['nginx::service'],
   }
 
-  class { 'nginx::service': 
+  class { 'nginx::service':
     configtest_enable => $configtest_enable,
-    service_restart => $service_restart,
+    service_restart   => $service_restart,
   }
 
   # Allow the end user to establish relationships to the "main" class
