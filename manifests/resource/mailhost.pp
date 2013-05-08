@@ -42,9 +42,9 @@
 #    ssl_key     => '/tmp/server.pem',
 #  }
 define nginx::resource::mailhost (
+  $listen_port,
   $ensure              = 'enable',
   $listen_ip           = '*',
-  $listen_port,
   $listen_options      = undef,
   $ipv6_enable         = false,
   $ipv6_listen_ip      = '::',
