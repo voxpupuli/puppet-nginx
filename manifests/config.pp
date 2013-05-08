@@ -36,8 +36,8 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.d"] {
-      ignore => "vhost_autogen.conf",
-      purge => true,
+      ignore  => 'vhost_autogen.conf',
+      purge   => true,
       recurse => true,
     }
   }
@@ -47,8 +47,8 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.mail.d"] {
-      ignore => "vhost_autogen.conf",
-      purge => true,
+      ignore  => 'vhost_autogen.conf',
+      purge   => true,
       recurse => true,
     }
   }
