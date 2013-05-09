@@ -1,5 +1,5 @@
   location <%= location %> {
-<% if @location_cfg_prepend -%><% location_cfg_prepend.each do |key,value| -%>
+<% if @location_cfg_prepend -%><% location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
     root  <%= www_root %>;
@@ -7,7 +7,7 @@
     try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
     <% end -%>
     index <% index_files.each do |i| %> <%= i %> <% end %>; 
-<% if @location_cfg_append -%><% location_cfg_append.each do |key,value| -%>
+<% if @location_cfg_append -%><% location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
   }
