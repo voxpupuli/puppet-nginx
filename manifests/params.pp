@@ -21,6 +21,8 @@ class nginx::params {
   $nx_confd_purge        = false
   $nx_worker_processes   = 1
   $nx_worker_connections = 1024
+  $nx_types_hash_max_size = 1024
+  $nx_types_hash_bucket_size = 512
   $nx_multi_accept       = off
   $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
   $nx_sendfile           = on

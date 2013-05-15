@@ -19,7 +19,9 @@ class nginx::config(
   $proxy_set_header    = $nginx::params::nx_proxy_set_header,
   $proxy_http_version  = $nginx::params::nx_proxy_http_version,
   $confd_purge         = $nginx::params::nx_confd_purge,
-  $server_tokens       = $nginx::params::nx_server_tokens
+  $server_tokens       = $nginx::params::nx_server_tokens,
+  $types_hash_max_size = $nginx::params::nx_types_hash_max_size,
+  $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size
 ) inherits nginx::params {
   File {
     owner => 'root',
