@@ -67,6 +67,7 @@ define nginx::resource::vhost (
   $rewrite_to_https 	  = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $include_files		  = undef,
   $try_files              = undef) {
   File {
     ensure => $ensure ? {
@@ -78,7 +79,6 @@ define nginx::resource::vhost (
     group  => 'root',
     mode   => '0644',
   }
-  $include_files		  = undef,
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
