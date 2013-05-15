@@ -26,6 +26,8 @@
 #   [*rewrite_www_to_non_www*]  - Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
 #                             duplicate content (SEO);
 #   [*try_files*]           - Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
+#   [*rewrite_to_https*]    - Adds a server directive and rewrite rule to rewrite to ssl
+#   [*include_files*] 		- Adds include files to vhost
 #
 # Actions:
 #
@@ -62,6 +64,7 @@ define nginx::resource::vhost (
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
+  $rewrite_to_https 	  = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
   $try_files              = undef) {
@@ -75,6 +78,7 @@ define nginx::resource::vhost (
     group  => 'root',
     mode   => '0644',
   }
+  $include_files		  = undef,
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
