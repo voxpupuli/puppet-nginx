@@ -9,3 +9,8 @@ server {
 
   <% proxy_set_header.each do |header| %>
   proxy_set_header        <%= header %>;<% end %>
+  <% if @rewrite_to_https %>
+  if ($ssl_protocol = "") {
+       return 301 https://$host$request_uri ;
+  }
+   <% end %>
