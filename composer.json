@@ -1,4 +1,13 @@
 {
+    "name": "jfryman/puppet-nginx",
+    "type": "project",
+    "description": "Puppet module for nginx installation",
+    "keywords": ["puppet", "nginx"],
     "require": {
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
     }
 }
