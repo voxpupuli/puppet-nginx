@@ -29,6 +29,16 @@
 #   [*rewrite_www_to_non_www*]  - Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
 #                             duplicate content (SEO);
 #   [*try_files*]           - Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
+#   [*proxy_cache*]         - This directive sets name of zone for caching.
+#                             The same zone can be used in multiple places.
+#   [*proxy_cache_valid*]   - This directive sets the time for caching
+#                             different replies.
+#   [*auth_basic*]          - This directive includes testing name and password
+#                             with HTTP Basic Authentication.
+#   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
+#                               the authentication realm.
+#   [*vhost_cfg_append*]      - It expects a hash with custom directives to put
+#                               after everything else inside vhost
 #
 # Actions:
 #
@@ -69,6 +79,9 @@ define nginx::resource::vhost(
   $try_files              = undef,
   $proxy_cache            = false,
   $proxy_cache_valid      = false,
+  $auth_basic             = undef,
+  $auth_basic_user_file   = undef,
+  $vhost_cfg_append       = undef
 ) {
 
   File {
@@ -167,16 +180,21 @@ define nginx::resource::vhost(
       content => template('nginx/vhost/vhost_footer.erb'),
       notify  => Class['nginx::service'],
     }
+
     #Generate ssl key/cert with provided file-locations
-    file { "${nginx::params::nx_conf_dir}/${name}.crt":
+
+    $cert = regsubst($name,' ','_')
+
+    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_cert,
     }
-    file { "${nginx::params::nx_conf_dir}/${name}.key":
+    file { "${nginx::params::nx_conf_dir}/${cert}.key":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_key,
     }
   }
+
 }

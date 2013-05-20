@@ -42,8 +42,6 @@ class nginx (
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
 ) inherits nginx::params {
 
-#  notice($proxy_cache_path)
-
   include stdlib
 
   class { 'nginx::package':

@@ -22,6 +22,14 @@
 #   [*location_cfg_append*]  - It expects a hash with custom directives to put after everything else inside location
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
+#   [*proxy_cache*]         - This directive sets name of zone for caching.
+#                             The same zone can be used in multiple places.
+#   [*proxy_cache_valid*]   - This directive sets the time for caching
+#                             different replies.
+#   [*auth_basic*]          - This directive includes testing name and password
+#                             with HTTP Basic Authentication.
+#   [*auth_basic_user_file*] - This directive sets the htpasswd filename for
+#                              the authentication realm.
 #
 # Actions:
 #
@@ -70,6 +78,8 @@ define nginx::resource::location(
   $try_files            = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
+  $auth_basic           = undef,
+  $auth_basic_user_file = undef,
   $location
 ) {
   File {
@@ -122,6 +132,15 @@ define nginx::resource::location(
     file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
       ensure  => $ensure_real,
       content => $content_real,
+    }
+  }
+
+  if ($auth_basic_user_file != undef) {
+    #Generate htpasswd with provided file-locations
+    file { "${nginx::params::nx_conf_dir}/${name}_htpasswd":
+      ensure => $ensure,
+      mode   => '0644',
+      source => $auth_basic_user_file,
     }
   }
 }

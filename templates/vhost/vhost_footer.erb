@@ -1,3 +1,8 @@
+
+<% if @vhost_cfg_append -%><% vhost_cfg_append.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
+
 }
 
 <% if rewrite_www_to_non_www %>

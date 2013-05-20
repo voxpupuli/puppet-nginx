@@ -1,5 +1,5 @@
 server {
-  listen       <%= ssl_port %>;
+  listen       <%= listen_ip %>:<%= listen_port %> <% if @listen_options %><%= listen_options %><% end %>;
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
@@ -7,11 +7,18 @@ server {
 
   ssl on;
 
-  ssl_certificate      <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= scope.lookupvar('name') %>.crt;
-  ssl_certificate_key  <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= scope.lookupvar('name') %>.key;
+  ssl_certificate      <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.crt;
+  ssl_certificate_key  <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.key;
 
   ssl_session_timeout  5m;
 
   ssl_protocols  SSLv3 TLSv1;
   ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
   ssl_prefer_server_ciphers   on;
+
+<% if auth_basic != :undef -%>
+  auth_basic                  "<%= auth_basic %>";
+<% end -%>
+<% if auth_basic_user_file != :undef -%>
+  auth_basic_user_file        <%= auth_basic_user_file %>;
+<% end -%>
