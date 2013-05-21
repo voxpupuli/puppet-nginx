@@ -5,9 +5,9 @@ error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
-  worker_connections <%= worker_connections %>;
-  <% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end %>
-  <% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end %>
+  worker_connections <%= worker_connections -%>;
+<% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end -%>
+<% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end -%>
 }
 
 http {
@@ -30,7 +30,11 @@ http {
   <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-  <% end %>
+  <% end -%>
+
+<% if proxy_cache_path -%>
+  proxy_cache_path    <%= proxy_cache_path %> levels=<%= proxy_cache_levels %> keys_zone=<%= proxy_cache_keys_zone %> max_size=<%= proxy_cache_max_size %> inactive=<%= proxy_cache_inactive %>;
+<% end -%>
 
   include /etc/nginx/conf.d/*.conf;
 }

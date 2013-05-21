@@ -1,3 +1,7 @@
+2011-12-23  Sam Bashton <sam@bashton.com>
+  * manifests/resource/location.pp,manifests/resource/vhost.pp,
+  templates/vhost/vhost_location_fastcgi.erb: Add support for fastcgi
+
 2011-06-06  James Fryman <james@frymanet.com>
 
   * Modulefile, README, files/README.markdown, lib/facter/README.markdown,
