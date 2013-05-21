@@ -26,21 +26,24 @@
 #   [*ssl_port*]            - Default IP Port for NGINX to listen with this SSL vHost on. Defaults to TCP 443
 #   [*server_name*]         - List of vhostnames for which this vhost will respond. Default [$name].
 #   [*www_root*]            - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*rewrite_www_to_non_www*]  Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
-#                               duplicate content (SEO);
-#   [*try_files*]           -   Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
-#   [*proxy_cache*]         -   This directive sets name of zone for caching.
-#                               The same zone can be used in multiple places.
-#   [*proxy_cache_valid*]   -   This directive sets the time for caching
-#                               different replies.
-#   [*auth_basic*]          -   This directive includes testing name and password
-#                               with HTTP Basic Authentication.
-#   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
-#                               the authentication realm.
-#   [*vhost_cfg_append*]      - It expects a hash with custom directives to put
-#                               after everything else inside vhost
-#   [*rewrite_to_https*]    -   Adds a server directive and rewrite rule to rewrite to ssl
-#   [*include_files*] 		-   Adds include files to vhost#
+#   [*rewrite_www_to_non_www*]  - Adds a server directive and rewrite rule to
+#     rewrite www.domain.com to domain.com in order to avoid duplicate content (SEO);
+#   [*try_files*]               - Specifies the locations for files to be
+#     checked as an array. Cannot be used in conjuction with $proxy.
+#   [*proxy_cache*]             - This directive sets name of zone for caching.
+#     The same zone can be used in multiple places.
+#   [*proxy_cache_valid*]       - This directive sets the time for caching
+#     different replies.
+#   [*auth_basic*]              - This directive includes testing name and
+#      password with HTTP Basic Authentication.
+#   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
+#     the authentication realm.
+#   [*vhost_cfg_append*]        - It expects a hash with custom directives to
+#     put after everything else inside vhost
+#   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
+#      rewrite to ssl
+#   [*include_files*] 		      - Adds include files to vhost
+#
 # Actions:
 #
 # Requires:

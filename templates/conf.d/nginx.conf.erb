@@ -5,9 +5,9 @@ error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
-  worker_connections <%= worker_connections %>;
-  <% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end %>
-  <% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end %>
+  worker_connections <%= worker_connections -%>;
+<% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end -%>
+<% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end -%>
 }
 
 http {
@@ -26,8 +26,6 @@ http {
 
   keepalive_timeout  <%= scope.lookupvar('nginx::params::nx_keepalive_timeout')%>;
   tcp_nodelay        <%= scope.lookupvar('nginx::params::nx_tcp_nodelay')%>;
-
-  types_hash_max_size <%= scope.lookupvar('nginx::params::nx_types_hash_max_size')%>;
 
   <% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %> 
   gzip         on;

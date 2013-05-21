@@ -17,6 +17,7 @@ class nginx::config(
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
   $confd_purge            = $nginx::params::nx_confd_purge,
+  $server_tokens          = $nginx::params::nx_server_tokens,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
   $proxy_cache_levels     = $nginx::params::nx_proxy_cache_levels,
