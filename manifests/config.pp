@@ -16,14 +16,16 @@
 class nginx::config(
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
-  $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $confd_purge            = $nginx::params::nx_confd_purge,
+  $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
   $proxy_cache_levels     = $nginx::params::nx_proxy_cache_levels,
   $proxy_cache_keys_zone  = $nginx::params::nx_proxy_cache_keys_zone,
   $proxy_cache_max_size   = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
-
+  $proxy_http_version     = $nginx::params::nx_proxy_http_version,
+  $types_hash_max_size    = $nginx::params::nx_types_hash_max_size,
+  $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size
 ) inherits nginx::params {
   File {
     owner => 'root',
@@ -40,6 +42,17 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.d"] {
+      ignore  => 'vhost_autogen.conf',
+      purge   => true,
+      recurse => true,
+    }
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.mail.d":
+    ensure => directory,
+  }
+  if $confd_purge == true {
+    File["${nginx::params::nx_conf_dir}/conf.mail.d"] {
       ignore  => 'vhost_autogen.conf',
       purge   => true,
       recurse => true,
@@ -75,6 +88,12 @@ class nginx::config(
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
+  }
+
+  file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
     ensure  => directory,
     purge   => true,
     recurse => true,

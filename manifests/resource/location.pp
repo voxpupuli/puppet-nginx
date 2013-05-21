@@ -58,11 +58,15 @@
 #    location_cfg_append => $my_config,
 #  }
 
-define nginx::resource::location(
+define nginx::resource::location (
+  $location,
   $ensure               = present,
   $vhost                = undef,
   $www_root             = undef,
-  $index_files          = ['index.html', 'index.htm', 'index.php'],
+  $index_files          = [
+    'index.html',
+    'index.htm',
+    'index.php'],
   $proxy                = undef,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
   $fastcgi              = undef,
@@ -89,7 +93,7 @@ define nginx::resource::location(
     notify => Class['nginx::service'],
   }
 
-  ## Shared Variables
+  # # Shared Variables
   $ensure_real = $ensure ? {
     'absent' => absent,
     default  => file,
@@ -115,6 +119,7 @@ define nginx::resource::location(
   if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef)) {
     fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi or stub_status defined')
   }
+
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }

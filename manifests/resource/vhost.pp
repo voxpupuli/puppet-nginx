@@ -26,20 +26,21 @@
 #   [*ssl_port*]            - Default IP Port for NGINX to listen with this SSL vHost on. Defaults to TCP 443
 #   [*server_name*]         - List of vhostnames for which this vhost will respond. Default [$name].
 #   [*www_root*]            - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*rewrite_www_to_non_www*]  - Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
-#                             duplicate content (SEO);
-#   [*try_files*]           - Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
-#   [*proxy_cache*]         - This directive sets name of zone for caching.
-#                             The same zone can be used in multiple places.
-#   [*proxy_cache_valid*]   - This directive sets the time for caching
-#                             different replies.
-#   [*auth_basic*]          - This directive includes testing name and password
-#                             with HTTP Basic Authentication.
+#   [*rewrite_www_to_non_www*]  Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
+#                               duplicate content (SEO);
+#   [*try_files*]           -   Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
+#   [*proxy_cache*]         -   This directive sets name of zone for caching.
+#                               The same zone can be used in multiple places.
+#   [*proxy_cache_valid*]   -   This directive sets the time for caching
+#                               different replies.
+#   [*auth_basic*]          -   This directive includes testing name and password
+#                               with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
 #                               the authentication realm.
 #   [*vhost_cfg_append*]      - It expects a hash with custom directives to put
 #                               after everything else inside vhost
-#
+#   [*rewrite_to_https*]    -   Adds a server directive and rewrite rule to rewrite to ssl
+#   [*include_files*] 		-   Adds include files to vhost#
 # Actions:
 #
 # Requires:
@@ -52,7 +53,7 @@
 #    ssl_cert => '/tmp/server.crt',
 #    ssl_key  => '/tmp/server.pem',
 #  }
-define nginx::resource::vhost(
+define nginx::resource::vhost (
   $ensure                 = 'enable',
   $listen_ip              = '*',
   $listen_port            = '80',
@@ -67,37 +68,48 @@ define nginx::resource::vhost(
   $ssl_port               = '443',
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
+  $proxy_set_header       = [],
+  $proxy_cache            = false,
+  $proxy_cache_valid      = false,
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
-  $index_files            = ['index.html', 'index.htm', 'index.php'],
+  $index_files            = [
+    'index.html',
+    'index.htm',
+    'index.php'],
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
+  $rewrite_to_https 	  = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
   $try_files              = undef,
-  $proxy_cache            = false,
-  $proxy_cache_valid      = false,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
-  $vhost_cfg_append       = undef
+  $vhost_cfg_append       = undef,
+  $include_files		  = undef
 ) {
 
   File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+    ensure => $ensure ? {
+      'absent' => absent,
+      default  => 'file',
+    },
+    notify => Class['nginx::service'],
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable == 'true') and ($ipaddress6)  {
+  if ($ipv6_enable == true) and ($ipaddress6) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
   # Check to see if SSL Certificates are properly defined.
-  if ($ssl == 'true') {
+  if ($ssl == true) {
     if ($ssl_cert == undef) or ($ssl_key == undef) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_cert) and/or SSL Private must be defined and exist on the target system(s)')
     }
@@ -129,37 +141,30 @@ define nginx::resource::vhost(
     location             => '/',
     proxy                => $proxy,
     proxy_read_timeout   => $proxy_read_timeout,
+    proxy_cache          => $proxy_cache,
+    proxy_cache_valid    => $proxy_cache_valid,
     fastcgi              => $fastcgi,
     fastcgi_params       => $fastcgi_params,
     fastcgi_script       => $fastcgi_script,
     try_files            => $try_files,
     www_root             => $www_root,
-    proxy_cache          => $proxy_cache,
-    proxy_cache_valid    => $proxy_cache_valid,
     notify               => Class['nginx::service'],
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
     Nginx::Resource::Location["${name}-default"] {
-      location_cfg_prepend => $location_cfg_prepend
-    }
+      location_cfg_prepend => $location_cfg_prepend }
   }
+
   if $location_cfg_append {
     Nginx::Resource::Location["${name}-default"] {
-      location_cfg_append => $location_cfg_append
-    }
+      location_cfg_append => $location_cfg_append }
   }
+
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
-      content => template('nginx/vhost/vhost_footer.erb'),
-      notify  => Class['nginx::service'],
-    }
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
   }
 
   # Create SSL File Stubs if SSL is enabled
@@ -196,5 +201,4 @@ define nginx::resource::vhost(
       source => $ssl_key,
     }
   }
-
 }
