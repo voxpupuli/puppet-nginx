@@ -6,6 +6,12 @@ server {
   <% end %>
   server_name           <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
   access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log;
+  <% if defined? auth_basic -%>
+auth_basic           "<%= auth_basic %>";
+  <% end -%>
+  <% if defined? auth_basic_user_file -%>
+auth_basic_user_file <%= auth_basic_user_file %>;
+  <% end -%>
 
   <% proxy_set_header.each do |header| %>
   proxy_set_header        <%= header %>;<% end %>
