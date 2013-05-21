@@ -83,8 +83,7 @@ define nginx::resource::location (
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
   $auth_basic           = undef,
-  $auth_basic_user_file = undef,
-  $location
+  $auth_basic_user_file = undef
 ) {
   File {
     owner  => 'root',
