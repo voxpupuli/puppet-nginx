@@ -1,7 +1,7 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= worker_processes %>;
 
-error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
+error_log  <%= scope.lookupvar('nginx::config::nx_logdir')%>/error.log;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
 
 events {
@@ -14,7 +14,7 @@ http {
   include       /etc/nginx/mime.types;
   default_type  application/octet-stream;
 
-  access_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log;
+  access_log  <%= scope.lookupvar('nginx::config::nx_logdir')%>/access.log;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
