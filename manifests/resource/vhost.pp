@@ -52,7 +52,7 @@
 #  nginx::resource::vhost { 'test2.local':
 #    ensure   => present,
 #    www_root => '/var/www/nginx-default',
-#    ssl      => 'true',
+#    ssl      => true,
 #    ssl_cert => '/tmp/server.crt',
 #    ssl_key  => '/tmp/server.pem',
 #  }
@@ -131,8 +131,8 @@ define nginx::resource::vhost (
     }
   }
 
-  if ($ssl == 'true') and ($ssl_port == $listen_port) {
-    $ssl_only = 'true'
+  if ($ssl == true) and ($ssl_port == $listen_port) {
+    $ssl_only = true
   }
 
   # Create the default location reference for the vHost
@@ -171,7 +171,7 @@ define nginx::resource::vhost (
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl == 'true') {
+  if ($ssl == true) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure => $ensure ? {
         'absent' => absent,
