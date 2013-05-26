@@ -191,17 +191,17 @@ define nginx::resource::vhost (
 
     #Generate ssl key/cert with provided file-locations
 
-    $cert = regsubst($name,' ','_')
-
-    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
-      ensure => $ensure,
-      mode   => '0644',
-      source => $ssl_cert,
-    }
-    file { "${nginx::params::nx_conf_dir}/${cert}.key":
-      ensure => $ensure,
-      mode   => '0644',
-      source => $ssl_key,
-    }
+#    $cert = regsubst($name,' ','_')
+#
+#    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
+#      ensure => $ensure,
+#      mode   => '0644',
+#      source => $ssl_cert,
+#    }
+#    file { "${nginx::params::nx_conf_dir}/${cert}.key":
+#      ensure => $ensure,
+#      mode   => '0644',
+#      source => $ssl_key,
+#    }
   }
 }
