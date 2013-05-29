@@ -37,7 +37,7 @@
 #    ssl_port    => 465,
 #    starttls    => 'only',
 #    xclient     => 'off',
-#    ssl         => 'true',
+#    ssl         => true,
 #    ssl_cert    => '/tmp/server.crt',
 #    ssl_key     => '/tmp/server.pem',
 #  }
