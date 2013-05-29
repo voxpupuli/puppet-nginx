@@ -31,6 +31,7 @@
 class nginx (
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
+  $worker_rlimit_nofile   = $nginx::params::nx_worker_rlimit_nofile,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $confd_purge            = $nginx::params::nx_confd_purge,
@@ -55,6 +56,7 @@ class nginx (
   class { 'nginx::config':
     worker_processes      => $worker_processes,
     worker_connections    => $worker_connections,
+    worker_rlimit_nofile  => $worker_rlimit_nofile,
     proxy_set_header      => $proxy_set_header,
     proxy_http_version    => $proxy_http_version,
     proxy_cache_path      => $proxy_cache_path,
