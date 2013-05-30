@@ -43,7 +43,7 @@ class nginx (
   $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
-  $nx_logdir              = $nginx::params::nx_logdir
+  $logdir                 = $nginx::params::nx_logdir
 ) inherits nginx::params {
 
   include stdlib
@@ -63,7 +63,7 @@ class nginx (
     proxy_cache_max_size  => $proxy_cache_max_size,
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
-    nx_logdir             => $nx_logdir,
+    logdir                => $logdir,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
