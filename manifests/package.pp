@@ -13,13 +13,14 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package {
+class nginx::package ($pkg_version) {
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
   case $::operatingsystem {
     centos,fedora,rhel,redhat,scientific: {
       class { 'nginx::package::redhat':
+        pkg_version => $pkg_version,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
