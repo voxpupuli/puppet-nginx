@@ -50,6 +50,7 @@ class nginx (
   include stdlib
 
   class { 'nginx::package':
+    pkg_version => $pkg_version,
     notify => Class['nginx::service'],
   }
 
