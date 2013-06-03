@@ -43,12 +43,14 @@ class nginx (
   $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
-  $logdir                 = $nginx::params::nx_logdir
+  $logdir                 = $nginx::params::nx_logdir,
+  $pkg_version            = $nginx::params::nx_pkg_version
 ) inherits nginx::params {
 
   include stdlib
 
   class { 'nginx::package':
+    pkg_version => $pkg_version,
     notify => Class['nginx::service'],
   }
 
