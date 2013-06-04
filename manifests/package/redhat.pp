@@ -13,8 +13,8 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
-  $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
+class nginx::package::redhat ($pkg_version) {
+  $redhat_extra_packages = ['GeoIP', 'gd', 'libXpm', 'libxslt']
 
   if downcase($::operatingsystem) == 'redhat' {
     $os_type = 'rhel'
@@ -35,8 +35,12 @@ class nginx::package::redhat {
     gpgcheck => '0',
   }
 
-  package { $redhat_packages:
-    ensure  => present,
+  package { 'nginx':
+    ensure  => $pkg_version,
+    require => Yumrepo['nginx-release'],
+  }
+  package { $redhat_extra_packages:
+    ensure  => 'present',
     require => Yumrepo['nginx-release'],
   }
 }

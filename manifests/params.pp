@@ -14,6 +14,7 @@
 #
 # This class file is not called directly
 class nginx::params {
+  $nx_pkg_version             = 'present'
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
