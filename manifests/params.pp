@@ -15,6 +15,7 @@
 # This class file is not called directly
 class nginx::params {
   $nx_pkg_version             = 'present'
+  $nx_nginx_version           = '1.0.0'
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
@@ -77,5 +78,4 @@ class nginx::params {
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
 
   $nx_mail = false
-
 }

@@ -50,8 +50,15 @@ class nginx (
   include stdlib
 
   class { 'nginx::package':
-    pkg_version => $pkg_version,
+    pkg_version => $pkg_version
     notify => Class['nginx::service'],
+  }
+  
+  if $pkg_version == 'present' {
+    $nginx_version = $nginx::params::nx_nginx_version
+  } else {
+    $split_ver = split($pkg_version, '-')
+    $nginx_version = "$split_ver[0]"
   }
 
   class { 'nginx::config':
@@ -66,6 +73,7 @@ class nginx (
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
     logdir                => $logdir,
+    pkg_version_family    => $pkg_version_family,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
