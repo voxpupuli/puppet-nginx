@@ -53,13 +53,6 @@ class nginx (
     pkg_version => $pkg_version
     notify => Class['nginx::service'],
   }
-  
-  if $pkg_version == 'present' {
-    $nginx_version = $nginx::params::nx_nginx_version
-  } else {
-    $split_ver = split($pkg_version, '-')
-    $nginx_version = "$split_ver[0]"
-  }
 
   if $pkg_version == 'present' {
     $nginx_version = $nginx::params::nx_nginx_version
