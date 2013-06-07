@@ -65,6 +65,10 @@ class nginx (
     notify => Class['nginx::service'],
   }
 
+  # XXX: We should have a fact that gets the version number by running
+  # `nginx -V`.  If the package is not installed set to high number 
+  # otherwise use value reported by binary.  If $pkg_version is set to
+  # 'present' we'll just use the fact value to set $.pkg_version.
   if $pkg_version == 'present' {
     $nginx_version = $nginx::params::nx_nginx_version
   } else {
