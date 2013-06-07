@@ -6,5 +6,6 @@ proxy_send_timeout      <%= @proxy_send_timeout %>;
 proxy_read_timeout      <%= @proxy_read_timeout %>;
 proxy_buffers           <%= @proxy_buffers %>;
 proxy_http_version      <%= @proxy_http_version %>;
+<% if @nginx_version >= '1.1.14' %>proxy_http_version      <%= @proxy_http_version %>;<% end %>
 <% proxy_set_header.each do |header| %>
 proxy_set_header        <%= header %>;<% end %>

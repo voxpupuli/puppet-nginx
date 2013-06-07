@@ -65,6 +65,13 @@ class nginx (
     notify => Class['nginx::service'],
   }
 
+  if $pkg_version == 'present' {
+    $nginx_version = $nginx::params::nx_nginx_version
+  } else {
+    $split_ver = split($pkg_version, '-')
+    $nginx_version = "$split_ver[0]"
+  }
+
   class { 'nginx::config':
     worker_processes      => $worker_processes,
     worker_connections    => $worker_connections,
@@ -88,6 +95,7 @@ class nginx (
     proxy_http_version    => $proxy_http_version,
     confd_purge           => $confd_purge,
     logdir                => $logdir,
+    nginx_version         => $nginx_version,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
