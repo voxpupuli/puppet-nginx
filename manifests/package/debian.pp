@@ -17,7 +17,7 @@ class nginx::package::debian {
   $operatingsystem_lowercase = inline_template('<%= operatingsystem.downcase %>')
 
   package { 'nginx':
-    ensure => present,
+    ensure  => present,
     require => Anchor['nginx::apt_repo'],
   }
 
@@ -34,7 +34,7 @@ class nginx::package::debian {
   }
 
   exec { 'add_nginx_apt_key':
-    command   => "/usr/bin/wget http://nginx.org/keys/nginx_signing.key -O - | /usr/bin/apt-key add -",
+    command   => '/usr/bin/wget http://nginx.org/keys/nginx_signing.key -O - | /usr/bin/apt-key add -',
     unless    => '/usr/bin/apt-key list | /bin/grep -q nginx',
     before    => Anchor['nginx::apt_repo'],
   }
