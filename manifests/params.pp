@@ -14,6 +14,14 @@
 #
 # This class file is not called directly
 class nginx::params {
+  $nx_pkg_version             = 'present'
+  # If a pkg_version isn't specified we'll just assume a really high version
+  # so we don't have to keep adjusting this.  It's not ideal but there's no
+  # easy way to determine the pkg_version until after the package is
+  # installed. An alternative might be a resource that parses `nginx -V` and
+  # drops the version in a file and then grabbing that value but that's
+  # inelegant too.
+  $nx_nginx_version           = '9999'
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
@@ -21,13 +29,17 @@ class nginx::params {
   $nx_confd_purge             = false
   $nx_worker_processes        = 1
   $nx_worker_connections      = 1024
+  $nx_worker_rlimit_nofile    = undef
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
   $nx_multi_accept            = off
   $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
+  $nx_http_additional_array   = undef
+  $nx_default_type            = 'application/octet-stream'
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
   $nx_tcp_nodelay             = on
+  $nx_tcp_nopush              = off
   $nx_gzip                    = on
   $nx_server_tokens           = on
   $nx_spdy                    = off
@@ -76,5 +88,4 @@ class nginx::params {
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
 
   $nx_mail = false
-
 }

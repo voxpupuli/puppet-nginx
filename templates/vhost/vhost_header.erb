@@ -5,7 +5,7 @@ server {
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
   server_name           <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log;
+  access_log            <%= scope.lookupvar('nginx::config::logdir')%>/<%= name %>.access.log;
   <% if defined? auth_basic -%>
 auth_basic           "<%= auth_basic %>";
   <% end -%>
