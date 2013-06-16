@@ -13,6 +13,11 @@ events {
 
 http {
   include       /etc/nginx/mime.types;
+  <% if @http_additional_array %>
+  <% @http_additional_array.each do |setting| -%>
+  <%= setting[0] %>   <%= setting[1] %>;
+  <% end -%>
+  <% end -%>
   default_type  <%= @default_type %>;
 
   access_log  <%= logdir %>/access.log;

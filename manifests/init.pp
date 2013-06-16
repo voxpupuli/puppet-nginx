@@ -33,6 +33,7 @@ class nginx (
   $worker_connections     = $nginx::params::nx_worker_connections,
   $worker_rlimit_nofile   = $nginx::params::nx_worker_rlimit_nofile,
   $events_use             = $nginx::params::nx_events_use,
+  $http_additional_array  = $nginx::params::nx_http_additional_array,
   $default_type           = $nginx::params::nx_default_type,
   $tcp_nopush             = $nginx::params::nx_tcp_nopush,
   $keepalive_timeout      = $nginx::params::nx_keepalive_timeout,
@@ -66,7 +67,7 @@ class nginx (
   }
 
   # XXX: We should have a fact that gets the version number by running
-  # `nginx -V`.  If the package is not installed set to high number 
+  # `nginx -V`.  If the package is not installed set to high number
   # otherwise use value reported by binary.  If $pkg_version is set to
   # 'present' we'll just use the fact value to set $.pkg_version.
   if $pkg_version == 'present' {
@@ -81,6 +82,7 @@ class nginx (
     worker_connections    => $worker_connections,
     worker_rlimit_nofile  => $worker_rlimit_nofile,
     events_use            => $events_use,
+    http_additional_array => $http_additional_array,
     default_type          => $default_type,
     tcp_nopush            => $tcp_nopush,
     keepalive_timeout     => $keepalive_timeout,
