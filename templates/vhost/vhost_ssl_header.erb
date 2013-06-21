@@ -14,9 +14,9 @@ server {
 
   ssl_session_timeout  5m;
 
-  ssl_protocols  SSLv3 TLSv1;
-  ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
-  ssl_prefer_server_ciphers   on;
+  ssl_ciphers RC4:HIGH:!aNULL:!MD5:!kEDH;
+  ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
 <% if @vhost_cfg_append -%><% vhost_cfg_append.each do |key,value| -%>
   <%= key %> <%= value %>
 <% end -%><% end -%>
