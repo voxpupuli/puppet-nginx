@@ -194,12 +194,12 @@ define nginx::resource::vhost (
     $cert = regsubst($name,' ','_')
 
     file { "${nginx::params::nx_conf_dir}/${cert}.crt":
-      ensure => $ensure,
+      #ensure => $ensure,
       mode   => '0644',
       source => $ssl_cert,
     }
     file { "${nginx::params::nx_conf_dir}/${cert}.key":
-      ensure => $ensure,
+      #ensure => $ensure,
       mode   => '0644',
       source => $ssl_key,
     }
