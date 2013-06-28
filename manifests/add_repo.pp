@@ -1,0 +1,57 @@
+#
+# Creates a file for the repo in question so that we can keep
+# the yum directory managed by puppet.
+define nginx::add_repo(
+  $baseurl         = undef,
+  $cost            = undef,
+  $descr           = undef,
+  $enabled         = undef,
+  $enablegroups    = undef,
+  $exclude         = undef,
+  $failovermethod  = undef,
+  $gpgcheck        = undef,
+  $gpgkey          = undef,
+  $http_caching    = undef,
+  $include         = undef,
+  $includepkgs     = undef,
+  $keepalive       = undef,
+  $metadata_expire = undef,
+  $mirrorlist      = undef,
+  $priority        = undef,
+  $protect         = undef,
+  $proxy           = undef,
+  $proxy_password  = undef,
+  $proxy_username  = undef,
+  $timeout         = undef,
+  ) {
+  file { "yumrepo_${title}":
+    ensure  => 'file',
+    group   => 'root',
+    mode    => '0444',
+    owner   => 'root',
+    path    => "/etc/yum.repos.d/${title}.repo",
+  }
+  yumrepo {$title:
+    baseurl         => $baseurl,
+    cost            => $cost,
+    descr           => $descr,
+    enabled         => $enabled,
+    enablegroups    => $enablegroups,
+    exclude         => $exclude,
+    failovermethod  => $failovermethod,
+    gpgcheck        => $gpgcheck,
+    gpgkey          => $gpgkey,
+    http_caching    => $http_caching,
+    include         => $include,
+    includepkgs     => $includepkgs,
+    keepalive       => $keepalive,
+    metadata_expire => $metadata_expire,
+    mirrorlist      => $mirrorlist,
+    priority        => $priority,
+    protect         => $protect,
+    proxy           => $proxy,
+    proxy_password  => $proxy_password,
+    proxy_username  => $proxy_username,
+    timeout         => $timeout,
+  }
+}

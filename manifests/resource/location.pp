@@ -68,7 +68,7 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
-  $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
+  $proxy_read_timeout   = $nginx::proxy_read_timeout,
   $fastcgi              = undef,
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
@@ -125,7 +125,7 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
+    file {"${nginx::temp_dir}/nginx.d/${vhost}-500-${name}":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -133,7 +133,7 @@ define nginx::resource::location (
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
+    file {"${nginx::temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -141,7 +141,7 @@ define nginx::resource::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${nginx::params::nx_conf_dir}/${name}_htpasswd":
+    file { "${nginx::conf_dir}/${name}_htpasswd":
       ensure => $ensure,
       mode   => '0644',
       source => $auth_basic_user_file,
