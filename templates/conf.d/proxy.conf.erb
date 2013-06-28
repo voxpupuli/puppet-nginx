@@ -1,10 +1,20 @@
-proxy_redirect          <%= scope.lookupvar('nginx::params::nx_proxy_redirect') %>;
-client_max_body_size    <%= scope.lookupvar('nginx::params::nx_client_max_body_size') %>;
-client_body_buffer_size <%= scope.lookupvar('nginx::params::nx_client_body_buffer_size') %>;
-proxy_connect_timeout   <%= scope.lookupvar('nginx::params::nx_proxy_connect_timeout') %>;
-proxy_send_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_send_timeout') %>;
-proxy_read_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_read_timeout') %>;
-proxy_buffers           <%= scope.lookupvar('nginx::params::nx_proxy_buffers') %>;
-proxy_http_version      <%= @proxy_http_version %>;
+<% client_body_buffer_size = scope.lookupvar('nginx::client_body_buffer_size')
+   client_max_body_size    = scope.lookupvar('nginx::client_max_body_size')
+   proxy_buffers           = scope.lookupvar('nginx::proxy_buffers')
+   proxy_connect_timeout   = scope.lookupvar('nginx::proxy_connect_timeout')
+   proxy_http_version      = scope.lookupvar('nginx::proxy_http_version')
+   proxy_read_timeout      = scope.lookupvar('nginx::proxy_read_timeout')
+   proxy_redirect          = scope.lookupvar('nginx::proxy_redirect')
+   proxy_send_timeout      = scope.lookupvar('nginx::proxy_send_timeout')
+   proxy_set_header        = scope.lookupvar('nginx::proxy_set_header')
+-%>
+proxy_redirect          <%= proxy_redirect -%>;
+client_max_body_size    <%= client_max_body_size -%>;
+client_body_buffer_size <%= client_body_buffer_size -%>;
+proxy_connect_timeout   <%= proxy_connect_timeout -%>;
+proxy_send_timeout      <%= proxy_send_timeout -%>;
+proxy_read_timeout      <%= proxy_read_timeout -%>;
+proxy_buffers           <%= sproxy_buffers -%>;
+proxy_http_version      <%= proxy_http_version %>;
 <% proxy_set_header.each do |header| %>
 proxy_set_header        <%= header %>;<% end %>

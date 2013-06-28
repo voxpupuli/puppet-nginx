@@ -28,7 +28,7 @@ class nginx::package::redhat {
     $os_rel = $::lsbmajdistrelease
   }
 
-  yumrepo { 'nginx-release':
+  nginx::add_repo { 'nginx-release':
     baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
