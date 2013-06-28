@@ -39,6 +39,7 @@ class nginx (
   $events_use              = $nginx::params::nx_events_use,
   $gzip                    = $nginx::params::nx_gzip,
   $keepalive_timeout       = $nginx::params::nx_keepalive_timeout,
+  $logdir                  = $nginx::params::nx_logdir,
   $mail                    = $nginx::params::nx_mail,
   $multi_accept            = $nginx::params::multi_accept,
   $names_hash_bucket_size  = $nginx::params::names_hash_bucket_size,
