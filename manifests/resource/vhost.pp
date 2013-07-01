@@ -76,7 +76,7 @@ define nginx::resource::vhost (
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
-  $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
+  $proxy_read_timeout     = $nginx::proxy_read_timeout,
   $proxy_set_header       = [],
   $proxy_cache            = false,
   $proxy_cache_valid      = false,
@@ -127,7 +127,7 @@ define nginx::resource::vhost (
   # Use the File Fragment Pattern to construct the configuration files.
   # Create the base configuration file reference.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
+    file { "${nginx::temp_dir}/nginx.d/${name}-001":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -178,7 +178,7 @@ define nginx::resource::vhost (
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
+    file { "${nginx::temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -186,7 +186,7 @@ define nginx::resource::vhost (
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       notify  => Class['nginx::service'],
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
+    file { "${nginx::temp_dir}/nginx.d/${name}-999-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -199,12 +199,12 @@ define nginx::resource::vhost (
 
     $cert = regsubst($name,' ','_')
 
-    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
+    file { "${nginx::conf_dir}/${cert}.crt":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_cert,
     }
-    file { "${nginx::params::nx_conf_dir}/${cert}.key":
+    file { "${nginx::conf_dir}/${cert}.key":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_key,

@@ -81,7 +81,7 @@ define nginx::resource::mailhost (
   # Use the File Fragment Pattern to construct the configuration files.
   # Create the base configuration file reference.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-001":
+    file { "${nginx::temp_dir}/nginx.mail.d/${name}-001":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -93,7 +93,7 @@ define nginx::resource::mailhost (
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-700-ssl":
+    file { "${nginx::temp_dir}/nginx.mail.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
