@@ -62,6 +62,7 @@ class nginx (
     proxy_cache_max_size  => $proxy_cache_max_size,
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
+    server_tokens         => $server_tokens,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
