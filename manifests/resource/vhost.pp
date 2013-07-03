@@ -91,6 +91,7 @@ define nginx::resource::vhost (
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
   $rewrite_to_https       = undef,
+  $location_custom_cfg    = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
   $try_files              = undef,
@@ -157,6 +158,7 @@ define nginx::resource::vhost (
     fastcgi_script       => $fastcgi_script,
     try_files            => $try_files,
     www_root             => $www_root,
+    location_custom_cfg  => $location_custom_cfg,
     notify               => Class['nginx::service'],
   }
 

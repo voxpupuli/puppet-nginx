@@ -18,7 +18,7 @@
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
 #   [*location_alias*]       - Path to be used as basis for serving requests for this location
 #   [*stub_status*]          - If true it will point configure module stub_status to provide nginx stats on location
-#   [*custom_cfg*]           - Expects a hash with custom directives, cannot be used with other location types (proxy, fastcgi, root, or stub_status)
+#   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot be used with other location types (proxy, fastcgi, root, or stub_status)
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put before anything else inside location (used with all other types except custom_cfg)
 #   [*location_cfg_append*]  - Expects a hash with extra directives to put after everything else inside location (used with all other types except custom_cfg)
 #   [*try_files*]            - An array of file locations to try
@@ -78,7 +78,7 @@ define nginx::resource::location (
   $location_alias       = undef,
   $option               = undef,
   $stub_status          = undef,
-  $custom_cfg           = undef,
+  $location_custom_cfg  = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
   $try_files            = undef,
@@ -100,14 +100,12 @@ define nginx::resource::location (
     default  => file,
   }
 
-  notice "custom_cfg ${custom_cfg}"
-
   ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($custom_cfg == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or custom_cfg defined')
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
