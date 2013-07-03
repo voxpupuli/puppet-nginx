@@ -98,6 +98,18 @@ define nginx::resource::location (
     default  => file,
   }
 
+  ## Check for various error conditions
+  if ($vhost == undef) {
+    fail('Cannot create a location reference without attaching to a virtual host')
+  }
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi or stub_status defined')
+  }
+
+  if (($www_root != undef) and ($proxy != undef)) {
+    fail('Cannot define both directory and proxy in a virtual host')
+  }
+
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
@@ -109,18 +121,6 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
-  }
-
-  ## Check for various error conditions
-  if ($vhost == undef) {
-    fail('Cannot create a location reference without attaching to a virtual host')
-  }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi or stub_status defined')
-  }
-
-  if (($www_root != undef) and ($proxy != undef)) {
-    fail('Cannot define both directory and proxy in a virtual host')
   }
 
   ## Create stubs for vHost File Fragment Pattern
