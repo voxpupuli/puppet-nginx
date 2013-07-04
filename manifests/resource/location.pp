@@ -18,8 +18,9 @@
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
 #   [*location_alias*]       - Path to be used as basis for serving requests for this location
 #   [*stub_status*]          - If true it will point configure module stub_status to provide nginx stats on location
-#   [*location_cfg_prepend*] - It expects a hash with custom directives to put before anything else inside location
-#   [*location_cfg_append*]  - It expects a hash with custom directives to put after everything else inside location
+#   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot be used with other location types (proxy, fastcgi, root, or stub_status)
+#   [*location_cfg_prepend*] - Expects a hash with extra directives to put before anything else inside location (used with all other types except custom_cfg)
+#   [*location_cfg_append*]  - Expects a hash with extra directives to put after everything else inside location (used with all other types except custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
 #   [*proxy_cache*]         - This directive sets name of zone for caching.
@@ -77,6 +78,7 @@ define nginx::resource::location (
   $location_alias       = undef,
   $option               = undef,
   $stub_status          = undef,
+  $location_custom_cfg  = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
   $try_files            = undef,
@@ -98,6 +100,17 @@ define nginx::resource::location (
     default  => file,
   }
 
+  ## Check for various error conditions
+  if ($vhost == undef) {
+    fail('Cannot create a location reference without attaching to a virtual host')
+  }
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
+  }
+  if (($www_root != undef) and ($proxy != undef)) {
+    fail('Cannot define both directory and proxy in a virtual host')
+  }
+
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
@@ -107,20 +120,10 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
-  } else {
+  } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
-  }
-
-  ## Check for various error conditions
-  if ($vhost == undef) {
-    fail('Cannot create a location reference without attaching to a virtual host')
-  }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi or stub_status defined')
-  }
-
-  if (($www_root != undef) and ($proxy != undef)) {
-    fail('Cannot define both directory and proxy in a virtual host')
+  } else {
+    $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
   ## Create stubs for vHost File Fragment Pattern
