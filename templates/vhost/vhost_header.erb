@@ -18,6 +18,6 @@ server {
 <% end -%>
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
-       return 301 https://$host$request_uri ;
+       return 301 https://$host$request_uri;
   }
 <% end -%>
