@@ -23,14 +23,18 @@
 #   [*location_cfg_append*]  - Expects a hash with extra directives to put after everything else inside location (used with all other types except custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
-#   [*proxy_cache*]         - This directive sets name of zone for caching.
-#                             The same zone can be used in multiple places.
-#   [*proxy_cache_valid*]   - This directive sets the time for caching
-#                             different replies.
-#   [*auth_basic*]          - This directive includes testing name and password
-#                             with HTTP Basic Authentication.
-#   [*auth_basic_user_file*] - This directive sets the htpasswd filename for
-#                              the authentication realm.
+#   [*proxy_cache*]           - This directive sets name of zone for caching.
+#     The same zone can be used in multiple places.
+#   [*proxy_cache_valid*]     - This directive sets the time for caching
+#     different replies.
+#   [*auth_basic*]            - This directive includes testing name and password
+#     with HTTP Basic Authentication.
+#   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
+#     the authentication realm.
+#   [*priority*]              - Location priority. Default: 500. User priority
+#     400-499, 501-599. If the priority is higher than the default priority,
+#     the location will be defined after root, or before root.
+#
 #
 # Actions:
 #
@@ -85,7 +89,8 @@ define nginx::resource::location (
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
   $auth_basic           = undef,
-  $auth_basic_user_file = undef
+  $auth_basic_user_file = undef,
+  $priority             = 500
 ) {
   File {
     owner  => 'root',
@@ -128,7 +133,7 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
+    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${name}":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -136,7 +141,8 @@ define nginx::resource::location (
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-800-${name}-ssl":
+    $ssl_priority = $priority + 300
+    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${ssl_priority}-${name}-ssl":
       ensure  => $ensure_real,
       content => $content_real,
     }
