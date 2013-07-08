@@ -14,7 +14,6 @@ server {
   ssl_protocols             <%= ssl_protocols %>;
   ssl_ciphers               <%= ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
-
 <% if auth_basic != :undef -%>
   auth_basic                "<%= auth_basic %>";
 <% end -%>
@@ -22,5 +21,6 @@ server {
   auth_basic_user_file      <%= auth_basic_user_file %>;
 <% end -%>
 
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name %>.access.log;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name %>.error.log;
+  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.access.log;
+  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.error.log;
+
