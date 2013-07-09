@@ -7,8 +7,8 @@ server {
 
   ssl on;
 
-  ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.crt;
-  ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.key;
+  ssl_certificate           <%= scope.lookupvar('nginx::params::conf_dir') %>/<%= name.gsub(' ', '_') %>.crt;
+  ssl_certificate_key       <%= scope.lookupvar('nginx::params::conf_dir') %>/<%= name.gsub(' ', '_') %>.key;
   ssl_session_cache         shared:SSL:10m;
   ssl_session_timeout       5m;
   ssl_protocols             <%= ssl_protocols %>;
@@ -21,6 +21,5 @@ server {
   auth_basic_user_file      <%= auth_basic_user_file %>;
 <% end -%>
 
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.access.log;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.error.log;
-
+  access_log            <%= scope.lookupvar('nginx::params::logdir')%>/ssl-<%= name.gsub(' ', '_') %>.access.log;
+  error_log             <%= scope.lookupvar('nginx::params::logdir')%>/ssl-<%= name.gsub(' ', '_') %>.error.log;

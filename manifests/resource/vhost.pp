@@ -128,7 +128,7 @@ define nginx::resource::vhost (
   # Use the File Fragment Pattern to construct the configuration files.
   # Create the base configuration file reference.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
+    file { "${nginx::config::temp_dir}/nginx.d/${name}-001":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -175,12 +175,12 @@ define nginx::resource::vhost (
 
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
+    file { "${nginx::config::temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
   }
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
+    file { "${nginx::config::temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -188,7 +188,7 @@ define nginx::resource::vhost (
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       notify  => Class['nginx::service'],
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
+    file { "${nginx::config::temp_dir}/nginx.d/${name}-999-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
@@ -201,12 +201,12 @@ define nginx::resource::vhost (
 
     $cert = regsubst($name,' ','_')
 
-    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
+    file { "${nginx::params::conf_dir}/${cert}.crt":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_cert,
     }
-    file { "${nginx::params::nx_conf_dir}/${cert}.key":
+    file { "${nginx::params::conf_dir}/${cert}.key":
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_key,
