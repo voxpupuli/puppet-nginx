@@ -30,7 +30,15 @@ class nginx::params {
     sendfile                => on,
     keepalive_timeout       => 65,
     tcp_nodelay             => on,
+    tcp_nopush              => on,
+
     gzip                    => on,
+    gzip_disable            => 'MSIE [1-6]\.(?!.*SV1)',
+    gzip_comp_level         => 5,
+    gzip_min_length         => 100,
+    gzip_vary               => off,
+    gzip_types              => "text/plain text/html application/x-javascript text/css application/json",
+
     server_tokens           => on,
     spdy                    => off,
     ssl_stapling            => off,

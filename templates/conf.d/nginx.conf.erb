@@ -19,7 +19,8 @@ http {
   sendfile    <%= @options['sendfile'] %>;
 
   server_tokens <%= @options['server_tokens'] %>;
-  <% if @options['tcp_nopush'] == 'on' %>tcp_nopush on;<% end %>
+  tcp_nopush <%= @options['tcp_nopush'] %>;
+  tcp_nodelay <%= @options['tcp_nodelay'] %>;
 
   types_hash_max_size <%= @options['types_hash_max_size'] %>;
   types_hash_bucket_size <%= @options['types_hash_bucket_size'] %>;
@@ -27,12 +28,15 @@ http {
   server_names_hash_bucket_size <%= @options['names_hash_bucket_size'] %>;
 
   keepalive_timeout  <%= @options['keepalive_timeout'] %>;
-  tcp_nodelay        <%= @options['tcp_nodelay'] %>;
 
-  <% if @options['gzip'] == 'on' %>
+<% if @options['gzip'] == 'on' %>
   gzip         on;
-  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-  <% end -%>
+  gzip_disable <%= @options['gzip_disable'] %>;
+  gzip_min_length <%= @options['gzip_min_length'] %>;
+  gzip_comp_level <%= @options['gzip_comp_level'] %>;
+  gzip_vary <%= @options['gzip_vary'] %>;
+  gzip_types <%= @options['gzip_types'] %>;
+<% end -%>
 
 <% if @options['proxy_cache_path'] -%>
   proxy_cache_path    <%= @options['proxy_cache_path'] %> levels=<%= @options['proxy_cache_levels'] %> keys_zone=<%= @options['proxy_cache_keys_zone'] %> max_size=<%= @options['proxy_cache_max_size'] %> inactive=<%= @options['proxy_cache_inactive'] %>;
