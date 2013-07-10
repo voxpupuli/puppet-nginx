@@ -42,13 +42,15 @@ class nginx (
   $configtest_enable      = $nginx::params::nx_configtest_enable,
   $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
-  $server_tokens          = $nginx::params::nx_server_tokens
+  $server_tokens          = $nginx::params::nx_server_tokens,
+  $nx_debian_repository   = $nginx::params::nx_debian_repository
 ) inherits nginx::params {
 
   include stdlib
 
   class { 'nginx::package':
-    notify => Class['nginx::service'],
+    nx_debian_repository  => $nx_debian_repository,
+    notify                => Class['nginx::service'];
   }
 
   class { 'nginx::config':
