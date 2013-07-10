@@ -69,9 +69,9 @@ Add an smtp proxy
 
 Change Debian repository provider
 At the moment possible values are:
- nginx:   Default provider for this module, includes the upstream packages from nginx.org
- dotdeb:  Includes the packages from Guillaume Plessis, debianized version of the upstream packages
- debian:  Includes no additional repository and installs the debian provided packages of nginx
+- nginx:   Default provider for this module, includes the upstream packages from nginx.org
+- dotdeb:  Includes the packages from Guillaume Plessis, debianized version of the upstream packages
+- debian:  Includes no additional repository and installs the debian provided packages of nginx
 
 <pre>
    node default {
