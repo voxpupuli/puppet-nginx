@@ -37,7 +37,7 @@ class nginx::params {
     gzip_comp_level         => 5,
     gzip_min_length         => 100,
     gzip_vary               => off,
-    gzip_types              => "text/plain text/html application/x-javascript text/css application/json",
+    gzip_types              => "text/plain application/x-javascript text/css application/json",
 
     server_tokens           => on,
     spdy                    => off,
