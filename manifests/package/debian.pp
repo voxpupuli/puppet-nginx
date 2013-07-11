@@ -70,7 +70,14 @@ deb-src http://packages.dotdeb.org ${::lsbdistcodename} all"
                                     before      => Anchor['nginx::apt_repo'],
                                   }
       }
-      default:            { }
+      default:            { exec { 'apt_get_update_for_nginx':
+                                    command     => '/usr/bin/apt-get update',
+                                    timeout     => 240,
+                                    returns     => [ 0, 100 ],
+                                    refreshonly => true,
+                                    before      => Anchor['nginx::apt_repo'],
+                                  }
+                          }
   }
   
 }
