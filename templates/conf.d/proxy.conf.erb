@@ -5,10 +5,8 @@ proxy_connect_timeout   <%= scope.lookupvar('nginx::params::nx_proxy_connect_tim
 proxy_send_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_send_timeout') %>;
 proxy_read_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_read_timeout') %>;
 proxy_buffers           <%= scope.lookupvar('nginx::params::nx_proxy_buffers') %>;
-<% if @nx_debian_repository != 'debian' %>
+<% if @proxy_http_version %>
 proxy_http_version      <%= @proxy_http_version %>;
-<% else %>
-<% if @lsbdistcodename != "squeeze" %>proxy_http_version      <%= @proxy_http_version %>;<% end %>
 <% end %>
 <% proxy_set_header.each do |header| %>
 proxy_set_header        <%= header %>;<% end %>
