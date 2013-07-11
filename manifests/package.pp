@@ -24,7 +24,7 @@ class nginx::package {
         before  => Anchor['nginx::package::end'],
       }
     }
-    amazon: {
+    amazon,gentoo: {
       class { 'nginx::package::amazon':
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],

@@ -40,7 +40,7 @@ class nginx (
   $proxy_cache_max_size   = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
   $configtest_enable      = $nginx::params::nx_configtest_enable,
-  $service_restart        = $nginx::params::nx_service_restrart,
+  $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens
 ) inherits nginx::params {
@@ -62,6 +62,7 @@ class nginx (
     proxy_cache_max_size  => $proxy_cache_max_size,
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
+    server_tokens         => $server_tokens,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }

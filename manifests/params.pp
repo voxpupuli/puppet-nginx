@@ -23,6 +23,7 @@ class nginx::params {
   $nx_worker_connections      = 1024
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
+  $nx_names_hash_bucket_size  = 64
   $nx_multi_accept            = off
   $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
   $nx_sendfile                = on
@@ -65,8 +66,8 @@ class nginx::params {
   }
 
   $nx_daemon_user = $::operatingsystem ? {
-    /(?i-mx:debian|ubuntu)/                                             => 'www-data',
-    /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon)/ => 'nginx',
+    /(?i-mx:debian|ubuntu)/                                                    => 'www-data',
+    /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo)/ => 'nginx',
   }
 
   # Service restart after Nginx 0.7.53 could also be just "/path/to/nginx/bin -s HUP"

@@ -14,7 +14,7 @@
 #
 # This class file is not called directly
 class nginx::package::redhat {
-  $redhat_packages = ['nginx', 'GeoIP', 'gd', 'libXpm', 'libxslt']
+  $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
 
   if downcase($::operatingsystem) == 'redhat' {
     $os_type = 'rhel'
@@ -32,7 +32,8 @@ class nginx::package::redhat {
     baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
-    gpgcheck => '0',
+    gpgcheck => '1',
+    gpgkey => "http://nginx.org/keys/nginx_signing.key",
   }
 
   package { $redhat_packages:
