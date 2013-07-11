@@ -25,7 +25,7 @@ class nginx::params {
   $nx_types_hash_bucket_size  = 512
   $nx_names_hash_bucket_size  = 64
   $nx_multi_accept            = off
-  $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
+  $nx_events_use              = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
   $nx_tcp_nodelay             = on
@@ -55,7 +55,7 @@ class nginx::params {
   $nx_proxy_send_timeout      = '90'
   $nx_proxy_read_timeout      = '90'
   $nx_proxy_buffers           = '32 4k'
-  $nx_proxy_http_version      = '1.0'
+  $nx_proxy_http_version      = undef
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
@@ -77,5 +77,9 @@ class nginx::params {
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
 
   $nx_mail = false
+
+  # Debian Package Repository 
+  # Choice between debian, nginx, dotdeb
+  $nx_debian_repository       = 'nginx'
 
 }
