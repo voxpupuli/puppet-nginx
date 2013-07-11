@@ -20,9 +20,14 @@ class nginx::package::debian (
 
   
   $package = $nx_debian_repository ? {
-       /(?i-mx:dotdeb|debian)/        => 'nginx-full',
+       /(?i-mx:dotdeb)/        => 'nginx-full',
+       /(?i-mx:debian)/        => $::lsbdistcodename ? {
+                                  /sarge|etch|squeeze/    => 'nginx',
+                                  /wheezy|jessie/         => 'nginx-full',
+                                  },
        /(?i-mx:nginx)/                => 'nginx',
   }
+
   package { $package:
     ensure  => present,
     require => Anchor['nginx::apt_repo'],

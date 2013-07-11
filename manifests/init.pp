@@ -67,6 +67,7 @@ class nginx (
     server_tokens         => $server_tokens,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
+    nx_debian_repository  => $nx_debian_repository,
   }
 
   class { 'nginx::service':
