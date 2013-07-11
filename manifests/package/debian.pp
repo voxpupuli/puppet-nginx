@@ -22,8 +22,8 @@ class nginx::package::debian (
   $package = $nx_debian_repository ? {
        /(?i-mx:dotdeb)/        => 'nginx-full',
        /(?i-mx:debian)/        => $::lsbdistcodename ? {
-                                  /sarge|etch|squeeze/    => 'nginx',
-                                  /wheezy|jessie/         => 'nginx-full',
+                                  /sarge|etch|squeeze|karmic|lucid|jaunty/    	=> 'nginx',
+                                  /wheezy|jessie|precise|quantal|raring|saucy/  => 'nginx-full',
                                   },
        /(?i-mx:nginx)/                => 'nginx',
   }
