@@ -35,18 +35,18 @@ class nginx ($options = $nginx::params::defaults) {
 
   validate_hash($options)
 
-  $config_opts = merge($nginx::params::defaults, $options)
+  $config = merge($nginx::params::defaults, $options)
 
   class { 'nginx::package':
     notify => Class['nginx::service'],
   }
 
   class { 'nginx::config':
-    options => $config_opts,
+    options => $config,
   }
 
   class { 'nginx::service':
-    options => $config_opts,
+    options => $config,
   }
 
   # Allow the end user to establish relationships to the "main" class
