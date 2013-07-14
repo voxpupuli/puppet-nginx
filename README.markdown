@@ -69,18 +69,18 @@ node default {
   }
 
   nginx::resource::vhost { 'rack.puppetlabs.com':
-    ensure   => present,
+    ensure => present,
     proxy  => 'http://puppet_rack_app',
   }
 
   nginx::resource::location { 'puppetlabs.com-static':
-    ensure => present,
-    vhost => 'rack.puppetlabs.com',
-    location => '/static',
-    location_alias => "/var/www/static",
+    ensure              => present,
+    vhost               => 'rack.puppetlabs.com',
+    location            => '/static',
+    location_alias      => '/var/www/static',
     location_cfg_append => {
       'access_log' => 'off',
-      'expires' => '14d'
+      'expires'    => '14d'
     }
   }
 }
