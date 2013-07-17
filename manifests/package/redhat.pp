@@ -33,6 +33,7 @@ class nginx::package::redhat {
     descr    => 'nginx repo',
     enabled  => '1',
     gpgcheck => '1',
+    priority => '17',
     gpgkey => "http://nginx.org/keys/nginx_signing.key",
   }
 
