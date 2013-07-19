@@ -77,6 +77,7 @@ define nginx::resource::location (
   $fastcgi              = undef,
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
+  $fastcgi_split_path   = undef,
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,

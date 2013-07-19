@@ -1,5 +1,8 @@
   location <%= @location %> {
     root  <%= @www_root %>;
+<% if @fastcgi_split_path -%>
+    fastcgi_split_path_info <%= @fastcgi_split_path %>;
+<% end -%>
 <% if @try_files -%>
     try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
 <% end -%>
