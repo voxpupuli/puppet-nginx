@@ -66,3 +66,30 @@ Add an smtp proxy
      }
    }
 </pre>
+
+# Hiera Support
+Define the nginx resources in Hiera. Here are the examples:
+
+<pre>
+nginx::nginx_upstreams:
+  'puppet_rack_app':
+    ensure: present
+    members:
+      - localhost:3000
+      - localhost:3001
+      - localhost:3002 
+nginx::nginx_vhosts:
+  'www.puppetlabs.com':
+    www_root: '/var/www/www.puppetlabs.com'
+  'rack.puppetlabs.com':
+    ensure: present
+    proxy: 'http://puppet_rack_app'
+nginx::nginx_locations:
+  'static':
+    location: '~ "^/static/[0-9a-fA-F]{8}\/(.*)$"'
+    vhost: www.puppetlabs.com
+  'userContent':
+    location: /userContent
+    vhost: www.puppetlabs.com
+    www_root: /var/www/html
+</pre>
