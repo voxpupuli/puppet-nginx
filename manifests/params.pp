@@ -25,7 +25,9 @@ class nginx::params {
   $nx_types_hash_bucket_size  = 512
   $nx_names_hash_bucket_size  = 64
   $nx_multi_accept            = off
-  $nx_events_use         = false # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport] or false to use OS default
+# One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport]
+# or false to use OS default
+  $nx_events_use              = false
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
   $nx_tcp_nodelay             = on
@@ -70,12 +72,16 @@ class nginx::params {
     /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo)/ => 'nginx',
   }
 
-  # Service restart after Nginx 0.7.53 could also be just "/path/to/nginx/bin -s HUP"
-  # Some init scripts do a configtest, some don't. If configtest_enable it's true
-  # then service restart will take $nx_service_restart value, forcing configtest.
+  # Service restart after Nginx 0.7.53 could also be just
+  # "/path/to/nginx/bin -s HUP" Some init scripts do a configtest, some don't.
+  # If configtest_enable it's true then service restart will take
+  # $nx_service_restart value, forcing configtest.
+
   $nx_configtest_enable = false
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
 
   $nx_mail = false
+
+  $nx_http_cfg_append = false
 
 }

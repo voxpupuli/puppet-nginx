@@ -43,6 +43,7 @@ class nginx (
   $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
+  $http_cfg_append        = $nginx::params::nx_http_cfg_append,
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
@@ -66,6 +67,7 @@ class nginx (
     proxy_cache_inactive  => $proxy_cache_inactive,
     confd_purge           => $confd_purge,
     server_tokens         => $server_tokens,
+    http_cfg_append       => $http_cfg_append,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
