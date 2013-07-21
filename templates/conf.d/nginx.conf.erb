@@ -38,7 +38,13 @@ http {
   proxy_cache_path    <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
 <% end -%>
 
+<% if @http_cfg_append -%><% @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%>
+<% end -%>
+
   include /etc/nginx/conf.d/*.conf;
+
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {
