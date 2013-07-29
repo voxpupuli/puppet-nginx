@@ -18,7 +18,7 @@ server {
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
 <% if @auth_basic_user_file != :undef -%>
-  auth_basic_user_file      <%= @auth_basic_user_file %>;
+  auth_basic_user_file      "<%= @auth_basic_user_file %>";
 <% end -%>
 
   access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= @name.gsub(' ', '_') %>.access.log;
