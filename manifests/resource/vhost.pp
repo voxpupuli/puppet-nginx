@@ -174,6 +174,14 @@ define nginx::resource::vhost (
       location_cfg_append => $location_cfg_append }
   }
 
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) { 
+    file { '/etc/nginx/fastcgi_params':
+      ensure  => present,
+      mode    => '0770',
+      content => template('nginx/vhost/fastcgi_params.erb'),
+    }
+  }
+
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }

@@ -2,7 +2,9 @@
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
+<% if defined? @www_root -%>
     root  <%= @www_root %>;
+<% end -%>
 <% if @try_files -%>
     try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
 <% end -%>
@@ -19,3 +21,4 @@
     <%= key %> <%= value %>;
 <% end -%><% end -%>
   }
+
