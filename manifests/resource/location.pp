@@ -133,6 +133,14 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) { 
+    file { '/etc/nginx/fastcgi_params':
+      ensure  => present,
+      mode    => '0770',
+      content => template('nginx/vhost/fastcgi_params.erb'),
+    }
+  }
+
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
     file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${name}":

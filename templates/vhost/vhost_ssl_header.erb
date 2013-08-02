@@ -14,10 +14,10 @@ server {
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
-<% if @auth_basic != :undef -%>
+<% if defined? @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
-<% if @auth_basic_user_file != :undef -%>
+<% if defined? @auth_basic_user_file -%>
   auth_basic_user_file      <%= @auth_basic_user_file %>;
 <% end -%>
 

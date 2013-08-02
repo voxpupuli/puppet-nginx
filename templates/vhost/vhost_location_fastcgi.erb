@@ -1,5 +1,10 @@
   location <%= @location %> {
+<% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+    <%= key %>         <%= value %>;
+<% end -%><% end -%>
+<% if defined? @www_root -%>
     root  <%= @www_root %>;
+<% end -%>
 <% if @fastcgi_split_path -%>
     fastcgi_split_path_info <%= @fastcgi_split_path %>;
 <% end -%>
@@ -8,7 +13,11 @@
 <% end -%>
     include <%= @fastcgi_params %>;
     fastcgi_pass <%= @fastcgi %>;
-<% unless @fastcgi_script == :undef %>
+<% if defined? @fastcgi_script %>
     fastcgi_param SCRIPT_FILENAME <%= @fastcgi_script %>;
 <% end -%>
+<% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+    <%= key %> <%= value %>;
+<% end -%><% end -%>
   }
+
