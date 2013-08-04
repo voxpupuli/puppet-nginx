@@ -14,6 +14,7 @@
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
+#   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so that you can split the script_name and path_info via regex
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
 #   [*location_alias*]       - Path to be used as basis for serving requests for this location
@@ -77,6 +78,7 @@ define nginx::resource::location (
   $fastcgi              = undef,
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
+  $fastcgi_split_path   = undef,
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
