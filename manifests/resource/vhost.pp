@@ -210,15 +210,17 @@ define nginx::resource::vhost (
 
     $cert = regsubst($name,' ','_')
 
-    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
+    # Check if the file has been defined before creating the file to
+    # avoid the error when using wildcard cert on the multiple vhosts
+    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_cert,
-    }
-    file { "${nginx::params::nx_conf_dir}/${cert}.key":
+    })
+    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
       ensure => $ensure,
       mode   => '0644',
       source => $ssl_key,
-    }
+    })
   }
 }
