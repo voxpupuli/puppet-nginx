@@ -46,6 +46,7 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*location*]                - Allows you to specific a custom location var
 #
 # Actions:
 #
@@ -64,6 +65,7 @@ define nginx::resource::vhost (
   $listen_ip              = '*',
   $listen_port            = '80',
   $listen_options         = undef,
+  $location               = '/',
   $ipv6_enable            = false,
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
@@ -148,7 +150,7 @@ define nginx::resource::vhost (
     vhost                => $name,
     ssl                  => $ssl,
     ssl_only             => $ssl_only,
-    location             => '/',
+    location             => $location,
     proxy                => $proxy,
     proxy_read_timeout   => $proxy_read_timeout,
     proxy_cache          => $proxy_cache,
