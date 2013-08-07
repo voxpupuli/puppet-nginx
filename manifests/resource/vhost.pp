@@ -46,8 +46,10 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
-#   [*access_log*]              - Full path where to write access log, or off
-#   [*error_log*]               - Full path where to write error log, or off
+#   [*access_log*]              - Where to write access log. May add additional
+#      options like log format to the end.
+#   [*error_log*]               - Where to write error log. May add additional
+#      options like error level to the end.
 #
 # Actions:
 #
@@ -137,15 +139,9 @@ define nginx::resource::vhost (
     undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
     default => $access_log,
   }
-  if ($access_log_real != 'off') {
-    validate_absolute_path($access_log_real)
-  }
   $error_log_real = $error_log ? {
     undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
     default => $error_log,
-  }
-  if ($error_log_real != 'off') {
-    validate_absolute_path($error_log_real)
   }
 
   # Use the File Fragment Pattern to construct the configuration files.
@@ -217,15 +213,9 @@ define nginx::resource::vhost (
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.access.log",
       default => $access_log,
     }
-    if ($ssl_access_log != 'off') {
-      validate_absolute_path($ssl_access_log)
-    }
     $ssl_error_log = $error_log ? {
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
       default => $error_log,
-    }
-    if ($ssl_error_log != 'off') {
-      validate_absolute_path($ssl_error_log)
     }
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
