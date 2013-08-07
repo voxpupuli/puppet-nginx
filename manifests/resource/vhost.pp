@@ -212,6 +212,21 @@ define nginx::resource::vhost (
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
+    # Access and error logs are named differently in ssl template
+    $ssl_access_log = $access_log ? {
+      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.access.log",
+      default => $access_log,
+    }
+    if ($ssl_access_log != 'off') {
+      validate_absolute_path($ssl_access_log)
+    }
+    $ssl_error_log = $error_log ? {
+      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
+      default => $error_log,
+    }
+    if ($ssl_error_log != 'off') {
+      validate_absolute_path($ssl_error_log)
+    }
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
