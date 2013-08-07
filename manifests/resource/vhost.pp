@@ -46,6 +46,8 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*access_log*]              - Full path where to write access log, or off
+#   [*error_log*]               - Full path where to write error log, or off
 #
 # Actions:
 #
@@ -98,7 +100,9 @@ define nginx::resource::vhost (
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
   $vhost_cfg_append       = undef,
-  $include_files          = undef
+  $include_files          = undef,
+  $access_log             = undef,
+  $error_log              = undef,
 ) {
 
   File {
@@ -123,6 +127,25 @@ define nginx::resource::vhost (
     if ($ssl_cert == undef) or ($ssl_key == undef) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_cert) and/or SSL Private must be defined and exist on the target system(s)')
     }
+  }
+
+  # This was a lot to add up in parameter list so add it down here
+  # Also opted to add more logic here and keep template cleaner which
+  # unfortunately means resorting to the $varname_real thing
+  $domain_log_name = regsubst($name, ' ', '_')
+  $access_log_real = $access_log ? {
+    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+    default => $access_log,
+  }
+  if ($access_log_real != 'off') {
+    validate_absolute_path($access_log_real)
+  }
+  $error_log_real = $error_log ? {
+    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
+    default => $error_log,
+  }
+  if ($error_log_real != 'off') {
+    validate_absolute_path($error_log_real)
   }
 
   # Use the File Fragment Pattern to construct the configuration files.
