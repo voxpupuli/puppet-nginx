@@ -6,5 +6,5 @@ proxy_send_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_send_timeou
 proxy_read_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_read_timeout') %>;
 proxy_buffers           <%= scope.lookupvar('nginx::params::nx_proxy_buffers') %>;
 proxy_http_version      <%= @proxy_http_version %>;
-<% proxy_set_header.each do |header| %>
+<% @proxy_set_header.each do |header| %>
 proxy_set_header        <%= header %>;<% end %>
