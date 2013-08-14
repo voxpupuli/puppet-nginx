@@ -5,7 +5,6 @@ describe 'nginx::package' do
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem }}
     it { should contain_package('nginx') }
-    it { should contain_package('GeoIP') }
     it { should contain_package('gd') }
     it { should contain_package('libXpm') }
     it { should contain_package('libxslt') }

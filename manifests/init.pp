@@ -44,9 +44,13 @@ class nginx (
   $service_restart         = $nginx::params::nx_service_restart,
   $mail                    = $nginx::params::nx_mail,
   $server_tokens           = $nginx::params::nx_server_tokens,
+  $http_cfg_append         = $nginx::params::nx_http_cfg_append,
   $client_body_buffer_size = $nginx::params::nx_client_buffer_size,
-  $client_max_body_size    = $nginx::params::nx_client_max_body_size) inherits
-nginx::params {
+  $client_max_body_size    = $nginx::params::nx_client_max_body_size,
+  $nginx_vhosts            = {},
+  $nginx_upstreams         = {},
+  $nginx_locations         = {}
+  ,) inherits nginx::params {
   include stdlib
 
   class { 'nginx::package': notify => Class['nginx::service'], }
@@ -62,6 +66,8 @@ nginx::params {
     proxy_cache_max_size    => $proxy_cache_max_size,
     proxy_cache_inactive    => $proxy_cache_inactive,
     confd_purge             => $confd_purge,
+    server_tokens           => $server_tokens,
+    http_cfg_append         => $http_cfg_append,
     client_body_buffer_size => $client_body_buffer_size,
     client_max_body_size    => $client_max_body_size,
     require                 => Class['nginx::package'],
@@ -72,6 +78,13 @@ nginx::params {
     configtest_enable => $configtest_enable,
     service_restart   => $service_restart,
   }
+
+  validate_hash($nginx_upstreams)
+  create_resources('nginx::resource::upstream', $nginx_upstreams)
+  validate_hash($nginx_vhosts)
+  create_resources('nginx::resource::vhost', $nginx_vhosts)
+  validate_hash($nginx_locations)
+  create_resources('nginx::resource::location', $nginx_locations)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through

@@ -1,0 +1,6 @@
+  location <%= @location %> {
+<% if @location_custom_cfg -%><% @location_custom_cfg.sort_by {|k,v| k}.each do |key,value| -%>
+    <%= key %> <%= value %>;
+<% end -%><% end -%>
+  }
+

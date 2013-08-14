@@ -1,21 +1,24 @@
-  location <%= location %> {
-<% if @location_cfg_prepend -%><% location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+  location <%= @location %> {
+<% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
-    root  <%= www_root %>;
-<% if @try_files -%>
-    try_files <% try_files.each do |try| -%> <%= try %> <% end -%>;
+<% if defined? @www_root -%>
+    root  <%= @www_root %>;
 <% end -%>
-<% if index_files -%>
-    index <% index_files.each do |i| %> <%= i %><% end %>; 
+<% if @try_files -%>
+    try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
+<% end -%>
+<% if @index_files -%>
+    index <% @index_files.each do |i| %> <%= i %><% end %>;
 <% end -%>
 <% if defined? auth_basic -%>
-    auth_basic           "<%= auth_basic %>";
+    auth_basic           "<%= @auth_basic %>";
 <% end -%>
 <% if defined? auth_basic_user_file -%>
-    auth_basic_user_file <%= auth_basic_user_file %>;
+    auth_basic_user_file <%= @auth_basic_user_file %>;
 <% end -%>
-<% if @location_cfg_append -%><% location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+<% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
   }
+

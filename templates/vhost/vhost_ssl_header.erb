@@ -1,23 +1,25 @@
 server {
-  listen       <%= listen_ip %>:<%= ssl_port %><% if scope.lookupvar('nginx::params::nx_spdy') == 'on' %> ssl spdy<% end %><% if @listen_options %><%= listen_options %><% end %>;
-  <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
-  listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
+  listen       <%= @listen_ip %>:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @listen_options %><%= @listen_options %><% end %>;
+  <% if @ipv6_enable == 'true' && (defined? ipaddress6) %>
+  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
-  server_name  <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
+  server_name  <%= @rewrite_www_to_non_www ? @name.gsub(/^www\./, '') : @server_name.join(" ") %>;
 
   ssl on;
 
-  ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.crt;
-  ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.key;
+  ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
+  ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
   ssl_session_cache         shared:SSL:10m;
   ssl_session_timeout       5m;
-  ssl_ciphers               RC4:HIGH:!aNULL:!MD5;  
-  ssl_protocols             SSLv3 TLSv1;
+  ssl_protocols             <%= @ssl_protocols %>;
+  ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
+<% if defined? @auth_basic -%>
+  auth_basic                "<%= @auth_basic %>";
+<% end -%>
+<% if defined? @auth_basic_user_file -%>
+  auth_basic_user_file      <%= @auth_basic_user_file %>;
+<% end -%>
 
-<% if auth_basic != :undef -%>
-  auth_basic                "<%= auth_basic %>";
-<% end -%>
-<% if auth_basic_user_file != :undef -%>
-  auth_basic_user_file      <%= auth_basic_user_file %>;
-<% end -%>
+  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= @name.gsub(' ', '_') %>.access.log;
+  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= @name.gsub(' ', '_') %>.error.log;

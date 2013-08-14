@@ -1,5 +1,5 @@
 proxy_redirect          <%= scope.lookupvar('nginx::params::nx_proxy_redirect') %>;
-client_max_body_size    <%= scope.lookupvar('max_body_size') %>;
+client_max_body_size    <%= scope.lookupvar('client_max_body_size') %>;
 client_body_buffer_size <%= scope.lookupvar('client_body_buffer_size') %>;
 proxy_connect_timeout   <%= scope.lookupvar('nginx::params::nx_proxy_connect_timeout') %>;
 proxy_send_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_send_timeout') %>;

@@ -32,11 +32,20 @@ class nginx::package::redhat {
     baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
     descr    => 'nginx repo',
     enabled  => '1',
-    gpgcheck => '0',
+    gpgcheck => '1',
+    priority => '1',
+    gpgkey => "http://nginx.org/keys/nginx_signing.key",
+  }
+
+  #Define file for nginx-repo so puppet doesn't delete it
+  file { '/etc/yum.repos.d/nginx-release.repo':
+    ensure  => present,
+    require => Yumrepo['nginx-release'],
   }
 
   package { $redhat_packages:
     ensure  => present,
     require => Yumrepo['nginx-release'],
   }
+
 }
