@@ -93,3 +93,4 @@ nginx::nginx_locations:
     vhost: www.puppetlabs.com
     www_root: /var/www/html
 </pre>
+
