@@ -219,7 +219,7 @@ define nginx::resource::vhost (
     })
     ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
       owner  => $nginx::params::nx_daemon_user,
-      mode   => '0400',
+      mode   => '0440',
       source => $ssl_key,
     })
   }
