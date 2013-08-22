@@ -174,7 +174,7 @@ define nginx::resource::vhost (
       location_cfg_append => $location_cfg_append }
   }
 
-  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) { 
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
     file { '/etc/nginx/fastcgi_params':
       ensure  => present,
       mode    => '0770',
@@ -206,7 +206,7 @@ define nginx::resource::vhost (
       notify  => Class['nginx::service'],
     }
 
-    #Generate ssl key/cert with provided file-locations
+  #Generate ssl key/cert with provided file-locations
 
     $cert = regsubst($name,' ','_')
 
