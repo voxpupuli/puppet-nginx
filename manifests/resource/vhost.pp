@@ -43,6 +43,8 @@
 #     the authentication realm.
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
+#   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
+#     put before everything else inside vhost
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
@@ -101,6 +103,7 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
   $access_log             = undef,
@@ -134,7 +137,7 @@ define nginx::resource::vhost (
   # This was a lot to add up in parameter list so add it down here
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
-  $domain_log_name = regsubst($name, ' ', '_')
+  $domain_log_name = regsubst($name, ' ', '_', 'G')
   $access_log_real = $access_log ? {
     undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
     default => $access_log,
