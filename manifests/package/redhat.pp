@@ -34,7 +34,7 @@ class nginx::package::redhat {
     enabled  => '1',
     gpgcheck => '1',
     priority => '1',
-    gpgkey => "http://nginx.org/keys/nginx_signing.key",
+    gpgkey   => "http://nginx.org/keys/nginx_signing.key",
   }
 
   #Define file for nginx-repo so puppet doesn't delete it

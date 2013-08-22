@@ -3,25 +3,42 @@
 # This definition creates a new location entry within a virtual host
 #
 # Parameters:
-#   [*ensure*]               - Enables or disables the specified location (present|absent)
-#   [*vhost*]                - Defines the default vHost for this location entry to include with
-#   [*location*]             - Specifies the URI associated with this location entry
-#   [*www_root*]             - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*index_files*]          - Default index files for NGINX to read when traversing a directory
-#   [*proxy*]                - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
-#                              with nginx::resource::upstream
-#   [*proxy_read_timeout*]   - Override the default the proxy read timeout value of 90 seconds
+#   [*ensure*]               - Enables or disables the specified location
+#     (present|absent)
+#   [*vhost*]                - Defines the default vHost for this location
+#     entry to include with
+#   [*location*]             - Specifies the URI associated with this location
+#     entry
+#   [*www_root*]             - Specifies the location on disk for files to be
+#     read from. Cannot be set in conjunction with $proxy
+#   [*index_files*]          - Default index files for NGINX to read when
+#     traversing a directory
+#   [*proxy*]                - Proxy server(s) for a location to connect to.
+#     Accepts a single value, can be used in conjunction with
+#     nginx::resource::upstream
+#   [*proxy_read_timeout*]   - Override the default the proxy read timeout
+#     value of 90 seconds
 #   [*fastcgi*]              - location of fastcgi (host:port)
-#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
-#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
-#   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so that you can split the script_name and path_info via regex
-#   [*ssl*]                  - Indicates whether to setup SSL bindings for this location.
-#   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
-#   [*location_alias*]       - Path to be used as basis for serving requests for this location
-#   [*stub_status*]          - If true it will point configure module stub_status to provide nginx stats on location
-#   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot be used with other location types (proxy, fastcgi, root, or stub_status)
-#   [*location_cfg_prepend*] - Expects a hash with extra directives to put before anything else inside location (used with all other types except custom_cfg)
-#   [*location_cfg_append*]  - Expects a hash with extra directives to put after everything else inside location (used with all other types except custom_cfg)
+#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
+#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
+#   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
+#     that you can split the script_name and path_info via regex
+#   [*ssl*]                  - Indicates whether to setup SSL bindings for
+#     this location.
+#   [*ssl_only*]             - Required if the SSL and normal vHost have the
+#     same port.
+#   [*location_alias*]       - Path to be used as basis for serving requests
+#     for this location
+#   [*stub_status*]          - If true it will point configure module
+#     stub_status to provide nginx stats on location
+#   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot
+#     be used with other location types (proxy, fastcgi, root, or stub_status)
+#   [*location_cfg_prepend*] - Expects a hash with extra directives to put
+#     before anything else inside location (used with all other types except
+#     custom_cfg)
+#   [*location_cfg_append*]  - Expects a hash with extra directives to put
+#     after everything else inside location (used with all other types except
+#     custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
@@ -133,7 +150,7 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
-  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) { 
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
     file { '/etc/nginx/fastcgi_params':
       ensure  => present,
       mode    => '0770',
