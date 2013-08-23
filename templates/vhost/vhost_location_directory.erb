@@ -6,10 +6,10 @@
     root  <%= @www_root %>;
 <% end -%>
 <% if @try_files -%>
-    try_files <% @try_files.each_line do |try| -%> <%= try %> <% end -%>;
+    try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
 <% end -%>
 <% if @index_files -%>
-    index <% @index_files.each_line do |i| %> <%= i %><% end %>;
+    index <% @index_files.each do |i| %> <%= i %><% end %>;
 <% end -%>
 <% if defined? auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
