@@ -1,4 +1,7 @@
 server {
+<% if @ssl_cfg_prepend -%><% ssl_cfg_prepend.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
   listen       <%= listen_ip %>:<%= ssl_port %><% if scope.lookupvar('nginx::params::nx_spdy') == 'on' %> ssl spdy<% end %><% if @listen_options %><%= listen_options %><% end %>;
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
