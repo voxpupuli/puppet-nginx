@@ -8,4 +8,7 @@ group :rake do
   gem 'puppetlabs_spec_helper'
   gem 'puppet-blacksmith'
   gem 'librarian-puppet-maestrodev'
+  gem 'rspec-system-puppet',     :require => false
+  gem 'serverspec',              :require => false
+  gem 'rspec-system-serverspec', :require => false
 end
