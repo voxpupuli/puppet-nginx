@@ -84,4 +84,6 @@ class nginx::params {
 
   $nx_http_cfg_append = false
 
+  $package_ensure = 'present'
+
 }
