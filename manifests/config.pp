@@ -27,6 +27,7 @@ class nginx::config(
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $types_hash_max_size    = $nginx::params::nx_types_hash_max_size,
   $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size,
+  $client_max_body_size   = $nginx::params::nx_client_max_body_size,
   $http_cfg_append        = $nginx::params::nx_http_cfg_append
 ) inherits nginx::params {
   File {
