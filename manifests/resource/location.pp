@@ -14,8 +14,8 @@
 #                              with nginx::resource::upstream
 #   [*proxy_read_timeout*]   - Override the default the proxy read timeout value of 90 seconds
 #   [*fastcgi*]              - location of fastcgi (host:port)
-#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
-#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
+#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
+#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so that you can split the script_name and path_info via regex
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
