@@ -1,5 +1,5 @@
 name    'puppetlabs-nginx'
-version '0.0.1'
+version '0.0.2'
 source 'http://github.com/puppetlabs/puppetlabs-nginx'
 author 'puppetlabs'
 license 'Apache License Version 2.0'

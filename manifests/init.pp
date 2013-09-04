@@ -36,6 +36,8 @@ class nginx (
   $configtest_enable  = $nginx::params::nx_configtest_enable,
   $service_restart    = $nginx::params::nx_service_restrart
 ) inherits nginx::params {
+  
+  fail("This module is no longer supported and we direct you to our upstream source, http://forge.puppetlabs.com/jfryman/nginx")
 
   include stdlib
 
