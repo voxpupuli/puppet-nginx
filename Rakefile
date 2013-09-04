@@ -7,6 +7,7 @@ CLOBBER.include('.tmp', '.librarian')
 
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet_blacksmith/rake_tasks'
+require 'rspec-system/rake_task'
 
 # use librarian-puppet to manage fixtures instead of .fixtures.yml
 # offers more possibilities like explicit version management, forge downloads,...
