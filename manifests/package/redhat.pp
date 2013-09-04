@@ -62,7 +62,7 @@ class nginx::package::redhat {
   }
 
   package { $redhat_packages:
-    ensure  => present,
+    ensure  => $nginx::package_ensure,
   }
 
 }

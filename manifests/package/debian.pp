@@ -17,7 +17,7 @@ class nginx::package::debian {
   $operatingsystem_lowercase = inline_template('<%= @operatingsystem.downcase %>')
 
   package { 'nginx':
-    ensure  => present,
+    ensure  => $nginx::package_ensure,
     require => Anchor['nginx::apt_repo'],
   }
 
