@@ -1,4 +1,6 @@
 ### PUPPET MANAGED ###
-<% @config.each_pair do |key,value| -%>
-<%= key %>          <%= value %>;
+<% @config.each_pair do |key,value| 
+  [value].flatten.each do |val| -%>
+<%= key %>          <%= val %>;
+<% end -%>
 <% end -%>
