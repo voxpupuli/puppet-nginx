@@ -87,4 +87,5 @@ class nginx::params {
   $nx_nginx_error_log = "${nx_logdir}/error.log"
   $nx_http_access_log = "${nx_logdir}/access.log"
 
+  $package_ensure = 'present'
 }

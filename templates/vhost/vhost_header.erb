@@ -8,7 +8,7 @@ server {
 <% if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
 <% end -%>
-<% if defined? auth_basic_user_file -%>
+<% if defined? @auth_basic_user_file -%>
   auth_basic_user_file <%= @auth_basic_user_file %>;
 <% end -%>
 <%# make sure that allow comes before deny by forcing the allow key (if it -%>
