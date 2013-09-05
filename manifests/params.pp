@@ -58,6 +58,7 @@ class nginx::params {
   $nx_proxy_read_timeout      = '90'
   $nx_proxy_buffers           = '32 4k'
   $nx_proxy_http_version      = '1.0'
+  $nx_proxy_buffer_size       = '8k'
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
