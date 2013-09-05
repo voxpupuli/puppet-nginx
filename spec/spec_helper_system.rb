@@ -24,5 +24,9 @@ RSpec.configure do |c|
     shell('puppet module install puppetlabs-apt')
     shell('puppet module install puppetlabs-stdlib')
     shell('puppet module install puppetlabs-concat')
+
+    # Fake keys.
+    shell('echo "key" > /tmp/blah.key')
+    shell('echo "cert" > /tmp/blah.cert')
   end
 end
