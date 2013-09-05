@@ -23,5 +23,6 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'nginx')
     shell('puppet module install puppetlabs-apt')
     shell('puppet module install puppetlabs-stdlib')
+    shell('puppet module install puppetlabs-concat')
   end
 end

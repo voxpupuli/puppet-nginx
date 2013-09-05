@@ -19,7 +19,7 @@ describe "nginx::resource::vhost define:" do
     end
   end
 
-  describe file('/etc/nginx/conf.d/vhost_autogen.conf') do
+  describe file('/etc/nginx/conf.d/www.puppetlabs.com.conf') do
    it { should be_file }
    it { should contain "www.puppetlabs.com" }
   end
