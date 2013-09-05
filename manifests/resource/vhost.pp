@@ -109,21 +109,16 @@ define nginx::resource::vhost (
   validate_array($location_allow)
   validate_array($location_deny)
 
-  #
+  # Variables
   $file_ensure = $ensure ? {
     'absent' => absent,
     default  => 'file',
   }
 
-  File {
-    ensure => $ensure ? {
-      'absent' => absent,
-      default  => 'file',
-    },
-    notify => Class['nginx::service'],
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+  $config_file = "${nginx::config::nx_conf_dir}/conf.d/${name}.conf"
+
+  if ( $ssl == true ) and ( $ssl_port == $listen_port ) {
+    $ssl_only = true
   }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
@@ -139,18 +134,32 @@ define nginx::resource::vhost (
     }
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
-  if ( $listen_port != $ssl_port ) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $file_ensure,
-      content => template('nginx/vhost/vhost_header.erb'),
-      notify  => Class['nginx::service'],
-    }
+  File {
+    ensure => $ensure ? {
+      'absent' => absent,
+      default  => 'file',
+    },
+    notify => Class['nginx::service'],
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   }
 
-  if ( $ssl == true ) and ( $ssl_port == $listen_port ) {
-    $ssl_only = true
+  concat { $config_file:
+    # Waiting on https://github.com/puppetlabs/puppetlabs-concat/pull/39/files
+    #ensure => $file_ensure,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    notify => Class['nginx::service'],
+  }
+
+  if ( $listen_port != $ssl_port ) {
+    concat::fragment { "${name}-header":
+      target  => $config_file,
+      content => template('nginx/vhost/vhost_header.erb'),
+      order   => 01,
+    }
   }
 
   # Create the default location reference for the vHost
@@ -195,26 +204,15 @@ define nginx::resource::vhost (
     }
   }
 
-  # Create a proper file close stub.
-  if ( $listen_port != $ssl_port ) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
-  }
-
   # Create SSL File Stubs if SSL is enabled
   if ( $ssl == true ) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
-      ensure  => $file_ensure,
+    concat::fragment { "${name}-ssl":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
-      notify  => Class['nginx::service'],
-    }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
-      ensure  => $file_ensure,
-      content => template('nginx/vhost/vhost_footer.erb'),
-      notify  => Class['nginx::service'],
+      order   => '700',
     }
 
     #Generate ssl key/cert with provided file-locations
-
     $cert = regsubst($name,' ','_')
 
     # Check if the file has been defined before creating the file to
@@ -227,5 +225,11 @@ define nginx::resource::vhost (
       mode   => '0644',
       source => $ssl_key,
     })
+  }
+
+  concat::fragment { "${name}-footer":
+    target  => $config_file,
+    content => template('nginx/vhost/vhost_footer.erb'),
+    order   => '999',
   }
 }

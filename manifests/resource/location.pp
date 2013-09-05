@@ -110,34 +110,43 @@ define nginx::resource::location (
     'absent' => absent,
     default  => file,
   }
+  $config_file = "${nginx::config::nx_conf_dir}/conf.d/${vhost}.conf"
 
   ## Check for various error conditions
-  if ($vhost == undef) {
+  if ( $vhost == undef ) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
+
+  if (( $www_root == undef ) and
+  ( $proxy == undef ) and
+  ( $location_alias == undef ) and
+  ( $stub_status == undef ) and
+  ( $fastcgi == undef ) and
+  ( $location_custom_cfg == undef )) {
     fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
   }
-  if (($www_root != undef) and ($proxy != undef)) {
+
+  if (( $www_root != undef ) and
+  ( $proxy != undef )) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
-  if ($proxy != undef) {
+  if ( $proxy != undef ) {
     $content_real = template('nginx/vhost/vhost_location_proxy.erb')
-  } elsif ($location_alias != undef) {
+  } elsif ( $location_alias != undef ) {
     $content_real = template('nginx/vhost/vhost_location_alias.erb')
-  } elsif ($stub_status != undef) {
+  } elsif ( $stub_status != undef ) {
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
-  } elsif ($fastcgi != undef) {
+  } elsif ( $fastcgi != undef ) {
     $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
-  } elsif ($www_root != undef) {
+  } elsif ( $www_root != undef ) {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
   } else {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
-  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) { 
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
     file { '/etc/nginx/fastcgi_params':
       ensure  => present,
       mode    => '0770',
@@ -147,18 +156,20 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${name}":
-      ensure  => $ensure_real,
+    concat::fragment { "${vhost}-${priority}-${name}":
+      target  => $config_file,
       content => $content_real,
+      order   => $priority,
     }
   }
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
     $ssl_priority = $priority + 300
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${ssl_priority}-${name}-ssl":
-      ensure  => $ensure_real,
+    concat::fragment {"${vhost}-${ssl_priority}-${name}-ssl":
+      target  => $config_file,
       content => $content_real,
+      order   => $ssl_priority,
     }
   }
 
