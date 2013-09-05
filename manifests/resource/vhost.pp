@@ -103,6 +103,7 @@ define nginx::resource::vhost (
   $auth_basic_user_file   = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef
+  $rewrite                = undef,
 ) {
 
   validate_array($location_allow)
@@ -170,6 +171,7 @@ define nginx::resource::vhost (
     index_files         => $index_files,
     location_custom_cfg => $location_custom_cfg,
     notify              => Class['nginx::service'],
+    rewrite             => $rewrite,
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
