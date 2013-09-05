@@ -132,6 +132,7 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $rewrite                = undef,
 ) {
 
   validate_array($location_allow)
@@ -212,6 +213,7 @@ define nginx::resource::vhost (
     index_files         => $index_files,
     location_custom_cfg => $location_custom_cfg,
     notify              => Class['nginx::service'],
+    rewrite             => $rewrite,
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
