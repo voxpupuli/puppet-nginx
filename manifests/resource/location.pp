@@ -96,7 +96,8 @@ define nginx::resource::location (
   $proxy_cache_valid    = false,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
-  $priority             = 500
+  $priority             = 500,
+  $rewrite              = undef,
 ) {
   File {
     owner  => 'root',
