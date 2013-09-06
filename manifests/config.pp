@@ -29,7 +29,8 @@ class nginx::config(
   $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size,
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
-  $http_cfg_append        = $nginx::params::nx_http_cfg_append
+  $http_cfg_append        = $nginx::params::nx_http_cfg_append,
+  $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
 ) inherits nginx::params {
   File {
     owner => 'root',
