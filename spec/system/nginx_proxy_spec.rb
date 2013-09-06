@@ -35,7 +35,7 @@ describe "nginx::resource::upstream define:" do
    it { should_not contain "server     localhost:3003" }
   end
 
-  describe file('/etc/nginx/conf.d/vhost_autogen.conf') do
+  describe file('/etc/nginx/conf.d/rack.puppetlabs.com.conf') do
     it { should be_file }
     it { should contain "proxy_pass          http://puppet_rack_app;" }
   end

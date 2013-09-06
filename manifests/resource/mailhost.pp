@@ -64,42 +64,48 @@ define nginx::resource::mailhost (
     group => 'root',
     mode  => '0644',
   }
+  $file_ensure = $ensure ? {
+    'absent' => absent,
+    default  => 'file',
+  }
+  $config_file = "${nginx::config::nx_conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable and !$::ipaddress6) {
+  if ( $::ipv6_enable and !$::ipaddress6 ) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
   # Check to see if SSL Certificates are properly defined.
-  if ($ssl or $starttls == 'on' or $starttls == 'only') {
-    if ($ssl_cert == undef) or ($ssl_key == undef) {
+  if ( $ssl or $starttls == 'on' or $starttls == 'only' ) {
+    if ( $ssl_cert == undef ) or ( $ssl_key == undef ) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_cert) and/or SSL Private must be defined and exist on the target system(s)')
     }
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
-  if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+  if ( $listen_port != $ssl_port ) {
+    concat { $config_file:
+      # Waiting on https://github.com/puppetlabs/puppetlabs-concat/pull/39/files
+      #ensure => $file_ensure,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      notify => Class['nginx::service'],
+    }
+    concat::fragment { "${name}-header":
+      target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
-      notify  => Class['nginx::service'],
+      order   => '01',
     }
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-700-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+  if ( $ssl ) {
+    concat::fragment { "${name}-ssl":
+      target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
-      notify  => Class['nginx::service'],
+      order   => '700',
     }
   }
+
 }

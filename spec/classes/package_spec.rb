@@ -12,8 +12,8 @@ describe 'nginx::package' do
   end
 
   shared_examples 'debian' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian'}}
-    it { should contain_file('/etc/apt/sources.list.d/nginx.list') }
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => 'Wheezy'}}
+    it { should contain_apt__source('nginx') }
   end
 
   shared_examples 'suse' do |operatingsystem|
