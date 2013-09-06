@@ -8,3 +8,4 @@ description 'This module can be used for basic NGINX Management'
 project_page 'http://github.com/jfryman/puppet-nginx'
 
 dependency 'puppetlabs/stdlib', '>= 0.1.6'
+dependency 'puppetlabs/apt', '>= 1.0.0'
