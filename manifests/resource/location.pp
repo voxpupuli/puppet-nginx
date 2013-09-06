@@ -114,7 +114,7 @@ define nginx::resource::location (
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $priority             = 500,
-  $rewrite              = undef,
+  $rewrite              = [],
 ) {
   File {
     owner  => 'root',
