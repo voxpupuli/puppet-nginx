@@ -211,7 +211,7 @@ define nginx::resource::vhost (
         'absent' => absent,
         default  => 'file',
       },
-      content => template('nginx/vhost/vhost_footer.erb'),
+      content => template('nginx/vhost/vhost_ssl_footer.erb'),
       notify  => Class['nginx::service'],
     }
 
