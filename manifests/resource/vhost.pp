@@ -103,7 +103,7 @@ define nginx::resource::vhost (
   $auth_basic_user_file   = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
-  $rewrite                = undef,
+  $rewrite                = [],
 ) {
 
   validate_array($location_allow)
