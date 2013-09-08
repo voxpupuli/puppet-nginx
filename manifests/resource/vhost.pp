@@ -262,7 +262,7 @@ define nginx::resource::vhost (
         'absent' => absent,
         default  => 'file',
       },
-      content => template('nginx/vhost/vhost_footer.erb'),
+      content => template('nginx/vhost/vhost_ssl_footer.erb'),
       notify  => Class['nginx::service'],
     }
 
@@ -273,11 +273,13 @@ define nginx::resource::vhost (
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
     ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
-      mode   => '0644',
+      owner  => $nginx::params::nx_daemon_user,
+      mode   => '0444',
       source => $ssl_cert,
     })
     ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
-      mode   => '0644',
+      owner  => $nginx::params::nx_daemon_user,
+      mode   => '0440',
       source => $ssl_key,
     })
   }
