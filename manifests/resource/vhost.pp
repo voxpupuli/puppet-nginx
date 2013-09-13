@@ -48,6 +48,10 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*access_log*]              - Where to write access log. May add additional
+#      options like log format to the end.
+#   [*error_log*]               - Where to write error log. May add additional
+#      options like error level to the end.
 #
 # Actions:
 #
@@ -102,7 +106,9 @@ define nginx::resource::vhost (
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
   $vhost_cfg_append       = undef,
-  $include_files          = undef
+  $include_files          = undef,
+  $access_log             = undef,
+  $error_log              = undef,
 ) {
 
   validate_array($location_allow)
@@ -130,6 +136,19 @@ define nginx::resource::vhost (
     if ($ssl_cert == undef) or ($ssl_key == undef) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_cert) and/or SSL Private must be defined and exist on the target system(s)')
     }
+  }
+
+  # This was a lot to add up in parameter list so add it down here
+  # Also opted to add more logic here and keep template cleaner which
+  # unfortunately means resorting to the $varname_real thing
+  $domain_log_name = regsubst($name, ' ', '_')
+  $access_log_real = $access_log ? {
+    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+    default => $access_log,
+  }
+  $error_log_real = $error_log ? {
+    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
+    default => $error_log,
   }
 
   # Use the File Fragment Pattern to construct the configuration files.
@@ -198,6 +217,15 @@ define nginx::resource::vhost (
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
+    # Access and error logs are named differently in ssl template
+    $ssl_access_log = $access_log ? {
+      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.access.log",
+      default => $access_log,
+    }
+    $ssl_error_log = $error_log ? {
+      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
+      default => $error_log,
+    }
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,

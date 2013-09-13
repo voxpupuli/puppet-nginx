@@ -20,6 +20,6 @@ server {
   }
 <% end -%>
 
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.access.log;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.error.log;
+  access_log            <%= @access_log_real %>;
+  error_log             <%= @error_log_real %>;
 

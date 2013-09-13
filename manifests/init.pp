@@ -48,6 +48,8 @@ class nginx (
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
   $http_cfg_append        = $nginx::params::nx_http_cfg_append,
+  $nginx_error_log        = $nginx::params::nx_nginx_error_log,
+  $http_access_log        = $nginx::params::nx_http_access_log,
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
@@ -75,6 +77,8 @@ class nginx (
     proxy_buffers         => $proxy_buffers,
     proxy_buffer_size     => $proxy_buffer_size,
     http_cfg_append       => $http_cfg_append,
+    nginx_error_log       => $nginx_error_log,
+    http_access_log       => $http_access_log,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }
