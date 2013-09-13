@@ -24,6 +24,6 @@ class nginx::package::suse {
   ]
 
   package { $suse_packages:
-    ensure => present,
+    ensure => $nginx::package_ensure,
   }
 }

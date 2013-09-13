@@ -2,82 +2,77 @@
 
 James Fryman <james@frymanet.com>
 
-This module manages NGINX from within Puppet.
+This module manages NGINX configuration.
 
-# Quick Start
+## Quick Start
 
-Install and bootstrap an NGINX instance
+### Install and bootstrap an NGINX instance
 
-<pre>
-    node default {
-      class { 'nginx': }
-    }
-</pre>
+```puppet
+class { 'nginx': }
+```
 
-Setup a new virtual host
+### Setup a new virtual host
 
-<pre>
-    node default {
-      class { 'nginx': }
-      nginx::resource::vhost { 'www.puppetlabs.com':
-        ensure   => present,
-        www_root => '/var/www/www.puppetlabs.com',
-      }
-    }
-</pre>
+```puppet
+nginx::resource::vhost { 'www.puppetlabs.com':
+  ensure   => present,
+  www_root => '/var/www/www.puppetlabs.com',
+}
+```
 
-Add a Proxy Server(s)
-<pre>
-   node default {
-     class { 'nginx': }
-     nginx::resource::upstream { 'puppet_rack_app':
-       ensure  => present,
-       members => [
-         'localhost:3000', 
-         'localhost:3001',
-         'localhost:3002',
-       ],
-     }
+### Add a Proxy Server
 
-     nginx::resource::vhost { 'rack.puppetlabs.com':
-       ensure   => present,
-       proxy  => 'http://puppet_rack_app',
-     }
-   } 
-</pre>
+```puppet
+nginx::resource::upstream { 'puppet_rack_app':
+ ensure  => present,
+ members => [
+   'localhost:3000',
+   'localhost:3001',
+   'localhost:3002',
+ ],
+}
 
-Add an smtp proxy
-<pre>
-   node default {
-     class { 'nginx':
-       mail => true,
-     }
-     nginx::resource::mailhost { 'domain1.example':
-       ensure      => present,
-       auth_http   => 'server2.example/cgi-bin/auth',
-       protocol    => 'smtp',
-       listen_port => 587,
-       ssl_port    => 465,
-       starttls    => 'only',
-       xclient     => 'off',
-       ssl         => 'true',
-       ssl_cert    => '/tmp/server.crt',
-       ssl_key     => '/tmp/server.pem',
-     }
-   }
-</pre>
+nginx::resource::vhost { 'rack.puppetlabs.com':
+  ensure => present,
+  proxy  => 'http://puppet_rack_app',
+}
+```
 
-# Hiera Support
-Define the nginx resources in Hiera. Here are the examples:
+### Add a smtp proxy
 
-<pre>
+```puppet
+
+class { 'nginx':
+ mail => true,
+}
+
+nginx::resource::mailhost { 'domain1.example':
+ ensure      => present,
+ auth_http   => 'server2.example/cgi-bin/auth',
+ protocol    => 'smtp',
+ listen_port => 587,
+ ssl_port    => 465,
+ starttls    => 'only',
+ xclient     => 'off',
+ ssl         => 'true',
+ ssl_cert    => '/tmp/server.crt',
+ ssl_key     => '/tmp/server.pem',
+}
+```
+
+## Hiera Support
+
+Defining nginx resources in Hiera.
+
+```yaml
 nginx::nginx_upstreams:
   'puppet_rack_app':
     ensure: present
     members:
       - localhost:3000
       - localhost:3001
-      - localhost:3002 
+      - localhost:3002
 nginx::nginx_vhosts:
   'www.puppetlabs.com':
     www_root: '/var/www/www.puppetlabs.com'
@@ -92,4 +87,4 @@ nginx::nginx_locations:
     location: /userContent
     vhost: www.puppetlabs.com
     www_root: /var/www/html
-</pre>
+```

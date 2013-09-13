@@ -6,14 +6,16 @@
 #   [*ensure*]               - Enables or disables the specified location (present|absent)
 #   [*vhost*]                - Defines the default vHost for this location entry to include with
 #   [*location*]             - Specifies the URI associated with this location entry
+#   [*location_allow*]      - Array: Locations to allow connections from.
+#   [*location_deny*]       - Array: Locations to deny connections from.
 #   [*www_root*]             - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
 #   [*index_files*]          - Default index files for NGINX to read when traversing a directory
 #   [*proxy*]                - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
 #                              with nginx::resource::upstream
 #   [*proxy_read_timeout*]   - Override the default the proxy read timeout value of 90 seconds
 #   [*fastcgi*]              - location of fastcgi (host:port)
-#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
-#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
+#   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
+#   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so that you can split the script_name and path_info via regex
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the same port.
@@ -82,6 +84,8 @@ define nginx::resource::location (
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
+  $location_allow       = undef,
+  $location_deny        = undef,
   $option               = undef,
   $stub_status          = undef,
   $location_custom_cfg  = undef,
