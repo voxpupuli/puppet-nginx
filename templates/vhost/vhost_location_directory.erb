@@ -17,8 +17,8 @@
 <% if @index_files -%>
     index <% @index_files.each do |i| %> <%= i %><% end %>;
 <% end -%>
-<% @rewrite.each do |rule| -%>
-    rewrite <%= rule %>;
+<% if @rewrite_rules -%><% @rewrite_rules.each do |rewrite_rule| -%>
+    rewrite <%= rewrite_rule %>;
 <% end -%>
 <% if defined? auth_basic -%>
     auth_basic           "<%= @auth_basic %>";

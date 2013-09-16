@@ -48,6 +48,8 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*rewrite_rules*]           - Adds a single (String) or multiple rewrite rules 
+#     (Array) to vhost 
 #
 # Actions:
 #
@@ -103,7 +105,7 @@ define nginx::resource::vhost (
   $auth_basic_user_file   = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
-  $rewrite                = [],
+  $rewrite_rules          = undef,
 ) {
 
   validate_array($location_allow)
@@ -171,7 +173,7 @@ define nginx::resource::vhost (
     index_files         => $index_files,
     location_custom_cfg => $location_custom_cfg,
     notify              => Class['nginx::service'],
-    rewrite             => $rewrite,
+    rewrite_rules       => $rewrite_rules,
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
