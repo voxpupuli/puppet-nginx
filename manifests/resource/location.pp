@@ -191,7 +191,4 @@ define nginx::resource::location (
     }
   }
 
-  unless ($rewrite_rules == undef) {
-    $rewrite_rules = Array($rewrite_rules)
-  }
 }
