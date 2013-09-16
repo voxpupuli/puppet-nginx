@@ -30,6 +30,8 @@ class nginx::config(
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
   $http_cfg_append        = $nginx::params::nx_http_cfg_append,
+  $nginx_error_log        = $nginx::params::nx_nginx_error_log,
+  $http_access_log        = $nginx::params::nx_http_access_log,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
 ) inherits nginx::params {
   File {
