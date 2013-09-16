@@ -54,6 +54,8 @@
 #   [*priority*]              - Location priority. Default: 500. User priority
 #     400-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
+#   [*rewrite_rules*]           - Adds a single (String) or multiple rewrite rules
+#     (Array) to vhost 
 #
 #
 # Actions:
@@ -114,7 +116,7 @@ define nginx::resource::location (
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $priority             = 500,
-  $rewrite              = [],
+  $rewrite_rules        = undef,
 ) {
   File {
     owner  => 'root',
@@ -187,5 +189,9 @@ define nginx::resource::location (
       mode   => '0644',
       source => $auth_basic_user_file,
     }
+  }
+
+  unless ($rewrite_rules == undef) {
+    $rewrite_rules = Array($rewrite_rules)
   }
 }
