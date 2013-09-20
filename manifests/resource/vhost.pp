@@ -113,6 +113,7 @@ define nginx::resource::vhost (
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
+  $php_fpm                = undef,
   $index_files            = [
     'index.html',
     'index.htm',
@@ -214,6 +215,20 @@ define nginx::resource::vhost (
     notify              => Class['nginx::service'],
   }
 
+  if($php_fpm != undef) {
+    nginx::resource::location { "${name}-php":
+      ensure               => $ensure,
+      location             => '~* \.php$',
+      www_root             => $www_root,
+      vhost                => $name,
+      ssl                  => $ssl,
+      ssl_only             => $ssl_only,
+      php_fpm              => $php_fpm,
+      priority             => 501,
+      notify               => Class['nginx::service'],
+    }
+  }
+
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
     Nginx::Resource::Location["${name}-default"] {
@@ -235,7 +250,8 @@ define nginx::resource::vhost (
 
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699":
+      content => template('nginx/vhost/vhost_footer.erb'), }
   }
 
   # Create SSL File Stubs if SSL is enabled

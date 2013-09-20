@@ -1,0 +1,9 @@
+  location <%= @location %> {
+    root <%= @www_root %>;
+    try_files $uri /index.php;
+    fastcgi_index index.php;
+    fastcgi_pass <%= @php_fpm %>;
+    include <%= @fastcgi_params %>;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+  }

@@ -25,6 +25,8 @@
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
 #     that you can split the script_name and path_info via regex
+#   [*php_fpm]               - Specifies the fastcgi pass argument for the
+#     php_fpm template.
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for
 #     this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the
@@ -98,6 +100,7 @@ define nginx::resource::location (
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
+  $php_fpm              = undef,
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
@@ -132,8 +135,8 @@ define nginx::resource::location (
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
+  if (($php_fpm == undef) and ($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, php_fpm, stub_status, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
@@ -148,9 +151,11 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
+  } elsif ($php_fpm != undef) {
+    $content_real = template('nginx/vhost/vhost_location_php.erb')
   } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
-  } else {
+  }  else {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
