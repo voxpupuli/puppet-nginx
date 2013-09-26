@@ -42,23 +42,26 @@ class nginx::package::redhat {
       # http://nginx.org/packages/centos appears to be identical to
       # http://nginx.org/packages/rhel
       # no other dedicated dirs exist for platforms under $::osfamily == redhat
-      yumrepo { 'nginx-release':
-        baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
-        descr    => 'nginx repo',
-        enabled  => '1',
-        gpgcheck => '1',
-        priority => '1',
-        gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+      if $nginx::manage_repo {
+        yumrepo { 'nginx-release':
+          baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
+          descr    => 'nginx repo',
+          enabled  => '1',
+          gpgcheck => '1',
+          priority => '1',
+          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          before   => Package[$redhat_packages],
+        }
       }
-
-      Yumrepo['nginx-release'] -> Package[$redhat_packages]
     }
   }
 
-  #Define file for nginx-repo so puppet doesn't delete it
-  file { '/etc/yum.repos.d/nginx-release.repo':
-    ensure  => present,
-    require => Yumrepo['nginx-release'],
+  if $nginx::manage_repo {
+    #Define file for nginx-repo so puppet doesn't delete it
+    file { '/etc/yum.repos.d/nginx-release.repo':
+      ensure  => present,
+      require => Yumrepo['nginx-release'],
+    }
   }
 
   package { $redhat_packages:

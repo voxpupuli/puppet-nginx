@@ -53,6 +53,7 @@ class nginx (
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
+  $manage_repo            = $nginx::params::manage_repo,
 ) inherits nginx::params {
 
   include stdlib
