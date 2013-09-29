@@ -1,7 +1,7 @@
 <% if @include_files %><% @include_files.each do |file| -%>
 include <%= file %>;
 <% end -%><% end -%>
-<% if @vhost_cfg_append -%><% vhost_cfg_append.each do |key,value| -%>
+<% if @vhost_cfg_append -%><% @vhost_cfg_append.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%>
 <% end -%>
