@@ -24,6 +24,9 @@ server {
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;
 
+<% if @root -%>
+  root <%= @root %>;
+<% end -%>
 <% if @passenger_cgi_param -%><% @passenger_cgi_param.each do |key,value| -%>
   passenger_set_cgi_param  <%= key %> <%= value %>;
 <% end -%><% end -%>
