@@ -74,7 +74,8 @@
 #      options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
-#
+#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment 
+#      variables to pass to the backend application
 # Actions:
 #
 # Requires:
@@ -104,6 +105,7 @@ define nginx::resource::vhost (
   $ssl_port               = '443',
   $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
+  $ssl_cache              = 'shared:SSL:10m',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
@@ -132,6 +134,7 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $passenger_cgi_param    = undef,
 ) {
 
   validate_array($location_allow)
