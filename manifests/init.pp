@@ -32,6 +32,7 @@ class nginx (
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
   $package_ensure         = $nginx::params::package_ensure,
+  $manage_repos           = $nginx::params::manage_repos,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $confd_purge            = $nginx::params::nx_confd_purge,
