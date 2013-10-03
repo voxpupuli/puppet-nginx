@@ -35,7 +35,7 @@ class nginx::package::debian {
       }
     }
     'passenger': {
-      if !defined( Package['apt-transport-https'] ) {   package { 'apt-transport-https': ensure => present } }
+      ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
 
       apt::source { 'nginx':
         location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
