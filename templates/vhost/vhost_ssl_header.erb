@@ -44,8 +44,7 @@ server {
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
-
-<% if defined? @www_root -%>
+<% if @www_root -%>
   root <%= @www_root %>;
 <% end -%>
 
