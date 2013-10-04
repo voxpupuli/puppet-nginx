@@ -74,6 +74,8 @@
 #      options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
+#   [*rewrite_rules*]           - Adds a single (String) or multiple rewrite rules 
+#     (Array) to vhost 
 #
 # Actions:
 #
@@ -132,6 +134,7 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $rewrite_rules          = undef,
 ) {
 
   validate_array($location_allow)
@@ -212,6 +215,7 @@ define nginx::resource::vhost (
     index_files         => $index_files,
     location_custom_cfg => $location_custom_cfg,
     notify              => Class['nginx::service'],
+    rewrite_rules       => $rewrite_rules,
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
