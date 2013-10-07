@@ -4,7 +4,7 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class.
+#   [*package_name*]         - Override the package name
 #
 # Actions:
 #
@@ -13,10 +13,12 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian {
+class nginx::package::debian (
+  $package_name = 'nginx',
+) {
   $distro = downcase($::operatingsystem)
 
-  package { 'nginx':
+  package { $package_name:
     ensure  => $nginx::package_ensure,
     require => Anchor['nginx::apt_repo'],
   }
