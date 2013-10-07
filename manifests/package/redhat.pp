@@ -13,7 +13,9 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
+class nginx::package::redhat (
+  $manage_repo = true
+) {
   $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
 
   case $::operatingsystem {
@@ -42,7 +44,7 @@ class nginx::package::redhat {
       # http://nginx.org/packages/centos appears to be identical to
       # http://nginx.org/packages/rhel
       # no other dedicated dirs exist for platforms under $::osfamily == redhat
-      if $nginx::manage_repo {
+      if $manage_repo {
         yumrepo { 'nginx-release':
           baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
           descr    => 'nginx repo',
@@ -56,7 +58,7 @@ class nginx::package::redhat {
     }
   }
 
-  if $nginx::manage_repo {
+  if $manage_repo {
     #Define file for nginx-repo so puppet doesn't delete it
     file { '/etc/yum.repos.d/nginx-release.repo':
       ensure  => present,
