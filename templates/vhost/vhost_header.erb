@@ -17,6 +17,12 @@ server {
 <% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%><% end -%>
+<% if @root -%>
+  root <%= @root %>;
+<% end -%>
+<% if @passenger_cgi_param -%><% @passenger_cgi_param.each do |key,value| -%>
+  passenger_set_cgi_param  <%= key %> <%= value %>;
+<% end -%><% end -%>
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
 <% end -%>

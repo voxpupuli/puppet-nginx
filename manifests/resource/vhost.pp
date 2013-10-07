@@ -74,7 +74,8 @@
 #      options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
-#
+#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment 
+#      variables to pass to the backend application
 # Actions:
 #
 # Requires:
@@ -104,6 +105,7 @@ define nginx::resource::vhost (
   $ssl_port               = '443',
   $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
+  $ssl_cache              = 'shared:SSL:10m',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
@@ -132,6 +134,8 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $passenger_cgi_param    = undef,
+  $use_default_location   = true,
 ) {
 
   validate_array($location_allow)
@@ -190,28 +194,32 @@ define nginx::resource::vhost (
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
-
-  # Create the default location reference for the vHost
-  nginx::resource::location {"${name}-default":
-    ensure              => $ensure,
-    vhost               => $name,
-    ssl                 => $ssl,
-    ssl_only            => $ssl_only,
-    location            => '/',
-    location_allow      => $location_allow,
-    location_deny       => $location_deny,
-    proxy               => $proxy,
-    proxy_read_timeout  => $proxy_read_timeout,
-    proxy_cache         => $proxy_cache,
-    proxy_cache_valid   => $proxy_cache_valid,
-    fastcgi             => $fastcgi,
-    fastcgi_params      => $fastcgi_params,
-    fastcgi_script      => $fastcgi_script,
-    try_files           => $try_files,
-    www_root            => $www_root,
-    index_files         => $index_files,
-    location_custom_cfg => $location_custom_cfg,
-    notify              => Class['nginx::service'],
+  
+  if $use_default_location == true {
+    # Create the default location reference for the vHost
+    nginx::resource::location {"${name}-default":
+      ensure              => $ensure,
+      vhost               => $name,
+      ssl                 => $ssl,
+      ssl_only            => $ssl_only,
+      location            => '/',
+      location_allow      => $location_allow,
+      location_deny       => $location_deny,
+      proxy               => $proxy,
+      proxy_read_timeout  => $proxy_read_timeout,
+      proxy_cache         => $proxy_cache,
+      proxy_cache_valid   => $proxy_cache_valid,
+      fastcgi             => $fastcgi,
+      fastcgi_params      => $fastcgi_params,
+      fastcgi_script      => $fastcgi_script,
+      try_files           => $try_files,
+      www_root            => $www_root,
+      index_files         => $index_files,
+      location_custom_cfg => $location_custom_cfg,
+      notify              => Class['nginx::service'],
+    }
+  } else {
+    $root = $www_root
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
