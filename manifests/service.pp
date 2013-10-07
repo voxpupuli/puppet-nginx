@@ -15,7 +15,8 @@
 # This class file is not called directly
 class nginx::service(
   $configtest_enable = $nginx::params::nx_configtest_enable,
-  $service_restart   = $nginx::params::nx_service_restart
+  $service_restart   = $nginx::params::nx_service_restart,
+  $service_name      = $nginx::params::nx_service_name,
 ) {
   exec { 'rebuild-nginx-vhosts':
     command     => "/bin/cat ${nginx::params::nx_temp_dir}/nginx.d/* > ${nginx::params::nx_conf_dir}/conf.d/vhost_autogen.conf",
@@ -30,6 +31,7 @@ class nginx::service(
     subscribe   => File["${nginx::params::nx_temp_dir}/nginx.mail.d"],
   }
   service { 'nginx':
+    name       => $service_name,
     ensure     => running,
     enable     => true,
     hasstatus  => true,
