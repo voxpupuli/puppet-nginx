@@ -13,11 +13,15 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian {
+class nginx::package::debian(
+    $package_name   = 'nginx',
+    $package_source = 'nginx',
+    $package_ensure = 'present'
+  ) {
   $distro = downcase($::operatingsystem)
 
-  package { $nginx::package_name:
-    ensure  => $nginx::package_ensure,
+  package { $package_name:
+    ensure  => $package_ensure,
     require => Anchor['nginx::apt_repo'],
   }
 
@@ -25,7 +29,7 @@ class nginx::package::debian {
 
   include '::apt'
 
-  case $nginx::package_source {
+  case $package_source {
     'nginx': {
       apt::source { 'nginx':
         location   => "http://nginx.org/packages/${distro}",

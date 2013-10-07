@@ -60,6 +60,9 @@ class nginx (
   include stdlib
 
   class { 'nginx::package':
+    package_name   => $package_name,
+    package_source => $package_source,
+    package_ensure => $package_ensure,
     notify => Class['nginx::service'],
   }
 
