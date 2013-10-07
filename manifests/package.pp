@@ -4,7 +4,7 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class.
+#   [*package_name*]         - Override the package name
 #
 # Actions:
 #
@@ -13,25 +13,30 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package {
+class nginx::package (
+  $package_name = undef,
+) {
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
   case $::osfamily {
     'redhat': {
       class { 'nginx::package::redhat':
+        package_name => $package_name,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
     }
     'debian': {
       class { 'nginx::package::debian':
+        package_name => $package_name,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
     }
     'suse': {
       class { 'nginx::package::suse':
+        package_name => $package_name,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
@@ -44,6 +49,7 @@ class nginx::package {
           warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.2 is deprecated")
           warning("Please upgrade from facter ${::facterversion} to >= 1.7.2")
           class { 'nginx::package::redhat':
+            package_name => $package_name,
             require => Anchor['nginx::package::begin'],
             before  => Anchor['nginx::package::end'],
           }

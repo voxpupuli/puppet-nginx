@@ -4,7 +4,7 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class.
+#   [*package_name*]         - Override the package name
 #
 # Actions:
 #
@@ -13,8 +13,10 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
-  $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
+class nginx::package::redhat (
+  $package_name = 'nginx',
+) {
+  $redhat_packages = [$package_name, 'gd', 'libXpm', 'libxslt']
 
   case $::operatingsystem {
     'fedora': {

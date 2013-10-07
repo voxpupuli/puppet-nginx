@@ -4,7 +4,7 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class.
+#   [*package_name*]         - Override the package name
 #
 # Actions:
 #  This module contains all of the required package for SuSE. Apache and all
@@ -15,9 +15,11 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::suse {
+class nginx::package::suse (
+  $package_name = 'nginx-0.8',
+) {
   $suse_packages = [
-    'nginx-0.8', 'apache2', 'apache2-itk', 'apache2-utils', 'gd', 'libapr1',
+    $package_name, 'apache2', 'apache2-itk', 'apache2-utils', 'gd', 'libapr1',
     'libapr-util1', 'libjpeg62', 'libpng14-14', 'libxslt', 'rubygem-daemon_controller',
     'rubygem-fastthread', 'rubygem-file-tail', 'rubygem-passenger',
     'rubygem-passenger-nginx', 'rubygem-rack', 'rubygem-rake', 'rubygem-spruz',
