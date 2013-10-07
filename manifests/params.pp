@@ -89,4 +89,5 @@ class nginx::params {
   $nx_http_access_log = "${nx_logdir}/access.log"
 
   $package_ensure = 'present'
+  $manage_repo    = true
 }
