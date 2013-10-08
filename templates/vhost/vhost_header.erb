@@ -32,6 +32,9 @@ server {
   }
 <% end -%>
 
+<% if defined? @access_log_real -%>
   access_log            <%= @access_log_real %>;
+<% end -%>
+<% if defined? @error_log_real -%>
   error_log             <%= @error_log_real %>;
-
+<% end -%>
