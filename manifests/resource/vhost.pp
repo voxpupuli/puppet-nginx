@@ -70,8 +70,10 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*access_log_enable*]       - Enable, disable or inherit (undef) access log setting
 #   [*access_log*]              - Where to write access log. May add additional
 #      options like log format to the end.
+#   [*error_log_enable*]        - Enable, disable or inherit (undef) error log setting
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment 
@@ -132,7 +134,9 @@ define nginx::resource::vhost (
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
+  $access_log_enable      = true,
   $access_log             = undef,
+  $error_log_enable       = true,
   $error_log              = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
@@ -169,13 +173,33 @@ define nginx::resource::vhost (
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $domain_log_name = regsubst($name, ' ', '_', 'G')
-  $access_log_real = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
-    default => $access_log,
+  case $access_log_enable {
+    true: {
+      $access_log_real = $access_log ? {
+        undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+        default => $access_log,
+      }
+    }
+    false: {
+      $access_log_real = 'off'
+    }
+    undef: {
+      # Doing nothing tells nginx to use the http log setting
+    }
   }
-  $error_log_real = $error_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
-    default => $error_log,
+  case $error_log_enable {
+    true: {
+      $error_log_real = $error_log ? {
+        undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
+        default => $error_log,
+      }
+    }
+    false: {
+      $error_log_real = 'off'
+    }
+    undef: {
+      # Doing nothing tells nginx to use the http log setting
+    }
   }
 
   # Use the File Fragment Pattern to construct the configuration files.

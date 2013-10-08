@@ -14,6 +14,11 @@ http {
   include       /etc/nginx/mime.types;
   default_type  application/octet-stream;
 
+  <% if @log_formats -%>
+    <% @log_formats.sort_by{|k,v| k}.each do |name, format| -%>
+    log_format <%= name %> '<%= format %>';
+    <% end -%>
+  <% end -%>
   access_log  <%= @http_access_log %>;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
