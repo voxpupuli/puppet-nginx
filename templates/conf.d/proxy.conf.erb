@@ -1,3 +1,4 @@
+
 proxy_redirect          <%= @options['proxy_redirect'] %>;
 client_max_body_size    <%= @options['client_max_body_size'] %>;
 client_body_buffer_size <%= @options['client_body_buffer_size'] %>;
@@ -6,6 +7,7 @@ proxy_send_timeout      <%= @options['proxy_send_timeout'] %>;
 proxy_read_timeout      <%= @options['proxy_read_timeout'] %>;
 proxy_buffers           <%= @options['proxy_buffers'] %>;
 proxy_http_version      <%= @options['proxy_http_version'] %>;
+proxy_buffer_size       <%= @options['proxy_buffer_size'] %>;
 <% @options['proxy_set_header'].each do |header| %>
 proxy_set_header        <%= header %>;
 <% end %>

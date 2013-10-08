@@ -13,7 +13,9 @@
 # Sample Usage:
 #
 # This class file is not called directly
+
 class nginx::config($options) {
+
   File {
     owner => 'root',
     group => 'root',

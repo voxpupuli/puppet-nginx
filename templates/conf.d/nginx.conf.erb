@@ -1,3 +1,4 @@
+
 user <%= @options['daemon_user'] %>;
 worker_processes <%= @options['worker_processes'] %>;
 
@@ -43,6 +44,7 @@ http {
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;
+
 }
 <% if @options['mail'] %>
 mail {

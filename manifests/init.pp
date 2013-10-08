@@ -28,7 +28,13 @@
 # node default {
 #   include nginx
 # }
-class nginx ($options = $nginx::params::defaults) {
+
+class nginx (
+  $options = $nginx::params::defaults,
+  $nginx_vhosts           = {},
+  $nginx_upstreams        = {},
+  $nginx_locations        = {},
+) {
 
   include stdlib
   include nginx::params
@@ -38,7 +44,11 @@ class nginx ($options = $nginx::params::defaults) {
   $config = merge($nginx::params::defaults, $options)
 
   class { 'nginx::package':
-    notify => Class['nginx::service'],
+    package_name   => $package_name,
+    package_source => $package_source,
+    package_ensure => $package_ensure,
+    notify      => Class['nginx::service'],
+    manage_repo => $config['manage_repo'],
   }
 
   class { 'nginx::config':
@@ -48,6 +58,13 @@ class nginx ($options = $nginx::params::defaults) {
   class { 'nginx::service':
     options => $config,
   }
+
+  validate_hash($nginx_upstreams)
+  create_resources('nginx::resource::upstream', $nginx_upstreams)
+  validate_hash($nginx_vhosts)
+  create_resources('nginx::resource::vhost', $nginx_vhosts)
+  validate_hash($nginx_locations)
+  create_resources('nginx::resource::location', $nginx_locations)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through

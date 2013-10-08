@@ -13,30 +13,50 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian {
-  $operatingsystem_lowercase = inline_template('<%= operatingsystem.downcase %>')
+class nginx::package::debian(
+    $manage_repo    = true,
+    $package_name   = 'nginx',
+    $package_source = 'nginx',
+    $package_ensure = 'present'
+  ) {
+  $distro = downcase($::operatingsystem)
 
-  package { 'nginx':
-    ensure  => present,
+  package { $package_name:
+    ensure  => $package_ensure,
     require => Anchor['nginx::apt_repo'],
   }
 
   anchor { 'nginx::apt_repo' : }
 
-  file { '/etc/apt/sources.list.d/nginx.list':
-    ensure  => present,
-    content => "deb http://nginx.org/packages/${operatingsystem_lowercase}/ ${::lsbdistcodename} nginx
-                deb-src http://nginx.org/packages/${operatingsystem_lowercase}/ ${::lsbdistcodename} nginx
-               ",
-    mode    => '0444',
-    require => Exec['add_nginx_apt_key'],
-    before  => Anchor['nginx::apt_repo'],
-  }
+  include '::apt'
 
-  exec { 'add_nginx_apt_key':
-    command   => '/usr/bin/wget http://nginx.org/keys/nginx_signing.key -O - | /usr/bin/apt-key add -',
-    unless    => '/usr/bin/apt-key list | /bin/grep -q nginx',
-    before    => Anchor['nginx::apt_repo'],
+  if $manage_repo {
+    case $package_source {
+      'nginx': {
+        apt::source { 'nginx':
+          location   => "http://nginx.org/packages/${distro}",
+          repos      => 'nginx',
+          key        => '7BD9BF62',
+          key_source => 'http://nginx.org/keys/nginx_signing.key',
+        }
+      }
+      'passenger': {
+        ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
+
+        apt::source { 'nginx':
+          location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          repos      => "main",
+          key        => '561F9B9CAC40B2F7',
+          key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+        }
+
+        package { 'passenger':
+          ensure  => 'present',
+          require => Anchor['nginx::apt_repo'],
+        }
+      }
+      default: {}
+    }
   }
 
   exec { 'apt_get_update_for_nginx':
@@ -44,7 +64,7 @@ class nginx::package::debian {
     timeout     => 240,
     returns     => [ 0, 100 ],
     refreshonly => true,
-    subscribe   => File['/etc/apt/sources.list.d/nginx.list'],
+    subscribe   => Apt::Source['nginx'],
     before      => Anchor['nginx::apt_repo'],
   }
 }

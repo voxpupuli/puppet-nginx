@@ -13,31 +13,61 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
+class nginx::package::redhat (
+  $manage_repo = true
+) {
   $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
 
-  if downcase($::operatingsystem) == 'redhat' {
-    $os_type = 'rhel'
-  } else {
-    $os_type = downcase($::operatingsystem)
+  case $::operatingsystem {
+    'fedora': {
+      # nginx.org does not supply RPMs for fedora
+      # fedora 18 provides 1.2.x packages
+      # fedora 19 has 1.4.x packages are in
+
+      # fedora 18 users will need to supply their own nginx 1.4 rpms and/or repo
+      if $::lsbmajdistrelease < 19 {
+        notice("${::operatingsystem} ${::lsbmajdistrelease} does not supply nginx >= 1.4 packages")
+      }
+    }
+    default: {
+      case $::lsbmajdistrelease {
+        5, 6: {
+          $os_rel = $::lsbmajdistrelease
+        }
+        default: {
+          # Amazon uses the year as the $::lsbmajdistrelease
+          $os_rel = 6
+        }
+      }
+
+      # as of 2013-07-28
+      # http://nginx.org/packages/centos appears to be identical to
+      # http://nginx.org/packages/rhel
+      # no other dedicated dirs exist for platforms under $::osfamily == redhat
+      if $manage_repo {
+        yumrepo { 'nginx-release':
+          baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
+          descr    => 'nginx repo',
+          enabled  => '1',
+          gpgcheck => '1',
+          priority => '1',
+          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          before   => Package[$redhat_packages],
+        }
+      }
+    }
   }
 
-  if $::lsbmajdistrelease == undef {
-    $os_rel = regsubst($::operatingsystemrelease, '\..*$', '')
-  } else {
-    $os_rel = $::lsbmajdistrelease
-  }
-
-  yumrepo { 'nginx-release':
-    baseurl  => "http://nginx.org/packages/${os_type}/${os_rel}/\$basearch/",
-    descr    => 'nginx repo',
-    enabled  => '1',
-    gpgcheck => '1',
-    gpgkey => "http://nginx.org/keys/nginx_signing.key",
+  if $manage_repo {
+    #Define file for nginx-repo so puppet doesn't delete it
+    file { '/etc/yum.repos.d/nginx-release.repo':
+      ensure  => present,
+      require => Yumrepo['nginx-release'],
+    }
   }
 
   package { $redhat_packages:
-    ensure  => present,
-    require => Yumrepo['nginx-release'],
+    ensure  => $nginx::package_ensure,
   }
+
 }

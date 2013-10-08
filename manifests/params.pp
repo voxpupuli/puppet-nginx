@@ -69,11 +69,11 @@ class nginx::params {
     proxy_read_timeout      => '90',
     proxy_buffers           => '32 4,k',
     proxy_http_version      => '1.0',
+    proxy_buffer_size       => '8k',
 
     logdir => $::kernel ? {
       /(?i-mx:linux)/ => '/var/log/nginx',
     },
-
     pid => $::kernel ? {
       /(?i-mx:linux)/  => '/var/run/nginx.pid',
     },
@@ -90,5 +90,15 @@ class nginx::params {
     service_restart => '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
 
     mail => false,
+
+    nginx_error_log => "${nx_logdir}/error.log",
+    http_access_log => "${nx_logdir}/access.log",
+
+    # package name depends on distribution, e.g. for Debian nginx-full | nginx-light
+    package_name   => 'nginx',
+    package_ensure => 'present',
+    package_source => 'nginx',
+    manage_repo    => true
   }
+
 }
