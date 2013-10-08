@@ -31,9 +31,7 @@
 class nginx (
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
-  $package_name           = $nginx::params::package_name,
   $package_ensure         = $nginx::params::package_ensure,
-  $package_source         = $nginx::params::package_source,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $confd_purge            = $nginx::params::nx_confd_purge,
@@ -60,9 +58,6 @@ class nginx (
   include stdlib
 
   class { 'nginx::package':
-    package_name   => $package_name,
-    package_source => $package_source,
-    package_ensure => $package_ensure,
     notify => Class['nginx::service'],
   }
 

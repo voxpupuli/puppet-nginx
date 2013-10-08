@@ -13,11 +13,7 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package(
-  $package_name   = 'nginx',
-  $package_source = 'nginx',
-  $package_ensure = 'present',
-) {
+class nginx::package {
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
@@ -30,9 +26,6 @@ class nginx::package(
     }
     'debian': {
       class { 'nginx::package::debian':
-        package_name   => $package_name,
-        package_source => $package_source,
-        package_ensure => $package_ensure,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
