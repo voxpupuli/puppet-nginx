@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::package::debian(
-    $manage_repo    = true,
     $package_name   = 'nginx',
     $package_source = 'nginx',
     $package_ensure = 'present'
@@ -30,33 +29,31 @@ class nginx::package::debian(
 
   include '::apt'
 
-  if $manage_repo {
-    case $package_source {
-      'nginx': {
-        apt::source { 'nginx':
-          location   => "http://nginx.org/packages/${distro}",
-          repos      => 'nginx',
-          key        => '7BD9BF62',
-          key_source => 'http://nginx.org/keys/nginx_signing.key',
-        }
+  case $package_source {
+    'nginx': {
+      apt::source { 'nginx':
+        location   => "http://nginx.org/packages/${distro}",
+        repos      => 'nginx',
+        key        => '7BD9BF62',
+        key_source => 'http://nginx.org/keys/nginx_signing.key',
       }
-      'passenger': {
-        ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
-
-        apt::source { 'nginx':
-          location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos      => "main",
-          key        => '561F9B9CAC40B2F7',
-          key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
-        }
-
-        package { 'passenger':
-          ensure  => 'present',
-          require => Anchor['nginx::apt_repo'],
-        }
-      }
-      default: {}
     }
+    'passenger': {
+      ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
+
+      apt::source { 'nginx':
+        location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+        repos      => "main",
+        key        => '561F9B9CAC40B2F7',
+        key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+      }
+
+      package { 'passenger':
+        ensure  => 'present',
+        require => Anchor['nginx::apt_repo'],
+      }
+    }
+    default: {}
   }
 
   exec { 'apt_get_update_for_nginx':

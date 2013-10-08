@@ -55,21 +55,15 @@ class nginx (
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
-  $manage_repo            = $nginx::params::manage_repo,
 ) inherits nginx::params {
 
   include stdlib
 
   class { 'nginx::package':
-<<<<<<< HEAD
     package_name   => $package_name,
     package_source => $package_source,
     package_ensure => $package_ensure,
     notify => Class['nginx::service'],
-=======
-    notify      => Class['nginx::service'],
-    manage_repo => $manage_repo,
->>>>>>> b6ee1e59733eebaa410f7b4a18cc40c7c48be20e
   }
 
   class { 'nginx::config':
