@@ -1,52 +1,52 @@
-user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
-worker_processes <%= @worker_processes %>;
 
-error_log  <%= @nginx_error_log %>;
-pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
+user <%= @options['daemon_user'] %>;
+worker_processes <%= @options['worker_processes'] %>;
+
+error_log  <%= @options['logdir'] %>/error.log;
+pid        <%= @options['pid'] %>;
 
 events {
-  worker_connections <%= @worker_connections -%>;
-<% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end -%>
-<% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end -%>
+  worker_connections <%= @options['worker_connections'] %>;
+<% if @options['multi_accept'] == 'on' %>multi_accept on;<% end -%>
+<% if @options['events_use'] %>use <%= @options['events_use'] %>;<% end -%>
 }
 
 http {
   include       /etc/nginx/mime.types;
   default_type  application/octet-stream;
 
-  access_log  <%= @http_access_log %>;
+  access_log  <%= @options['logdir'] %>/access.log;
 
-  sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
+  sendfile    <%= @options['sendfile'] %>;
 
-  server_tokens <%= @server_tokens %>;
-  <% if scope.lookupvar('nginx::params::nx_tcp_nopush') == 'on' %>tcp_nopush on;<% end %>
+  server_tokens <%= @options['server_tokens'] %>;
+  tcp_nopush <%= @options['tcp_nopush'] %>;
+  tcp_nodelay <%= @options['tcp_nodelay'] %>;
 
-  types_hash_max_size <%= scope.lookupvar('nginx::params::nx_types_hash_max_size')%>;
-  types_hash_bucket_size <%= scope.lookupvar('nginx::params::nx_types_hash_bucket_size')%>;
+  types_hash_max_size <%= @options['types_hash_max_size'] %>;
+  types_hash_bucket_size <%= @options['types_hash_bucket_size'] %>;
 
-  server_names_hash_bucket_size <%= scope.lookupvar('nginx::params::nx_names_hash_bucket_size')%>;
+  server_names_hash_bucket_size <%= @options['names_hash_bucket_size'] %>;
 
-  keepalive_timeout  <%= scope.lookupvar('nginx::params::nx_keepalive_timeout')%>;
-  tcp_nodelay        <%= scope.lookupvar('nginx::params::nx_tcp_nodelay')%>;
+  keepalive_timeout  <%= @options['keepalive_timeout'] %>;
 
-<% if scope.lookupvar('nginx::params::nx_gzip') == 'on' %>
+<% if @options['gzip'] == 'on' %>
   gzip         on;
-  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+  gzip_disable <%= @options['gzip_disable'] %>;
+  gzip_min_length <%= @options['gzip_min_length'] %>;
+  gzip_comp_level <%= @options['gzip_comp_level'] %>;
+  gzip_vary <%= @options['gzip_vary'] %>;
+  gzip_types <%= @options['gzip_types'] %>;
 <% end -%>
 
-<% if @proxy_cache_path -%>
-  proxy_cache_path    <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
-<% end -%>
-
-<% if @http_cfg_append -%><% @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
-  <%= key %> <%= value %>;
-<% end -%>
+<% if @options['proxy_cache_path'] -%>
+  proxy_cache_path    <%= @options['proxy_cache_path'] %> levels=<%= @options['proxy_cache_levels'] %> keys_zone=<%= @options['proxy_cache_keys_zone'] %> max_size=<%= @options['proxy_cache_max_size'] %> inactive=<%= @options['proxy_cache_inactive'] %>;
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;
 
 }
-<% if scope.lookupvar('nginx::mail') %>
+<% if @options['mail'] %>
 mail {
   include /etc/nginx/conf.mail.d/*.conf;
 }
