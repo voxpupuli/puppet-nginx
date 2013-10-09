@@ -38,6 +38,7 @@ class nginx::package::debian(
           repos      => 'nginx',
           key        => '7BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
+          notify     => Exec['apt_get_update_for_nginx'],
         }
       }
       'passenger': {
@@ -48,6 +49,7 @@ class nginx::package::debian(
           repos      => "main",
           key        => '561F9B9CAC40B2F7',
           key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+          notify     => Exec['apt_get_update_for_nginx'],
         }
 
         package { 'passenger':
@@ -57,14 +59,13 @@ class nginx::package::debian(
       }
       default: {}
     }
-  }
 
-  exec { 'apt_get_update_for_nginx':
-    command     => '/usr/bin/apt-get update',
-    timeout     => 240,
-    returns     => [ 0, 100 ],
-    refreshonly => true,
-    subscribe   => Apt::Source['nginx'],
-    before      => Anchor['nginx::apt_repo'],
+    exec { 'apt_get_update_for_nginx':
+      command     => '/usr/bin/apt-get update',
+      timeout     => 240,
+      returns     => [ 0, 100 ],
+      refreshonly => true,
+      before      => Anchor['nginx::apt_repo'],
+    }
   }
 }
