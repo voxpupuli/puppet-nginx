@@ -14,9 +14,12 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo = true
+  $manage_repo = true,
+  $package_name   = 'nginx',
+  $package_source = 'nginx',
+  $package_ensure = 'present'
 ) {
-  $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
+  $redhat_packages = [$package_name, 'gd', 'libXpm', 'libxslt']
 
   case $::operatingsystem {
     'fedora': {
@@ -67,7 +70,7 @@ class nginx::package::redhat (
   }
 
   package { $redhat_packages:
-    ensure  => $nginx::package_ensure,
+    ensure  => $package_ensure,
   }
 
 }
