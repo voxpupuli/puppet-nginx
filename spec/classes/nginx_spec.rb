@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe 'nginx' do
 
-  shared_examples 'linux' do |operatingsystem, user|
-    let(:facts) {{ :kernel => 'linux', :operatingsystem => operatingsystem, :osfamily => operatingsystem, :lsbdistcodename => 'precise' }}
+  shared_examples 'linux' do |operatingsystem, lsbdistcodename, user|
+    let(:facts) {{ :kernel => 'linux',
+      :operatingsystem => operatingsystem,
+      :osfamily => operatingsystem,
+      :lsbdistcodename => lsbdistcodename }}
 
     it { should contain_service('nginx').with(
         :ensure => 'running',
@@ -15,11 +18,11 @@ describe 'nginx' do
 
 
   context 'redhat' do
-    it_behaves_like 'linux', 'redhat', 'nginx'
+    it_behaves_like 'linux', 'redhat', '6.4', 'nginx'
   end
 
   context 'debian' do
-    it_behaves_like 'linux', 'debian', 'www-data'
+    it_behaves_like 'linux', 'debian', 'Wheezy', 'www-data'
   end
 
   describe 'installs the requested package version' do
