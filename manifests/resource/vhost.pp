@@ -114,7 +114,7 @@ define nginx::resource::vhost (
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable == true) and ($ipaddress6) {
+  if ($ipv6_enable == true) and (!$ipaddress6) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
@@ -158,6 +158,7 @@ define nginx::resource::vhost (
     fastcgi_script       => $fastcgi_script,
     try_files            => $try_files,
     www_root             => $www_root,
+    index_files          => $index_files,
     location_custom_cfg  => $location_custom_cfg,
     notify               => Class['nginx::service'],
   }
@@ -171,6 +172,14 @@ define nginx::resource::vhost (
   if $location_cfg_append {
     Nginx::Resource::Location["${name}-default"] {
       location_cfg_append => $location_cfg_append }
+  }
+
+  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
+    file { '/etc/nginx/fastcgi_params':
+      ensure  => present,
+      mode    => '0770',
+      content => template('nginx/vhost/fastcgi_params.erb'),
+    }
   }
 
   # Create a proper file close stub.
@@ -197,19 +206,21 @@ define nginx::resource::vhost (
       notify  => Class['nginx::service'],
     }
 
-    #Generate ssl key/cert with provided file-locations
+  #Generate ssl key/cert with provided file-locations
 
-#    $cert = regsubst($name,' ','_')
-#
-#    file { "${nginx::params::nx_conf_dir}/${cert}.crt":
-#      ensure => $ensure,
-#      mode   => '0644',
-#      source => $ssl_cert,
-#    }
-#    file { "${nginx::params::nx_conf_dir}/${cert}.key":
-#      ensure => $ensure,
-#      mode   => '0644',
-#      source => $ssl_key,
-#    }
+    $cert = regsubst($name,' ','_')
+
+    # Check if the file has been defined before creating the file to
+    # avoid the error when using wildcard cert on the multiple vhosts
+    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
+      ensure => $ensure,
+      mode   => '0644',
+      source => $ssl_cert,
+    })
+    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
+      ensure => $ensure,
+      mode   => '0644',
+      source => $ssl_key,
+    })
   }
 }

@@ -1,9 +1,9 @@
 server {
-  listen       <%= listen_ip %>:<%= ssl_port %> ssl<% if spdy == 'on' %> spdy<% end %><% if @listen_options %><%= listen_options %><% end %>;
-  <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
-  listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
+  listen       <%= @listen_ip %>:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @listen_options %><%= @listen_options %><% end %>;
+  <% if @ipv6_enable == 'true' && (defined? ipaddress6) %>
+  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
-  server_name  <%= rewrite_www_to_non_www ? name.gsub(/^www\./, '') : server_name.join(" ") %>;
+  server_name  <%= @rewrite_www_to_non_www ? @name.gsub(/^www\./, '') : @server_name.join(" ") %>;
 
   ssl on;
 
@@ -13,16 +13,15 @@ server {
   ssl_certificate_key       <%= ssl_key %>;
   ssl_session_cache         shared:SSL:10m;
   ssl_session_timeout       5m;
-  ssl_protocols             <%= ssl_protocols %>;
-  ssl_ciphers               <%= ssl_ciphers %>;
+  ssl_protocols             <%= @ssl_protocols %>;
+  ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
-<% if auth_basic != :undef -%>
-  auth_basic                "<%= auth_basic %>";
+<% if defined? @auth_basic -%>
+  auth_basic                "<%= @auth_basic %>";
 <% end -%>
-<% if auth_basic_user_file != :undef -%>
-  auth_basic_user_file      <%= auth_basic_user_file %>;
+<% if defined? @auth_basic_user_file -%>
+  auth_basic_user_file      <%= @auth_basic_user_file %>;
 <% end -%>
 
   access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.access.log vcommon;
   error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.error.log;
-

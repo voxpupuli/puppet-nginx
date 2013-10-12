@@ -14,7 +14,7 @@
 #
 # This class file is not called directly
 class nginx::package::debian {
-  $operatingsystem_lowercase = inline_template('<%= operatingsystem.downcase %>')
+  $operatingsystem_lowercase = inline_template('<%= @operatingsystem.downcase %>')
 
   package { 'nginx':
     ensure  => present,
