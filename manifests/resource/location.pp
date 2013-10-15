@@ -49,6 +49,7 @@
 #     different replies.
 #   [*proxy_method*]         - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
+#   [*proxy_set_body*]       - If defined, sets the body passed to the backend.
 #   [*auth_basic*]            - This directive includes testing name and password
 #     with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
@@ -114,6 +115,7 @@ define nginx::resource::location (
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
+  $proxy_set_body       = undef,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $priority             = 500
