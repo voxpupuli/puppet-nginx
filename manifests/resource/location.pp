@@ -47,6 +47,8 @@
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
 #     different replies.
+#   [*proxy_method*]         - If defined, overrides the HTTP method of the
+#     request to be passed to the backend.
 #   [*auth_basic*]            - This directive includes testing name and password
 #     with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
@@ -111,6 +113,7 @@ define nginx::resource::location (
   $try_files            = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
+  $proxy_method         = undef,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $priority             = 500
