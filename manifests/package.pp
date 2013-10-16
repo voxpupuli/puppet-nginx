@@ -26,9 +26,8 @@ class nginx::package(
     'redhat': {
       class { 'nginx::package::redhat':
         manage_repo    => $manage_repo,
-        package_name   => $package_name,
-        package_source => $package_source,
         package_ensure => $package_ensure,
+        package_name   => $package_name,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
       }
