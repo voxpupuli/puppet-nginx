@@ -14,9 +14,10 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo = true
+  $manage_repo    = true,
+  $package_ensure = 'present',
+  $package_name   = 'nginx',
 ) {
-  $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
 
   case $::operatingsystem {
     'fedora': {
@@ -52,7 +53,7 @@ class nginx::package::redhat (
           gpgcheck => '1',
           priority => '1',
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
-          before   => Package[$redhat_packages],
+          before   => Package[$package_name],
         }
       }
     }
@@ -66,8 +67,8 @@ class nginx::package::redhat (
     }
   }
 
-  package { $redhat_packages:
-    ensure  => $nginx::package_ensure,
+  package { $package_name:
+    ensure  => $package_ensure,
   }
 
 }
