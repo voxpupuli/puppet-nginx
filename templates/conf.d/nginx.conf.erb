@@ -1,3 +1,4 @@
+### PUPPET MANAGED ####
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= @worker_processes %>;
 
@@ -15,9 +16,14 @@ http {
   default_type  application/octet-stream;
   
   log_format  vcommon '$host:$server_port $remote_addr - $remote_user [$time_local] "$request" '
+<<<<<<< HEAD
                         '$status $body_bytes_sent "$http_referer" '
                         '"$http_user_agent"';
 
+=======
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent"';
+>>>>>>> eae7cdf0884270675745aa6e9178cb075c7a01b2
   access_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log vcommon;
 
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
