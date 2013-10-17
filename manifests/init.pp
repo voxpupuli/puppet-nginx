@@ -45,7 +45,7 @@ class nginx (
   $mail                    = $nginx::params::nx_mail,
   $server_tokens           = $nginx::params::nx_server_tokens,
   $http_cfg_append         = $nginx::params::nx_http_cfg_append,
-  $client_body_buffer_size = $nginx::params::nx_client_buffer_size,
+  $client_body_buffer_size = $nginx::params::nx_client_body_buffer_size,
   $client_max_body_size    = $nginx::params::nx_client_max_body_size,
   $nginx_vhosts            = {},
   $nginx_upstreams         = {},
