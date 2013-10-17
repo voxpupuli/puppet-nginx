@@ -5,14 +5,11 @@ server {
   listen [<%= ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %> ipv6only=on;
 <% end %>
   server_name           <%= @rewrite_www_to_non_www ? @name.gsub(/^www\./, '') : @server_name.join(" ") %>;
-<<<<<<< HEAD
 <% if defined? @www_root -%>
   root  <%= @www_root %>;
 <% end -%>
-=======
   access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log vcommon;
   error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.error.log;
->>>>>>> eae7cdf0884270675745aa6e9178cb075c7a01b2
 <% if defined? auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
 <% end -%>
@@ -27,10 +24,3 @@ server {
        return 301 https://$host$request_uri;
   }
 <% end -%>
-
-<<<<<<< HEAD
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.access.log vcommon;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.error.log;
-
-=======
->>>>>>> eae7cdf0884270675745aa6e9178cb075c7a01b2
