@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'nginx' do
 
   shared_examples 'linux' do |operatingsystem, user|
-    let(:facts) {{ :kernel => 'linux', :operatingsystem => operatingsystem, :osfamily => operatingsystem }}
+    let(:facts) {{ :kernel => 'linux', :operatingsystem => operatingsystem, :osfamily => operatingsystem, :lsbdistcodename => 'precise' }}
 
     it { should contain_service('nginx').with(
         :ensure => 'running',

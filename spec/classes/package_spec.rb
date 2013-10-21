@@ -8,8 +8,8 @@ describe 'nginx::package' do
     it { should contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
-  shared_examples 'debian' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian'}}
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => lsbdistcodename }}
     it { should contain_file('/etc/apt/sources.list.d/nginx.list') }
   end
 
@@ -32,8 +32,8 @@ describe 'nginx::package' do
   end
 
   context 'debian' do
-    it_behaves_like 'debian', 'debian'
-    it_behaves_like 'debian', 'ubuntu'
+    it_behaves_like 'debian', 'debian', 'wheezy'
+    it_behaves_like 'debian', 'ubuntu', 'precise'
   end
 
   context 'suse' do
