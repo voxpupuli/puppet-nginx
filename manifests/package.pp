@@ -20,8 +20,11 @@ class nginx::package {
   case $::osfamily {
     'redhat': {
       class { 'nginx::package::redhat':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
+        manage_repo    => $manage_repo,
+        package_ensure => $package_ensure,
+        package_name   => $package_name,
+        require        => Anchor['nginx::package::begin'],
+        before         => Anchor['nginx::package::end'],
       }
     }
     'debian': {

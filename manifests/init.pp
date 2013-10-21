@@ -58,7 +58,11 @@ class nginx (
   include stdlib
 
   class { 'nginx::package':
-    notify => Class['nginx::service'],
+    package_name   => $package_name,
+    package_source => $package_source,
+    package_ensure => $package_ensure,
+    notify      => Class['nginx::service'],
+    manage_repo => $manage_repo,
   }
 
   class { 'nginx::config':

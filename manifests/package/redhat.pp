@@ -13,8 +13,13 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat {
+class nginx::package::redhat (
+  $manage_repo    = true,
+  $package_ensure = 'present',
+  $package_name   = 'nginx',
   $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
+
+) {
 
   case $::operatingsystem {
     'fedora': {
@@ -42,13 +47,16 @@ class nginx::package::redhat {
       # http://nginx.org/packages/centos appears to be identical to
       # http://nginx.org/packages/rhel
       # no other dedicated dirs exist for platforms under $::osfamily == redhat
-      yumrepo { 'nginx-release':
-        baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
-        descr    => 'nginx repo',
-        enabled  => '1',
-        gpgcheck => '1',
-        priority => '1',
-        gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+      if $manage_repo {
+        yumrepo { 'nginx-release':
+          baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
+          descr    => 'nginx repo',
+          enabled  => '1',
+          gpgcheck => '1',
+          priority => '1',
+          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          before   => Package[$package_name],
+        }
       }
 
       Yumrepo['nginx-release'] -> Package[$redhat_packages]
@@ -61,8 +69,8 @@ class nginx::package::redhat {
     require => Yumrepo['nginx-release'],
   }
 
-  package { $redhat_packages:
-    ensure  => $nginx::package_ensure,
+  package { $package_name:
+    ensure  => $package_ensure,
   }
 
 }
