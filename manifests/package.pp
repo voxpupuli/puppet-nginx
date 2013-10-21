@@ -13,7 +13,12 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package {
+class nginx::package(
+    $package_name   = 'nginx',
+    $package_source = 'nginx',
+    $package_ensure = 'present',
+    $manage_repo    = true,
+) {
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
