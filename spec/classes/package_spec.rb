@@ -5,15 +5,12 @@ describe 'nginx::package' do
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat' }}
     it { should contain_package('nginx') }
-    it { should contain_package('gd') }
-    it { should contain_package('libXpm') }
-    it { should contain_package('libxslt') }
     it { should contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
-  shared_examples 'debian' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian'}}
-    it { should contain_file('/etc/apt/sources.list.d/nginx.list') }
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => lsbdistcodename }}
+    it { should contain_apt__source('nginx') }
   end
 
   shared_examples 'suse' do |operatingsystem|
@@ -35,8 +32,8 @@ describe 'nginx::package' do
   end
 
   context 'debian' do
-    it_behaves_like 'debian', 'debian'
-    it_behaves_like 'debian', 'ubuntu'
+    it_behaves_like 'debian', 'debian', 'wheezy'
+    it_behaves_like 'debian', 'ubuntu', 'precise'
   end
 
   context 'suse' do
@@ -54,9 +51,6 @@ describe 'nginx::package' do
     # including nginx-release
     let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat' }}
     it { should contain_package('nginx') }
-    it { should contain_package('gd') }
-    it { should contain_package('libXpm') }
-    it { should contain_package('libxslt') }
     it { should_not contain_yumrepo('nginx-release') }
   end
 
