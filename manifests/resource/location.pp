@@ -121,6 +121,8 @@ define nginx::resource::location (
     mode   => '0644',
     notify => Class['nginx::service'],
   }
+  
+  validate_array($index_files)
 
   # # Shared Variables
   $ensure_real = $ensure ? {
