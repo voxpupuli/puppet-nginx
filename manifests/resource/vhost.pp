@@ -140,6 +140,9 @@ define nginx::resource::vhost (
 
   validate_array($location_allow)
   validate_array($location_deny)
+  validate_array($proxy_set_header)
+  validate_array($index_files)
+  validate_array($server_name)
 
   File {
     ensure => $ensure ? {

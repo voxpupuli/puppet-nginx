@@ -11,12 +11,12 @@ describe 'nginx::resource::vhost' do
     }}
 
     it 'applies location_allow rules' do
-      should contain_file('/nginx.d/test-500-test-default').with({
+      should contain_file('/nginx.d/test-500-_').with({
         'content' => /allow 10.0.0.1\n  allow host1/
       })
     end
     it 'applies location_deny rules' do
-      should contain_file('/nginx.d/test-500-test-default').with({
+      should contain_file('/nginx.d/test-500-_').with({
         'content' => /deny host2\n  deny 10.0.0.2/
       })
     end

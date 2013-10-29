@@ -84,8 +84,8 @@
 #  }
 
 define nginx::resource::location (
-  $location,
   $ensure               = present,
+  $location             = $name,
   $vhost                = undef,
   $www_root             = undef,
   $index_files          = [
@@ -121,12 +121,16 @@ define nginx::resource::location (
     mode   => '0644',
     notify => Class['nginx::service'],
   }
+  
+  validate_array($index_files)
 
   # # Shared Variables
   $ensure_real = $ensure ? {
     'absent' => absent,
     default  => file,
   }
+
+  $location_sanitized = regsubst($location, '\/', '_', 'G')
 
   ## Check for various error conditions
   if ($vhost == undef) {
@@ -164,7 +168,7 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${name}":
+    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${location_sanitized}":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -173,7 +177,7 @@ define nginx::resource::location (
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
     $ssl_priority = $priority + 300
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${ssl_priority}-${name}-ssl":
+    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${ssl_priority}-${location_sanitized}-ssl":
       ensure  => $ensure_real,
       content => $content_real,
     }
@@ -181,7 +185,7 @@ define nginx::resource::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${nginx::params::nx_conf_dir}/${name}_htpasswd":
+    file { "${nginx::params::nx_conf_dir}/${location_sanitized}_htpasswd":
       ensure => $ensure,
       mode   => '0644',
       source => $auth_basic_user_file,

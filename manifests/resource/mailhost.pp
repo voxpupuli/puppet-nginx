@@ -64,6 +64,8 @@ define nginx::resource::mailhost (
     group => 'root',
     mode  => '0644',
   }
+  
+  validate_array($server_name)
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
