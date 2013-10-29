@@ -5,7 +5,8 @@
 # Parameters:
 #   [*members*]               - Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
 #   [*ensure*]                - Enables or disables the specified location (present|absent)
-#   [*upstream_cfg_prepend*] - It expects a hash with custom directives to put before anything else inside upstream
+#   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
+#   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
 #
 # Actions:
 #
@@ -40,6 +41,7 @@ define nginx::resource::upstream (
   $members,
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
+  $upstream_fail_timeout = '10s',
 ) {
   File {
     owner => 'root',
