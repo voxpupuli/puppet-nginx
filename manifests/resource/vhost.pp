@@ -226,5 +226,11 @@ define nginx::resource::vhost (
       mode   => '0644',
       source => $ssl_key,
     })
+    if ($ssl_dhparam != undef) {
+      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.pem", {
+        mode   => '0644',
+        source => $ssl_dhparam,
+      })
+    }
   }
 }

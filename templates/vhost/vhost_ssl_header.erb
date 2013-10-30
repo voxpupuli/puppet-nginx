@@ -14,7 +14,7 @@ server {
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
 <% if defined? @ssl_dhparam -%>
-  ssl_dhparam                "<%= @ssl_dhparam %>";
+  ssl_dhparam                <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.pem;
 <% end -%>
 <% if defined? @ssl_stapling -%>
   ssl_stapling                "<%= @ssl_stapling %>";
