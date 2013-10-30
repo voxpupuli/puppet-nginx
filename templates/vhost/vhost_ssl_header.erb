@@ -9,11 +9,26 @@ server {
 
   ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
   ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
-  ssl_session_cache         shared:SSL:10m;
+  ssl_session_cache         <%= @ssl_cache %>;
   ssl_session_timeout       5m;
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
+<% if defined? @ssl_dhparam -%>
+  ssl_dhparam                "<%= @ssl_dhparam %>";
+<% end -%>
+<% if defined? @ssl_stapling -%>
+  ssl_stapling                "<%= @ssl_stapling %>";
+<% end -%>
+<% if defined? @ssl_stapling_verify -%>
+  ssl_stapling_verify                "<%= @ssl_stapling_verify %>";
+<% end -%>
+<% if defined? @ssl_trusted_certificate -%>
+  ssl_trusted_certificate                "<%= @ssl_trusted_certificate %>";
+<% end -%>
   ssl_prefer_server_ciphers on;
+<% if @add_header -%><% @add_header.each do |header| -%>
+  add_header        <%= header %>;
+<% end -%><% end -%>
 <% if defined? @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
