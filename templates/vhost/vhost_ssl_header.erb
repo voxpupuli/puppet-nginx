@@ -14,16 +14,16 @@ server {
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
 <% if defined? @ssl_dhparam -%>
-  ssl_dhparam                <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.pem;
+  ssl_dhparam               <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>_dhparam.pem;
 <% end -%>
 <% if defined? @ssl_stapling -%>
-  ssl_stapling                "<%= @ssl_stapling %>";
+  ssl_stapling              "<%= @ssl_stapling %>";
 <% end -%>
 <% if defined? @ssl_stapling_verify -%>
-  ssl_stapling_verify                "<%= @ssl_stapling_verify %>";
+  ssl_stapling_verify        "<%= @ssl_stapling_verify %>";
 <% end -%>
 <% if defined? @ssl_trusted_certificate -%>
-  ssl_trusted_certificate                "<%= @ssl_trusted_certificate %>";
+  ssl_trusted_certificate    <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.pem;
 <% end -%>
   ssl_prefer_server_ciphers on;
 <% if @add_header -%><% @add_header.each do |header| -%>
