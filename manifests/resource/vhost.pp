@@ -132,6 +132,7 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $nginx_version          = regsubst(generate('/usr/sbin/nginx', '-v'),'^.*nginx/(\d+\.\d+\.\d+)$','\1'),
 ) {
 
   validate_array($location_allow)
