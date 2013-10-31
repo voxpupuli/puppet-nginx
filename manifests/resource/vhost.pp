@@ -24,7 +24,7 @@
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
 #   [*add_header*]          - Specifices an array of headers which will be added to the HTTP response when the response code
-#                             is equal to 200, 204, 301, 302 or 304.
+#                             is equal to 200, 201, 204, 206, 301, 302, 303, 304, or 307.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
 #   [*proxy*]               - Proxy server(s) for the root location to connect
@@ -46,6 +46,7 @@
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'SSLv3 TLSv1
 #     TLSv1.1 TLSv1.2'.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
+#     'HIGH:!aNULL:!MD5'.
 #   [*ssl_dhparam*]         - Pre-generated PEM file containing Diffie-Hellman key agreement protocol cryptographic parameters.
 #   [*ssl_stapling*]        - Enables or disables stapling of OCSP responses by the server.
 #   [*ssl_stapling_verify*] - Enables or disables verification of OCSP responses by the server.
