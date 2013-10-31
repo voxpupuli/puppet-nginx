@@ -12,7 +12,8 @@
 #   [*ipv6_listen_ip*]      - Default IPv6 Address for NGINX to listen with this vHost on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this vHost on. Defaults to TCP 80
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default' to catchall. Template will allways add ipv6only=on.
-#                             While issue jfryman/puppet-nginx#30 is discussed, default value is 'default'.
+#   [*add_header*]          - Specifices an array of headers which will be added to the HTTP response when the response code
+#                             is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]         - Default index files for NGINX to read when traversing a directory
 #   [*proxy*]               - Proxy server(s) for the root location to connect to.  Accepts a single value, can be used in
 #                             conjunction with nginx::resource::upstream
@@ -26,6 +27,11 @@
 #   [*ssl_port*]            - Default IP Port for NGINX to listen with this SSL vHost on. Defaults to TCP 443
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'SSLv3 TLSv1 TLSv1.1 TLSv1.2'.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to 'HIGH:!aNULL:!MD5'.
+#   [*ssl_dhparam*]         - Pre-generated PEM file containing Diffie-Hellman key agreement protocol cryptographic parameters.
+#   [*ssl_stapling*]        - Enables or disables stapling of OCSP responses by the server.
+#   [*ssl_stapling_verify*] - Enables or disables verification of OCSP responses by the server.
+#   [*ssl_trusted_certificate*] - Pregenerated file with trusted CA certificates in the PEM format used to verify client certificates and 
+#                                 OCSP responses if ssl_stapling is enabled.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will respond. Default [$name].
 #   [*www_root*]            - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
