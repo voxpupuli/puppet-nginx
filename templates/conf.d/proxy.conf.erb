@@ -6,6 +6,8 @@ proxy_send_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_send_timeou
 proxy_read_timeout      <%= scope.lookupvar('nginx::params::nx_proxy_read_timeout') %>;
 proxy_buffers           <%= @proxy_buffers %>;
 proxy_buffer_size       <%= @proxy_buffer_size %>;
+<% if Gem::Version.new(@nginx_version) > Gem::Version.new('1.1.3') -%>
 proxy_http_version      <%= @proxy_http_version %>;
+<% end -%>
 <% @proxy_set_header.each do |header| %>
 proxy_set_header        <%= header %>;<% end %>

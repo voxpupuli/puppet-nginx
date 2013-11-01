@@ -28,6 +28,10 @@
 # node default {
 #   include nginx
 # }
+#
+# Note that proxy_http_version is not avaialable on nginx < 1.1.4 and is
+# ignored for any versions below 1.1.4
+#
 class nginx (
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
