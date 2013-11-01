@@ -23,6 +23,8 @@
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
+#   [*add_header*]          - Specifices an array of headers which will be added to the HTTP response when the response code
+#                             is equal to 200, 201, 204, 206, 301, 302, 303, 304, or 307.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
 #   [*proxy*]               - Proxy server(s) for the root location to connect
@@ -45,6 +47,11 @@
 #     TLSv1.1 TLSv1.2'.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
 #     'HIGH:!aNULL:!MD5'.
+#   [*ssl_dhparam*]         - Pre-generated PEM file containing Diffie-Hellman key agreement protocol cryptographic parameters.
+#   [*ssl_stapling*]        - Enables or disables stapling of OCSP responses by the server.
+#   [*ssl_stapling_verify*] - Enables or disables verification of OCSP responses by the server.
+#   [*ssl_trusted_certificate*] - Pregenerated file with trusted CA certificates in the PEM format used to verify client certificates and 
+#                                 OCSP responses if ssl_stapling is enabled.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
@@ -99,6 +106,7 @@ define nginx::resource::vhost (
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
   $ipv6_listen_options    = 'default',
+  $add_header             = [],
   $ssl                    = false,
   $ssl_cert               = undef,
   $ssl_key                = undef,
@@ -106,6 +114,10 @@ define nginx::resource::vhost (
   $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $ssl_cache              = 'shared:SSL:10m',
+  $ssl_dhparam            = undef,
+  $ssl_stapling           = undef,
+  $ssl_stapling_verify    = undef,
+  $ssl_trusted_certificate= undef,
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
@@ -143,6 +155,7 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   validate_array($index_files)
   validate_array($server_name)
+  validate_array($add_header)
 
   File {
     ensure => $ensure ? {
@@ -293,5 +306,17 @@ define nginx::resource::vhost (
       mode   => '0440',
       source => $ssl_key,
     })
+    if ($ssl_dhparam != undef) {
+      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}_dhparam.pem", {
+        mode   => '0440',
+        source => $ssl_dhparam,
+      })
+    }
+    if ($ssl_trusted_certificate != undef) {
+      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.pem", {
+        mode   => '0440',
+        source => $ssl_trusted_certificate,
+      })
+    }
   }
 }
