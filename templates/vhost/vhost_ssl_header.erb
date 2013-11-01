@@ -13,26 +13,26 @@ server {
   ssl_session_timeout       5m;
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
-<% if defined? @ssl_dhparam -%>
+<% if @ssl_dhparam -%>
   ssl_dhparam               <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>_dhparam.pem;
 <% end -%>
-<% if defined? @ssl_stapling -%>
+<% if @ssl_stapling -%>
   ssl_stapling              <%= @ssl_stapling %>;
 <% end -%>
-<% if defined? @ssl_stapling_verify -%>
+<% if @ssl_stapling_verify -%>
   ssl_stapling_verify       <%= @ssl_stapling_verify %>;
 <% end -%>
-<% if defined? @ssl_trusted_certificate -%>
+<% if @ssl_trusted_certificate -%>
   ssl_trusted_certificate    <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.pem;
 <% end -%>
   ssl_prefer_server_ciphers on;
 <% if @add_header -%><% @add_header.each do |header| -%>
   add_header        <%= header %>;
 <% end -%><% end -%>
-<% if defined? @auth_basic -%>
+<% if @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
-<% if defined? @auth_basic_user_file -%>
+<% if @auth_basic_user_file -%>
   auth_basic_user_file      "<%= @auth_basic_user_file %>";
 <% end -%>
 
