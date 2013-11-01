@@ -106,7 +106,7 @@ define nginx::resource::vhost (
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
   $ipv6_listen_options    = 'default',
-  $add_header             = undef,
+  $add_header             = [],
   $ssl                    = false,
   $ssl_cert               = undef,
   $ssl_key                = undef,
