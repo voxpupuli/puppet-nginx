@@ -89,4 +89,13 @@ class nginx::params {
   $nx_http_access_log = "${nx_logdir}/access.log"
 
   $package_ensure = 'present'
+
+  # SSL protocols, TLS1.1/1.2 were only added in nginx
+  # version 1.0.12, defaults should be correctly set
+  # depending on the nginx version
+  if versioncmp($::nginx_version,'1.0.11') > 0 {
+    $ssl_protocols = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2'
+  } else {
+    $ssl_protocols = 'SSLv3 TLSv1'
+  }
 }

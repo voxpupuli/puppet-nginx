@@ -102,7 +102,7 @@ define nginx::resource::vhost (
   $ssl_cert               = undef,
   $ssl_key                = undef,
   $ssl_port               = '443',
-  $ssl_protocols          = undef,
+  $ssl_protocols          = $nginx::params::ssl_protocols,
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
@@ -132,7 +132,6 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
-  $nginx_version          = regsubst(generate('/usr/sbin/nginx', '-v'),'^.*nginx/(\d+\.\d+\.\d+)$','\1'),
 ) {
 
   validate_array($location_allow)
@@ -149,16 +148,6 @@ define nginx::resource::vhost (
     mode   => '0644',
   }
 
-  # SSL protocols, TLS1.1/1.2 were only added in nginx
-  # version 1.0.12, defaults should be correctly set
-  # depending on the nginx version
-  if ($ssl_protocols == undef) {
-    if versioncmp($nginx_version,'1.0.11') > 0 {
-      $ssl_protocols = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2'
-    } else {
-      $ssl_protocols = 'SSLv3 TLSv1'
-    }
-  }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
