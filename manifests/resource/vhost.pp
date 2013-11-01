@@ -154,9 +154,9 @@ define nginx::resource::vhost (
   # depending on the nginx version
   if ($ssl_protocols == undef) {
     if versioncmp($nginx_version,'1.0.11') > 0 {
-      $ssl_protocols = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
+      $ssl_protocols => 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
     } else {
-      $ssl_protocols = 'SSLv3 TLSv1',
+      $ssl_protocols => 'SSLv3 TLSv1',
     }
   }
 
