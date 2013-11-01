@@ -155,6 +155,7 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   validate_array($index_files)
   validate_array($server_name)
+  validate_array($add_header)
 
   File {
     ensure => $ensure ? {
@@ -307,13 +308,13 @@ define nginx::resource::vhost (
     })
     if ($ssl_dhparam != undef) {
       ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}_dhparam.pem", {
-        mode   => '0644',
+        mode   => '0440',
         source => $ssl_dhparam,
       })
     }
     if ($ssl_trusted_certificate != undef) {
       ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.pem", {
-        mode   => '0644',
+        mode   => '0440',
         source => $ssl_trusted_certificate,
       })
     }
