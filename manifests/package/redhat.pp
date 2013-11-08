@@ -72,5 +72,5 @@ class nginx::package::redhat (
   package { $package_name:
     ensure  => $package_ensure,
   }
-
+ ensure_resource('package', $redhat_packages, {'ensure' => 'present' })
 }
