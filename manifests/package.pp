@@ -44,6 +44,8 @@ class nginx::package(
     }
     'suse': {
       class { 'nginx::package::suse':
+        package_name   => $package_name,
+        package_ensure => $package_ensure,
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }

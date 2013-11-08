@@ -3,9 +3,16 @@ require 'spec_helper'
 describe 'nginx::package' do
 
   shared_examples 'redhat' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat' }}
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbdistcodename => '6' }}
     it { should contain_package('nginx') }
     it { should contain_yumrepo('nginx-release').with_enabled('1') }
+  end
+
+  shared_examples 'redhat-no_nginx_repo' do |operatingsystem|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbdistcodename => '6' }}
+    let(:params) {{ :manage_repo => false }}
+    it { should contain_package('nginx') }
+    it { should_not contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
   shared_examples 'debian' do |operatingsystem, lsbdistcodename|
@@ -13,15 +20,23 @@ describe 'nginx::package' do
     it { should contain_apt__source('nginx') }
   end
 
-  shared_examples 'suse' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Suse'}}
-    it { should contain_package('nginx-0.8') }
-    it { should contain_package('apache2') }
-    it { should contain_package('apache2-itk') }
-    it { should contain_package('apache2-utils') }
-    it { should contain_package('gd') }
+  shared_examples 'debian-no_repo' do |operatingsystem|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => 'Wheezy'}}
+    let(:params) {{ :manage_repo => false }}
+    it { should_not contain_apt__source('nginx') }
   end
 
+  shared_examples 'debian-passenger_repo' do |operatingsystem|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => 'Wheezy'}}
+    let(:params) {{ :package_source => 'passenger' }}
+    it { should contain_apt__source('passenger') }
+  end
+
+  shared_examples 'suse' do |operatingsystem|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Suse', :lsbdistcodename => 'Celadon'}}
+    it { should contain_package('nginx') }
+    it { should contain_package('gd') }
+  end
 
   context 'redhat' do
     it_behaves_like 'redhat', 'centos'
@@ -34,6 +49,24 @@ describe 'nginx::package' do
   context 'debian' do
     it_behaves_like 'debian', 'debian', 'wheezy'
     it_behaves_like 'debian', 'ubuntu', 'precise'
+  end
+
+  context 'redhat without repository management' do
+    it_behaves_like 'redhat-no_nginx_repo', 'centos'
+    it_behaves_like 'redhat-no_nginx_repo', 'rhel'
+    it_behaves_like 'redhat-no_nginx_repo', 'redhat'
+    it_behaves_like 'redhat-no_nginx_repo', 'scientific'
+    it_behaves_like 'redhat-no_nginx_repo', 'amazon'
+  end
+
+  context 'debian without repository management' do
+    it_behaves_like 'debian-no_repo', 'debian'
+    it_behaves_like 'debian-no_repo', 'ubuntu'
+  end
+
+  context 'debian with passenger repository' do
+    it_behaves_like 'debian-passenger_repo', 'debian'
+    it_behaves_like 'debian-passenger_repo', 'ubuntu'
   end
 
   context 'suse' do
@@ -49,7 +82,12 @@ describe 'nginx::package' do
   context 'fedora' do
     # fedora is identical to the rest of osfamily RedHat except for not
     # including nginx-release
-    let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :operatingsystem => 'Fedora',
+      :osfamily => 'RedHat',
+      :lsbdistcodename => 'Spherical Cow',
+      :lsbmajdistrelease => 19,
+    }}
     it { should contain_package('nginx') }
     it { should_not contain_yumrepo('nginx-release') }
   end

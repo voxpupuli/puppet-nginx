@@ -44,9 +44,9 @@ class nginx::package::debian(
       'passenger': {
         ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
 
-        apt::source { 'nginx':
+        apt::source { 'passenger':
           location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos      => "main",
+          repos      => 'main',
           key        => '561F9B9CAC40B2F7',
           key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
           notify     => Exec['apt_get_update_for_nginx'],
@@ -57,7 +57,7 @@ class nginx::package::debian(
           require => Anchor['nginx::apt_repo'],
         }
       }
-      default: {}
+      default: { fail("${package_source} is not supported yet") }
     }
 
     exec { 'apt_get_update_for_nginx':

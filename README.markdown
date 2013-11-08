@@ -89,6 +89,21 @@ nginx::nginx_locations:
     www_root: /var/www/html
 ```
 
+## Package management
+
+By default packages from [nginx.org](http://nginx.org/packages/) are install, if you want use packages from your distribution, set `manage_repo` to `false`:
+
+    class { 'nginx':
+      manage_repo => false
+    }
+
+For installing package with different name than `nginx`:
+
+    class { 'nginx':
+      package_name => 'nginx-light'
+    }
+
+
 ## Nginx with precompiled Passenger
 
 Currently this works only for Debian family.
