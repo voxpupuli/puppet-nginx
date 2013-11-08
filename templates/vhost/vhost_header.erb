@@ -22,10 +22,10 @@ server {
 <% end -%>
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
-<% if Gem::Version.new(@nginx_version) < Gem::Version.new('0.8.42') -%>
-      rewrite ^ https://$host$request_uri;
-<% else %>
+<% if @use_return_code_with_redirect -%>
       return 301 https://$host$request_uri;
+<% else %>
+      rewrite ^ https://$host$request_uri;
 <% end -%>
   }
 <% end -%>

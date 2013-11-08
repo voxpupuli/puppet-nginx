@@ -98,4 +98,19 @@ class nginx::params {
   } else {
     $ssl_protocols = 'SSLv3 TLSv1'
   }
+
+  # Nginx versions before 1.1.4 did not support proxy_http_version tag
+  if versioncmp($::nginx_version,'1.1.3') > 0 {
+    $use_proxy_http_version = true
+  } else {
+    $use_proxy_http_version = false
+  }
+
+  # Nginx versions before 0.8.42 did not support return codes with redirect,
+  # use rewrite instead
+  if versioncmp($::nginx_version,'0.8.42') > 0 {
+    $use_return_code_with_redirect = true
+  } else {
+    $use_return_code_with_redirect = false
+  }
 }
