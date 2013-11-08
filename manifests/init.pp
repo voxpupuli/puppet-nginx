@@ -96,6 +96,9 @@ class nginx (
     service_restart   => $service_restart,
   }
 
+  # Ruby and Rubygems are required for template version comparison
+  ensure_resource('package', 'rubygems', {'ensure' => 'present' })
+
   validate_hash($nginx_upstreams)
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   validate_hash($nginx_vhosts)
