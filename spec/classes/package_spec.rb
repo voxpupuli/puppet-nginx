@@ -5,9 +5,6 @@ describe 'nginx::package' do
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbdistcodename => '6' }}
     it { should contain_package('nginx') }
-    it { should contain_package('gd') }
-    it { should contain_package('libXpm') }
-    it { should contain_package('libxslt') }
     it { should contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
@@ -15,9 +12,6 @@ describe 'nginx::package' do
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbdistcodename => '6' }}
     let(:params) {{ :manage_repo => false }}
     it { should contain_package('nginx') }
-    it { should contain_package('gd') }
-    it { should contain_package('libXpm') }
-    it { should contain_package('libxslt') }
     it { should_not contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
@@ -90,9 +84,6 @@ describe 'nginx::package' do
     # including nginx-release
     let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat', :lsbdistcodename => 'Spherical Cow' }}
     it { should contain_package('nginx') }
-    it { should contain_package('gd') }
-    it { should contain_package('libXpm') }
-    it { should contain_package('libxslt') }
     it { should_not contain_yumrepo('nginx-release') }
   end
 
