@@ -82,7 +82,12 @@ describe 'nginx::package' do
   context 'fedora' do
     # fedora is identical to the rest of osfamily RedHat except for not
     # including nginx-release
-    let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat', :lsbdistcodename => 'Spherical Cow' }}
+    let(:facts) {{
+      :operatingsystem => 'Fedora',
+      :osfamily => 'RedHat',
+      :lsbdistcodename => 'Spherical Cow',
+      :lsbmajdistrelease => 19,
+    }}
     it { should contain_package('nginx') }
     it { should_not contain_yumrepo('nginx-release') }
   end
