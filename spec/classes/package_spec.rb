@@ -11,11 +11,6 @@ describe 'nginx::package' do
     it { should contain_yumrepo('nginx-release').with_enabled('1') }
   end
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => lsbdistcodename }}
-    it { should contain_apt__source('nginx') }
-  end
-
   shared_examples 'redhat-no_nginx_repo' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbdistcodename => '6' }}
     let(:params) {{ :manage_repo => false }}
@@ -24,6 +19,17 @@ describe 'nginx::package' do
     it { should contain_package('libXpm') }
     it { should contain_package('libxslt') }
     it { should_not contain_yumrepo('nginx-release').with_enabled('1') }
+  end
+
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => lsbdistcodename }}
+    it { should contain_apt__source('nginx') }
+  end
+
+  shared_examples 'debian-no_repo' do |operatingsystem|
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => 'Wheezy'}}
+    let(:params) {{ :manage_repo => false }}
+    it { should_not contain_apt__source('nginx') }
   end
 
   shared_examples 'debian-passenger_repo' do |operatingsystem|
