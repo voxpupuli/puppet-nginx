@@ -47,8 +47,8 @@ describe 'nginx::package' do
   end
 
   context 'debian' do
-    it_behaves_like 'debian', 'debian'
-    it_behaves_like 'debian', 'ubuntu'
+    it_behaves_like 'debian', 'debian', 'wheezy'
+    it_behaves_like 'debian', 'ubuntu', 'precise'
   end
 
   context 'redhat without repository management' do
