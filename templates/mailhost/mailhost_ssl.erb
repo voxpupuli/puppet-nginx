@@ -1,18 +1,18 @@
 
 server {
-  listen       <%= ssl_port %>;
+  listen       <%= @ssl_port %>;
   <% # check to see if ipv6 support exists in the kernel before applying %>
-  <% if ipv6_enable && (defined? @ipaddress6) %>
-  listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
+  <% if @ipv6_enable && (defined? @ipaddress6) %>
+  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
-  server_name           <%= server_name.join(" ") %>;
-  protocol              <%= protocol %>;
-  xclient               <%= xclient %>;
-  auth_http             <%= auth_http %>;
+  server_name           <%= @server_name.join(" ") %>;
+  protocol              <%= @protocol %>;
+  xclient               <%= @xclient %>;
+  auth_http             <%= @auth_http %>;
 
   ssl on;
-  ssl_certificate      <%= ssl_cert %>;
-  ssl_certificate_key  <%= ssl_key %>;
+  ssl_certificate      <%= @ssl_cert %>;
+  ssl_certificate_key  <%= @ssl_key %>;
 
   ssl_session_timeout  5m;
 

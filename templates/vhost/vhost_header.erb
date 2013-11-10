@@ -14,7 +14,7 @@ server {
 <%# make sure that allow comes before deny by forcing the allow key (if it -%>
 <%# exists) to be first in the output order.  The hash keys also need to be -%>
 <%# sorted so that the ordering is stable. -%>
-<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+<% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%><% end -%>
 <% if @root -%>
