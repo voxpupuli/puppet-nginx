@@ -28,6 +28,10 @@ server {
   <%= key %> <%= value %>;
 <% end -%><% end -%>
 
+<% if @log_format -%>
+  log_format <%= @log_format['name'] %> '<%= @log_format['format'] %>';
+
+<% end -%>
   access_log <%= @ssl_access_log %> <%= @access_log_options %>;
   error_log <%= @ssl_error_log %> <%= @error_log_options %>;
 

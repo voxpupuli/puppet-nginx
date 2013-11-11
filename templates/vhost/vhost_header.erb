@@ -31,7 +31,10 @@ server {
        return 301 https://$host$request_uri;
   }
 <% end -%>
+<% if @log_format -%>
+  log_format <%= @log_format['name'] %> '<%= @log_format['format'] %>';
 
+<% end -%>
   access_log            <%= @access_log_real %> <%= @access_log_options %>;
   error_log             <%= @error_log_real %> <%= @error_log_options %>;
 
