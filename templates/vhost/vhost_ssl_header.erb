@@ -28,8 +28,8 @@ server {
   <%= key %> <%= value %>;
 <% end -%><% end -%>
 
-  access_log            <%= @ssl_access_log %>;
-  error_log             <%= @ssl_error_log %>;
+  access_log <%= @ssl_access_log %> <%= @access_log_options %>;
+  error_log <%= @ssl_error_log %> <%= @error_log_options %>;
 
 <% if @root -%>
   root <%= @root %>;
