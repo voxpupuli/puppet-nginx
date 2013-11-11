@@ -72,9 +72,17 @@
 #   [*include_files*]           - Adds include files to vhost
 #   [*access_log*]              - Where to write access log. May add additional
 #      options like log format to the end.
+#   [*log_format*]              - It expects a hash with 'name' and 'format'
+#      keys. The values are used to create a log_format in the vhost config.
+#   [*access_log_options*]      - Extra options for the access_log directive.
+#      Useful for specifying which log format to use, compression, etc. Can be
+#      combined with the $access_log and $log_format parameters.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
-#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment 
+#   [*error_log_options*]       - Extra options for the error_log directive.
+#      Useful for specifying log levels. Can be combined with the $error_log
+#      parameter.
+#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #      variables to pass to the backend application
 # Actions:
 #
@@ -132,8 +140,11 @@ define nginx::resource::vhost (
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
+  $log_format             = undef,
   $access_log             = undef,
+  $access_log_options     = undef,
   $error_log              = undef,
+  $error_log_options      = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
 ) {
@@ -173,7 +184,7 @@ define nginx::resource::vhost (
   # unfortunately means resorting to the $varname_real thing
   $domain_log_name = regsubst($name, ' ', '_', 'G')
   $access_log_real = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+    undef => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
     default => $access_log,
   }
   $error_log_real = $error_log ? {
@@ -197,7 +208,7 @@ define nginx::resource::vhost (
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
-  
+
   if $use_default_location == true {
     # Create the default location reference for the vHost
     nginx::resource::location {"${name}-default":
