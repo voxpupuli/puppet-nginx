@@ -79,7 +79,9 @@ class nginx::params {
   # $nx_service_restart value, forcing configtest.
 
   $nx_configtest_enable = false
-  $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
+  
+  #calls service instead of init.d
+  $nx_service_restart = 'service nginx configtest && service nginx restart'
 
   $nx_mail = false
 
