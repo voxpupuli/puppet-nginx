@@ -260,7 +260,7 @@ define nginx::resource::vhost (
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
       default => $error_log,
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-300-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
