@@ -170,11 +170,11 @@ define nginx::resource::vhost (
   # unfortunately means resorting to the $varname_real thing
   $domain_log_name = regsubst($name, ' ', '_', 'G')
   $access_log_real = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+    undef   => "${nginx::config::logdir}/${domain_log_name}.access.log",
     default => $access_log,
   }
   $error_log_real = $error_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
+    undef   => "${nginx::config::logdir}/${domain_log_name}.error.log",
     default => $error_log,
   }
 
