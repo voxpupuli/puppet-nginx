@@ -8,8 +8,8 @@ server {
 <% if defined? @www_root -%>
   root  <%= @www_root %>;
 <% end -%>
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log vcommon;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= @name.gsub(' ', '_') %>.error.log;
+  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log vcommon;
+  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
 <% if defined? auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
 <% end -%>

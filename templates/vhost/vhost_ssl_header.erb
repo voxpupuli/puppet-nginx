@@ -25,5 +25,5 @@ server {
   auth_basic_user_file      <%= @auth_basic_user_file %>;
 <% end -%>
 
-  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.access.log vcommon;
-  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/ssl-<%= name.gsub(' ', '_') %>.error.log;
+  access_log            <%= scope.lookupvar('nginx::params::nx_logdir')%>/access.log vcommon;
+  error_log             <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
