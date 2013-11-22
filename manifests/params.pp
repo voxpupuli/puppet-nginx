@@ -68,9 +68,18 @@ class nginx::params {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
   }
 
-  $nx_daemon_user = $::operatingsystem ? {
-    /(?i-mx:debian|ubuntu)/                                                    => 'www-data',
-    /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo)/ => 'nginx',
+  if $::osfamily {
+    $nx_daemon_user = $::osfamily ? {
+      /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
+      /(?i-mx:debian)/                   => 'www-data',
+    }
+  } else {
+    warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
+    warning("Please upgrade from factor ${::facterversion} to >= 1.7.2")
+    $nx_daemon_user = $::operatingsystem ? {
+      /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
+      /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
+    }
   }
 
   # Service restart after Nginx 0.7.53 could also be just
