@@ -338,19 +338,18 @@ describe 'nginx::resource::location' do
           :value => ['name1','name2'],
           :match => '    index  name1 name2;',
         },
-        #TODO: fix template
-        #{
-        #  :title => 'should set auth_basic',
-        #  :attr  => 'auth_basic',
-        #  :value => 'value',
-        #  :match => '    auth_basic           "value";',
-        #},
-        #{
-        #  :title => 'should set auth_basic_user_file',
-        #  :attr  => 'auth_basic_user_file',
-        #  :value => 'value',
-        #  :match => '    auth_basic_user_file value;',
-        #},
+        {
+          :title => 'should set auth_basic',
+          :attr  => 'auth_basic',
+          :value => 'value',
+          :match => '    auth_basic           "value";',
+        },
+        {
+          :title => 'should set auth_basic_user_file',
+          :attr  => 'auth_basic_user_file',
+          :value => 'value',
+          :match => '    auth_basic_user_file value;',
+        },
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
