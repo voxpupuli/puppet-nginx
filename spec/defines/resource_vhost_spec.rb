@@ -403,10 +403,10 @@ describe 'nginx::resource::vhost' do
             :ssl_key            => 'dummy.key',
             :ssl_cert           => 'dummy.crt',
           }) end
-          it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_mode('0644') }
+          it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/#{title}-300-ssl", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/#{title}-300-ssl").send(:parameters)[:content].split("\n")
+            verify_contents(subject, "/tmp/nginx.d/#{title}-700-ssl", Array(param[:match]))
+            lines = subject.resource('file', "/tmp/nginx.d/#{title}-700-ssl").send(:parameters)[:content].split("\n")
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -555,7 +555,7 @@ describe 'nginx::resource::vhost' do
 
         it { should contain_file("/tmp/nginx.d/#{title}-001").with_ensure('absent') }
         it { should contain_file("/tmp/nginx.d/#{title}-699").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_ensure('absent') }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_ensure('absent') }
         it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_ensure('absent') }
         it { should contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
       end
@@ -570,8 +570,8 @@ describe 'nginx::resource::vhost' do
         }) end
 
         it { should contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
         it { should contain_file("/tmp/nginx.d/#{title}-999-ssl") }
         it { should contain_file("/etc/nginx/#{title}.crt") }
         it { should contain_file("/etc/nginx/#{title}.key") }
@@ -595,9 +595,9 @@ describe 'nginx::resource::vhost' do
           :ssl_cert            => 'dummy.cert',
         }) end
 
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-300-ssl").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
+        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
       context 'when vhost_cfg_append is set and ssl => true' do
