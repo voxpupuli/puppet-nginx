@@ -55,15 +55,12 @@ class nginx::package::redhat (
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
           before   => Package[$package_name],
         }
-      }
-    }
-  }
 
-  if $manage_repo {
-    #Define file for nginx-repo so puppet doesn't delete it
-    file { '/etc/yum.repos.d/nginx-release.repo':
-      ensure  => present,
-      require => Yumrepo['nginx-release'],
+        file { '/etc/yum.repos.d/nginx-release.repo':
+          ensure  => present,
+          require => Yumrepo['nginx-release'],
+        }
+      }
     }
   }
 

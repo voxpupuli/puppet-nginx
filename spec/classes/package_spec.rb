@@ -145,9 +145,7 @@ describe 'nginx::package' do
     let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat', :lsbmajdistrelease => 6 }}
     it { should contain_package('nginx') }
     it { should_not contain_yumrepo('nginx-release') }
-    # TODO: reenable this once the manifest is fixed - right now it's always being created on redhat
-    # when manage_repo => true
-    # it { should_not contain_file('/etc/yum.repos.d/nginx-release.repo') }
+    it { should_not contain_file('/etc/yum.repos.d/nginx-release.repo') }
   end
 
   context 'other' do
