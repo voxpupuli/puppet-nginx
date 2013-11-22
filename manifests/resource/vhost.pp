@@ -181,19 +181,6 @@ define nginx::resource::vhost (
     default => $error_log,
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
-  if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
-      content => template('nginx/vhost/vhost_header.erb'),
-      notify  => Class['nginx::service'],
-    }
-  }
-
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
@@ -244,6 +231,19 @@ define nginx::resource::vhost (
     }
   }
 
+  # Use the File Fragment Pattern to construct the configuration files.
+  # Create the base configuration file reference.
+  if ($listen_port != $ssl_port) {
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
+      ensure  => $ensure ? {
+        'absent' => absent,
+        default  => 'file',
+      },
+      content => template('nginx/vhost/vhost_header.erb'),
+      notify  => Class['nginx::service'],
+    }
+  }
+
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
     file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
@@ -260,7 +260,7 @@ define nginx::resource::vhost (
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
       default => $error_log,
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-300-ssl":
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
       ensure  => $ensure ? {
         'absent' => absent,
         default  => 'file',
