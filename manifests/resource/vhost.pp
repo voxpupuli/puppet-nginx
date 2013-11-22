@@ -181,19 +181,6 @@ define nginx::resource::vhost (
     default => $error_log,
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
-  if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
-      content => template('nginx/vhost/vhost_header.erb'),
-      notify  => Class['nginx::service'],
-    }
-  }
-
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
@@ -241,6 +228,19 @@ define nginx::resource::vhost (
       ensure  => present,
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
+    }
+  }
+
+  # Use the File Fragment Pattern to construct the configuration files.
+  # Create the base configuration file reference.
+  if ($listen_port != $ssl_port) {
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
+      ensure  => $ensure ? {
+        'absent' => absent,
+        default  => 'file',
+      },
+      content => template('nginx/vhost/vhost_header.erb'),
+      notify  => Class['nginx::service'],
     }
   }
 

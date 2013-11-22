@@ -134,12 +134,12 @@ describe 'nginx::resource::vhost' do
             '  test2 test value 2;',
           ],
         },
-        #{
-        #  :title => 'should set root',
-        #  :attr  => 'use_default_location',
-        #  :value => false,
-        #  :match => '  root /;',
-        #},
+        {
+          :title => 'should set root',
+          :attr  => 'use_default_location',
+          :value => false,
+          :match => '  root /;',
+        },
         {
           :title    => 'should not set root',
           :attr     => 'use_default_location',
