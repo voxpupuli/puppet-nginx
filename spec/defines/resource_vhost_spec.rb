@@ -429,16 +429,16 @@ describe 'nginx::resource::vhost' do
             'include /file2;',
           ],
         },
-        #{
-        #  :title => 'should contain ordered appended directives',
-        #  :attr  => 'vhost_cfg_append',
-        #  :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
-        #  :match => [
-        #    '  allow test value 3;',
-        #    '  test1 test value 1;',
-        #    '  test2 test value 2;',
-        #  ]
-        #},
+        {
+          :title => 'should contain ordered appended directives',
+          :attr  => 'vhost_cfg_append',
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :match => [
+            '  allow test value 3;',
+            '  test1 test value 1;',
+            '  test2 test value 2;',
+          ]
+        },
         {
           :title => 'should contain www to non-www rewrite',
           :attr  => 'rewrite_www_to_non_www',
@@ -603,21 +603,6 @@ describe 'nginx::resource::vhost' do
         it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
         it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
         it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
-      end
-
-      context 'when vhost_cfg_append is set and ssl => true' do
-        let :params do default_params.merge({
-          :vhost_cfg_append => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
-          :ssl              => true,
-          :ssl_key          => 'dummy.key',
-          :ssl_cert         => 'dummy.cert',
-        }) end
-
-        #TODO: reenable disabled test above and remove this block entirely if template is updated to order
-        #these as for the other templates
-        it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_content( /test1 test value 1;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_content( /test2 test value 2;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_content( /allow test value 3;/ ) }
       end
     end
   end
