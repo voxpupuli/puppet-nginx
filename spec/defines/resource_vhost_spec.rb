@@ -290,39 +290,39 @@ describe 'nginx::resource::vhost' do
 #        {
 #          :title => 'should enable IPv6',
 #          :attr  => 'ipv6_enable',
-#          :value => 'true',
-#          :match => '  listen [::]:80 default ipv6only=on;',
-#        },
-#        {
-#          :title => 'should enable IPv6',
-#          :attr  => 'ipv6_enable',
 #          :value => true,
 #          :match => '  listen [::]:80 default ipv6only=on;',
 #        },
+        {
+          :title => 'should enable IPv6',
+          :attr  => 'ipv6_enable',
+          :value => 'true',
+          :match => '  listen [::]:80 default ipv6only=on;',
+        },
         {
           :title    => 'should disable IPv6',
           :attr     => 'ipv6_enable',
           :value    => 'false',
           :notmatch => '  listen [::]:80 default ipv6only=on;',
         },
-#        {
-#          :title => 'should set the IPv6 listen IP',
-#          :attr  => 'ipv6_listen_ip',
-#          :value => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-#          :match => '  listen [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:80 default ipv6only=on;',
-#        },
-#        {
-#          :title => 'should set the IPv6 listen port',
-#          :attr  => 'ipv6_listen_port',
-#          :value => '45',
-#          :match => '  listen [::]:45 default ipv6only=on;',
-#        },
-#        {
-#          :title => 'should set the IPv6 listen options',
-#          :attr  => 'ipv6_listen_options',
-#          :value => 'spdy default',
-#          :match => '  listen [::]:80 spdy default ipv6only=on;',
-#        },
+        {
+          :title => 'should set the IPv6 listen IP',
+          :attr  => 'ipv6_listen_ip',
+          :value => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+          :match => '  listen [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:80 default ipv6only=on;',
+        },
+        {
+          :title => 'should set the IPv6 listen port',
+          :attr  => 'ipv6_listen_port',
+          :value => '45',
+          :match => '  listen [::]:45 default ipv6only=on;',
+        },
+        {
+          :title => 'should set the IPv6 listen options',
+          :attr  => 'ipv6_listen_options',
+          :value => 'spdy default',
+          :match => '  listen [::]:80 spdy default ipv6only=on;',
+        },
         {
           :title => 'should set servername(s)',
           :attr  => 'server_name',
