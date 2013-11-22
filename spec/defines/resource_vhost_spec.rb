@@ -64,12 +64,12 @@ describe 'nginx::resource::vhost' do
           :value => 'true',
           :match => '  listen [::]:80 default ipv6only=on;',
         },
-        #{
-        #  :title => 'should enable IPv6',
-        #  :attr  => 'ipv6_enable',
-        #  :value => true,
-        #  :match => '  listen [::]:80 default ipv6only=on;',
-        #},
+        {
+          :title => 'should enable IPv6',
+          :attr  => 'ipv6_enable',
+          :value => true,
+          :match => '  listen [::]:80 default ipv6only=on;',
+        },
         {
           :title    => 'should not enable IPv6',
           :attr     => 'ipv6_enable',
@@ -292,12 +292,6 @@ describe 'nginx::resource::vhost' do
           :value => false,
           :match => '  listen       *:443 ssl;',
         },
-#        {
-#          :title => 'should enable IPv6',
-#          :attr  => 'ipv6_enable',
-#          :value => true,
-#          :match => '  listen [::]:80 default ipv6only=on;',
-#        },
         {
           :title => 'should enable IPv6',
           :attr  => 'ipv6_enable',
@@ -305,9 +299,15 @@ describe 'nginx::resource::vhost' do
           :match => '  listen [::]:80 default ipv6only=on;',
         },
         {
+          :title => 'should enable IPv6',
+          :attr  => 'ipv6_enable',
+          :value => true,
+          :match => '  listen [::]:80 default ipv6only=on;',
+        },
+        {
           :title    => 'should disable IPv6',
           :attr     => 'ipv6_enable',
-          :value    => 'false',
+          :value    => false,
           :notmatch => '  listen [::]:80 default ipv6only=on;',
         },
         {
