@@ -12,7 +12,7 @@
     root  <%= @www_root %>;
 <% end -%>
 <% if @try_files -%>
-    try_files <% @try_files.each do |try| -%> <%= try %> <% end -%>;
+    try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
 <% if @index_files -%>
     index <% @index_files.each do |i| %> <%= i %><% end %>;

@@ -39,13 +39,13 @@ describe 'nginx::resource::mailhost' do
           :title => 'should set the IPv4 listen IP',
           :attr  => 'listen_ip',
           :value => '127.0.0.1',
-          :match => '  listen                127.0.0.1:25 ;', #TODO
+          :match => '  listen                127.0.0.1:25;',
         },
         {
           :title => 'should set the IPv4 listen port',
           :attr  => 'listen_port',
           :value => '45',
-          :match => '  listen                *:45 ;', #TODO
+          :match => '  listen                *:45;',
         },
         {
           :title => 'should set the IPv4 listen options',
@@ -82,6 +82,12 @@ describe 'nginx::resource::mailhost' do
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
           :match => '  listen [::]:80 spdy ipv6only=on;',
+        },
+        {
+          :title => 'should not set the IPv6 listen options',
+          :attr  => 'ipv6_listen_options',
+          :value => false,
+          :match => '  listen [::]:80 ipv6only=on;',
         },
         {
           :title => 'should set servername(s)',

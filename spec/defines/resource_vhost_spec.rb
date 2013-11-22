@@ -284,8 +284,13 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'default',
-#TODO: fix me in template
-          :match => '  listen       *:443 ssldefault;',
+          :match => '  listen       *:443 ssl default;',
+        },
+        {
+          :title => 'should not set the IPv4 listen options',
+          :attr  => 'listen_options',
+          :value => false,
+          :match => '  listen       *:443 ssl;',
         },
 #        {
 #          :title => 'should enable IPv6',

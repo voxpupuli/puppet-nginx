@@ -121,34 +121,32 @@ describe 'nginx::resource::location' do
           :value => 'my_location',
           :match => '  location my_location {',
         },
-        # TODO: fix in template so following matches
-        #{
-        #  :title => 'should contain ordered prepended directives',
-        #  :attr  => 'location_cfg_prepend',
-        #  :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
-        #  :match => [
-        #    '    allow test value 3;',
-        #    '    test1 test value 1;',
-        #    '    test2 test value 2;',
-        #  ],
-        #},
+        {
+          :title => 'should contain ordered prepended directives',
+          :attr  => 'location_cfg_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :match => [
+            '    allow test value 3;',
+            '    test1 test value 1;',
+            '    test2 test value 2;',
+          ],
+        },
         {
           :title => 'should set alias',
           :attr  => 'location_alias',
           :value => 'value',
           :match => '    alias      value;',
         },
-        #TODO: fix in template so following matches
-        #{
-        #  :title => 'should contain ordered appended directives',
-        #  :attr  => 'location_cfg_append',
-        #  :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
-        #  :match => [
-        #    '    allow test value 3; ',
-        #    '    test1 test value 1; ',
-        #    '    test2 test value 2;  ',
-        #  ],
-        #},
+        {
+          :title => 'should contain ordered appended directives',
+          :attr  => 'location_cfg_append',
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :match => [
+            '    allow test value 3;',
+            '    test1 test value 1;',
+            '    test2 test value 2;',
+          ],
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :location_alias => 'location_alias_value', :vhost => 'vhost1' } end
@@ -247,7 +245,7 @@ describe 'nginx::resource::location' do
           :title => 'should set try_file(s)',
           :attr  => 'try_files',
           :value => ['name1','name2'],
-          :match => '    try_files  name1  name2 ;', #TODO
+          :match => '    try_files name1 name2;',
         },
         {
           :title => 'should set fastcgi_params',
@@ -332,7 +330,7 @@ describe 'nginx::resource::location' do
           :title => 'should set try_file(s)',
           :attr  => 'try_files',
           :value => ['name1','name2'],
-          :match => '    try_files  name1  name2 ;', #TODO
+          :match => '    try_files name1 name2;',
         },
         {
           :title => 'should set index_file(s)',

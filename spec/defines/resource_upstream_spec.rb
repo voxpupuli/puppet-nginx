@@ -40,9 +40,7 @@ describe 'nginx::resource::upstream' do
           :match => [
             '  test1 test value 1;',
             '  test2 test value 2;',
-            #TODO: fix this output in the template; should be no trailing
-            #spaces
-            '  test3 test value 3;  ',
+            '  test3 test value 3;',
           ],
         },
         {
