@@ -30,5 +30,6 @@ server {
 <% if @passenger_cgi_param -%><% @passenger_cgi_param.each do |key,value| -%>
   passenger_set_cgi_param  <%= key %> <%= value %>;
 <% end -%><% end -%>
-
-
+<% @proxy_set_header.each do |header| -%>
+  proxy_set_header        <%= header %>;
+<% end -%>

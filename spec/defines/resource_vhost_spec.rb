@@ -389,6 +389,15 @@ describe 'nginx::resource::vhost' do
           :match => '  error_log             /path/to/error.log;',
         },
         {
+          :title => 'should set proxy_set_header',
+          :attr  => 'proxy_set_header',
+          :value => ['header1','header2'],
+          :match => [
+            '  proxy_set_header        header1;',
+            '  proxy_set_header        header2;',
+          ],
+        },
+        {
           :title => 'should set root',
           :attr  => 'use_default_location',
           :value => false,
