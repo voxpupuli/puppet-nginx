@@ -65,6 +65,30 @@ describe 'nginx::resource::location' do
           :notmatch => /proxy_cache/
         },
         {
+          :title => 'should set proxy_method',
+          :attr  => 'proxy_method',
+          :value => 'value',
+          :match => '    proxy_method        value;',
+        },
+        {
+          :title => 'should not set proxy_method',
+          :attr  => 'proxy_method',
+          :value => false,
+          :notmatch => /proxy_method/,
+        },
+        {
+          :title => 'should set proxy_set_body',
+          :attr  => 'proxy_set_body',
+          :value => 'value',
+          :match => '    proxy_set_body      value;',
+        },
+        {
+          :title => 'should not set proxy_set_body',
+          :attr  => 'proxy_set_body',
+          :value => false,
+          :notmatch => /proxy_set_body/,
+        },
+        {
           :title => 'should set proxy_pass',
           :attr  => 'proxy',
           :value => 'value',
