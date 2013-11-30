@@ -9,6 +9,6 @@ group :rake do
   gem 'puppet-blacksmith'
   gem 'librarian-puppet-maestrodev'
   gem 'rspec-system-puppet',     :require => false
-  gem 'serverspec',              :require => false
+  gem 'serverspec',   '~> 0.11.0', :require => false
   gem 'rspec-system-serverspec', :require => false
 end
