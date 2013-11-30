@@ -12,8 +12,6 @@ RSpec.configure do |c|
   # Enable colour
   c.tty = true
 
-  c.include RSpecSystemPuppet::Helpers
-
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
     # Install puppet
