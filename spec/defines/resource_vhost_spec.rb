@@ -16,6 +16,7 @@ describe 'nginx::resource::vhost' do
       :operatingsystem => 'debian',
       :kernel          => 'Linux',
       :ipaddress6      => '::',
+      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :pre_condition do
