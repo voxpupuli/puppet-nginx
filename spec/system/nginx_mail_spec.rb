@@ -30,7 +30,7 @@ describe "nginx::resource::mailhost define:" do
     end
   end
 
-  describe file('/etc/nginx/conf.mail.d/vhost_autogen.conf') do
+  describe file('/etc/nginx/conf.mail.d/domain1.example.conf') do
    it { should be_file }
    it { should contain "auth_http             localhost/cgi-bin/auth;" }
   end
