@@ -1,7 +1,7 @@
 require 'spec_helper_system'
 
 describe "nginx::resource::upstream define:" do
-  context 'should run successfully' do
+  it 'should run successfully' do
 
     pp = "
     class { 'nginx': }
@@ -19,11 +19,11 @@ describe "nginx::resource::upstream define:" do
     }
     "
 
-    context puppet_apply(pp) do
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+    puppet_apply(pp) do |r|
+      [0,2].should include r.exit_code
+      r.refresh
+      r.stderr.should be_empty
+      r.exit_code.should be_zero
     end
   end
 

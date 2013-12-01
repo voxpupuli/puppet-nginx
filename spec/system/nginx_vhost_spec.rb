@@ -1,21 +1,23 @@
 require 'spec_helper_system'
 
 describe "nginx::resource::vhost define:" do
-  context 'should run successfully' do
+  context 'new vhost on port 80' do
+    it 'should configure a nginx vhost' do
 
-    pp = "
-    class { 'nginx': }
-    nginx::resource::vhost { 'www.puppetlabs.com':
-      ensure   => present,
-      www_root => '/var/www/www.puppetlabs.com',
-    }
-    "
+      pp = "
+      class { 'nginx': }
+      nginx::resource::vhost { 'www.puppetlabs.com':
+        ensure   => present,
+        www_root => '/var/www/www.puppetlabs.com',
+      }
+      "
 
-    context puppet_apply(pp) do
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+      puppet_apply(pp) do |r|
+        [0,2].should include r.exit_code
+        r.refresh
+        r.stderr.should be_empty
+        r.exit_code.should be_zero
+      end
     end
   end
 
