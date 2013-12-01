@@ -35,4 +35,8 @@ describe "nginx::resource::mailhost define:" do
    it { should contain "auth_http             localhost/cgi-bin/auth;" }
   end
 
+  describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
+    it { should be_file }
+  end
+
 end

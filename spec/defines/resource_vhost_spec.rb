@@ -32,11 +32,21 @@ describe 'nginx::resource::vhost' do
       let :params do default_params end
       it { should include_class("nginx::params") }
       it { should include_class("nginx::config") }
-      it { should contain_file("/tmp/nginx.d/#{title}-001").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
-      it { should contain_file("/tmp/nginx.d/#{title}-001").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
+      it { should contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
+        'owner' => 'root',
+        'group' => 'root',
+        'mode'  => '0644',
+      })}
+      it { should contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
+      it { should contain_concat__fragment("#{title}-header").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
+      it { should contain_concat__fragment("#{title}-footer") }
       it { should contain_nginx__resource__location("#{title}-default") }
-      it { should contain_file("/tmp/nginx.d/#{title}-699") }
       it { should_not contain_file("/etc/nginx/fastcgi_params") }
+      it { should contain_file("#{title}.conf symlink").with({
+        'ensure' => 'link',
+        'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
+        'target' => "/etc/nginx/sites-available/#{title}.conf"
+      })}
     end
 
     describe "vhost_header template content" do
@@ -190,10 +200,10 @@ describe 'nginx::resource::vhost' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/#{title}-001").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-header") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/#{title}-001", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/#{title}-001").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -245,10 +255,10 @@ describe 'nginx::resource::vhost' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/#{title}-699").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-footer") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/#{title}-699", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/#{title}-699").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -409,10 +419,10 @@ describe 'nginx::resource::vhost' do
             :ssl_key            => 'dummy.key',
             :ssl_cert           => 'dummy.crt',
           }) end
-          it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-ssl-header") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/#{title}-700-ssl", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/#{title}-700-ssl").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -469,10 +479,10 @@ describe 'nginx::resource::vhost' do
             :ssl_cert           => 'dummy.crt',
           }) end
 
-          it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-ssl-footer") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/#{title}-999-ssl", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/#{title}-999-ssl").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -537,8 +547,8 @@ describe 'nginx::resource::vhost' do
           :ssl_port    => 80,
         }) end
 
-        it { should_not contain_file("/tmp/nginx.d/#{title}-001") }
-        it { should_not contain_file("/tmp/nginx.d/#{title}-699") }
+        it { should_not contain_concat__fragment("#{title}-header") }
+        it { should_not contain_concat__fragment("#{title}-footer") }
       end
 
       context 'when listen_port != ssl_port' do
@@ -547,8 +557,8 @@ describe 'nginx::resource::vhost' do
           :ssl_port    => 443,
         }) end
 
-        it { should contain_file("/tmp/nginx.d/#{title}-001") }
-        it { should contain_file("/tmp/nginx.d/#{title}-699") }
+        it { should contain_concat__fragment("#{title}-header") }
+        it { should contain_concat__fragment("#{title}-footer") }
       end
 
       context 'when ensure => absent' do
@@ -559,11 +569,8 @@ describe 'nginx::resource::vhost' do
           :ssl_cert => 'dummy.cert',
         }) end
 
-        it { should contain_file("/tmp/nginx.d/#{title}-001").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.d/#{title}-699").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.d/#{title}-999-ssl").with_ensure('absent') }
         it { should contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
+        it { should contain_file("#{title}.conf symlink").with_ensure('absent') }
       end
 
       context 'when ssl => true and ssl_port == listen_port' do
@@ -576,9 +583,9 @@ describe 'nginx::resource::vhost' do
         }) end
 
         it { should contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
-        it { should contain_file("/tmp/nginx.d/#{title}-999-ssl") }
+        it { should contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
+        it { should contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { should contain_concat__fragment("#{title}-ssl-footer") }
         it { should contain_file("/etc/nginx/#{title}.crt") }
         it { should contain_file("/etc/nginx/#{title}.key") }
       end
@@ -588,9 +595,9 @@ describe 'nginx::resource::vhost' do
           :passenger_cgi_param => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
         }) end
 
-        it { should contain_file("/tmp/nginx.d/#{title}-001").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-001").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-001").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
+        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
+        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
+        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
       context 'when passenger_cgi_param is set and ssl => true' do
@@ -601,9 +608,9 @@ describe 'nginx::resource::vhost' do
           :ssl_cert            => 'dummy.cert',
         }) end
 
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
-        it { should contain_file("/tmp/nginx.d/#{title}-700-ssl").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
+        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
+        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
+        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
     end
   end

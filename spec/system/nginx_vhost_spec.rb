@@ -23,6 +23,15 @@ describe "nginx::resource::vhost define:" do
       end
     end
 
+    describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
+      it { should be_file }
+      it { should contain "www.puppetlabs.com" }
+    end
+
+    describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
+      it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
+    end
+
     describe service('nginx') do
       it { should be_running }
     end
@@ -63,6 +72,15 @@ describe "nginx::resource::vhost define:" do
         r.stderr.should be_empty
         r.exit_code.should be_zero
       end
+    end
+
+    describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
+      it { should be_file }
+      it { should contain "ssl on;" }
+    end
+
+    describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
+      it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
     end
 
     describe service('nginx') do

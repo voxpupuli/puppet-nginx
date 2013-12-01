@@ -80,6 +80,14 @@ class nginx::config(
     owner  => $nginx::params::nx_daemon_user,
   }
 
+  file { "${nginx::params::nx_conf_dir}/sites-available":
+    ensure => directory,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/sites-enabled":
+    ensure => directory,
+  }
+
   file { '/etc/nginx/sites-enabled/default':
     ensure => absent,
   }
