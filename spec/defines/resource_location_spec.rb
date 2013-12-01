@@ -29,9 +29,9 @@ describe 'nginx::resource::location' do
 
       it { should include_class("nginx::params") }
       it { should include_class("nginx::config") }
-      it { should contain_file("/tmp/nginx.d/vhost1-500-rspec-test").with_content(/location rspec-test/) }
+      it { should contain_concat__fragment("vhost1-500-rspec-test").with_content(/location rspec-test/) }
       it { should_not contain_file('/etc/nginx/fastcgi_params') }
-      it { should_not contain_file("/tmp/nginx.d/vhost1-800-rspec-test-ssl") }
+      it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
       it { should_not contain_file("/etc/nginx/rspec-test_htpasswd") }
     end
 
@@ -92,10 +92,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -110,7 +110,7 @@ describe 'nginx::resource::location' do
           :proxy_cache_valid => '10m',
         } end
 
-        it { should contain_file("/tmp/nginx.d/vhost1-500-location").with_content(/proxy_cache_valid   10m;/) }
+        it { should contain_concat__fragment("vhost1-500-location").with_content(/proxy_cache_valid   10m;/) }
       end
     end
 
@@ -153,10 +153,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :location_alias => 'location_alias_value', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -196,10 +196,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :stub_status => true, :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}").with_content(/stub_status on;/) }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -281,10 +281,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :fastcgi => true, :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -366,10 +366,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :www_root => '/var/www/root', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -399,10 +399,10 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :location_custom_cfg => {'test1'=>'value1'}, :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.d/vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.d/vhost1-500-#{params[:location]}", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.d/vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -418,25 +418,25 @@ describe 'nginx::resource::location' do
 
       context 'when ssl_only => true' do
         let :params do { :ssl_only => true, :vhost => 'vhost1', :www_root => '/', } end
-        it { should_not contain_file("/tmp/nginx.d/vhost1-500-rspec-test") }
+        it { should_not contain_concat__fragment("vhost1-500-rspec-test") }
       end
 
       context 'when ssl_only => false' do
         let :params do { :ssl_only => false, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should contain_file("/tmp/nginx.d/vhost1-500-rspec-test") }
+        it { should contain_concat__fragment("vhost1-500-rspec-test") }
       end
 
       context 'when ssl => true' do
         let :params do { :ssl => true, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should contain_file("/tmp/nginx.d/vhost1-800-rspec-test-ssl") }
+        it { should contain_concat__fragment("vhost1-800-rspec-test-ssl") }
       end
 
       context 'when ssl => false' do
         let :params do { :ssl => false, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should_not contain_file("/tmp/nginx.d/vhost1-800-rspec-test-ssl") }
+        it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
       end
 
       context 'when auth_basic_user_file => true' do
@@ -454,8 +454,6 @@ describe 'nginx::resource::location' do
           :auth_basic_user_file => true,
         } end
 
-        it { should contain_file("/tmp/nginx.d/vhost1-500-rspec-test").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.d/vhost1-800-rspec-test-ssl").with_ensure('absent') }
         it { should contain_file("/etc/nginx/rspec-test_htpasswd").with_ensure('absent') }
       end
 

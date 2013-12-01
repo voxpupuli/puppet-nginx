@@ -129,6 +129,7 @@ define nginx::resource::location (
     'absent' => absent,
     default  => file,
   }
+  $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost}.conf"
 
   $location_sanitized = regsubst($location, '\/', '_', 'G')
 
@@ -168,18 +169,20 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${priority}-${location_sanitized}":
-      ensure  => $ensure_real,
+    concat::fragment { "${vhost}-${priority}-${location_sanitized}":
+      target  => $config_file,
       content => $content_real,
+      order   => $priority,
     }
   }
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
     $ssl_priority = $priority + 300
-    file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-${ssl_priority}-${location_sanitized}-ssl":
-      ensure  => $ensure_real,
+    concat::fragment {"${vhost}-${ssl_priority}-${location_sanitized}-ssl":
+      target  => $config_file,
       content => $content_real,
+      order   => $ssl_priority,
     }
   }
 
