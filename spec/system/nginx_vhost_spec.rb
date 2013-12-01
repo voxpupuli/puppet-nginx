@@ -44,11 +44,6 @@ describe "nginx::resource::vhost define:" do
     end
   end
 
-  describe file('/etc/nginx/conf.d/vhost_autogen.conf') do
-   it { should be_file }
-   it { should contain "www.puppetlabs.com" }
-  end
-
   context 'should run successfully with ssl' do
     it 'should configure a nginx SSL vhost' do
 

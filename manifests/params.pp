@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::params {
-  $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
   $nx_conf_dir                = '/etc/nginx'

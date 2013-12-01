@@ -47,6 +47,8 @@ describe 'nginx::config' do
           :group => 'root',
           :mode => '0644'
         )}
+        it { should contain_file("/etc/nginx/conf.d/vhost_autogen.conf").with_ensure('absent') }
+        it { should contain_file("/etc/nginx/conf.mail.d/vhost_autogen.conf").with_ensure('absent') }
         it { should contain_file("/var/nginx").with(
           :ensure => 'directory',
           :owner => 'root',
@@ -72,22 +74,6 @@ describe 'nginx::config' do
         )}
         it { should contain_file("/etc/nginx/conf.d/proxy.conf").with(
           :ensure => 'file',
-          :owner => 'root',
-          :group => 'root',
-          :mode => '0644'
-        )}
-        it { should contain_file("/tmp/nginx.d").with(
-          :ensure => 'directory',
-          :purge => true,
-          :recurse => true,
-          :owner => 'root',
-          :group => 'root',
-          :mode => '0644'
-        )}
-        it { should contain_file("/tmp/nginx.mail.d").with(
-          :ensure => 'directory',
-          :purge => true,
-          :recurse => true,
           :owner => 'root',
           :group => 'root',
           :mode => '0644'
@@ -278,7 +264,6 @@ describe 'nginx::config' do
     context "when confd_purge true" do
       let(:params) {{:confd_purge => true}}
       it { should contain_file('/etc/nginx/conf.d').with(
-        :ignore => 'vhost_autogen.conf',
         :purge => true,
         :recurse => true
       )}
