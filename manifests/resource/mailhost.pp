@@ -67,11 +67,6 @@ define nginx::resource::mailhost (
   
   validate_array($server_name)
 
-  $file_ensure = $ensure ? {
-    'absent' => absent,
-    default  => 'file',
-  }
-
   $config_file = "${nginx::config::nx_conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
@@ -88,8 +83,6 @@ define nginx::resource::mailhost (
   }
 
   concat { $config_file:
-    # Waiting on https://github.com/puppetlabs/puppetlabs-concat/pull/39/files
-    #ensure => $file_ensure,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
