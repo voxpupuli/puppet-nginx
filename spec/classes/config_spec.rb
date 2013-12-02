@@ -81,12 +81,12 @@ describe 'nginx::config' do
         it { should contain_file("/tmp/nginx.d").with(
           :ensure => 'absent',
           :purge => true,
-          :recurse => true,
+          :recurse => true
         )}
         it { should contain_file("/tmp/nginx.mail.d").with(
           :ensure => 'absent',
           :purge => true,
-          :recurse => true,
+          :recurse => true
         )}
       end
     end
