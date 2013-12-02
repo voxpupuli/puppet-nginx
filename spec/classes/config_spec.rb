@@ -78,6 +78,16 @@ describe 'nginx::config' do
           :group => 'root',
           :mode => '0644'
         )}
+        it { should contain_file("/tmp/nginx.d").with(
+          :ensure => 'absent',
+          :purge => true,
+          :recurse => true,
+        )}
+        it { should contain_file("/tmp/nginx.mail.d").with(
+          :ensure => 'absent',
+          :purge => true,
+          :recurse => true,
+        )}
       end
     end
   end
