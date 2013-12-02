@@ -108,4 +108,15 @@ class nginx::config(
     content => template('nginx/conf.d/proxy.conf.erb'),
   }
 
+  file { "${nginx::config::nx_temp_dir}/nginx.d":
+    ensure  => absent,
+    purge   => true,
+    recurse => true,
+  }
+
+  file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
+    ensure  => absent,
+    purge   => true,
+    recurse => true,
+  }
 }
