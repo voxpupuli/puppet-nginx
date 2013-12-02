@@ -145,11 +145,6 @@ define nginx::resource::vhost (
   validate_array($server_name)
 
   # Variables
-  $file_ensure = $ensure ? {
-    'absent' => absent,
-    default  => 'file',
-  }
-
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
   $vhost_enable_dir = "${nginx::config::nx_conf_dir}/sites-enabled"
   $vhost_symlink_ensure = $ensure ? {
@@ -196,8 +191,6 @@ define nginx::resource::vhost (
   }
 
   concat { $config_file:
-    # Waiting on https://github.com/puppetlabs/puppetlabs-concat/pull/39/files
-    #ensure => $file_ensure,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
