@@ -49,7 +49,6 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.d"] {
-      ignore  => 'vhost_autogen.conf',
       purge   => true,
       recurse => true,
     }
@@ -60,10 +59,17 @@ class nginx::config(
   }
   if $confd_purge == true {
     File["${nginx::params::nx_conf_dir}/conf.mail.d"] {
-      ignore  => 'vhost_autogen.conf',
       purge   => true,
       recurse => true,
     }
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.d/vhost_autogen.conf":
+    ensure => absent,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.mail.d/vhost_autogen.conf":
+    ensure => absent,
   }
 
   file {$nginx::config::nx_run_dir:
@@ -78,6 +84,14 @@ class nginx::config(
   file {$nginx::config::nx_proxy_temp_path:
     ensure => directory,
     owner  => $nginx::params::nx_daemon_user,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/sites-available":
+    ensure => directory,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/sites-enabled":
+    ensure => directory,
   }
 
   file { '/etc/nginx/sites-enabled/default':
@@ -95,13 +109,13 @@ class nginx::config(
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":
-    ensure  => directory,
+    ensure  => absent,
     purge   => true,
     recurse => true,
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
-    ensure  => directory,
+    ensure  => absent,
     purge   => true,
     recurse => true,
   }

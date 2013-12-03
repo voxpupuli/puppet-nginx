@@ -67,6 +67,8 @@ define nginx::resource::mailhost (
   
   validate_array($server_name)
 
+  $config_file = "${nginx::config::nx_conf_dir}/conf.mail.d/${name}.conf"
+
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
   if ($ipv6_enable and !$::ipaddress6) {
@@ -80,28 +82,27 @@ define nginx::resource::mailhost (
     }
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
+  concat { $config_file:
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    notify => Class['nginx::service'],
+  }
+
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+    concat::fragment { "${name}-header":
+      target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
-      notify  => Class['nginx::service'],
+      order   => '001',
     }
   }
 
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
-    file { "${nginx::config::nx_temp_dir}/nginx.mail.d/${name}-700-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+    concat::fragment { "${name}-ssl":
+      target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
-      notify  => Class['nginx::service'],
+      order   => '700',
     }
   }
 }

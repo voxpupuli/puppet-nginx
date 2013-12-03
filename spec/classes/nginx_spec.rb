@@ -16,6 +16,7 @@ describe 'nginx' do
         :operatingsystem => 'Debian',
         :osfamily        => 'Debian',
         :lsbdistcodename => 'precise',
+        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 
@@ -34,6 +35,7 @@ describe 'nginx' do
         :kernel          => 'linux',
         :operatingsystem => 'RedHat',
         :osfamily        => 'RedHat',
+        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 
@@ -52,6 +54,7 @@ describe 'nginx' do
         :kernel          => 'linux',
         :operatingsystem => 'SuSE',
         :osfamily        => 'Suse',
+        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 

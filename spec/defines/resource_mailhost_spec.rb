@@ -10,6 +10,7 @@ describe 'nginx::resource::mailhost' do
       :operatingsystem => 'debian',
       :kernel          => 'Linux',
       :ipaddress6      => '::',
+      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :default_params do
@@ -29,8 +30,13 @@ describe 'nginx::resource::mailhost' do
     describe 'basic assumptions' do
       let :params do default_params end
       it { should include_class("nginx::config") }
-      it { should contain_file("/tmp/nginx.mail.d/#{title}-001") }
-      it { should_not contain_file("/tmp/nginx.mail.d/#{title}-700-ssl") }
+      it { should contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with({
+        'owner' => 'root',
+        'group' => 'root',
+        'mode'  => '0644',
+      })}
+      it { should contain_concat__fragment("#{title}-header") }
+      it { should_not contain_concat__fragment("#{title}-ssl") }
     end
 
     describe "mailhost template content" do
@@ -123,10 +129,10 @@ describe 'nginx::resource::mailhost' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.mail.d/#{title}-001").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-header") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.mail.d/#{title}-001", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.mail.d/#{title}-001").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -175,10 +181,10 @@ describe 'nginx::resource::mailhost' do
           } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.mail.d/#{title}-001").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-header") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.mail.d/#{title}-001", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.mail.d/#{title}-001").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -270,10 +276,10 @@ describe 'nginx::resource::mailhost' do
           } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_file("/tmp/nginx.mail.d/#{title}-700-ssl").with_mode('0644') }
+          it { should contain_concat__fragment("#{title}-ssl") }
           it param[:title] do
-            verify_contents(subject, "/tmp/nginx.mail.d/#{title}-700-ssl", Array(param[:match]))
-            lines = subject.resource('file', "/tmp/nginx.mail.d/#{title}-001").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
+            (lines & Array(param[:match])).should == Array(param[:match])
             (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
           end
         end
@@ -341,7 +347,7 @@ describe 'nginx::resource::mailhost' do
           :ssl_port    => 443,
         }) end
 
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-001") }
+        it { should contain_concat__fragment("#{title}-header") }
       end
 
       context 'when listen_port == ssl_port' do
@@ -350,19 +356,7 @@ describe 'nginx::resource::mailhost' do
           :ssl_port    => 80,
         }) end
 
-        it { should_not contain_file("/tmp/nginx.mail.d/#{title}-001") }
-      end
-
-      context 'when ensure => absent' do
-        let :params do default_params.merge({
-          :ensure   => 'absent',
-          :ssl      => true,
-          :ssl_key  => 'dummy.key',
-          :ssl_cert => 'dummy.cert',
-        }) end
-
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-001").with_ensure('absent') }
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-700-ssl").with_ensure('absent') }
+        it { should_not contain_concat__fragment("#{title}-header") }
       end
 
       context 'when ssl => true' do
@@ -373,8 +367,8 @@ describe 'nginx::resource::mailhost' do
           :ssl_cert => 'dummy.cert',
         }) end
 
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-001") }
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-700-ssl") }
+        it { should contain_concat__fragment("#{title}-header") }
+        it { should contain_concat__fragment("#{title}-ssl") }
       end
 
       context 'when ssl => false' do
@@ -383,8 +377,8 @@ describe 'nginx::resource::mailhost' do
           :ssl    => false,
         }) end
 
-        it { should contain_file("/tmp/nginx.mail.d/#{title}-001") }
-        it { should_not contain_file("/tmp/nginx.mail.d/#{title}-700-ssl") }
+        it { should contain_concat__fragment("#{title}-header") }
+        it { should_not contain_concat__fragment("#{title}-ssl") }
       end
     end
   end

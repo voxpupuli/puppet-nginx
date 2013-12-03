@@ -15,26 +15,11 @@ describe 'nginx::service' do
 
   context "using default parameters" do
 
-    it { should contain_exec('rebuild-nginx-vhosts').with(
-      :command     => "/bin/cat /tmp/nginx.d/* > /etc/nginx/conf.d/vhost_autogen.conf",
-      :refreshonly => true,
-      :unless      => "/usr/bin/test ! -f /tmp/nginx.d/*",
-      :subscribe   => "File[/tmp/nginx.d]"
-    )}
-
-    it { should contain_exec('rebuild-nginx-mailhosts').with(
-      :command     => "/bin/cat /tmp/nginx.mail.d/* > /etc/nginx/conf.mail.d/vhost_autogen.conf",
-      :refreshonly => true,
-      :unless      => "/usr/bin/test ! -f /tmp/nginx.mail.d/*",
-      :subscribe   => "File[/tmp/nginx.mail.d]"
-    )}
-
     it { should contain_service('nginx').with(
       :ensure     => 'running',
       :enable     => true,
       :hasstatus  => true,
-      :hasrestart => true,
-      :subscribe  => ['Exec[rebuild-nginx-vhosts]','Exec[rebuild-nginx-mailhosts]']
+      :hasrestart => true
     )}
 
     it { should contain_service('nginx').without_restart }

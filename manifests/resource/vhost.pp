@@ -144,6 +144,15 @@ define nginx::resource::vhost (
   validate_array($index_files)
   validate_array($server_name)
 
+  # Variables
+  $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
+  $vhost_enable_dir = "${nginx::config::nx_conf_dir}/sites-enabled"
+  $vhost_symlink_ensure = $ensure ? {
+    'absent' => absent,
+    default  => 'link',
+  }
+  $config_file = "${vhost_dir}/${name}.conf"
+
   File {
     ensure => $ensure ? {
       'absent' => absent,
@@ -179,6 +188,13 @@ define nginx::resource::vhost (
   $error_log_real = $error_log ? {
     undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
     default => $error_log,
+  }
+
+  concat { $config_file:
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    notify => Class['nginx::service'],
   }
 
   if ($ssl == true) and ($ssl_port == $listen_port) {
@@ -231,22 +247,21 @@ define nginx::resource::vhost (
     }
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+    concat::fragment { "${name}-header":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_header.erb'),
-      notify  => Class['nginx::service'],
+      order   => '001',
     }
   }
 
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
+    concat::fragment { "${name}-footer":
+      target  => $config_file,
+      content => template('nginx/vhost/vhost_footer.erb'),
+      order   => '699',
+    }
   }
 
   # Create SSL File Stubs if SSL is enabled
@@ -260,25 +275,19 @@ define nginx::resource::vhost (
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
       default => $error_log,
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+
+    concat::fragment { "${name}-ssl-header":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
-      notify  => Class['nginx::service'],
+      order   => '700',
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+    concat::fragment { "${name}-ssl-footer":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_footer.erb'),
-      notify  => Class['nginx::service'],
+      order   => '999',
     }
 
     #Generate ssl key/cert with provided file-locations
-
     $cert = regsubst($name,' ','_')
 
     # Check if the file has been defined before creating the file to
@@ -293,5 +302,13 @@ define nginx::resource::vhost (
       mode   => '0440',
       source => $ssl_key,
     })
+  }
+
+  file{ "${name}.conf symlink":
+    ensure  => $vhost_symlink_ensure,
+    path    => "${vhost_enable_dir}/${name}.conf",
+    target  => $config_file,
+    require => Concat[$config_file],
+    notify  => Service['nginx'],
   }
 }

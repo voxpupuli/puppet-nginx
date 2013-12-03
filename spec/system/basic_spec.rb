@@ -10,4 +10,24 @@ describe "basic tests:" do
       its(:exit_code) { should be_zero }
     end
   end
+
+  #puppet smoke test
+  context puppet_apply 'notice("foo")' do
+    its(:stdout) { should =~ /foo/ }
+    its(:stderr) { should be_empty }
+    its(:exit_code) { should be_zero }
+  end
+
+  it 'nginx class should work with no errors' do
+    pp = <<-EOS
+      class { 'nginx': }
+    EOS
+
+    # Run it twice and test for idempotency
+    puppet_apply(pp) do |r|
+      [0,2].should include(r.exit_code)
+      r.refresh
+      r.exit_code.should be_zero
+    end
+  end
 end
