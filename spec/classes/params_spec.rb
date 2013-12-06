@@ -8,12 +8,8 @@ describe 'nginx::params' do
     } end
 
     it { should contain_nginx__params }
+    it { should have_class_count(1) }    #only nginx::params itself
+    it { should have_resource_count(0) } #params class should never declare resources
 
-    # There are 4 resources in this class currently
-    # there should not be any more resources because it is a params class
-    # The resources are class[nginx::params], class[main], class[settings], stage[main]
-    it "Should not contain any resources" do
-      subject.resources.size.should == 4
-    end
   end
 end
