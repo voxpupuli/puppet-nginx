@@ -64,8 +64,9 @@ describe 'nginx::resource::upstream' do
           it { should contain_file("/etc/nginx/conf.d/#{title}-upstream.conf").with_mode('0644') }
           it param[:title] do
             verify_contents(subject, "/etc/nginx/conf.d/#{title}-upstream.conf", Array(param[:match]))
-            lines = subject.resource('file', "/etc/nginx/conf.d/#{title}-upstream.conf").send(:parameters)[:content].split("\n")
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_file("/etc/nginx/conf.d/#{title}-upstream.conf").without_content(item)
+            end
           end
         end
       end
