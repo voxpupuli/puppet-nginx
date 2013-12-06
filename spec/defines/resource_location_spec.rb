@@ -8,8 +8,6 @@ describe 'nginx::resource::location' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
-      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :pre_condition do

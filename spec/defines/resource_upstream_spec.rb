@@ -5,10 +5,6 @@ describe 'nginx::resource::upstream' do
     'upstream-test'
   end
 
-  let :facts do {
-    :concat_basedir => '/var/lib/puppet/concat',
-  } end
-
   let :default_params do
     {
       :members => ['test'],

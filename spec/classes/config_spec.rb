@@ -23,7 +23,6 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
 
@@ -104,7 +103,6 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
         it { should contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
@@ -134,7 +132,6 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
         it { should contain_file("/var/nginx/client_body_temp").with(:owner => 'nginx')}
@@ -150,7 +147,6 @@ describe 'nginx::config' do
       {
         :osfamily        => 'debian',
         :operatingsystem => 'debian',
-        :kernel          => 'linux',
       }
     end
 

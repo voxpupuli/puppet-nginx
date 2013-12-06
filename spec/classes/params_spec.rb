@@ -5,7 +5,6 @@ describe 'nginx::params' do
     let :facts do {
       :osfamily        => 'debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
     } end
 
     it { should contain_nginx__params }

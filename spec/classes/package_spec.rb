@@ -35,7 +35,7 @@ describe 'nginx::package' do
     end
 
     describe 'installs the requested package version' do
-      let(:facts) {{ :kernel => 'linux', :operatingsystem => 'redhat', :osfamily => 'redhat' }}
+      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat' }}
       let(:params) {{ :package_ensure => '3.0.0' }}
 
       it 'installs 3.0.0 exactly' do

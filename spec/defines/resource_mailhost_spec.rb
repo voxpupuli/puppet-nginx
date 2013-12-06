@@ -8,9 +8,7 @@ describe 'nginx::resource::mailhost' do
     {
       :osfamily        => 'debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
       :ipaddress6      => '::',
-      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :default_params do

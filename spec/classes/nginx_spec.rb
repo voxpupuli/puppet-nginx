@@ -12,11 +12,9 @@ describe 'nginx' do
   context "on a Debian OS" do
     let :facts do
       {
-        :kernel          => 'linux',
         :operatingsystem => 'Debian',
         :osfamily        => 'Debian',
         :lsbdistcodename => 'precise',
-        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 
@@ -32,10 +30,8 @@ describe 'nginx' do
   context "on a RedHat OS" do
     let :facts do
       {
-        :kernel          => 'linux',
         :operatingsystem => 'RedHat',
         :osfamily        => 'RedHat',
-        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 
@@ -51,10 +47,8 @@ describe 'nginx' do
   context "on a Suse OS" do
     let :facts do
       {
-        :kernel          => 'linux',
         :operatingsystem => 'SuSE',
         :osfamily        => 'Suse',
-        :concat_basedir  => '/var/lib/puppet/concat',
       }
     end
 
