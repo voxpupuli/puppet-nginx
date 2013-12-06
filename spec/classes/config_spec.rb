@@ -27,7 +27,7 @@ describe 'nginx::config' do
           }
         end
 
-        it { should include_class("nginx::params") }
+        it { should contain_class("nginx::params") }
 
         it { should contain_file("/etc/nginx").with(
           :ensure => 'directory',

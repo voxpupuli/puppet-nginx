@@ -27,8 +27,8 @@ describe 'nginx::resource::location' do
         :vhost    => 'vhost1',
       } end
 
-      it { should include_class("nginx::params") }
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::params") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat__fragment("vhost1-500-rspec-test").with_content(/location rspec-test/) }
       it { should_not contain_file('/etc/nginx/fastcgi_params') }
       it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }

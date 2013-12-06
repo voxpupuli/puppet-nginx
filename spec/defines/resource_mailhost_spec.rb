@@ -29,7 +29,7 @@ describe 'nginx::resource::mailhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',

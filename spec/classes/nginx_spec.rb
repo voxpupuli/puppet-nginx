@@ -23,7 +23,7 @@ describe 'nginx' do
     it { should contain_nginx__package }
     it { should contain_nginx__config }
     it { should contain_nginx__service }
-    it { should include_class("nginx::params") }
+    it { should contain_class("nginx::params") }
     it { should contain_nginx__resource__upstream("upstream1") }
     it { should contain_nginx__resource__vhost("test2.local") }
     it { should contain_nginx__resource__location("test2.local") }
@@ -42,7 +42,7 @@ describe 'nginx' do
     it { should contain_nginx__package }
     it { should contain_nginx__config }
     it { should contain_nginx__service }
-    it { should include_class("nginx::params") }
+    it { should contain_class("nginx::params") }
     it { should contain_nginx__resource__upstream("upstream1") }
     it { should contain_nginx__resource__vhost("test2.local") }
     it { should contain_nginx__resource__location("test2.local") }
@@ -61,7 +61,7 @@ describe 'nginx' do
     it { should contain_nginx__package }
     it { should contain_nginx__config }
     it { should contain_nginx__service }
-    it { should include_class("nginx::params") }
+    it { should contain_class("nginx::params") }
     it { should contain_nginx__resource__upstream("upstream1") }
     it { should contain_nginx__resource__vhost("test2.local") }
     it { should contain_nginx__resource__location("test2.local") }

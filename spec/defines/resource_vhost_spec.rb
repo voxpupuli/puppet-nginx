@@ -30,8 +30,8 @@ describe 'nginx::resource::vhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { should include_class("nginx::params") }
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::params") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
