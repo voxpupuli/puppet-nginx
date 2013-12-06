@@ -28,19 +28,22 @@ describe 'nginx::config' do
 
         it { should contain_class("nginx::params") }
 
-        it { should contain_file("/etc/nginx").with(
+        it { should contain_file("/etc/nginx").only_with(
+          :path   => "/etc/nginx",
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
           :mode => '0644'
         )}
-        it { should contain_file("/etc/nginx/conf.d").with(
+        it { should contain_file("/etc/nginx/conf.d").only_with(
+          :path   => '/etc/nginx/conf.d',
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
           :mode => '0644'
         )}
-        it { should contain_file("/etc/nginx/conf.mail.d").with(
+        it { should contain_file("/etc/nginx/conf.mail.d").only_with(
+          :path   => '/etc/nginx/conf.mail.d',
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
