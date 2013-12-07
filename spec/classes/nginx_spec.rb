@@ -9,15 +9,7 @@ describe 'nginx' do
     }
   end
 
-  context "on a Debian OS" do
-    let :facts do
-      {
-        :operatingsystem => 'Debian',
-        :osfamily        => 'Debian',
-        :lsbdistcodename => 'precise',
-      }
-    end
-
+  shared_examples "a Linux OS" do
     it { should contain_nginx__package }
     it { should contain_nginx__config }
     it { should contain_nginx__service }
@@ -27,37 +19,37 @@ describe 'nginx' do
     it { should contain_nginx__resource__location("test2.local") }
   end
 
-  context "on a RedHat OS" do
-    let :facts do
-      {
-        :operatingsystem => 'RedHat',
-        :osfamily        => 'RedHat',
-      }
+  context "Debian OS" do
+    it_behaves_like "a Linux OS" do
+      let :facts do
+        {
+          :operatingsystem => 'Debian',
+          :osfamily        => 'Debian',
+          :lsbdistcodename => 'precise',
+        }
+      end
     end
-
-    it { should contain_nginx__package }
-    it { should contain_nginx__config }
-    it { should contain_nginx__service }
-    it { should contain_class("nginx::params") }
-    it { should contain_nginx__resource__upstream("upstream1") }
-    it { should contain_nginx__resource__vhost("test2.local") }
-    it { should contain_nginx__resource__location("test2.local") }
   end
 
-  context "on a Suse OS" do
-    let :facts do
-      {
-        :operatingsystem => 'SuSE',
-        :osfamily        => 'Suse',
-      }
+  context "RedHat OS" do
+    it_behaves_like "a Linux OS" do
+      let :facts do
+        {
+          :operatingsystem => 'RedHat',
+          :osfamily        => 'RedHat',
+        }
+      end
     end
+  end
 
-    it { should contain_nginx__package }
-    it { should contain_nginx__config }
-    it { should contain_nginx__service }
-    it { should contain_class("nginx::params") }
-    it { should contain_nginx__resource__upstream("upstream1") }
-    it { should contain_nginx__resource__vhost("test2.local") }
-    it { should contain_nginx__resource__location("test2.local") }
+  context "Suse OS" do
+    it_behaves_like "a Linux OS" do
+      let :facts do
+        {
+          :operatingsystem => 'SuSE',
+          :osfamily        => 'Suse',
+        }
+      end
+    end
   end
 end
