@@ -10,9 +10,14 @@ describe 'nginx' do
   end
 
   shared_examples "a Linux OS" do
-    it { should contain_nginx__package }
-    it { should contain_nginx__config }
-    it { should contain_nginx__service }
+    it { should contain_class('nginx') }
+    it { should contain_anchor('nginx::begin') }
+    it { should contain_nginx__package.that_requires('Anchor[nginx::begin]') }
+    it { should contain_nginx__config.that_requires('Class[nginx::package]') }
+    it { should contain_nginx__service.that_subscribes_to('Anchor[nginx::begin]') }
+    it { should contain_nginx__service.that_subscribes_to('Class[nginx::package]') }
+    it { should contain_nginx__service.that_subscribes_to('Class[nginx::config]') }
+    it { should contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
     it { should contain_class("nginx::params") }
     it { should contain_nginx__resource__upstream("upstream1") }
     it { should contain_nginx__resource__vhost("test2.local") }
