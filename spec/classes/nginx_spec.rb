@@ -10,6 +10,7 @@ describe 'nginx' do
   end
 
   shared_examples "a Linux OS" do
+    it { should compile.with_all_deps }
     it { should contain_class('nginx') }
     it { should contain_anchor('nginx::begin') }
     it { should contain_nginx__package.that_requires('Anchor[nginx::begin]') }
