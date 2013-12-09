@@ -14,9 +14,7 @@ describe 'nginx::resource::vhost' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
       :ipaddress6      => '::',
-      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :pre_condition do
@@ -30,8 +28,8 @@ describe 'nginx::resource::vhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { should include_class("nginx::params") }
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::params") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
@@ -85,7 +83,7 @@ describe 'nginx::resource::vhost' do
           :title    => 'should not enable IPv6',
           :attr     => 'ipv6_enable',
           :value    => false,
-          :notmatch => '  listen [::]:80 default ipv6only=on;',
+          :notmatch => /  listen \[::\]:80 default ipv6only=on;/,
         },
         {
           :title => 'should set the IPv6 listen IP',
@@ -155,7 +153,7 @@ describe 'nginx::resource::vhost' do
           :title    => 'should not set root',
           :attr     => 'use_default_location',
           :value    => true,
-          :notmatch => '  root /;',
+          :notmatch => /  root \/;/,
         },
         {
           :title => 'should set proxy_set_header',
@@ -180,8 +178,8 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_to_https',
           :value    => false,
           :notmatch => [
-            '  if ($ssl_protocol = "") {',
-            '       return 301 https://$host$request_uri;',
+            /if \(\$ssl_protocol = ""\) \{/,
+            /       return 301 https:\/\/\$host\$request_uri;/,
           ],
         },
         {
@@ -204,7 +202,9 @@ describe 'nginx::resource::vhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-header").without_content(item)
+            end
           end
         end
       end
@@ -246,9 +246,9 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_www_to_non_www',
           :value    => false,
           :notmatch => [
-            '  listen                *:80;',
-            '  server_name           www.rspec.example.com;',
-            '  rewrite               ^ http://rspec.example.com$uri permanent;',
+            /  listen                \*:80;/,
+            /  server_name           www\.rspec\.example\.com;/,
+            /  rewrite               \^ http:\/\/rspec\.example\.com\$uri permanent;/,
           ],
         },
       ].each do |param|
@@ -259,7 +259,9 @@ describe 'nginx::resource::vhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-footer").without_content(item)
+            end
           end
         end
       end
@@ -319,7 +321,7 @@ describe 'nginx::resource::vhost' do
           :title    => 'should disable IPv6',
           :attr     => 'ipv6_enable',
           :value    => false,
-          :notmatch => '  listen [::]:80 default ipv6only=on;',
+          :notmatch => /  listen \[::\]:80 default ipv6only=on;/,
         },
         {
           :title => 'should set the IPv6 listen IP',
@@ -409,7 +411,7 @@ describe 'nginx::resource::vhost' do
           :title    => 'should not set root',
           :attr     => 'use_default_location',
           :value    => true,
-          :notmatch => '  root /;',
+          :notmatch => /  root \/;/,
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -423,7 +425,9 @@ describe 'nginx::resource::vhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-ssl-header").without_content(item)
+            end
           end
         end
       end
@@ -465,9 +469,9 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_www_to_non_www',
           :value    => false,
           :notmatch => [
-            '  listen                *:443 ssl;',
-            '  server_name           www.rspec.example.com;',
-            '  rewrite               ^ https://rspec.example.com$uri permanent;',
+            /  listen                \*:443 ssl;/,
+            /  server_name           www\.rspec\.example\.com;/,
+            /  rewrite               \^ https:\/\/rspec\.example\.com\$uri permanent;/,
           ],
         },
       ].each do |param|
@@ -483,7 +487,9 @@ describe 'nginx::resource::vhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-ssl-footer").without_content(item)
+            end
           end
         end
       end

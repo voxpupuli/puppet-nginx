@@ -1,8 +1,6 @@
 require 'rspec-system/spec_helper'
 require 'rspec-system-puppet/helpers'
 require 'rspec-system-serverspec/helpers'
-include Serverspec::Helper::RSpecSystem
-include Serverspec::Helper::DetectOS
 include RSpecSystemPuppet::Helpers
 
 RSpec.configure do |c|

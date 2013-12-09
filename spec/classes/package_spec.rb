@@ -16,6 +16,8 @@ describe 'nginx::package' do
         'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
       )}
       it { should contain_file('/etc/yum.repos.d/nginx-release.repo') }
+      it { should contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
+      it { should contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
 
     context "manage_repo => false" do
@@ -35,7 +37,7 @@ describe 'nginx::package' do
     end
 
     describe 'installs the requested package version' do
-      let(:facts) {{ :kernel => 'linux', :operatingsystem => 'redhat', :osfamily => 'redhat' }}
+      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat' }}
       let(:params) {{ :package_ensure => '3.0.0' }}
 
       it 'installs 3.0.0 exactly' do
@@ -58,6 +60,8 @@ describe 'nginx::package' do
         'key'        => '7BD9BF62',
         'key_source' => 'http://nginx.org/keys/nginx_signing.key'
       )}
+      it { should contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
+      it { should contain_anchor('nginx::package::end').that_requires('Class[nginx::package::debian]') }
     end
 
     context "package_source => 'passenger'" do
@@ -104,6 +108,8 @@ describe 'nginx::package' do
     ].each do |package|
       it { should contain_package("#{package}") }
     end
+    it { should contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::suse]') }
+    it { should contain_anchor('nginx::package::end').that_requires('Class[nginx::package::suse]') }
   end
 
 
@@ -137,6 +143,8 @@ describe 'nginx::package' do
         'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
       )}
       it { should contain_file('/etc/yum.repos.d/nginx-release.repo') }
+      it { should contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
+      it { should contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
   end
 
   context 'fedora' do

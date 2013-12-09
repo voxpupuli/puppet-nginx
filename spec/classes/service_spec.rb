@@ -4,7 +4,6 @@ describe 'nginx::service' do
   let :facts do {
     :osfamily        => 'Debian',
     :operatingsystem => 'debian',
-    :kernel          => 'Linux',
   } end
 
   let :pre_condition do

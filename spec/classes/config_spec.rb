@@ -23,25 +23,27 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
 
-        it { should include_class("nginx::params") }
+        it { should contain_class("nginx::params") }
 
-        it { should contain_file("/etc/nginx").with(
+        it { should contain_file("/etc/nginx").only_with(
+          :path   => "/etc/nginx",
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
           :mode => '0644'
         )}
-        it { should contain_file("/etc/nginx/conf.d").with(
+        it { should contain_file("/etc/nginx/conf.d").only_with(
+          :path   => '/etc/nginx/conf.d',
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
           :mode => '0644'
         )}
-        it { should contain_file("/etc/nginx/conf.mail.d").with(
+        it { should contain_file("/etc/nginx/conf.mail.d").only_with(
+          :path   => '/etc/nginx/conf.mail.d',
           :ensure => 'directory',
           :owner => 'root',
           :group => 'root',
@@ -104,7 +106,6 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
         it { should contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
@@ -134,7 +135,6 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
-            :kernel          => 'linux',
           }
         end
         it { should contain_file("/var/nginx/client_body_temp").with(:owner => 'nginx')}
@@ -150,7 +150,6 @@ describe 'nginx::config' do
       {
         :osfamily        => 'debian',
         :operatingsystem => 'debian',
-        :kernel          => 'linux',
       }
     end
 
@@ -196,7 +195,7 @@ describe 'nginx::config' do
           :title    => 'should not set proxy_cache_path',
           :attr     => 'proxy_cache_path',
           :value    => false,
-          :notmatch => '  proxy_cache_path    /path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :notmatch => /  proxy_cache_path    \/path\/to\/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;/,
         },
         {
           :title => 'should contain ordered appended directives',
@@ -215,8 +214,9 @@ describe 'nginx::config' do
           it { should contain_file("/etc/nginx/nginx.conf").with_mode('0644') }
           it param[:title] do
             verify_contents(subject, "/etc/nginx/nginx.conf", Array(param[:match]))
-            lines = subject.resource('file', "/etc/nginx/nginx.conf").send(:parameters)[:content].split("\n")
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_file("/etc/nginx/nginx.conf").without_content(item)
+            end
           end
         end
       end
@@ -264,8 +264,9 @@ describe 'nginx::config' do
           it { should contain_file("/etc/nginx/conf.d/proxy.conf").with_mode('0644') }
           it param[:title] do
             verify_contents(subject, "/etc/nginx/conf.d/proxy.conf", Array(param[:match]))
-            lines = subject.resource('file', "/etc/nginx/conf.d/proxy.conf").send(:parameters)[:content].split("\n")
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_file("/etc/nginx/conf.d/proxy.conf").without_content(item)
+            end
           end
         end
       end

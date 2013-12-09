@@ -8,9 +8,7 @@ describe 'nginx::resource::mailhost' do
     {
       :osfamily        => 'debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
       :ipaddress6      => '::',
-      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :default_params do
@@ -29,7 +27,7 @@ describe 'nginx::resource::mailhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
@@ -69,7 +67,7 @@ describe 'nginx::resource::mailhost' do
           :title    => 'should not enable IPv6',
           :attr     => 'ipv6_enable',
           :value    => false,
-          :notmatch => '  listen [::]:80 default ipv6only=on;',
+          :notmatch => /  listen \[::\]:80 default ipv6only=on;/,
         },
         {
           :title => 'should set the IPv6 listen IP',
@@ -133,7 +131,9 @@ describe 'nginx::resource::mailhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-header").without_content(item)
+            end
           end
         end
       end
@@ -157,7 +157,7 @@ describe 'nginx::resource::mailhost' do
           :title    => 'should not enable SSL',
           :attr     => 'starttls',
           :value    => false,
-          :notmatch => '  ssl_session_timeout  5m;',
+          :notmatch => /  ssl_session_timeout  5m;/,
         },
         {
           :title => 'should set ssl_certificate',
@@ -185,7 +185,9 @@ describe 'nginx::resource::mailhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-header").without_content(item)
+            end
           end
         end
       end
@@ -209,7 +211,7 @@ describe 'nginx::resource::mailhost' do
           :title    => 'should not enable IPv6',
           :attr     => 'ipv6_enable',
           :value    => false,
-          :notmatch => '  listen [::]:80 default ipv6only=on;',
+          :notmatch => /  listen \[::\]:80 default ipv6only=on;/,
         },
         {
           :title => 'should set the IPv6 listen IP',
@@ -280,7 +282,9 @@ describe 'nginx::resource::mailhost' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("#{title}-ssl").without_content(item)
+            end
           end
         end
       end

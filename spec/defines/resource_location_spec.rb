@@ -8,8 +8,6 @@ describe 'nginx::resource::location' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'debian',
-      :kernel          => 'Linux',
-      :concat_basedir  => '/var/lib/puppet/concat',
     }
   end
   let :pre_condition do
@@ -27,8 +25,8 @@ describe 'nginx::resource::location' do
         :vhost    => 'vhost1',
       } end
 
-      it { should include_class("nginx::params") }
-      it { should include_class("nginx::config") }
+      it { should contain_class("nginx::params") }
+      it { should contain_class("nginx::config") }
       it { should contain_concat__fragment("vhost1-500-rspec-test").with_content(/location rspec-test/) }
       it { should_not contain_file('/etc/nginx/fastcgi_params') }
       it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
@@ -120,7 +118,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+            end
           end
         end
       end
@@ -181,7 +181,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+            end
           end
         end
       end
@@ -224,7 +226,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+            end
           end
         end
       end
@@ -309,7 +313,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(/#{item}/)
+            end
           end
         end
       end
@@ -394,7 +400,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+            end
           end
         end
       end
@@ -427,7 +435,9 @@ describe 'nginx::resource::location' do
           it param[:title] do
             lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
-            (Array(param[:notmatch]).collect { |x| lines.grep x }.flatten).should be_empty
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+            end
           end
         end
       end
