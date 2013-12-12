@@ -25,6 +25,8 @@
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
+#   [*autoindex*]           - Set it on 'on' to activate autoindex directory
+#     listing. Undef by default.)
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
@@ -77,7 +79,7 @@
 #      options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
-#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment 
+#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #      variables to pass to the backend application
 # Actions:
 #
@@ -124,6 +126,7 @@ define nginx::resource::vhost (
     'index.html',
     'index.htm',
     'index.php'],
+  $autoindex              = undef,
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
@@ -205,7 +208,7 @@ define nginx::resource::vhost (
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
-  
+
   if $use_default_location == true {
     # Create the default location reference for the vHost
     nginx::resource::location {"${name}-default":
