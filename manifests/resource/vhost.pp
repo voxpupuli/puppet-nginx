@@ -207,7 +207,6 @@ define nginx::resource::vhost (
     $ssl_only = true
   }
 
-<<<<<<< HEAD
   # Create the default location reference for the vHost
   nginx::resource::location {"${name}-default":
     ensure              => $ensure,
