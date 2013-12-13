@@ -207,27 +207,6 @@ define nginx::resource::vhost (
     $ssl_only = true
   }
 
-  # Create the default location reference for the vHost
-  nginx::resource::location {"${name}-default":
-    ensure              => $ensure,
-    vhost               => $name,
-    ssl                 => $ssl,
-    ssl_only            => $ssl_only,
-    location            => '/',
-    location_allow      => $location_allow,
-    location_deny       => $location_deny,
-    proxy               => $proxy,
-    proxy_read_timeout  => $proxy_read_timeout,
-    proxy_cache         => $proxy_cache,
-    proxy_cache_valid   => $proxy_cache_valid,
-    fastcgi             => $fastcgi,
-    fastcgi_params      => $fastcgi_params,
-    fastcgi_script      => $fastcgi_script,
-    try_files           => $try_files,
-    www_root            => $www_root,
-    index_files         => $index_files,
-    location_custom_cfg => $location_custom_cfg,
-    notify              => Class['nginx::service'],
   if $use_default_location == true {
     # Create the default location reference for the vHost
     nginx::resource::location {"${name}-default":
