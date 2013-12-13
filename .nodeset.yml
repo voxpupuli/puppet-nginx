@@ -29,7 +29,3 @@ sets:
     nodes:
       "main.foo.vm":
         prefab: 'ubuntu-server-12042-x64'
-  'sles-11sp1-x64':
-    nodes:
-      "main.foo.vm":
-        prefab: 'sles-11sp1-x64'

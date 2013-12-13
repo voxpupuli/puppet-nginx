@@ -8,6 +8,12 @@
 <% end -%>
     proxy_pass          <%= @proxy %>;
     proxy_read_timeout  <%= @proxy_read_timeout %>;
+<% if @proxy_method -%>
+    proxy_method        <%= @proxy_method %>;
+<% end -%>
+<% if @proxy_set_body -%>
+    proxy_set_body      <%= @proxy_set_body %>;
+<% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>

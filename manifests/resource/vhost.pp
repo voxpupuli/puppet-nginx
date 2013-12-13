@@ -25,6 +25,8 @@
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
+#   [*autoindex*]           - Set it on 'on' to activate autoindex directory
+#     listing. Undef by default.)
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
@@ -59,6 +61,9 @@
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]       - This directive sets the time for caching
 #     different replies.
+#   [*proxy_method*]            - If defined, overrides the HTTP method of the
+#     request to be passed to the backend.
+#   [*proxy_set_body*]          - If defined, sets the body passed to the backend.
 #   [*auth_basic*]              - This directive includes testing name and
 #      password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
@@ -74,7 +79,8 @@
 #      options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
 #      options like error level to the end.
-#
+#   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
+#      variables to pass to the backend application
 # Actions:
 #
 # Requires:
@@ -110,6 +116,8 @@ define nginx::resource::vhost (
   $proxy_set_header       = [],
   $proxy_cache            = false,
   $proxy_cache_valid      = false,
+  $proxy_method           = undef,
+  $proxy_set_body         = undef,
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
@@ -117,6 +125,7 @@ define nginx::resource::vhost (
     'index.html',
     'index.htm',
     'index.php'],
+  $autoindex              = undef,
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
@@ -136,6 +145,18 @@ define nginx::resource::vhost (
 
   validate_array($location_allow)
   validate_array($location_deny)
+  validate_array($proxy_set_header)
+  validate_array($index_files)
+  validate_array($server_name)
+
+  # Variables
+  $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
+  $vhost_enable_dir = "${nginx::config::nx_conf_dir}/sites-enabled"
+  $vhost_symlink_ensure = $ensure ? {
+    'absent' => absent,
+    default  => 'link',
+  }
+  $config_file = "${vhost_dir}/${name}.conf"
 
   File {
     ensure => $ensure ? {
@@ -175,23 +196,18 @@ define nginx::resource::vhost (
     default => $error_log,
   }
 
-  # Use the File Fragment Pattern to construct the configuration files.
-  # Create the base configuration file reference.
-  if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-001":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
-      content => template('nginx/vhost/vhost_header.erb'),
-      notify  => Class['nginx::service'],
-    }
+  concat { $config_file:
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    notify => Class['nginx::service'],
   }
 
   if ($ssl == true) and ($ssl_port == $listen_port) {
     $ssl_only = true
   }
 
+<<<<<<< HEAD
   # Create the default location reference for the vHost
   nginx::resource::location {"${name}-default":
     ensure              => $ensure,
@@ -213,6 +229,33 @@ define nginx::resource::vhost (
     index_files         => $index_files,
     location_custom_cfg => $location_custom_cfg,
     notify              => Class['nginx::service'],
+  if $use_default_location == true {
+    # Create the default location reference for the vHost
+    nginx::resource::location {"${name}-default":
+      ensure              => $ensure,
+      vhost               => $name,
+      ssl                 => $ssl,
+      ssl_only            => $ssl_only,
+      location            => '/',
+      location_allow      => $location_allow,
+      location_deny       => $location_deny,
+      proxy               => $proxy,
+      proxy_read_timeout  => $proxy_read_timeout,
+      proxy_cache         => $proxy_cache,
+      proxy_cache_valid   => $proxy_cache_valid,
+      proxy_method        => $proxy_method,
+      proxy_set_body      => $proxy_set_body,
+      fastcgi             => $fastcgi,
+      fastcgi_params      => $fastcgi_params,
+      fastcgi_script      => $fastcgi_script,
+      try_files           => $try_files,
+      www_root            => $www_root,
+      index_files         => $index_files,
+      location_custom_cfg => $location_custom_cfg,
+      notify              => Class['nginx::service'],
+    }
+  } else {
+    $root = $www_root
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
@@ -234,9 +277,21 @@ define nginx::resource::vhost (
     }
   }
 
+  if ($listen_port != $ssl_port) {
+    concat::fragment { "${name}-header":
+      target  => $config_file,
+      content => template('nginx/vhost/vhost_header.erb'),
+      order   => '001',
+    }
+  }
+
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-699": content => template('nginx/vhost/vhost_footer.erb'), }
+    concat::fragment { "${name}-footer":
+      target  => $config_file,
+      content => template('nginx/vhost/vhost_footer.erb'),
+      order   => '699',
+    }
   }
 
   # Create SSL File Stubs if SSL is enabled
@@ -250,25 +305,19 @@ define nginx::resource::vhost (
       undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
       default => $error_log,
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-700-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+
+    concat::fragment { "${name}-ssl-header":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
-      notify  => Class['nginx::service'],
+      order   => '700',
     }
-    file { "${nginx::config::nx_temp_dir}/nginx.d/${name}-999-ssl":
-      ensure  => $ensure ? {
-        'absent' => absent,
-        default  => 'file',
-      },
+    concat::fragment { "${name}-ssl-footer":
+      target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_footer.erb'),
-      notify  => Class['nginx::service'],
+      order   => '999',
     }
 
     #Generate ssl key/cert with provided file-locations
-
     $cert = regsubst($name,' ','_')
 
     # Check if the file has been defined before creating the file to
@@ -283,5 +332,13 @@ define nginx::resource::vhost (
       mode   => '0440',
       source => $ssl_key,
     })
+  }
+
+  file{ "${name}.conf symlink":
+    ensure  => $vhost_symlink_ensure,
+    path    => "${vhost_enable_dir}/${name}.conf",
+    target  => $config_file,
+    require => Concat[$config_file],
+    notify  => Service['nginx'],
   }
 }

@@ -44,6 +44,7 @@ http {
 <% end -%>
 
   include /etc/nginx/conf.d/*.conf;
+  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/sites-enabled/*;
 
 }
 <% if scope.lookupvar('nginx::mail') %>

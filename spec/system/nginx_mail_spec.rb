@@ -1,7 +1,7 @@
 require 'spec_helper_system'
 
 describe "nginx::resource::mailhost define:" do
-  context 'should run successfully' do
+  it 'should run successfully' do
 
     pp = "
     class { 'nginx':
@@ -21,18 +21,22 @@ describe "nginx::resource::mailhost define:" do
     }
     "
 
-    context puppet_apply(pp) do
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
+    puppet_apply(pp) do |r|
+      [0,2].should include r.exit_code
+      r.refresh
       # Not until deprecated variables fixed.
-      #its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+      #r.stderr.should be_empty
+      r.exit_code.should be_zero
     end
   end
 
-  describe file('/etc/nginx/conf.mail.d/vhost_autogen.conf') do
+  describe file('/etc/nginx/conf.mail.d/domain1.example.conf') do
    it { should be_file }
    it { should contain "auth_http             localhost/cgi-bin/auth;" }
+  end
+
+  describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
+    it { should be_file }
   end
 
 end

@@ -28,7 +28,7 @@ class nginx::package::redhat (
       # fedora 19 has 1.4.x packages are in
 
       # fedora 18 users will need to supply their own nginx 1.4 rpms and/or repo
-      if $::lsbmajdistrelease < 19 {
+      if $::lsbmajdistrelease and $::lsbmajdistrelease < 19 {
         notice("${::operatingsystem} ${::lsbmajdistrelease} does not supply nginx >= 1.4 packages")
       }
     }

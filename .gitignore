@@ -4,4 +4,5 @@ pkg/
 .librarian/
 .tmp/
 pkg/
+Gemfile.lock
 spec/fixtures/
