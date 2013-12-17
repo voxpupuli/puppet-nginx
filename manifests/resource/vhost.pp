@@ -46,8 +46,8 @@
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'SSLv3 TLSv1
 #     TLSv1.1 TLSv1.2'. if nginx version >= 1.0.12 else 'SSLv3 TLSv1'
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
-#   [*ssl_cache*]           - SSL cache size. Defaults to 'shared:SSL:10m'.
 #     'HIGH:!aNULL:!MD5'.
+#   [*ssl_cache*]           - SSL cache size. Defaults to 'shared:SSL:10m'.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
