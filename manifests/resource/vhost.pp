@@ -73,6 +73,8 @@
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
 #     put before everything else inside vhost
+#   [*use_default_location*]    - Create the default location reference for the
+#      vHost, the "/" location
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
@@ -135,6 +137,7 @@ define nginx::resource::vhost (
   $location_custom_cfg    = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $use_default_location   = false,
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
