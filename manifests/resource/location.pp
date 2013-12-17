@@ -13,6 +13,8 @@
 #   [*location_deny*]        - Array: Locations to deny connections from.
 #   [*www_root*]             - Specifies the location on disk for files to be
 #     read from. Cannot be set in conjunction with $proxy
+#   [*autoindex*]            - Set it on 'on' to activate autoindex directory
+#     listing. Undef by default.
 #   [*index_files*]          - Default index files for NGINX to read when
 #     traversing a directory
 #   [*proxy*]                - Proxy server(s) for a location to connect to.
@@ -91,6 +93,7 @@ define nginx::resource::location (
   $location             = $name,
   $vhost                = undef,
   $www_root             = undef,
+  $autoindex            = undef,
   $index_files          = [
     'index.html',
     'index.htm',
@@ -126,7 +129,7 @@ define nginx::resource::location (
     mode   => '0644',
     notify => Class['nginx::service'],
   }
-  
+
   validate_array($index_files)
 
   # # Shared Variables
