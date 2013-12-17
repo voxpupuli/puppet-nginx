@@ -46,6 +46,7 @@
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'SSLv3 TLSv1
 #     TLSv1.1 TLSv1.2'. if nginx version >= 1.0.12 else 'SSLv3 TLSv1'
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
+#   [*ssl_cache*]           - SSL cache size. Defaults to 'shared:SSL:10m'.
 #     'HIGH:!aNULL:!MD5'.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
@@ -110,6 +111,7 @@ define nginx::resource::vhost (
   $ssl_port               = '443',
   $ssl_protocols          = $nginx::params::ssl_protocols,
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
+  $ssl_cache              = 'shared:SSL:10m',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
