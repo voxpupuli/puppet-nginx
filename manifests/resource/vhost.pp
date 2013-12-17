@@ -26,7 +26,7 @@
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
 #   [*autoindex*]           - Set it on 'on' to activate autoindex directory
-#     listing. Undef by default.)
+#     listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream

@@ -14,7 +14,9 @@
 <% if @try_files -%>
     try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
-<% if @autoindex == 'on' -%>autoindex on;<% end -%>
+<% if @autoindex == 'on' -%>
+    autoindex on;
+<% end -%>
 <% if @index_files -%>
     index <% @index_files.each do |i| %> <%= i %><% end %>;
 <% end -%>
