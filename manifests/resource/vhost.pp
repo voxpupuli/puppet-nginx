@@ -229,13 +229,10 @@ define nginx::resource::vhost (
       fastcgi_params      => $fastcgi_params,
       fastcgi_script      => $fastcgi_script,
       try_files           => $try_files,
-      www_root            => $www_root,
       index_files         => $index_files,
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
     }
-  } else {
-    $root = $www_root
   }
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
