@@ -165,7 +165,7 @@ define nginx::resource::location (
   } elsif ($location_custom_cfg != undef) {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   } else {
-    fail('Cannot create a location reference without a www_root, location_cfg_prepend, location_cfg_append, try_files, autoindex, auth_basic, auth_basic_user_file, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
+    fail("Cannot create a location $name($location) of vhost $vhost without a www_root, location_cfg_prepend, location_cfg_append, try_files, autoindex, auth_basic, auth_basic_user_file, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined")
   }
 
   if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
