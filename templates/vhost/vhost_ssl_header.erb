@@ -20,6 +20,9 @@ server {
 <% if defined? @auth_basic_user_file -%>
   auth_basic_user_file      "<%= @auth_basic_user_file %>";
 <% end -%>
+<% if defined? @header_hsts -%>
+  add_header Strict-Transport-Security "<%= @header_hsts %>";
+<% end -%>
 
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;

@@ -68,6 +68,8 @@
 #      password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
+#   [*header_hsts*]             - Adds the Strict-Transport-Security header with
+#     a value as defiend within.
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
@@ -137,6 +139,7 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $header_hsts            = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $include_files          = undef,
