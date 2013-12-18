@@ -180,7 +180,7 @@ define nginx::resource::location (
     concat::fragment { "${vhost}-${priority}-${location_sanitized}":
       target  => $config_file,
       content => $content_real,
-      order   => $priority,
+      order   => "${priority}",
     }
   }
 
@@ -190,7 +190,7 @@ define nginx::resource::location (
     concat::fragment {"${vhost}-${ssl_priority}-${location_sanitized}-ssl":
       target  => $config_file,
       content => $content_real,
-      order   => $ssl_priority,
+      order   => "${ssl_priority}",
     }
   }
 
