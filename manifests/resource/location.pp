@@ -141,12 +141,11 @@ define nginx::resource::location (
 
   $location_sanitized = regsubst($location, '\/', '_', 'G')
 
+  $location_directory_possible = ($www_root != undef) or ($location_cfg_prepend != undef) or ($location_cfg_append != undef) or ($try_files != undef) or ($autoindex != undef) or ($auth_basic != undef) or ($auth_basic_user_file != undef)
+
   ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
-  }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
@@ -161,10 +160,12 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
-  } elsif ($www_root != undef) {
+  } elsif ($location_directory_possible) {
     $content_real = template('nginx/vhost/vhost_location_directory.erb')
-  } else {
+  } elsif ($location_custom_cfg != undef) {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
+  } else {
+    fail('Cannot create a location reference without a www_root, location_cfg_prepend, location_cfg_append, try_files, autoindex, auth_basic, auth_basic_user_file, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
   }
 
   if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
