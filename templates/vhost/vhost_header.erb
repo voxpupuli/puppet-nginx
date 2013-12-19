@@ -31,6 +31,9 @@ server {
        return 301 https://$host$request_uri;
   }
 <% end -%>
+<% if @index_files -%>
+    index <% Array(index_files).each do |i| %> <%= i %><% end %>;
+<% end -%>
 
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
