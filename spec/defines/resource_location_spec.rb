@@ -504,7 +504,7 @@ describe 'nginx::resource::location' do
           :vhost => 'vhost1',
         } end
 
-        it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined/) }
+        it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location test2.local(/bob) of vhost vhost1 without a www_root, location_cfg_prepend, location_cfg_append, try_files, autoindex, auth_basic, auth_basic_user_file, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined/) }
       end
 
       context "www_root and proxy are set" do
