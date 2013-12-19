@@ -21,7 +21,7 @@ server {
   auth_basic_user_file      "<%= @auth_basic_user_file %>";
 <% end -%>
 <% if @index_files -%>
-    index <% @index_files.each do |i| %> <%= i %><% end %>;
+    index <% Array(index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
   access_log            <%= @ssl_access_log %>;
