@@ -23,6 +23,8 @@
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
+#   [*add_header*]          - Adds headers to the HTTP response when
+#     response code is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
 #   [*autoindex*]           - Set it on 'on' to activate autoindex directory
@@ -104,6 +106,7 @@ define nginx::resource::vhost (
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
   $ipv6_listen_options    = 'default',
+  $add_header             = undef,
   $ssl                    = false,
   $ssl_cert               = undef,
   $ssl_key                = undef,
