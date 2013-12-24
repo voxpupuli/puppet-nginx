@@ -139,7 +139,8 @@ define nginx::resource::location (
   }
   $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost}.conf"
 
-  $location_sanitized = regsubst($location, '\/', '_', 'G')
+  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\', '_', 'G')
 
   ## Check for various error conditions
   if ($vhost == undef) {
