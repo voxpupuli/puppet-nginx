@@ -159,7 +159,9 @@ define nginx::resource::vhost (
     'absent' => absent,
     default  => 'link',
   }
-  $config_file = "${vhost_dir}/${name}.conf"
+
+  $name_sanitized = regsubst($name, ' ', '_', 'G')
+  $config_file = "${vhost_dir}/${name_sanitized}.conf"
 
   File {
     ensure => $ensure ? {
@@ -188,13 +190,12 @@ define nginx::resource::vhost (
   # This was a lot to add up in parameter list so add it down here
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
-  $domain_log_name = regsubst($name, ' ', '_', 'G')
   $access_log_real = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.access.log",
+    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.access.log",
     default => $access_log,
   }
   $error_log_real = $error_log ? {
-    undef   => "${nginx::params::nx_logdir}/${domain_log_name}.error.log",
+    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
@@ -211,9 +212,9 @@ define nginx::resource::vhost (
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    nginx::resource::location {"${name}-default":
+    nginx::resource::location {"${name_sanitized}-default":
       ensure              => $ensure,
-      vhost               => $name,
+      vhost               => $name_sanitized,
       ssl                 => $ssl,
       ssl_only            => $ssl_only,
       location            => '/',
@@ -240,12 +241,12 @@ define nginx::resource::vhost (
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
-    Nginx::Resource::Location["${name}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_prepend => $location_cfg_prepend }
   }
 
   if $location_cfg_append {
-    Nginx::Resource::Location["${name}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_append => $location_cfg_append }
   }
 
@@ -258,7 +259,7 @@ define nginx::resource::vhost (
   }
 
   if ($listen_port != $ssl_port) {
-    concat::fragment { "${name}-header":
+    concat::fragment { "${name_sanitized}-header":
       target  => $config_file,
       content => template('nginx/vhost/vhost_header.erb'),
       order   => '001',
@@ -267,7 +268,7 @@ define nginx::resource::vhost (
 
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    concat::fragment { "${name}-footer":
+    concat::fragment { "${name_sanitized}-footer":
       target  => $config_file,
       content => template('nginx/vhost/vhost_footer.erb'),
       order   => '699',
@@ -278,20 +279,20 @@ define nginx::resource::vhost (
   if ($ssl == true) {
     # Access and error logs are named differently in ssl template
     $ssl_access_log = $access_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.access.log",
+      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.access.log",
       default => $access_log,
     }
     $ssl_error_log = $error_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${domain_log_name}.error.log",
+      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
 
-    concat::fragment { "${name}-ssl-header":
+    concat::fragment { "${name_sanitized}-ssl-header":
       target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       order   => '700',
     }
-    concat::fragment { "${name}-ssl-footer":
+    concat::fragment { "${name_sanitized}-ssl-footer":
       target  => $config_file,
       content => template('nginx/vhost/vhost_ssl_footer.erb'),
       order   => '999',
@@ -314,9 +315,9 @@ define nginx::resource::vhost (
     })
   }
 
-  file{ "${name}.conf symlink":
+  file{ "${name_sanitized}.conf symlink":
     ensure  => $vhost_symlink_ensure,
-    path    => "${vhost_enable_dir}/${name}.conf",
+    path    => "${vhost_enable_dir}/${name_sanitized}.conf",
     target  => $config_file,
     require => Concat[$config_file],
     notify  => Service['nginx'],
