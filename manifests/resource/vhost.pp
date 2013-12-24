@@ -23,7 +23,7 @@
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
-#   [*add_header*]          - Adds headers to the HTTP response when
+#   [*add_header*]          - Hash: Adds headers to the HTTP response when
 #     response code is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
@@ -154,6 +154,9 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   validate_array($index_files)
   validate_array($server_name)
+  if ($add_header != undef) {
+    validate_hash($add_header)
+  }
 
   # Variables
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
