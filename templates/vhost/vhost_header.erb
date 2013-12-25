@@ -34,7 +34,7 @@ server {
        return 301 https://$host$request_uri;
   }
 <% end -%>
-<% if @index_files -%>
+<% if @index_files.count > 0 -%>
     index <% Array(index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
