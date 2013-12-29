@@ -35,7 +35,7 @@ server {
   }
 <% end -%>
 <% if @index_files.count > 0 -%>
-    index <% Array(index_files).each do |i| %> <%= i %><% end %>;
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
   access_log            <%= @access_log_real %>;
