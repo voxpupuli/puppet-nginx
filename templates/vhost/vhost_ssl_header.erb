@@ -14,6 +14,21 @@ server {
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
+<% if @ssl_stapling -%>
+  ssl_stapling              on;
+<% end -%>
+<% if defined? @ssl_stapling_file -%>
+  ssl_stapling_file         <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
+<% end -%>
+<% if defined? @ssl_stapling_responder -%>
+  ssl_stapling_responder    <%= @ssl_stapling_responder %>;
+<% end -%>
+<% if @ssl_stapling_verify -%>
+  ssl_stapling_verify       on;
+<% end -%>
+<% if defined? @ssl_trusted_cert -%>
+  ssl_trusted_certificate   <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
+<% end -%>
 <% if defined? @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
@@ -39,5 +54,3 @@ server {
 <% if @add_header -%><% @add_header.each do |key,value| -%>
   add_header              <%= key %> <%= value %>;
 <% end -%><% end -%>
-
-
