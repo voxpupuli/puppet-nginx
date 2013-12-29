@@ -29,6 +29,9 @@ server {
 <% if defined? @ssl_trusted_cert -%>
   ssl_trusted_certificate   <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
 <% end -%>
+<% if defined? @resolver -%>
+  resolver                  <%= @resolver %>;
+<% end -%>
 <% if defined? @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";
 <% end -%>
