@@ -60,7 +60,7 @@
 #     will be taken from the specified file instead of querying the OCSP
 #     responder specified in the server certificate.
 #   [*ssl_stapling_responder*] - String: Overrides the URL of the OCSP
-#     responder specified in the “Authority Information Access” certificate
+#     responder specified in the Authority Information Access certificate
 #     extension.
 #   [*ssl_stapling_verify*] - Bool: Enables or disables verification of
 #     OCSP responses by the server. Defaults to false.
