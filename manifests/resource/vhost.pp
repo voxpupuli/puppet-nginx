@@ -34,6 +34,8 @@
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
+#   [*resolver*]            - String: Configures name servers used to resolve
+#     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
 #   [*fastcgi_params*]      - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]      - optional SCRIPT_FILE parameter
@@ -52,6 +54,19 @@
 #     TLSv1.1 TLSv1.2'.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
 #     'HIGH:!aNULL:!MD5'.
+#   [*ssl_stapling*]        - Bool: Enables or disables stapling of OCSP
+#     responses by the server. Defaults to false.
+#   [*ssl_stapling_file*]   - String: When set, the stapled OCSP response
+#     will be taken from the specified file instead of querying the OCSP
+#     responder specified in the server certificate.
+#   [*ssl_stapling_responder*] - String: Overrides the URL of the OCSP
+#     responder specified in the ÒAuthority Information AccessÓ certificate
+#     extension.
+#   [*ssl_stapling_verify*] - Bool: Enables or disables verification of
+#     OCSP responses by the server. Defaults to false.
+#   [*ssl_trusted_cert*]    - String: Specifies a file with trusted CA
+#     certificates in the PEM format used to verify client certificates and
+#     OCSP responses if ssl_stapling is enabled.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
@@ -118,6 +133,11 @@ define nginx::resource::vhost (
   $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $ssl_cache              = 'shared:SSL:10m',
+  $ssl_stapling           = false,
+  $ssl_stapling_file      = undef,
+  $ssl_stapling_responder = undef,
+  $ssl_stapling_verify    = false,
+  $ssl_trusted_cert       = undef,
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
@@ -126,6 +146,7 @@ define nginx::resource::vhost (
   $proxy_cache_valid      = false,
   $proxy_method           = undef,
   $proxy_set_body         = undef,
+  $resolver               = undef,
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
@@ -163,6 +184,20 @@ define nginx::resource::vhost (
   }
   if ($ssl_dhparam != undef) {
     validate_string($ssl_dhparam)
+  }
+  if ($resolver != undef) {
+    validate_string($resolver)
+  }
+  validate_bool($ssl_stapling)
+  if ($ssl_stapling_file != undef) {
+    validate_string($ssl_stapling_file)
+  }
+  if ($ssl_stapling_responder != undef) {
+    validate_string($ssl_stapling_responder)
+  }
+  validate_bool($ssl_stapling_verify)
+  if ($ssl_trusted_cert != undef) {
+    validate_string($ssl_trusted_cert)
   }
 
   # Variables
@@ -244,7 +279,7 @@ define nginx::resource::vhost (
       fastcgi_script      => $fastcgi_script,
       try_files           => $try_files,
       www_root            => $www_root,
-      index_files         => undef,
+      index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
     }
@@ -331,6 +366,20 @@ define nginx::resource::vhost (
         owner  => $nginx::params::nx_daemon_user,
         mode   => '0440',
         source => $ssl_dhparam,
+      })
+    }
+    if ($ssl_stapling_file != undef) {
+      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.ocsp.resp", {
+        owner  => $nginx::params::nx_daemon_user,
+        mode   => '0440',
+        source => $ssl_stapling_file,
+      })
+    }
+    if ($ssl_trusted_cert != undef) {
+      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.trusted.crt", {
+        owner  => $nginx::params::nx_daemon_user,
+        mode   => '0440',
+        source => $ssl_trusted_cert,
       })
     }
   }
