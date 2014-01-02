@@ -172,6 +172,7 @@ define nginx::resource::vhost (
   $error_log              = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
+  $rewrite_rules          = undef,
 ) {
 
   validate_array($location_allow)
@@ -282,6 +283,7 @@ define nginx::resource::vhost (
       index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
+      rewrite_rules       => $rewrite_rules,
     }
   } else {
     $root = $www_root

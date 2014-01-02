@@ -121,7 +121,8 @@ define nginx::resource::location (
   $proxy_set_body       = undef,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
-  $priority             = 500
+  $priority             = 500,
+  $rewrite_rules        = undef,
 ) {
   File {
     owner  => 'root',
