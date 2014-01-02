@@ -56,6 +56,7 @@ class nginx (
   $nginx_upstreams        = {},
   $nginx_locations        = {},
   $manage_repo            = $nginx::params::manage_repo,
+  $copy_ssl_files         = $nginx::params::copy_ssl_files,
 ) inherits nginx::params {
 
   include stdlib
@@ -86,6 +87,7 @@ class nginx (
     http_cfg_append       => $http_cfg_append,
     nginx_error_log       => $nginx_error_log,
     http_access_log       => $http_access_log,
+    copy_ssl_files        => $copy_ssl_files,
     require               => Class['nginx::package'],
     notify                => Class['nginx::service'],
   }

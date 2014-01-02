@@ -6,11 +6,30 @@ server {
   server_name  <%= @rewrite_www_to_non_www ? @name.gsub(/^www\./, '') : @server_name.join(" ") %>;
 
   ssl on;
-
+<% if scope.lookupvar('nginx::config::copy_ssl_files') -%>
   ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
   ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
 <% if defined? @ssl_dhparam -%>
   ssl_dhparam               <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.dh.pem;
+<% end -%>
+<% if defined? @ssl_stapling_file -%>
+  ssl_stapling_file         <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
+<% end -%>
+<% if defined? @ssl_trusted_cert -%>
+  ssl_trusted_certificate   <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
+<% end -%>
+<% else %>
+  ssl_certificate           <%= @ssl_cert %>;
+  ssl_certificate_key       <%= @ssl_key %>;
+<% if defined? @ssl_dhparam -%>
+  ssl_dhparam               <%= @ssl_dhparam %>;
+<% end -%>
+<% if defined? @ssl_stapling_file -%>
+  ssl_stapling_file         <%= @ssl_stapling_file %>;
+<% end -%>
+<% if defined? @ssl_trusted_cert -%>
+  ssl_trusted_certificate   <%= @ssl_trusted_cert %>;
+<% end -%>
 <% end -%>
   ssl_session_cache         <%= @ssl_cache %>;
   ssl_session_timeout       5m;
@@ -20,17 +39,11 @@ server {
 <% if @ssl_stapling -%>
   ssl_stapling              on;
 <% end -%>
-<% if defined? @ssl_stapling_file -%>
-  ssl_stapling_file         <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
-<% end -%>
 <% if defined? @ssl_stapling_responder -%>
   ssl_stapling_responder    <%= @ssl_stapling_responder %>;
 <% end -%>
 <% if @ssl_stapling_verify -%>
   ssl_stapling_verify       on;
-<% end -%>
-<% if defined? @ssl_trusted_cert -%>
-  ssl_trusted_certificate   <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
 <% end -%>
 <% if defined? @resolver -%>
   resolver                  <%= @resolver %>;

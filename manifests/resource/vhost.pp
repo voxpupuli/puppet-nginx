@@ -345,42 +345,60 @@ define nginx::resource::vhost (
       content => template('nginx/vhost/vhost_ssl_footer.erb'),
       order   => '999',
     }
-
-    #Generate ssl key/cert with provided file-locations
-    $cert = regsubst($name,' ','_')
-
-    # Check if the file has been defined before creating the file to
-    # avoid the error when using wildcard cert on the multiple vhosts
-    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
-      owner  => $nginx::params::nx_daemon_user,
-      mode   => '0444',
-      source => $ssl_cert,
-    })
-    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
-      owner  => $nginx::params::nx_daemon_user,
-      mode   => '0440',
-      source => $ssl_key,
-    })
-    if ($ssl_dhparam != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.dh.pem", {
-        owner  => $nginx::params::nx_daemon_user,
-        mode   => '0440',
-        source => $ssl_dhparam,
-      })
+    
+    if ($nginx::config::copy_ssl_files == true) {
+			#Generate ssl key/cert with provided file-locations
+			$cert = regsubst($name,' ','_')
+			
+			# Check if the file has been defined before creating the file to
+			# avoid the error when using wildcard cert on the multiple vhosts
+			ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
+			  owner  => $nginx::params::nx_daemon_user,
+			  mode   => '0444',
+			  source => $ssl_cert,
+			})
+			ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
+			  owner  => $nginx::params::nx_daemon_user,
+			  mode   => '0440',
+			  source => $ssl_key,
+			})
+			if ($ssl_dhparam != undef) {
+			  ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.dh.pem", {
+			    owner  => $nginx::params::nx_daemon_user,
+			    mode   => '0440',
+			    source => $ssl_dhparam,
+			  })
+			}
+			if ($ssl_stapling_file != undef) {
+			  ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.ocsp.resp", {
+			    owner  => $nginx::params::nx_daemon_user,
+			    mode   => '0440',
+			    source => $ssl_stapling_file,
+			  })
+			}
+			if ($ssl_trusted_cert != undef) {
+			  ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.trusted.crt", {
+			    owner  => $nginx::params::nx_daemon_user,
+			    mode   => '0440',
+			    source => $ssl_trusted_cert,
+			  })
+			}
     }
-    if ($ssl_stapling_file != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.ocsp.resp", {
-        owner  => $nginx::params::nx_daemon_user,
-        mode   => '0440',
-        source => $ssl_stapling_file,
-      })
+  } else {
+    if file($ssl_cert) == '' {
+      fail("nginx: The SSL certificate (${ssl_cert}) doesn't exist.")
     }
-    if ($ssl_trusted_cert != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.trusted.crt", {
-        owner  => $nginx::params::nx_daemon_user,
-        mode   => '0440',
-        source => $ssl_trusted_cert,
-      })
+    if file($ssl_key) == '' {
+      fail("nginx: The SSL key (${ssl_key}) file doesn't exist.")
+    }
+    if ($ssl_dhparam != undef) and (file($ssl_dhparam) == '') {
+      fail("nginx: The SSL DH param (${ssl_dhparam}) file doesn't exist.")
+    }
+    if ($ssl_stapling_file != undef and file($ssl_stapling_file) == '') {
+      fail("nginx: The SSL stapling (${ssl_stapling_file}) file doesn't exist.")
+    }
+    if ($ssl_trusted_cert != undef) and (file($ssl_trusted_cert) == '') {
+      fail("nginx: The SSL trusted certificate (${ssl_trusted_cert}) doesn't exist.")
     }
   }
 

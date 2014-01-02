@@ -33,6 +33,7 @@ class nginx::config(
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
+  $copy_ssl_files         = $nginx::params::copy_ssl_files,
 ) inherits nginx::params {
   File {
     owner => 'root',
