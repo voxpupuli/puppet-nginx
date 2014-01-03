@@ -20,6 +20,9 @@ server {
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
 <% end -%>
+<% if @add_header -%><% @add_header.each do |key,value| -%>
+  add_header              <%= key %> <%= value %>;
+<% end -%><% end -%>
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
 <% if @use_return_code_with_redirect -%>
@@ -28,6 +31,9 @@ server {
       rewrite ^ https://$host$request_uri;
 <% end -%>
   }
+<% end -%>
+<% if @index_files.count > 0 -%>
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
   access_log            <%= @access_log_real %>;

@@ -139,7 +139,8 @@ define nginx::resource::location (
   }
   $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost}.conf"
 
-  $location_sanitized = regsubst($location, '\/', '_', 'G')
+  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\', '_', 'G')
 
   ## Check for various error conditions
   if ($vhost == undef) {
@@ -180,7 +181,7 @@ define nginx::resource::location (
     concat::fragment { "${vhost}-${priority}-${location_sanitized}":
       target  => $config_file,
       content => $content_real,
-      order   => $priority,
+      order   => "${priority}",
     }
   }
 
@@ -190,7 +191,7 @@ define nginx::resource::location (
     concat::fragment {"${vhost}-${ssl_priority}-${location_sanitized}-ssl":
       target  => $config_file,
       content => $content_real,
-      order   => $ssl_priority,
+      order   => "${ssl_priority}",
     }
   }
 
