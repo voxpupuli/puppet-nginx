@@ -34,6 +34,11 @@ class nginx::config(
   $http_access_log        = $nginx::params::nx_http_access_log,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
 ) inherits nginx::params {
+
+  if $caller_module_name != $module_name {
+    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
+  }
+
   File {
     owner => 'root',
     group => 'root',
