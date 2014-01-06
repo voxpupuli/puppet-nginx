@@ -17,6 +17,11 @@ class nginx::service(
   $configtest_enable = $nginx::params::nx_configtest_enable,
   $service_restart   = $nginx::params::nx_service_restart
 ) {
+
+  if $caller_module_name != $module_name {
+    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
+  }
+
   service { 'nginx':
     ensure     => running,
     enable     => true,
