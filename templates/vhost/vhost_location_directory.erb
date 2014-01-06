@@ -18,7 +18,7 @@
     autoindex on;
 <% end -%>
 <% if @index_files.count > 0 -%>
-    index <% Array(index_files).each do |i| %> <%= i %><% end %>;
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 <% if defined? @auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
