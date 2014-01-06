@@ -57,7 +57,7 @@
 #   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
 #     the authentication realm.
 #   [*priority*]              - Location priority. Default: 500. User priority
-#     400-499, 501-599. If the priority is higher than the default priority,
+#     401-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
 #
 #
@@ -131,6 +131,12 @@ define nginx::resource::location (
   }
 
   validate_array($index_files)
+  if !is_integer($priority) {
+    fail("$priority must be an integer.")
+  }
+  if ($priority < 401) or ($priority > 599) {
+    fail("$priority must be in the range 401-599. It was set to ${priority}.")
+  }
 
   # # Shared Variables
   $ensure_real = $ensure ? {
