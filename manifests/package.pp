@@ -19,6 +19,11 @@ class nginx::package(
   $package_ensure = 'present',
   $manage_repo    = true,
 ) {
+
+  if $caller_module_name != $module_name {
+    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
+  }
+
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
