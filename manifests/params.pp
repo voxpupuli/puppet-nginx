@@ -24,10 +24,10 @@ class nginx::params {
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
   $nx_names_hash_bucket_size  = 64
-  $nx_multi_accept            = off
+  $nx_multi_accept            = on
 # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport]
 # or false to use OS default
-  $nx_events_use              = false
+  $nx_events_use              = 'epoll'
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
   $nx_tcp_nodelay             = on
