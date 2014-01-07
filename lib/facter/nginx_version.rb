@@ -4,7 +4,7 @@ pkg = Puppet::Type.type(:package).new(:name => "nginx")
 Facter.add("nginx_version") do
   has_weight 100
   setcode do
-    Facter::Util::Resolution.exec('nginx -v')
+    Facter::Util::Resolution.exec('nginx -v 2>&1')
   end
 end
 
