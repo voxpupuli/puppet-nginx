@@ -97,9 +97,29 @@ class nginx::params {
   $nx_nginx_error_log = "${nx_logdir}/error.log"
   $nx_http_access_log = "${nx_logdir}/access.log"
 
-  # package name depends on distribution, e.g. for Debian nginx-full | nginx-light
-  $package_name   = 'nginx'
   $package_ensure = 'present'
-  $package_source = 'nginx'
-  $manage_repo    = true
+
+  # SSL protocols, TLS1.1/1.2 were only added in nginx
+  # version 1.0.12, defaults should be correctly set
+  # depending on the nginx version
+  if versioncmp($::nginx_version,'1.0.11') > 0 {
+    $ssl_protocols = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2'
+  } else {
+    $ssl_protocols = 'SSLv3 TLSv1'
+  }
+
+  # Nginx versions before 1.1.4 did not support proxy_http_version tag
+  if versioncmp($::nginx_version,'1.1.3') > 0 {
+    $use_proxy_http_version = true
+  } else {
+    $use_proxy_http_version = false
+  }
+
+  # Nginx versions before 0.8.42 did not support return codes with redirect,
+  # use rewrite instead
+  if versioncmp($::nginx_version,'0.8.42') > 0 {
+    $use_return_code_with_redirect = true
+  } else {
+    $use_return_code_with_redirect = false
+  }
 }

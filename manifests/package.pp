@@ -14,10 +14,10 @@
 #
 # This class file is not called directly
 class nginx::package(
-  $package_name   = 'nginx',
-  $package_source = 'nginx',
-  $package_ensure = 'present',
-  $manage_repo    = true,
+    $package_name   = 'nginx',
+    $package_source = 'nginx',
+    $package_ensure = 'present',
+    $manage_repo    = true,
 ) {
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
@@ -34,12 +34,8 @@ class nginx::package(
     }
     'debian': {
       class { 'nginx::package::debian':
-        package_name   => $package_name,
-        package_source => $package_source,
-        package_ensure => $package_ensure,
-        manage_repo    => $manage_repo,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
+        require => Anchor['nginx::package::begin'],
+        before  => Anchor['nginx::package::end'],
       }
     }
     'suse': {

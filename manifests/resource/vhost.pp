@@ -51,9 +51,10 @@
 #   [*ssl_port*]            - Default IP Port for NGINX to listen with this SSL
 #     vHost on. Defaults to TCP 443
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'SSLv3 TLSv1
-#     TLSv1.1 TLSv1.2'.
+#     TLSv1.1 TLSv1.2'. if nginx version >= 1.0.12 else 'SSLv3 TLSv1'
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
 #     'HIGH:!aNULL:!MD5'.
+#   [*ssl_cache*]           - SSL cache size. Defaults to 'shared:SSL:10m'.
 #   [*ssl_stapling*]        - Bool: Enables or disables stapling of OCSP
 #     responses by the server. Defaults to false.
 #   [*ssl_stapling_file*]   - String: When set, the stapled OCSP response
@@ -92,6 +93,8 @@
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
 #     put before everything else inside vhost
+#   [*use_default_location*]    - Create the default location reference for the
+#      vHost, the "/" location
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
@@ -130,7 +133,7 @@ define nginx::resource::vhost (
   $ssl_dhparam            = undef,
   $ssl_key                = undef,
   $ssl_port               = '443',
-  $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
+  $ssl_protocols          = $nginx::params::ssl_protocols,
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $ssl_cache              = 'shared:SSL:10m',
   $ssl_stapling           = false,
@@ -162,6 +165,7 @@ define nginx::resource::vhost (
   $location_custom_cfg    = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $use_default_location   = false,
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
@@ -170,8 +174,6 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
-  $passenger_cgi_param    = undef,
-  $use_default_location   = true,
 ) {
 
   validate_array($location_allow)
@@ -221,6 +223,7 @@ define nginx::resource::vhost (
     group  => 'root',
     mode   => '0644',
   }
+
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.

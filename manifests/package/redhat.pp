@@ -17,6 +17,8 @@ class nginx::package::redhat (
   $manage_repo    = true,
   $package_ensure = 'present',
   $package_name   = 'nginx',
+  $redhat_packages = ['nginx', 'gd', 'libXpm', 'libxslt']
+
 ) {
 
   case $::operatingsystem {
@@ -55,17 +57,20 @@ class nginx::package::redhat (
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
           before   => Package[$package_name],
         }
-
-        file { '/etc/yum.repos.d/nginx-release.repo':
-          ensure  => present,
-          require => Yumrepo['nginx-release'],
-        }
       }
+
+      Yumrepo['nginx-release'] -> Package[$redhat_packages]
     }
+  }
+
+  #Define file for nginx-repo so puppet doesn't delete it
+  file { '/etc/yum.repos.d/nginx-release.repo':
+    ensure  => present,
+    require => Yumrepo['nginx-release'],
   }
 
   package { $package_name:
     ensure  => $package_ensure,
   }
-
+ ensure_resource('package', $redhat_packages, {'ensure' => 'present' })
 }

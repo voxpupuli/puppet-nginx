@@ -297,7 +297,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'default',
-          :match => '  listen       *:443 ssl default;',
+          :match => '  listen       *:443 default ssl;',
         },
         {
           :title => 'should not set the IPv4 listen options',

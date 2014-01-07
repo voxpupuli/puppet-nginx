@@ -10,4 +10,3 @@ DEPENDENCIES
   puppetlabs/apt (>= 1.0.0)
   puppetlabs/concat (>= 1.0.0)
   puppetlabs/stdlib (>= 0.1.6)
-

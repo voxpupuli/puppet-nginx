@@ -17,12 +17,6 @@ server {
 <% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
   <%= key %> <%= value %>;
 <% end -%><% end -%>
-<% if @root -%>
-  root <%= @root %>;
-<% end -%>
-<% if @passenger_cgi_param -%><% @passenger_cgi_param.each do |key,value| -%>
-  passenger_set_cgi_param  <%= key %> <%= value %>;
-<% end -%><% end -%>
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
 <% end -%>
@@ -31,7 +25,11 @@ server {
 <% end -%><% end -%>
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
-       return 301 https://$host$request_uri;
+<% if @use_return_code_with_redirect -%>
+      return 301 https://$host$request_uri;
+<% else %>
+      rewrite ^ https://$host$request_uri;
+<% end -%>
   }
 <% end -%>
 <% if @index_files.count > 0 -%>
