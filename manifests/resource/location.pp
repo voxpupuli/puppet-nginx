@@ -132,10 +132,10 @@ define nginx::resource::location (
 
   validate_array($index_files)
   if !is_integer($priority) {
-    fail("$priority must be an integer.")
+    fail('$priority must be an integer.')
   }
   if ($priority < 401) or ($priority > 599) {
-    fail("$priority must be in the range 401-599. It was set to ${priority}.")
+    fail('$priority must be in the range 401-599.')
   }
 
   # # Shared Variables
