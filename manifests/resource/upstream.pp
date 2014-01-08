@@ -41,6 +41,14 @@ define nginx::resource::upstream (
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
 ) {
+
+  validate_array($members)
+  validate_re($ensure, '^(present|absent)$',
+    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
+  if ($upstream_cfg_prepend != undef) {
+    validate_hash($upstream_cfg_prepend)
+  }
+
   File {
     owner => 'root',
     group => 'root',

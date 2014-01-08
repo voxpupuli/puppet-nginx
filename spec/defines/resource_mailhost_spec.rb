@@ -48,7 +48,7 @@ describe 'nginx::resource::mailhost' do
         {
           :title => 'should set the IPv4 listen port',
           :attr  => 'listen_port',
-          :value => '45',
+          :value => 45,
           :match => '  listen                *:45;',
         },
         {
@@ -78,7 +78,7 @@ describe 'nginx::resource::mailhost' do
         {
           :title => 'should set the IPv6 listen port',
           :attr  => 'ipv6_listen_port',
-          :value => '45',
+          :value => 45,
           :match => '  listen [::]:45 default ipv6only=on;',
         },
         {
@@ -86,12 +86,6 @@ describe 'nginx::resource::mailhost' do
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
           :match => '  listen [::]:80 spdy ipv6only=on;',
-        },
-        {
-          :title => 'should not set the IPv6 listen options',
-          :attr  => 'ipv6_listen_options',
-          :value => false,
-          :match => '  listen [::]:80 ipv6only=on;',
         },
         {
           :title => 'should set servername(s)',
@@ -120,11 +114,29 @@ describe 'nginx::resource::mailhost' do
         {
           :title => 'should set starttls',
           :attr  => 'starttls',
-          :value => 'test-starttls',
-          :match => '  starttls              test-starttls;',
+          :value => 'on',
+          :match => '  starttls              on;',
+        },
+        {
+          :title => 'should set starttls',
+          :attr  => 'starttls',
+          :value => 'only',
+          :match => '  starttls              only;',
+        },
+        {
+          :title    => 'should not enable SSL',
+          :attr     => 'starttls',
+          :value    => 'off',
+          :notmatch => /  ssl_session_timeout  5m;/,
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
+          let :default_params do {
+            :listen_port => 25,
+            :ipv6_enable => true,
+            :ssl_cert    => 'dummy.crt',
+            :ssl_key     => 'dummy.key',
+          } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
           it { should contain_concat__fragment("#{title}-header") }
@@ -156,7 +168,7 @@ describe 'nginx::resource::mailhost' do
         {
           :title    => 'should not enable SSL',
           :attr     => 'starttls',
-          :value    => false,
+          :value    => 'off',
           :notmatch => /  ssl_session_timeout  5m;/,
         },
         {
@@ -222,7 +234,7 @@ describe 'nginx::resource::mailhost' do
         {
           :title => 'should set the IPv6 listen port',
           :attr  => 'ipv6_listen_port',
-          :value => '45',
+          :value => 45,
           :match => '  listen [::]:45 default ipv6only=on;',
         },
         {

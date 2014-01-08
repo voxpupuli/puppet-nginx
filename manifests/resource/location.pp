@@ -130,12 +130,85 @@ define nginx::resource::location (
     notify => Class['nginx::service'],
   }
 
+  validate_re($ensure, '^(present|absent)$',
+    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
+  validate_string($location)
+  if ($vhost != undef) {
+    validate_string($vhost)
+  }
+  if ($www_root != undef) {
+    validate_string($www_root)
+  }
+  if ($autoindex != undef) {
+    validate_string($autoindex)
+  }
   validate_array($index_files)
+  if ($proxy != undef) {
+    validate_string($proxy)
+  }
+  validate_string($proxy_read_timeout)
+  if ($fastcgi != undef) {
+    validate_string($fastcgi)
+  }
+  validate_string($fastcgi_params)
+  if ($fastcgi_script != undef) {
+    validate_string($fastcgi_script)
+  }
+  if ($fastcgi_split_path != undef) {
+    validate_string($fastcgi_split_path)
+  }
+  validate_bool($ssl)
+  validate_bool($ssl_only)
+  if ($location_alias != undef) {
+    validate_string($location_alias)
+  }
+  if ($location_allow != undef) {
+    validate_array($location_allow)
+  }
+  if ($location_deny != undef) {
+    validate_array($location_deny)
+  }
+  if ($option != undef) {
+    warning('The $option parameter has no effect and is deprecated.')
+  }
+  if ($stub_status != undef) {
+    validate_bool($stub_status)
+  }
+  if ($location_custom_cfg != undef) {
+    validate_hash($location_custom_cfg)
+  }
+  if ($location_cfg_prepend != undef) {
+    validate_hash($location_cfg_prepend)
+  }
+  if ($location_cfg_append != undef) {
+    validate_hash($location_cfg_append)
+  }
+  if ($try_files != undef) {
+    validate_array($try_files)
+  }
+  if ($proxy_cache != false) {
+    validate_string($proxy_cache)
+  }
+  if ($proxy_cache_valid != false) {
+    validate_string($proxy_cache_valid)
+  }
+  if ($proxy_method != undef) {
+    validate_string($proxy_method)
+  }
+  if ($proxy_set_body != undef) {
+    validate_string($proxy_set_body)
+  }
+  if ($auth_basic != undef) {
+    validate_string($auth_basic)
+  }
+  if ($auth_basic_user_file != undef) {
+    validate_string($auth_basic_user_file)
+  }
   if !is_integer($priority) {
-    fail("$priority must be an integer.")
+    fail('$priority must be an integer.')
   }
   if ($priority < 401) or ($priority > 599) {
-    fail("$priority must be in the range 401-599. It was set to ${priority}.")
+    fail('$priority must be in the range 401-599.')
   }
 
   # # Shared Variables

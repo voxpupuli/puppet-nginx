@@ -60,6 +60,44 @@ class nginx (
 
   include stdlib
 
+  if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
+    fail('$worker_processes must be be an integer or have value "auto".')
+  }
+  if (!is_integer($worker_connections)) {
+    fail('$worker_connections must be an integer.')
+  }
+  validate_string($package_name)
+  validate_string($package_ensure)
+  validate_string($package_source)
+  validate_array($proxy_set_header)
+  validate_string($proxy_http_version)
+  validate_bool($confd_purge)
+  if ($proxy_cache_path != false) {
+    validate_string($proxy_cache_path)
+  }
+  if (!is_integer($proxy_cache_levels)) {
+    fail('$proxy_cache_levels must be an integer.')
+  }
+  validate_string($proxy_cache_keys_zone)
+  validate_string($proxy_cache_max_size)
+  validate_string($proxy_cache_inactive)
+  validate_bool($configtest_enable)
+  validate_string($service_restart)
+  validate_bool($mail)
+  validate_string($server_tokens)
+  validate_string($client_max_body_size)
+  validate_string($proxy_buffers)
+  validate_string($proxy_buffer_size)
+  if ($http_cfg_append != false) {
+    validate_hash($http_cfg_append)
+  }
+  validate_string($nginx_error_log)
+  validate_string($http_access_log)
+  validate_hash($nginx_upstreams)
+  validate_hash($nginx_vhosts)
+  validate_hash($nginx_locations)
+  validate_bool($manage_repo)
+
   class { 'nginx::package':
     package_name   => $package_name,
     package_source => $package_source,
@@ -95,11 +133,8 @@ class nginx (
     service_restart   => $service_restart,
   }
 
-  validate_hash($nginx_upstreams)
   create_resources('nginx::resource::upstream', $nginx_upstreams)
-  validate_hash($nginx_vhosts)
   create_resources('nginx::resource::vhost', $nginx_vhosts)
-  validate_hash($nginx_locations)
   create_resources('nginx::resource::location', $nginx_locations)
 
   # Allow the end user to establish relationships to the "main" class
