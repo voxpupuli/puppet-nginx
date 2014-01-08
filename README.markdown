@@ -137,8 +137,8 @@ Virtual host config for serving puppet master:
       access_log  => '/var/log/nginx/puppet_access.log',
       error_log   => '/var/log/nginx/puppet_error.log',
       passenger_cgi_param => {
-        'SSL_CLIENT_S_DN'   => '$ssl_client_s_dn',
-        'SSL_CLIENT_VERIFY' => '$ssl_client_verify',
+        'HTTP_X_CLIENT_DN'     => '$ssl_client_s_dn',
+        'HTTP_X_CLIENT_VERIFY' => '$ssl_client_verify',
       },
     }
 
