@@ -14,6 +14,9 @@
 <% if @proxy_set_body -%>
     proxy_set_body      <%= @proxy_set_body %>;
 <% end -%>
+<% if @rewrite_rules -%><% Array(@rewrite_rules).each do |rewrite_rule| -%>
+    rewrite <%= rewrite_rule %>;
+<% end -%><% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
