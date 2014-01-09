@@ -63,6 +63,29 @@ nginx::resource::mailhost { 'domain1.example':
 }
 ```
 
+## SSL configuration
+
+By default, creating a vhost resource will only create a HTTP vhost. To also create a HTTPS (SSL-enabled) vhost, set `ssl => true` on the vhost. You will have a HTTP server listening on `listen_port` (port `80` by default) and a HTTPS server listening on `ssl_port` (port `443` by default). Both vhosts will have the same `server_name` and a similar configuration.
+
+To create only a HTTPS vhost, set `ssl => true` and also set `listen_port` to the same value as `ssl_port`. Setting these to the same value disables the HTTP vhost. The resulting vhost will be listening on `ssl_port`.
+
+### Locations
+
+Locations require specific settings depending on whether they should be included in the HTTP, HTTPS or both vhosts.
+
+#### HTTP only vhost (default)
+If you only have a HTTP vhost (i.e. `ssl => false` on the vhost) maks sure you don't set `ssl => true` on any location you associate with the vhost.
+
+#### HTTP and HTTPS vhost
+If you set `ssl => true` and also set `listen_port` and `ssl_port` to different values on the vhost you will need to be specific with the location settings since you will have a HTTP vhost listening on `listen_port` and a HTTPS vhost listening on `ssl_port`:
+
+* To add a location to only the HTTP server, set `ssl => false` on the location (this is the default).
+* To add a location to both the HTTP and HTTPS server, set `ssl => true` on the location, and ensure `ssl_only => false` (which is the default value for `ssl_only`).
+* To add a location only to the HTTPS server, set both `ssl => true` and `ssl_only => true` on the location.
+
+#### HTTPS only vhost
+If you have set `ssl => true` and also set `listen_port` and `ssl_port` to the same value on the vhost, you will have a single HTTPS vhost listening on `ssl_port`. To add a location to this vhost set `ssl => true` and `ssl_only => true` on the location.
+
 ## Hiera Support
 
 Defining nginx resources in Hiera.
