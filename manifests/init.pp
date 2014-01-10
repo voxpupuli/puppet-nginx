@@ -4,8 +4,8 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class. All module parameters are managed
-# via the nginx::params class
+# There are no default parameters for this class. All module parameters
+# are managed via the nginx::params class
 #
 # Actions:
 #
@@ -47,6 +47,8 @@ class nginx (
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
+  $names_hash_bucket_size = $nginx::params::nx_names_hash_bucket_size,
+  $names_hash_max_size    = $nginx::params::nx_names_hash_max_size,
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
   $http_cfg_append        = $nginx::params::nx_http_cfg_append,
@@ -86,6 +88,12 @@ class nginx (
   validate_bool($mail)
   validate_string($server_tokens)
   validate_string($client_max_body_size)
+  if (!is_integer($names_hash_bucket_size)) {
+    fail('$names_hash_bucket_size must be an integer.')
+  }
+  if (!is_integer($names_hash_max_size)) {
+    fail('$names_hash_max_size must be an integer.')
+  }
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
   if ($http_cfg_append != false) {
@@ -102,30 +110,32 @@ class nginx (
     package_name   => $package_name,
     package_source => $package_source,
     package_ensure => $package_ensure,
-    notify      => Class['nginx::service'],
-    manage_repo => $manage_repo,
+    notify         => Class['nginx::service'],
+    manage_repo    => $manage_repo,
   }
 
   class { 'nginx::config':
-    worker_processes      => $worker_processes,
-    worker_connections    => $worker_connections,
-    proxy_set_header      => $proxy_set_header,
-    proxy_http_version    => $proxy_http_version,
-    proxy_cache_path      => $proxy_cache_path,
-    proxy_cache_levels    => $proxy_cache_levels,
-    proxy_cache_keys_zone => $proxy_cache_keys_zone,
-    proxy_cache_max_size  => $proxy_cache_max_size,
-    proxy_cache_inactive  => $proxy_cache_inactive,
-    confd_purge           => $confd_purge,
-    server_tokens         => $server_tokens,
-    client_max_body_size  => $client_max_body_size,
-    proxy_buffers         => $proxy_buffers,
-    proxy_buffer_size     => $proxy_buffer_size,
-    http_cfg_append       => $http_cfg_append,
-    nginx_error_log       => $nginx_error_log,
-    http_access_log       => $http_access_log,
-    require               => Class['nginx::package'],
-    notify                => Class['nginx::service'],
+    worker_processes       => $worker_processes,
+    worker_connections     => $worker_connections,
+    proxy_set_header       => $proxy_set_header,
+    proxy_http_version     => $proxy_http_version,
+    proxy_cache_path       => $proxy_cache_path,
+    proxy_cache_levels     => $proxy_cache_levels,
+    proxy_cache_keys_zone  => $proxy_cache_keys_zone,
+    proxy_cache_max_size   => $proxy_cache_max_size,
+    proxy_cache_inactive   => $proxy_cache_inactive,
+    confd_purge            => $confd_purge,
+    server_tokens          => $server_tokens,
+    client_max_body_size   => $client_max_body_size,
+    names_hash_bucket_size => $names_hash_bucket_size,
+    names_hash_max_size    => $names_hash_max_size,
+    proxy_buffers          => $proxy_buffers,
+    proxy_buffer_size      => $proxy_buffer_size,
+    http_cfg_append        => $http_cfg_append,
+    nginx_error_log        => $nginx_error_log,
+    http_access_log        => $http_access_log,
+    require                => Class['nginx::package'],
+    notify                 => Class['nginx::service'],
   }
 
   class { 'nginx::service':
