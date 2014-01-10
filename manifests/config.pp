@@ -26,6 +26,8 @@ class nginx::config(
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $types_hash_max_size    = $nginx::params::nx_types_hash_max_size,
+  $names_hash_bucket_size = $nginx::params::nx_names_hash_bucket_size,
+  $names_hash_max_size    = $nginx::params::nx_names_hash_max_size,
   $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size,
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
