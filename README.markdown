@@ -165,3 +165,21 @@ nginx::resource::vhost { 'puppet':
   },
 }
 ```
+
+## Limitations
+
+This module should operate correctly on:
+
+* Debian
+* Ubuntu
+* RedHat Enterprise Linux
+* CentOS
+* Fedora
+* Other RedHat derived distributions
+* Other Debian derived distributions
+
+Pull requests to add support for other distributions and operating systems is
+welcome.
+
+Facter version 1.6.2 or higher is required, however support for versions lower
+than 1.7.0 will be removed in a future release.
