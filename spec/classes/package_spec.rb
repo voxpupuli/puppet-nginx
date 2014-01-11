@@ -84,35 +84,6 @@ describe 'nginx::package' do
     end
   end
 
-  shared_examples 'suse' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Suse'}}
-    [
-      'nginx-0.8',
-      'apache2',
-      'apache2-itk',
-      'apache2-utils',
-      'gd',
-      'libapr1',
-      'libapr-util1',
-      'libjpeg62',
-      'libpng14-14',
-      'libxslt',
-      'rubygem-daemon_controller',
-      'rubygem-fastthread',
-      'rubygem-file-tail',
-      'rubygem-passenger',
-      'rubygem-passenger-nginx',
-      'rubygem-rack',
-      'rubygem-rake',
-      'rubygem-spruz',
-    ].each do |package|
-      it { should contain_package("#{package}") }
-    end
-    it { should contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::suse]') }
-    it { should contain_anchor('nginx::package::end').that_requires('Class[nginx::package::suse]') }
-  end
-
-
   context 'redhat' do
     it_behaves_like 'redhat', 'centos'
     it_behaves_like 'redhat', 'rhel'
@@ -124,11 +95,6 @@ describe 'nginx::package' do
   context 'debian' do
     it_behaves_like 'debian', 'debian', 'wheezy'
     it_behaves_like 'debian', 'ubuntu', 'precise'
-  end
-
-  context 'suse' do
-    it_behaves_like 'suse', 'opensuse'
-    it_behaves_like 'suse', 'suse'
   end
 
   context 'amazon with facter < 1.7.2' do

@@ -47,12 +47,6 @@ class nginx::package(
         before         => Anchor['nginx::package::end'],
       }
     }
-    'suse': {
-      class { 'nginx::package::suse':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
-      }
-    }
     default: {
       case $::operatingsystem {
         'amazon': {

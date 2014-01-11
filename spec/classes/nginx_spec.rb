@@ -47,15 +47,4 @@ describe 'nginx' do
       end
     end
   end
-
-  context "Suse OS" do
-    it_behaves_like "a Linux OS" do
-      let :facts do
-        {
-          :operatingsystem => 'SuSE',
-          :osfamily        => 'Suse',
-        }
-      end
-    end
-  end
 end
