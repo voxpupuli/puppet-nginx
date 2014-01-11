@@ -11,10 +11,6 @@ describe 'nginx::config' do
       { :osfamily => 'redhat', :operatingsystem => 'centos', },
       { :osfamily => 'redhat', :operatingsystem => 'scientific', },
       { :osfamily => 'redhat', :operatingsystem => 'amazon', },
-      { :osfamily => 'suse',   :operatingsystem => 'suse', },
-      { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
     ].each do |facts|
 
       context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
@@ -123,10 +119,6 @@ describe 'nginx::config' do
       { :osfamily => 'redhat', :operatingsystem => 'centos', },
       { :osfamily => 'redhat', :operatingsystem => 'scientific', },
       { :osfamily => 'redhat', :operatingsystem => 'amazon', },
-      { :osfamily => 'suse',   :operatingsystem => 'suse', },
-      { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
     ].each do |facts|
 
       context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do

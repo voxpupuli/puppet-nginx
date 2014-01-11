@@ -47,19 +47,13 @@ class nginx::package(
         before         => Anchor['nginx::package::end'],
       }
     }
-    'suse': {
-      class { 'nginx::package::suse':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
-      }
-    }
     default: {
       case $::operatingsystem {
-        'amazon': {
-          # Amazon was added to osfamily RedHat in 1.7.2
-          # https://github.com/puppetlabs/facter/commit/c12d3b6c557df695a7b2b009da099f6a93c7bd31#lib/facter/osfamily.rb
-          warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.2 is deprecated")
-          warning("Please upgrade from facter ${::facterversion} to >= 1.7.2")
+        'Ascendos', 'PSBM', 'Amazon', 'XenServer': {
+          # Amazon/XenServer added in 1.7.0, AscendOS/PSBM in 1.6.3
+          # https://github.com/puppetlabs/facter/commits/1.7.0/lib/facter/osfamily.rb
+          warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.0 is deprecated")
+          warning("Please upgrade from facter ${::facterversion} to >= 1.7.0")
           class { 'nginx::package::redhat':
             require => Anchor['nginx::package::begin'],
             before  => Anchor['nginx::package::end'],

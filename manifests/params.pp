@@ -74,17 +74,23 @@ class nginx::params {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
   }
 
-  if $::osfamily {
-    $nx_daemon_user = $::osfamily ? {
-      /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
-      /(?i-mx:debian)/                   => 'www-data',
-    }
-  } else {
-    warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
-    warning("Please upgrade from factor ${::facterversion} to >= 1.7.2")
-    $nx_daemon_user = $::operatingsystem ? {
-      /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
-      /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
+  case $::osfamily {
+    'redhat': { $nx_daemon_user = 'nginx' }
+    'debian': { $nx_daemon_user = 'www-data' }
+    default: {
+      case $::operatingsystem {
+        #redhat derivatives
+        'Ascendos', 'PSBM', 'Amazon', 'XenServer': {
+          # Amazon/XenServer added in 1.7.0, AscendOS/PSBM in 1.6.3
+          # https://github.com/puppetlabs/facter/commits/1.7.0/lib/facter/osfamily.rb
+          warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.0 is deprecated")
+          warning("Please upgrade from facter ${::facterversion} to >= 1.7.0")
+          $nx_daemon_user = 'nginx'
+        }
+        default: {
+          fail("Module ${module_name} is not supported on ${::operatingsystem}")
+        }
+      }
     }
   }
 
