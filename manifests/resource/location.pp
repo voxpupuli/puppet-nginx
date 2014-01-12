@@ -40,6 +40,12 @@
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put
 #     before anything else inside location (used with all other types except
 #     custom_cfg)
+#   [*location_custom_cfg_prepend*]   - Expects a array with extra directives
+#     to put before anything else inside location (used with all other types
+#     except custom_cfg). Used for logical structures such as if.
+#   [*location_custom_cfg_append*]    - Expects a array with extra directives
+#     to put before anything else inside location (used with all other types
+#     except custom_cfg). Used for logical structures such as if.
 #   [*location_cfg_append*]  - Expects a hash with extra directives to put
 #     after everything else inside location (used with all other types except
 #     custom_cfg)
@@ -114,6 +120,8 @@ define nginx::resource::location (
   $location_custom_cfg  = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
+  $location_custom_cfg_prepend  = undef,
+  $location_custom_cfg_append   = undef,
   $try_files            = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
@@ -216,7 +224,9 @@ define nginx::resource::location (
     'absent' => absent,
     default  => file,
   }
-  $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost}.conf"
+
+  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
+  $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\', '_', 'G')
@@ -257,20 +267,20 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    concat::fragment { "${vhost}-${priority}-${location_sanitized}":
+    concat::fragment { "${vhost_sanitized}-${priority}-${location_sanitized}":
       target  => $config_file,
       content => $content_real,
-      order   => "${priority}",
+      order   => $priority,
     }
   }
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
     $ssl_priority = $priority + 300
-    concat::fragment {"${vhost}-${ssl_priority}-${location_sanitized}-ssl":
+    concat::fragment {"${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl":
       target  => $config_file,
       content => $content_real,
-      order   => "${ssl_priority}",
+      order   => $ssl_priority,
     }
   }
 
