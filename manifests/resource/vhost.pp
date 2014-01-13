@@ -172,6 +172,7 @@ define nginx::resource::vhost (
   $error_log              = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
+  $rewrite_rules          = [],
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -298,6 +299,7 @@ define nginx::resource::vhost (
     validate_hash($passenger_cgi_param)
   }
   validate_bool($use_default_location)
+  validate_array($rewrite_rules)
 
   # Variables
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
@@ -381,6 +383,7 @@ define nginx::resource::vhost (
       index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
+      rewrite_rules       => $rewrite_rules,
     }
   } else {
     $root = $www_root
