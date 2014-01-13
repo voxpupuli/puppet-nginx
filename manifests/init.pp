@@ -34,7 +34,7 @@ class nginx (
   $proxy_set_header   = $nginx::params::nx_proxy_set_header,
   $confd_purge        = $nginx::params::nx_confd_purge,
   $configtest_enable  = $nginx::params::nx_configtest_enable,
-  $service_restart    = $nginx::params::nx_service_restart
+  $service_restart    = $nginx::params::nx_service_restart,
   $http_cfg_prepend   = undef,
   $http_cfg_append    = undef
 ) inherits nginx::params {
