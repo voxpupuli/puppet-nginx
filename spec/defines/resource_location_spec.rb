@@ -97,6 +97,26 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
           ],
         },
+        {
+          :title => 'should contain rewrite rules',
+          :attr  => 'rewrite_rules',
+          :value => [
+            '^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/users/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            '    rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last;',
+            '    rewrite ^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last;',
+            '    rewrite ^/users/(.*)$ /show?user=$1? last;',
+          ],
+        },
+        {
+          :title    => 'should not set rewrite_rules',
+          :attr     => 'rewrite_rules',
+          :value    => [],
+          :notmatch => /rewrite/
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
@@ -372,6 +392,26 @@ describe 'nginx::resource::location' do
             '    test1 test value 1;',
             '    test2 test value 2;',
           ],
+        },
+        {
+          :title => 'should contain rewrite rules',
+          :attr  => 'rewrite_rules',
+          :value => [
+            '^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/users/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            '    rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last;',
+            '    rewrite ^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last;',
+            '    rewrite ^/users/(.*)$ /show?user=$1? last;',
+          ],
+        },
+        {
+          :title    => 'should not set rewrite_rules',
+          :attr     => 'rewrite_rules',
+          :value    => [],
+          :notmatch => /rewrite/
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
