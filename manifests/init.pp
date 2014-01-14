@@ -63,7 +63,7 @@ class nginx (
   include stdlib
 
   if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
-    fail('$worker_processes must be be an integer or have value "auto".')
+    fail('$worker_processes must be an integer or have value "auto".')
   }
   if (!is_integer($worker_connections)) {
     fail('$worker_connections must be an integer.')
