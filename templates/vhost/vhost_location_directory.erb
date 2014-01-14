@@ -23,6 +23,9 @@
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
+<% @rewrite_rules.each do |rewrite_rule| -%>
+    rewrite <%= rewrite_rule %>;
+<% end -%>
 <% if defined? @auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
 <% end -%>
@@ -36,4 +39,3 @@
     <%= value %>
 <% end -%><% end -%>
   }
-

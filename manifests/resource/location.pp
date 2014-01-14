@@ -129,6 +129,7 @@ define nginx::resource::location (
   $proxy_set_body       = undef,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
+  $rewrite_rules        = [],
   $priority             = 500
 ) {
   File {
@@ -215,6 +216,7 @@ define nginx::resource::location (
   if !is_integer($priority) {
     fail('$priority must be an integer.')
   }
+  validate_array($rewrite_rules)
   if ($priority < 401) or ($priority > 599) {
     fail('$priority must be in the range 401-599.')
   }
