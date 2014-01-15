@@ -98,6 +98,7 @@ class nginx::params {
 
   $nx_mail = false
 
+  $nx_http_cfg_source = undef
   $nx_http_cfg_append = false
 
   $nx_nginx_error_log = "${nx_logdir}/error.log"

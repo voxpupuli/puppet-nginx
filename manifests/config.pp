@@ -31,6 +31,7 @@ class nginx::config(
   $types_hash_bucket_size = $nginx::params::nx_types_hash_bucket_size,
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
   $proxy_buffers          = $nginx::params::nx_proxy_buffers,
+  $http_cfg_source        = $nginx::params::nx_http_cfg_source,
   $http_cfg_append        = $nginx::params::nx_http_cfg_append,
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
@@ -105,9 +106,17 @@ class nginx::config(
     ensure => absent,
   }
 
-  file { "${nginx::params::nx_conf_dir}/nginx.conf":
-    ensure  => file,
-    content => template('nginx/conf.d/nginx.conf.erb'),
+  if $http_cfg_source == undef {
+      file { "${nginx::params::nx_conf_dir}/nginx.conf":
+        ensure  => file,
+        content => template('nginx/conf.d/nginx.conf.erb'),
+      }
+  }
+  else {
+      file { "${nginx::params::nx_conf_dir}/nginx.conf":
+        ensure => file,
+        source => $http_cfg_source,
+      }
   }
 
   file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
