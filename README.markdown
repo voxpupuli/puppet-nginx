@@ -168,7 +168,11 @@ nginx::resource::vhost { 'puppet':
 
 ### Example puppet class calling nginx::vhost with HTTPS FastCGI and redirection of HTTP
 
-```define web::nginx_ssl_with_redirect (
+```puppet
+
+$full_web_path = '/var/www'
+
+define web::nginx_ssl_with_redirect (
   $backend_port         = 9000,
   $php                  = true,
   $proxy                = undef,
@@ -224,7 +228,8 @@ nginx::resource::vhost { 'puppet':
 
 # Call class web::nginx_ssl_with_redirect
 
-```web::nginx_ssl_whith_redirect { 'sub-domain-name':
+```puppet
+web::nginx_ssl_with_redirect { 'sub-domain-name':
     backend_port => 9001,
   }
 ```
