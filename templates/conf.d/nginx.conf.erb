@@ -1,6 +1,6 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= worker_processes %>;
-<% if worker_rlimit_nofile -%>worker_rlimit_nofile <%= worker_rlimit_nofile %>;<% end -%>
+<% if defined?(@worker_rlimit_nofile) -%>worker_rlimit_nofile <%= worker_rlimit_nofile %>;<% end -%>
 
 error_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/error.log;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
