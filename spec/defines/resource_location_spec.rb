@@ -538,6 +538,18 @@ describe 'nginx::resource::location' do
 
         it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot define both directory and proxy in a virtual host/) }
       end
+
+      context 'when vhost name is sanitized' do
+        let :title do 'www.rspec-location.com' end
+        let :params do {
+          :vhost => 'www rspec-vhost com',
+          :www_root => '/',
+          :ssl => true,
+        } end
+
+        it { should contain_concat__fragment("www_rspec-vhost_com-500-www.rspec-location.com").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { should contain_concat__fragment("www_rspec-vhost_com-800-www.rspec-location.com-ssl").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+      end
     end
   end
 end
