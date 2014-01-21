@@ -600,6 +600,13 @@ describe 'nginx::resource::vhost' do
         it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
         it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
+
+      context 'when vhost name is sanitized' do
+        let :title do 'www rspec-vhost com' end
+        let :params do default_params end
+
+        it { should contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+      end
     end
   end
 end
