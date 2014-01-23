@@ -5,6 +5,9 @@
 <% if @location_deny -%><% @location_deny.each do |deny_rule| -%>
   deny <%= deny_rule %>;
 <% end -%><% end -%>
+<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |value| -%>
+    <%= value %>
+<% end -%><% end -%>
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%><% end -%>
@@ -31,5 +34,8 @@
 <% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
     <%= key %> <%= value %>;
+<% end -%><% end -%>
+<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
+    <%= value %>
 <% end -%><% end -%>
   }
