@@ -20,8 +20,8 @@ server {
 <% if @root -%>
   root <%= @root %>;
 <% end -%>
-<% if @passenger_cgi_param -%><% @passenger_cgi_param.each do |key,value| -%>
-  passenger_set_cgi_param  <%= key %> <%= value %>;
+<% if @passenger_cgi_param -%><% @passenger_cgi_param.keys.sort.each do |key| -%>
+  passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
 <% end -%><% end -%>
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
