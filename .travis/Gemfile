@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 group :rake do
   gem 'puppetlabs_spec_helper'
   gem 'librarian-puppet-maestrodev'
+  gem 'open3_backport', :platforms => :ruby_18
+  gem 'json',           :platforms => :ruby_18
 end
 
 if puppetversion = ENV['PUPPET_GEM_VERSION']

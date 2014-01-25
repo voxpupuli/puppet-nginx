@@ -14,6 +14,11 @@
 #
 # This class file is not called directly
 class nginx::params {
+
+  if $caller_module_name != $module_name {
+    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
+  }
+
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
@@ -24,9 +29,10 @@ class nginx::params {
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
   $nx_names_hash_bucket_size  = 64
+  $nx_names_hash_max_size     = 512
   $nx_multi_accept            = off
-# One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport]
-# or false to use OS default
+  # One of [kqueue|rtsig|epoll|/dev/poll|select|poll|eventport]
+  # or false to use OS default
   $nx_events_use              = false
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65

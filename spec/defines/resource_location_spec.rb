@@ -70,22 +70,10 @@ describe 'nginx::resource::location' do
           :match => '    proxy_method        value;',
         },
         {
-          :title => 'should not set proxy_method',
-          :attr  => 'proxy_method',
-          :value => false,
-          :notmatch => /proxy_method/,
-        },
-        {
           :title => 'should set proxy_set_body',
           :attr  => 'proxy_set_body',
           :value => 'value',
           :match => '    proxy_set_body      value;',
-        },
-        {
-          :title => 'should not set proxy_set_body',
-          :attr  => 'proxy_set_body',
-          :value => false,
-          :notmatch => /proxy_set_body/,
         },
         {
           :title => 'should set proxy_pass',
@@ -109,6 +97,26 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
           ],
         },
+        {
+          :title => 'should contain rewrite rules',
+          :attr  => 'rewrite_rules',
+          :value => [
+            '^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/users/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            '    rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last;',
+            '    rewrite ^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last;',
+            '    rewrite ^/users/(.*)$ /show?user=$1? last;',
+          ],
+        },
+        {
+          :title    => 'should not set rewrite_rules',
+          :attr     => 'rewrite_rules',
+          :value    => [],
+          :notmatch => /rewrite/
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
@@ -130,7 +138,7 @@ describe 'nginx::resource::location' do
           :location => 'location',
           :proxy => 'proxy_value',
           :vhost => 'vhost1',
-          :proxy_cache => true,
+          :proxy_cache => 'true',
           :proxy_cache_valid => '10m',
         } end
 
@@ -265,12 +273,6 @@ describe 'nginx::resource::location' do
           :match => '    fastcgi_split_path_info value;'
         },
         {
-          :title    => 'should not set fastcgi_split_path',
-          :attr     => 'fastcgi_split_path',
-          :value    => false,
-          :notmatch => /fastcgi_split_path_info/
-        },
-        {
           :title => 'should set try_file(s)',
           :attr  => 'try_files',
           :value => ['name1','name2'],
@@ -306,7 +308,7 @@ describe 'nginx::resource::location' do
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let :default_params do { :location => 'location', :fastcgi => true, :vhost => 'vhost1' } end
+          let :default_params do { :location => 'location', :fastcgi => 'localhost:9000', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
           it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
@@ -391,6 +393,26 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
           ],
         },
+        {
+          :title => 'should contain rewrite rules',
+          :attr  => 'rewrite_rules',
+          :value => [
+            '^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/users/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            '    rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last;',
+            '    rewrite ^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last;',
+            '    rewrite ^/users/(.*)$ /show?user=$1? last;',
+          ],
+        },
+        {
+          :title    => 'should not set rewrite_rules',
+          :attr     => 'rewrite_rules',
+          :value    => [],
+          :notmatch => /rewrite/
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :www_root => '/var/www/root', :vhost => 'vhost1' } end
@@ -444,8 +466,8 @@ describe 'nginx::resource::location' do
     end
 
     context 'attribute resources' do
-      context 'when fastcgi => true' do
-        let :params do { :fastcgi => true, :vhost => 'vhost1' } end
+      context 'when fastcgi => "localhost:9000"' do
+        let :params do { :fastcgi => 'localhost:9000', :vhost => 'vhost1' } end
 
         it { should contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
@@ -474,18 +496,18 @@ describe 'nginx::resource::location' do
       end
 
       context 'when auth_basic_user_file => true' do
-        let :params do { :auth_basic_user_file => true, :vhost => 'vhost1', :www_root => '/', } end
+        let :params do { :auth_basic_user_file => '/path/to/file', :vhost => 'vhost1', :www_root => '/', } end
 
         it { should contain_file("/etc/nginx/rspec-test_htpasswd") }
       end
 
       context 'when ensure => absent' do
         let :params do {
-          :www_root             => true,
+          :www_root             => '/',
           :vhost                => 'vhost1',
           :ensure               => 'absent',
           :ssl                  => true,
-          :auth_basic_user_file => true,
+          :auth_basic_user_file => '/path/to/file',
         } end
 
         it { should contain_file("/etc/nginx/rspec-test_htpasswd").with_ensure('absent') }
@@ -511,10 +533,22 @@ describe 'nginx::resource::location' do
         let :params do {
           :vhost    => 'vhost1',
           :www_root => '/',
-          :proxy    => true,
+          :proxy    => 'http://localhost:8000/uri/',
         } end
 
         it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot define both directory and proxy in a virtual host/) }
+      end
+
+      context 'when vhost name is sanitized' do
+        let :title do 'www.rspec-location.com' end
+        let :params do {
+          :vhost => 'www rspec-vhost com',
+          :www_root => '/',
+          :ssl => true,
+        } end
+
+        it { should contain_concat__fragment("www_rspec-vhost_com-500-www.rspec-location.com").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { should contain_concat__fragment("www_rspec-vhost_com-800-www.rspec-location.com-ssl").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
       end
     end
   end

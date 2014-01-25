@@ -114,7 +114,7 @@
 #    ssl_key  => '/tmp/server.pem',
 #  }
 define nginx::resource::vhost (
-  $ensure                 = 'enable',
+  $ensure                 = 'present',
   $listen_ip              = '*',
   $listen_port            = '80',
   $listen_options         = undef,
@@ -172,22 +172,45 @@ define nginx::resource::vhost (
   $error_log              = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
+  $rewrite_rules          = [],
 ) {
 
+  validate_re($ensure, '^(present|absent)$',
+    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
+  validate_string($listen_ip)
+  if !is_integer($listen_port) {
+    fail('$listen_port must be an integer.')
+  }
+  if ($listen_options != undef) {
+    validate_string($listen_options)
+  }
   validate_array($location_allow)
   validate_array($location_deny)
-  validate_array($proxy_set_header)
-  validate_array($index_files)
-  validate_array($server_name)
+  validate_bool($ipv6_enable)
+  validate_string($ipv6_listen_ip)
+  if !is_integer($ipv6_listen_port) {
+    fail('$ipv6_listen_port must be an integer.')
+  }
+  validate_string($ipv6_listen_options)
   if ($add_header != undef) {
     validate_hash($add_header)
+  }
+  validate_bool($ssl)
+  if ($ssl_cert != undef) {
+    validate_string($ssl_cert)
   }
   if ($ssl_dhparam != undef) {
     validate_string($ssl_dhparam)
   }
-  if ($resolver != undef) {
-    validate_string($resolver)
+  if ($ssl_key != undef) {
+    validate_string($ssl_key)
   }
+  if !is_integer($ssl_port) {
+    fail('$ssl_port must be an integer.')
+  }
+  validate_string($ssl_protocols)
+  validate_string($ssl_ciphers)
+  validate_string($ssl_cache)
   validate_bool($ssl_stapling)
   if ($ssl_stapling_file != undef) {
     validate_string($ssl_stapling_file)
@@ -199,6 +222,84 @@ define nginx::resource::vhost (
   if ($ssl_trusted_cert != undef) {
     validate_string($ssl_trusted_cert)
   }
+  validate_string($spdy)
+  if ($proxy != undef) {
+    validate_string($proxy)
+  }
+  validate_string($proxy_read_timeout)
+  validate_array($proxy_set_header)
+  if ($proxy_cache != false) {
+    validate_string($proxy_cache)
+  }
+  if ($proxy_cache_valid != false) {
+    validate_string($proxy_cache_valid)
+  }
+  if ($proxy_method != undef) {
+    validate_string($proxy_method)
+  }
+  if ($proxy_set_body != undef) {
+    validate_string($proxy_set_body)
+  }
+  if ($resolver != undef) {
+    validate_string($resolver)
+  }
+  if ($fastcgi != undef) {
+    validate_string($fastcgi)
+  }
+  validate_string($fastcgi_params)
+  if ($fastcgi_script != undef) {
+    validate_string($fastcgi_script)
+  }
+  validate_array($index_files)
+  if ($autoindex != undef) {
+    validate_string($autoindex)
+  }
+  validate_array($server_name)
+  if ($www_root != undef) {
+    validate_string($www_root)
+  }
+  validate_bool($rewrite_www_to_non_www)
+  if ($rewrite_to_https != undef) {
+    validate_bool($rewrite_to_https)
+  }
+  if ($location_custom_cfg != undef) {
+    validate_hash($location_custom_cfg)
+  }
+  if ($location_cfg_prepend != undef) {
+    validate_hash($location_cfg_prepend)
+  }
+  if ($location_cfg_append != undef) {
+    validate_hash($location_cfg_append)
+  }
+  if ($try_files != undef) {
+    validate_array($try_files)
+  }
+  if ($auth_basic != undef) {
+    validate_string($auth_basic)
+  }
+  if ($auth_basic_user_file != undef) {
+    validate_string($auth_basic_user_file)
+  }
+  if ($vhost_cfg_prepend != undef) {
+    validate_hash($vhost_cfg_prepend)
+  }
+  if ($vhost_cfg_append != undef) {
+    validate_hash($vhost_cfg_append)
+  }
+  if ($include_files != undef) {
+    validate_array($include_files)
+  }
+  if ($access_log != undef) {
+    validate_string($access_log)
+  }
+  if ($error_log != undef) {
+    validate_string($error_log)
+  }
+  if ($passenger_cgi_param != undef) {
+    validate_hash($passenger_cgi_param)
+  }
+  validate_bool($use_default_location)
+  validate_array($rewrite_rules)
 
   # Variables
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
@@ -282,6 +383,7 @@ define nginx::resource::vhost (
       index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
+      rewrite_rules       => $rewrite_rules,
     }
   } else {
     $root = $www_root
