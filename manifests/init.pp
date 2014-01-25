@@ -107,6 +107,7 @@ class nginx (
   validate_hash($nginx_vhosts)
   validate_hash($nginx_locations)
   validate_bool($manage_repo)
+  validate_bool($copy_ssl_files)
 
   class { 'nginx::package':
     package_name   => $package_name,
