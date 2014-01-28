@@ -3,5 +3,5 @@ upstream <%= @name %> {
   <%= key %> <%= value %>;
 <% end -%><% end -%>
   <% @members.each do |i| %>
-  server     <%= i %>;<% end %>
+  server     <%= i %>  fail_timeout=<%= @upstream_fail_timeout %>;<% end %>
 }
