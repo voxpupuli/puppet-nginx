@@ -68,16 +68,19 @@ class nginx::params {
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
+    /(?i-mx:sunos)/ => '/var/log/nginx',
   }
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
+    /(?i-mx:sunos)/  => '/var/run/nginx.pid',
   }
 
   if $::osfamily {
     $nx_daemon_user = $::osfamily ? {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
+      /(?i-mx:solaris)/                  => 'webservd',
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
@@ -85,6 +88,7 @@ class nginx::params {
     $nx_daemon_user = $::operatingsystem ? {
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
+      /(?i-mx:debian|solaris)/                                                               => 'webservd',
     }
   }
 
