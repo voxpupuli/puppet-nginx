@@ -85,7 +85,7 @@ describe 'nginx::resource::mailhost' do
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
-          :match => '  listen [::]:80 spdy ipv6only=on;',
+          :match => '  listen [::]:80 spdy;',
         },
         {
           :title => 'should set servername(s)',
@@ -241,7 +241,7 @@ describe 'nginx::resource::mailhost' do
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
-          :match => '  listen [::]:80 spdy ipv6only=on;',
+          :match => '  listen [::]:80 spdy;',
         },
         {
           :title => 'should set servername(s)',
