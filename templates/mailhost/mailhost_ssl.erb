@@ -3,7 +3,7 @@ server {
   listen       <%= @ssl_port %>;
   <% # check to see if ipv6 support exists in the kernel before applying %>
   <% if @ipv6_enable && (defined? @ipaddress6) %>
-  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %> ipv6only=on;
+  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <% end %>
   server_name           <%= @server_name.join(" ") %>;
   protocol              <%= @protocol %>;

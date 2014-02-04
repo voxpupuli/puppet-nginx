@@ -95,7 +95,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
-          :match => '  listen [::]:80 spdy ipv6only=on;',
+          :match => '  listen [::]:80 spdy;',
         },
         {
           :title => 'should set servername(s)',
@@ -321,7 +321,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy default',
-          :match => '  listen [::]:443 ssl spdy default ipv6only=on;',
+          :match => '  listen [::]:443 ssl spdy default;',
         },
         {
           :title => 'should set servername(s)',
