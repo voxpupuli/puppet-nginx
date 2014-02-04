@@ -49,7 +49,7 @@ define nginx::resource::mailhost (
   $ipv6_enable         = false,
   $ipv6_listen_ip      = '::',
   $ipv6_listen_port    = '80',
-  $ipv6_listen_options = 'default',
+  $ipv6_listen_options = 'default ipv6only=on',
   $ssl                 = false,
   $ssl_cert            = undef,
   $ssl_key             = undef,
