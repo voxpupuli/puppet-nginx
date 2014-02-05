@@ -9,8 +9,6 @@ server {
   <% end -%>
   ssl on;
 
-  #ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.crt;
-  #ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= name.gsub(' ', '_') %>.key;
   ssl_certificate           <%= ssl_cert %>;
   ssl_certificate_key       <%= ssl_key %>;
   ssl_session_cache         shared:SSL:10m;
