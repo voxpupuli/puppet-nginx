@@ -43,6 +43,7 @@ class nginx (
   $proxy_cache_max_size   = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
   $configtest_enable      = $nginx::params::nx_configtest_enable,
+  $service_name           = $nginx::params::nx_service_name,
   $service_restart        = $nginx::params::nx_service_restart,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
@@ -142,6 +143,7 @@ class nginx (
   class { 'nginx::service':
     configtest_enable => $configtest_enable,
     service_restart   => $service_restart,
+    service_name      => $service_name,
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)

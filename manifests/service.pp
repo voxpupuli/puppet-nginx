@@ -15,7 +15,8 @@
 # This class file is not called directly
 class nginx::service(
   $configtest_enable = $nginx::params::nx_configtest_enable,
-  $service_restart   = $nginx::params::nx_service_restart
+  $service_restart   = $nginx::params::nx_service_restart,
+  $service_name      = $nginx::params::nx_service_name,
 ) {
 
   if $caller_module_name != $module_name {
@@ -23,6 +24,7 @@ class nginx::service(
   }
 
   service { 'nginx':
+    name       => $service_name,
     ensure     => running,
     enable     => true,
     hasstatus  => true,
