@@ -45,9 +45,19 @@ server {
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
+<% @proxy_set_header.each do |header| -%>
+  proxy_set_header        <%= header %>;
+<% end -%>
+
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;
 
+<%# make sure that allow comes before deny by forcing the allow key (if it -%>
+<%# exists) to be first in the output order.  The hash keys also need to be -%>
+<%# sorted so that the ordering is stable. -%>
+<% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>
