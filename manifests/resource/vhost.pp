@@ -357,9 +357,7 @@ define nginx::resource::vhost (
     notify => Class['nginx::service'],
   }
 
-  if ($ssl == true) and ($ssl_port == $listen_port) {
-    $ssl_only = true
-  }
+  $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
