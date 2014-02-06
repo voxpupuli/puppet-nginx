@@ -15,7 +15,7 @@
 # This class file is not called directly
 class nginx::params {
 
-  if $caller_module_name != $module_name {
+  if $caller_module_name != undef and $caller_module_name != $module_name {
     warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
   }
 
