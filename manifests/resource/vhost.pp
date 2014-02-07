@@ -93,6 +93,10 @@
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
 #     put before everything else inside vhost
+#   [*vhost_cfg_ssl_append*]        - It expects a hash with custom directives to
+#     put after everything else inside vhost ssl
+#   [*vhost_cfg_ssl_prepend*]       - It expects a hash with custom directives to
+#     put before everything else inside vhost ssl
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
@@ -169,6 +173,8 @@ define nginx::resource::vhost (
   $client_max_body_size   = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
+  $vhost_cfg_ssl_prepend      = undef,
+  $vhost_cfg_ssl_append       = undef,
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
@@ -287,6 +293,12 @@ define nginx::resource::vhost (
   }
   if ($vhost_cfg_append != undef) {
     validate_hash($vhost_cfg_append)
+  }
+  if ($vhost_cfg_ssl_prepend != undef) {
+    validate_hash($vhost_cfg_ssl_prepend)
+  }
+  if ($vhost_cfg_ssl_append != undef) {
+    validate_hash($vhost_cfg_ssl_append)
   }
   if ($include_files != undef) {
     validate_array($include_files)
