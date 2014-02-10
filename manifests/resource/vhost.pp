@@ -27,8 +27,8 @@
 #     response code is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
-#   [*autoindex*]           - Set it on 'on' to activate autoindex directory
-#     listing. Undef by default.
+#   [*autoindex*]           - Set it on 'on' or 'off 'to activate/deactivate
+#                             autoindex directory listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
