@@ -47,7 +47,13 @@ server {
 
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;
-
+  
+<% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
+<% if @vhost_cfg_ssl_prepend -%><% @vhost_cfg_ssl_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>
