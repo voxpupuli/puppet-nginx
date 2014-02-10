@@ -392,6 +392,7 @@ define nginx::resource::vhost (
       fastcgi_script      => $fastcgi_script,
       try_files           => $try_files,
       www_root            => $www_root,
+      autoindex           => $autoindex,
       index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
