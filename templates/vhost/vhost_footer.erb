@@ -10,6 +10,13 @@ include <%= file %>;
 server {
   listen                <%= @listen_ip %>;
   server_name           www.<%= @name.gsub(/^www\./, '') %>;
-  rewrite               ^ http://<%= @name.gsub(/^www\./, '') %>$uri permanent;
+  rewrite               ^ $scheme://<%= @name.gsub(/^www\./, '') %>$uri permanent;
+}
+<% end %>
+<% if @rewrite_non_www_to_www -%>
+server {
+  listen                <%= @listen_ip %>;
+  server_name           <%= @name.gsub(/^www\./, '') %>;
+  rewrite               ^ $scheme://www.<%= @name.gsub(/^www\./, '') %>$uri permanent;
 }
 <% end %>

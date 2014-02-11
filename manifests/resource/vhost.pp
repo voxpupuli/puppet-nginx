@@ -111,6 +111,7 @@ define nginx::resource::vhost (
   $server_name            = [$name],
   $www_root               = undef,
   $rewrite_www_to_non_www = false,
+  $rewrite_non_www_to_www = false,
   $rewrite_to_https       = undef,
   $location_custom_cfg    = undef,
   $location_cfg_prepend   = undef,
