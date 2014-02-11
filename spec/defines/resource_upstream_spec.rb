@@ -52,9 +52,9 @@ describe 'nginx::resource::upstream' do
             'test2',
           ],
           :match => [
-            '  server     test3;',
-            '  server     test1;',
-            '  server     test2;',
+            '  server     test3  fail_timeout=10s;',
+            '  server     test1  fail_timeout=10s;',
+            '  server     test2  fail_timeout=10s;',
           ],
         },
       ].each do |param|

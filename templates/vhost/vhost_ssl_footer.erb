@@ -5,6 +5,10 @@ include <%= file %>;
   <%= key %> <%= value %>;
 <% end -%>
 <% end -%>
+<% if @vhost_cfg_ssl_append -%><% @vhost_cfg_ssl_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%>
+<% end -%>
 }
 <% if @rewrite_www_to_non_www -%>
 server {
