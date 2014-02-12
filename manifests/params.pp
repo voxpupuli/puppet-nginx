@@ -88,7 +88,7 @@ class nginx::params {
     $nx_daemon_user = $::operatingsystem ? {
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
-      /(?i-mx:debian|solaris)/                                                               => 'webservd',
+      /(?i-mx:solaris)/                                                               => 'webservd',
     }
   }
 
