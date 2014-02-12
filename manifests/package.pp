@@ -53,6 +53,15 @@ class nginx::package(
         before  => Anchor['nginx::package::end'],
       }
     }
+    'Solaris': {
+      class { 'nginx::package::solaris':
+        package_name   => $package_name,
+        package_source => $package_source,
+        package_ensure => $package_ensure,
+        require => Anchor['nginx::package::begin'],
+        before  => Anchor['nginx::package::end'],
+      }
+    }
     default: {
       case $::operatingsystem {
         'amazon': {
