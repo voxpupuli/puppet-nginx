@@ -135,6 +135,7 @@ class nginx (
     http_cfg_append        => $http_cfg_append,
     nginx_error_log        => $nginx_error_log,
     http_access_log        => $http_access_log,
+    gzip                   => $gzip,
     require                => Class['nginx::package'],
     notify                 => Class['nginx::service'],
   }
