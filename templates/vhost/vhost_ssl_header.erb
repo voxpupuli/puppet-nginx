@@ -1,7 +1,7 @@
 server {
   listen       <%= @listen_ip %>:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <% if @ipv6_enable && (defined? @ipaddress6) %>
-  listen [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %> ipv6only=on;
+  listen [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
   <% end %>
   server_name  <%= @rewrite_www_to_non_www ? @name.gsub(/^www\./, '') : @server_name.join(" ") %>;
 
@@ -60,7 +60,13 @@ server {
 
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;
-
+  
+<% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
+<% if @vhost_cfg_ssl_prepend -%><% @vhost_cfg_ssl_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%= key %> <%= value %>;
+<% end -%><% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>

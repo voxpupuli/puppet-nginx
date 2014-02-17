@@ -49,7 +49,7 @@ define nginx::resource::mailhost (
   $ipv6_enable         = false,
   $ipv6_listen_ip      = '::',
   $ipv6_listen_port    = '80',
-  $ipv6_listen_options = 'default',
+  $ipv6_listen_options = 'default ipv6only=on',
   $ssl                 = false,
   $ssl_cert            = undef,
   $ssl_key             = undef,
@@ -64,7 +64,7 @@ define nginx::resource::mailhost (
     group => 'root',
     mode  => '0644',
   }
-  
+
   if !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }

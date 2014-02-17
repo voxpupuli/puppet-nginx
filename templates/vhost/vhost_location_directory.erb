@@ -17,8 +17,8 @@
 <% if @try_files -%>
     try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
-<% if @autoindex == 'on' -%>
-    autoindex on;
+<% if defined? @autoindex -%>
+     autoindex <%= @autoindex %>;
 <% end -%>
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
