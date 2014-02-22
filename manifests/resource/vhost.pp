@@ -34,6 +34,10 @@
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
+#   [*proxy_redirect_fromhost*] - Capture the HTTP Location header that an
+#     upstream nginx will send
+#   [*proxy_redirect_tohost*] - Rewrite the above Location HTTP header to this
+#     HTTP Location header
 #   [*resolver*]            - String: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
@@ -118,6 +122,16 @@
 #    ssl_cert => '/tmp/server.crt',
 #    ssl_key  => '/tmp/server.pem',
 #  }
+#
+#
+# To use the $proxy_redirect_fromhost and $proxy_redirect_tohost variables
+# set them in your hiera file
+# proxy_redirect_fromhost: 'http://jenkins.kvm'
+# proxy_redirect_tohost: 'https://jenkins.kvm'
+#
+# then clasify the nginx class in your nodes.pp ( for example )
+# class { 'nginx': }
+#
 define nginx::resource::vhost (
   $ensure                 = 'present',
   $listen_ip              = '*',
@@ -151,6 +165,8 @@ define nginx::resource::vhost (
   $proxy_cache_valid      = false,
   $proxy_method           = undef,
   $proxy_set_body         = undef,
+  $proxy_redirect_fromhost= undef,
+  $proxy_redirect_tohost  = undef,
   $resolver               = undef,
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
@@ -265,6 +281,12 @@ define nginx::resource::vhost (
   validate_array($server_name)
   if ($www_root != undef) {
     validate_string($www_root)
+  }
+  if ($proxy_redirect_fromhost != undef ) {
+    validate_string( $proxy_redirect_fromhost )
+  }
+  if ($proxy_redirect_tohost != undef ) {
+    validate_string( $proxy_redirect_tohost )
   }
   validate_bool($rewrite_www_to_non_www)
   if ($rewrite_to_https != undef) {

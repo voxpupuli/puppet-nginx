@@ -55,6 +55,9 @@ class nginx::params {
   $nx_proxy_cache_max_size    = '500m'
   $nx_proxy_cache_inactive    = '20m'
 
+  $nx_proxy_redirect_fromhost = 'http://example.com'
+  $nx_proxy_redirect_tohost   = 'https://example.com'
+
   $nx_client_body_temp_path   = "${nx_run_dir}/client_body_temp"
   $nx_client_body_buffer_size = '128k'
   $nx_client_max_body_size    = '10m'
