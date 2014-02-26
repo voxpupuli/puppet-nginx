@@ -40,6 +40,9 @@ server {
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
+<% if @www_root -%>
+  root <%= @www_root %>;
+<% end -%>
 
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
