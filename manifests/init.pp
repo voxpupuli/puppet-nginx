@@ -44,6 +44,7 @@ class nginx (
   $proxy_cache_inactive   = $nginx::params::nx_proxy_cache_inactive,
   $configtest_enable      = $nginx::params::nx_configtest_enable,
   $service_restart        = $nginx::params::nx_service_restart,
+  $service_ensure         = $nginx::params::nx_service_ensure,
   $mail                   = $nginx::params::nx_mail,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $client_max_body_size   = $nginx::params::nx_client_max_body_size,
