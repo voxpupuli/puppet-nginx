@@ -120,11 +120,13 @@ class nginx::config(
     ensure  => absent,
     purge   => true,
     recurse => true,
+    force   => true,
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
     ensure  => absent,
     purge   => true,
     recurse => true,
+    force   => true,
   }
 }
