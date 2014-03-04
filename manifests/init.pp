@@ -142,8 +142,6 @@ class nginx (
   }
 
   class { 'nginx::service':
-    configtest_enable => $configtest_enable,
-    service_restart   => $service_restart,
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
