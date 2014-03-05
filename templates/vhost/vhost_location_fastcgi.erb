@@ -1,9 +1,17 @@
   location <%= @location %> {
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
     <%= key %>         <%= value %>;
+<% end -%>
 <% end -%><% end -%>
-<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |value| -%>
-    <%= value %>
+<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
+    <%= key %> <%= value %>;
+<% end -%>
 <% end -%><% end -%>
 <% if defined? @www_root -%>
     root  <%= @www_root %>;
@@ -20,10 +28,19 @@
     fastcgi_param SCRIPT_FILENAME <%= @fastcgi_script %>;
 <% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
     <%= key %> <%= value %>;
+<% end -%>
 <% end -%><% end -%>
-<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
-    <%= value %>
+<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
+    <%= key %> <%= value %>;
+<% end -%>
 <% end -%><% end -%>
+
   }
 

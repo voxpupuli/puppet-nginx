@@ -1,10 +1,17 @@
   location <%= @location %> {
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
     <%= key %> <%= value %>;
+<% end -%>
 <% end -%><% end -%>
     alias      <%= @location_alias %>;
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+    <%= key %> <%= subkey %> <%= subvalue %>;
+<% end -%><% else -%>
     <%= key %> <%= value %>;
+<% end -%>
 <% end -%><% end -%>
   }
-
