@@ -44,11 +44,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow         test value 3;',
             '    test1         test value 1;',
             '    test2         test value 2;',
+            '    test4         subtest1 "sub test value1";',
+            '    test4         subtest2 "sub test value2";',
           ],
         },
         {
@@ -90,11 +92,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3','test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -157,11 +161,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3','test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -173,11 +179,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3','test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -208,21 +216,25 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow  test value 3;',
             '    test1  test value 1;',
             '    test2  test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow  test value 3;',
             '    test1  test value 1;',
             '    test2  test value 2;',
+            '    test4  subtest1 "sub test value1";',
+            '    test4  subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -253,11 +265,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow         test value 3;',
             '    test1         test value 1;',
             '    test2         test value 2;',
+            '    test4         subtest1 "sub test value1";',
+            '    test4         subtest2 "sub test value2";',
           ],
         },
         {
@@ -299,11 +313,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3','test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -346,11 +362,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -386,11 +404,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -441,11 +461,13 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered config directives',
           :attr  => 'location_custom_cfg',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3', 'test4' => { 'subtest1' => '"sub test value1"', 'subtest2' => '"sub test value2"'} },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
             '    test2 test value 2;',
+            '    test4 subtest1 "sub test value1";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
