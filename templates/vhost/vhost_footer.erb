@@ -9,6 +9,7 @@ include <%= file %>;
   <%= key %> <%= sub %>;
 <% end %>
 <% end -%><% end -%>
+}
 <% if @rewrite_www_to_non_www -%>
 server {
   listen                <%= @listen_ip %>:<%= @listen_port %>;
