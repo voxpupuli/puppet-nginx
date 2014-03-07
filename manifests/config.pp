@@ -17,6 +17,7 @@ class nginx::config(
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
   $confd_purge            = $nginx::params::nx_confd_purge,
+  $vhost_purge            = $nginx::params::nx_vhost_purge,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
@@ -98,8 +99,22 @@ class nginx::config(
     ensure => directory,
   }
 
+  if $confd_purge == true {
+    File["${nginx::params::nx_conf_dir}/sites-available"] {
+      purge   => true,
+      recurse => true,
+    }
+  }
+
   file { "${nginx::params::nx_conf_dir}/sites-enabled":
     ensure => directory,
+  }
+
+  if $confd_purge == true {
+    File["${nginx::params::nx_conf_dir}/sites-enabled"] {
+      purge   => true,
+      recurse => true,
+    }
   }
 
   file { '/etc/nginx/sites-enabled/default':
