@@ -150,7 +150,7 @@ define nginx::resource::vhost (
   $ssl_stapling_responder = undef,
   $ssl_stapling_verify    = false,
   $ssl_trusted_cert       = undef,
-  $spdy                   = $nginx::params::nx_spdy,
+  $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
   $proxy_read_timeout     = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout  = $nginx::config::proxy_connect_timeout,
@@ -377,7 +377,7 @@ define nginx::resource::vhost (
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $access_log_tmp = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.access.log",
+    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
     default => $access_log,
   }
 
@@ -387,7 +387,7 @@ define nginx::resource::vhost (
   }
 
   $error_log_real = $error_log ? {
-    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.error.log",
+    undef   => "${nginx::config::logdir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
@@ -489,7 +489,7 @@ define nginx::resource::vhost (
     # Also opted to add more logic here and keep template cleaner which
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_tmp = $access_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.access.log",
+      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
       default => $access_log,
     }
 
@@ -499,7 +499,7 @@ define nginx::resource::vhost (
     }
 
     $ssl_error_log_real = $error_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.error.log",
+      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
 

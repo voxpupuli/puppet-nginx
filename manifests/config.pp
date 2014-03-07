@@ -15,6 +15,7 @@
 # This class file is not called directly
 class nginx::config(
   $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
+  $client_body_temp_path          = $nginx::params::nx_client_body_temp_path,
   $client_max_body_size           = $nginx::params::nx_client_max_body_size,
   $confd_purge                    = $nginx::params::nx_confd_purge,
   $conf_dir                       = $nginx::params::nx_conf_dir,
@@ -31,10 +32,16 @@ class nginx::config(
   $gzip                           = $nginx::params::nx_gzip,
   $http_access_log                = $nginx::params::nx_http_access_log,
   $http_cfg_append                = $nginx::params::nx_http_cfg_append,
+  $http_tcp_nodelay               = $nginx::params::nx_http_tcp_nodelay,
+  $http_tcp_nopush                = $nginx::params::nx_http_tcp_nopush,
+  $keepalive_timeout              = $nginx::params::nx_keepalive_timeout,
+  $logdir                         = $nginx::params::nx_logdir,
+  $mail                           = $nginx::params::nx_mail,
   $multi_accept                   = $nginx::params::nx_multi_accept,
   $names_hash_bucket_size         = $nginx::params::nx_names_hash_bucket_size,
   $names_hash_max_size            = $nginx::params::nx_names_hash_max_size,
   $nginx_error_log                = $nginx::params::nx_nginx_error_log,
+  $pid                            = $nginx::params::nx_pid,
   $proxy_buffers                  = $nginx::params::nx_proxy_buffers,
   $proxy_buffer_size              = $nginx::params::nx_proxy_buffer_size,
   $proxy_cache_inactive           = $nginx::params::nx_proxy_cache_inactive,
@@ -50,15 +57,19 @@ class nginx::config(
   $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
   $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
+  $proxy_temp_path                = $nginx::params::nx_proxy_temp_path,
+  $run_dir                        = $nginx::params::nx_run_dir,
   $sendfile                       = $nginx::params::nx_sendfile,
   $server_tokens                  = $nginx::params::nx_server_tokens,
+  $spdy                           = $nginx::params::nx_spdy,
   $super_user                     = $nginx::params::nx_super_user,
+  $temp_dir                       = $nginx::params::nx_temp_dir,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
   $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
   $vhost_purge                    = $nginx::params::nx_vhost_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
-  $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
+  $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile
 ) inherits nginx::params {
 
   File {
@@ -99,16 +110,16 @@ class nginx::config(
     ensure => absent,
   }
 
-  file {$nginx::config::nx_run_dir:
+  file {$run_dir:
     ensure => directory,
   }
 
-  file {$nginx::config::nx_client_body_temp_path:
+  file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
   }
 
-  file {$nginx::config::nx_proxy_temp_path:
+  file {$proxy_temp_path:
     ensure => directory,
     owner  => $daemon_user,
   }
@@ -157,14 +168,14 @@ class nginx::config(
     ensure => absent,
   }
 
-  file { "${nginx::config::nx_temp_dir}/nginx.d":
+  file { "${temp_dir}/nginx.d":
     ensure  => absent,
     purge   => true,
     recurse => true,
     force   => true,
   }
 
-  file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
+  file { "${temp_dir}/nginx.mail.d":
     ensure  => absent,
     purge   => true,
     recurse => true,
