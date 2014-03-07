@@ -105,7 +105,7 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
-  $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
+  $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
   $fastcgi              = undef,
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
@@ -228,7 +228,7 @@ define nginx::resource::location (
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${nginx::config::nx_conf_dir}/sites-available/${vhost_sanitized}.conf"
+  $config_file = "${nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\', '_', 'G')
@@ -288,7 +288,7 @@ define nginx::resource::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${nginx::params::nx_conf_dir}/${location_sanitized}_htpasswd":
+    file { "${nginx::config::conf_dir}/${location_sanitized}_htpasswd":
       ensure => $ensure,
       mode   => '0644',
       source => $auth_basic_user_file,

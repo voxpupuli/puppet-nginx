@@ -162,6 +162,12 @@ describe 'nginx::config' do
           :match => 'worker_processes 4;',
         },
         {
+          :title => 'should set worker_rlimit_nofile',
+          :attr  => 'worker_rlimit_nofile',
+          :value => '10000',
+          :match => 'worker_rlimit_nofile 10000;',
+        },
+        {
           :title => 'should set error_log',
           :attr  => 'nginx_error_log',
           :value => '/path/to/error.log',

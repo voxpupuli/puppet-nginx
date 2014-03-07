@@ -8,7 +8,7 @@ describe 'nginx::service' do
 
   let :pre_condition do
     [
-      'include ::nginx::params',
+      'include ::nginx::config',
     ]
   end
 

@@ -143,9 +143,9 @@ define nginx::resource::vhost (
   $ssl_stapling_responder = undef,
   $ssl_stapling_verify    = false,
   $ssl_trusted_cert       = undef,
-  $spdy                   = $nginx::params::nx_spdy,
+  $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
-  $proxy_read_timeout     = $nginx::params::nx_proxy_read_timeout,
+  $proxy_read_timeout     = $nginx::config::proxy_read_timeout,
   $proxy_set_header       = [],
   $proxy_cache            = false,
   $proxy_cache_valid      = false,
@@ -316,8 +316,8 @@ define nginx::resource::vhost (
   validate_array($rewrite_rules)
 
   # Variables
-  $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
-  $vhost_enable_dir = "${nginx::config::nx_conf_dir}/sites-enabled"
+  $vhost_dir = "${nginx::config::conf_dir}/sites-available"
+  $vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
   $vhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',
@@ -354,11 +354,11 @@ define nginx::resource::vhost (
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $access_log_real = $access_log ? {
-    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.access.log",
+    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
     default => $access_log,
   }
   $error_log_real = $error_log ? {
-    undef   => "${nginx::params::nx_logdir}/${name_sanitized}.error.log",
+    undef   => "${nginx::config::logdir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
@@ -442,11 +442,11 @@ define nginx::resource::vhost (
   if ($ssl == true) {
     # Access and error logs are named differently in ssl template
     $ssl_access_log = $access_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.access.log",
+      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
       default => $access_log,
     }
     $ssl_error_log = $error_log ? {
-      undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.error.log",
+      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
 
@@ -466,33 +466,33 @@ define nginx::resource::vhost (
 
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
-    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.crt", {
-      owner  => $nginx::params::nx_daemon_user,
+    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.crt", {
+      owner  => $nginx::config::daemon_user,
       mode   => '0444',
       source => $ssl_cert,
     })
-    ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.key", {
-      owner  => $nginx::params::nx_daemon_user,
+    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.key", {
+      owner  => $nginx::config::daemon_user,
       mode   => '0440',
       source => $ssl_key,
     })
     if ($ssl_dhparam != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.dh.pem", {
-        owner  => $nginx::params::nx_daemon_user,
+      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.dh.pem", {
+        owner  => $nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_dhparam,
       })
     }
     if ($ssl_stapling_file != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.ocsp.resp", {
-        owner  => $nginx::params::nx_daemon_user,
+      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.ocsp.resp", {
+        owner  => $nginx::daemon_user,
         mode   => '0440',
         source => $ssl_stapling_file,
       })
     }
     if ($ssl_trusted_cert != undef) {
-      ensure_resource('file', "${nginx::params::nx_conf_dir}/${cert}.trusted.crt", {
-        owner  => $nginx::params::nx_daemon_user,
+      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.trusted.crt", {
+        owner  => $nginx::daemon_user,
         mode   => '0440',
         source => $ssl_trusted_cert,
       })

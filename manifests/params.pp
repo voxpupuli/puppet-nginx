@@ -25,6 +25,7 @@ class nginx::params {
   $nx_conf_dir                = '/etc/nginx'
   $nx_confd_purge             = false
   $nx_worker_processes        = 1
+  $nx_worker_rlimit_nofile    = false
   $nx_worker_connections      = 1024
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
@@ -36,7 +37,8 @@ class nginx::params {
   $nx_events_use              = false
   $nx_sendfile                = on
   $nx_keepalive_timeout       = 65
-  $nx_tcp_nodelay             = on
+  $nx_http_tcp_nodelay        = on
+  $nx_http_tcp_nopush         = false
   $nx_gzip                    = on
   $nx_server_tokens           = on
   $nx_spdy                    = off
