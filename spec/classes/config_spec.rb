@@ -288,5 +288,31 @@ describe 'nginx::config' do
         'recurse'
       ])}
     end
+
+    context "when vhost_purge true" do
+      let(:params) {{:vhost_purge => true}}
+      it { should contain_file('/etc/nginx/sites-available').with(
+        :purge => true,
+        :recurse => true
+      )}
+      it { should contain_file('/etc/nginx/sites-enabled').with(
+        :purge => true,
+        :recurse => true
+      )}
+    end
+
+    context "when vhost_purge false" do
+      let(:params) {{:vhost_purge => false}}
+      it { should contain_file('/etc/nginx/sites-available').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+      it { should contain_file('/etc/nginx/sites-enabled').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+    end
   end
 end
