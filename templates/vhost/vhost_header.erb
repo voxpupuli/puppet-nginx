@@ -18,7 +18,9 @@ server {
 <%# exists) to be first in the output order.  The hash keys also need to be -%>
 <%# sorted so that the ordering is stable. -%>
 <% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
-  <%= key %> <%= value %>;
+<% Array(value).each do |sub| -%>
+  <%= key %> <%= sub %>;
+<% end %>
 <% end -%><% end -%>
 <% if @root -%>
   root <%= @root %>;

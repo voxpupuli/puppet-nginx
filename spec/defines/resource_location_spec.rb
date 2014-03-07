@@ -44,11 +44,12 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
-            '    allow         test value 3;',
-            '    test1         test value 1;',
-            '    test2         test value 2;',
+            '    allow test value 3;',
+            '    test1 test value 1;',
+            '    test2 test value 2a;',
+            '    test2 test value 2b;',
           ],
         },
         {
@@ -90,10 +91,11 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
-            '    test1 test value 1;',
+            '    test1 test value 1a;',
+            '    test1 test value 1b;',
             '    test2 test value 2;',
           ],
         },
@@ -157,10 +159,11 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
-            '    test1 test value 1;',
+            '    test1 test value 1a;',
+            '    test1 test value 1b;',
             '    test2 test value 2;',
           ],
         },
@@ -173,9 +176,11 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => ['test value 3a', 'test value 3b', 'test value 3c'] },
           :match => [
-            '    allow test value 3;',
+            '    allow test value 3a;',
+            '    allow test value 3b;',
+            '    allow test value 3c;',
             '    test1 test value 1;',
             '    test2 test value 2;',
           ],
@@ -208,20 +213,22 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '    allow  test value 3;',
             '    test1  test value 1;',
-            '    test2  test value 2;',
+            '    test2  test value 2a;',
+            '    test2  test value 2b;',
           ],
         },
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '    allow  test value 3;',
-            '    test1  test value 1;',
+            '    test1  test value 1a;',
+            '    test1  test value 1b;',
             '    test2  test value 2;',
           ],
         },
@@ -253,11 +260,12 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
-            '    allow         test value 3;',
-            '    test1         test value 1;',
-            '    test2         test value 2;',
+            '    allow test value 3;',
+            '    test1 test value 1a;',
+            '    test1 test value 1b;',
+            '    test2 test value 2;',
           ],
         },
         {
@@ -299,11 +307,12 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
-            '    test2 test value 2;',
+            '    test2 test value 2a;',
+            '    test2 test value 2b;',
           ],
         },
       ].each do |param|
@@ -346,11 +355,12 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
-            '    test2 test value 2;',
+            '    test2 test value 2a;',
+            '    test2 test value 2b;',
           ],
         },
         {
@@ -386,10 +396,11 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'location_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
-            '    test1 test value 1;',
+            '    test1 test value 1a;',
+            '    test1 test value 1b;',
             '    test2 test value 2;',
           ],
         },
@@ -441,10 +452,11 @@ describe 'nginx::resource::location' do
         {
           :title => 'should contain ordered config directives',
           :attr  => 'location_custom_cfg',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '    allow test value 3;',
-            '    test1 test value 1;',
+            '    test1 test value 1a;',
+            '    test1 test value 1b;',
             '    test2 test value 2;',
           ],
         },
