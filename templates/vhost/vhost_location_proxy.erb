@@ -5,7 +5,10 @@
 <% if @location_deny -%><% @location_deny.each do |deny_rule| -%>
     deny <%= deny_rule %>;
 <% end -%><% end -%>
-<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |key,value| -%>
+<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |value| -%>
+    <%= value %>;
+<% end -%><% end -%>
+<% if @location_cfg_prepend -%><% @location_cfg_prepend.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
 <% Array(subkey).each do |asubkey| -%>
 <% Array(subvalue).each do |asubvalue| -%>
@@ -17,7 +20,6 @@
     <%= key %> <%= sub %>;
 <% end %>
 <% end -%>
-<% end -%><% end -%>
 <% end -%><% end -%>
 <% if @proxy_cache -%>
     proxy_cache         <%= @proxy_cache %>;
@@ -45,6 +47,9 @@
 <% Array(value).each do |sub| -%>
     <%= key %> <%= sub %>;
 <% end %>
+<% end -%><% end -%>
+<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
+    <%= value %>;
 <% end -%><% end -%>
 
   }
