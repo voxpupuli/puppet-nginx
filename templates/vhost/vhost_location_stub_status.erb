@@ -1,6 +1,16 @@
   location <%= @location %> {
-<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |value| -%>
-    <%= value %>;
+<% if @location_custom_cfg_prepend -%><% @location_custom_cfg_prepend.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+<% Array(subkey).each do |asubkey| -%>
+<% Array(subvalue).each do |asubvalue| -%>
+    <%= key %> <%= asubkey %> <%= asubvalue %>;
+<% end -%>
+<% end -%>
+<% end -%><% else -%>
+<% Array(value).each do |sub| -%>
+    <%= key %> <%= sub %>;
+<% end -%>
+<% end -%>
 <% end -%><% end -%>
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
@@ -29,8 +39,18 @@
 <% end -%>
 <% end -%>
 <% end -%><% end -%>
-<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
-    <%= value %>;
+<% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |key,value| -%>
+<% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
+<% Array(subkey).each do |asubkey| -%>
+<% Array(subvalue).each do |asubvalue| -%>
+    <%= key %> <%= asubkey %> <%= asubvalue %>;
+<% end -%>
+<% end -%>
+<% end -%><% else -%>
+<% Array(value).each do |sub| -%>
+    <%= key %> <%= sub %>;
+<% end -%>
+<% end -%>
 <% end -%><% end -%>
 
   }
