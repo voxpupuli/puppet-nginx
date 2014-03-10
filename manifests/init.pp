@@ -37,6 +37,7 @@ class nginx (
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_http_version     = $nginx::params::nx_proxy_http_version,
   $confd_purge            = $nginx::params::nx_confd_purge,
+  $vhost_purge            = $nginx::params::nx_vhost_purge,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
   $proxy_cache_levels     = $nginx::params::nx_proxy_cache_levels,
   $proxy_cache_keys_zone  = $nginx::params::nx_proxy_cache_keys_zone,
@@ -75,6 +76,7 @@ class nginx (
   validate_array($proxy_set_header)
   validate_string($proxy_http_version)
   validate_bool($confd_purge)
+  validate_bool($vhost_purge)
   if ($proxy_cache_path != false) {
     validate_string($proxy_cache_path)
   }
@@ -126,6 +128,7 @@ class nginx (
     proxy_cache_max_size   => $proxy_cache_max_size,
     proxy_cache_inactive   => $proxy_cache_inactive,
     confd_purge            => $confd_purge,
+    vhost_purge            => $vhost_purge,
     server_tokens          => $server_tokens,
     client_max_body_size   => $client_max_body_size,
     names_hash_bucket_size => $names_hash_bucket_size,
