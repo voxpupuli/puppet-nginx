@@ -23,6 +23,7 @@ class nginx::params {
   $nx_run_dir                 = '/var/nginx'
 
   $nx_conf_dir                = '/etc/nginx'
+  $nx_conf_template           = 'nginx/conf.d/nginx.conf.erb'
   $nx_confd_purge             = false
   $nx_vhost_purge             = false
   $nx_worker_processes        = 1
