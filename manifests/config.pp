@@ -38,6 +38,7 @@ class nginx::config(
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
   $gzip                   = $nginx::params::nx_gzip,
   $conf_template          = $nginx::params::nx_conf_template,
+  $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
 ) inherits nginx::params {
 
   if $caller_module_name != $module_name {
@@ -129,7 +130,7 @@ class nginx::config(
 
   file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
     ensure  => file,
-    content => template('nginx/conf.d/proxy.conf.erb'),
+    content => template($proxy_conf_template),
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":
