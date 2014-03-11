@@ -6,14 +6,12 @@ include <%= file %>;
 <%# sorted so that the ordering is stable. -%>
 <% if @vhost_cfg_append -%><% @vhost_cfg_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
-<% Array(subkey).each do |asubkey| -%>
 <% Array(subvalue).each do |asubvalue| -%>
-  <%= key %> <%= asubkey %> <%= asubvalue %>;
-<% end -%>
+  <%= key %> <%= subkey %> <%= asubvalue %>;
 <% end -%>
 <% end -%><% else -%>
-<% Array(value).each do |sub| -%>
-  <%= key %> <%= sub %>;
+<% Array(value).each do |asubvalue| -%>
+  <%= key %> <%= asubvalue %>;
 <% end -%>
 <% end -%>
 <% end -%><% end -%>
