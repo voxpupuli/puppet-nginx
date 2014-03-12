@@ -16,6 +16,7 @@
 class nginx::config(
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
+  $worker_rlimit_nofile   = $nginx::params::nx_worker_rlimit_nofile,
   $confd_purge            = $nginx::params::nx_confd_purge,
   $vhost_purge            = $nginx::params::nx_vhost_purge,
   $server_tokens          = $nginx::params::nx_server_tokens,
