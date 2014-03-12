@@ -46,7 +46,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
@@ -54,8 +54,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2b;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -99,7 +98,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_append',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1a;',
@@ -107,8 +106,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -173,7 +171,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1a;',
@@ -181,8 +179,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -196,7 +193,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => ['test value 3a', 'test value 3b', 'test value 3c'],
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3a;',
             '    allow test value 3b;',
@@ -205,8 +202,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -239,7 +235,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
@@ -247,8 +243,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2b;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -256,7 +251,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
@@ -264,8 +259,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2b;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -298,7 +292,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1a;',
@@ -306,8 +300,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -351,7 +344,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
@@ -359,8 +352,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2b;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
@@ -405,7 +397,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1;',
@@ -413,8 +405,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2b;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -452,7 +443,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_cfg_append',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1a;',
@@ -460,8 +451,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
         {
@@ -514,7 +504,7 @@ describe 'nginx::resource::location' do
           :attr  => 'location_custom_cfg',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3',
                       'test4' => { 'subtest1' => ['"sub test value1a"', '"sub test value 1b"'],
-                                  ['subtest2a', 'subtest2b'] => '"sub test value2"' } },
+                                  'subtest2' => '"sub test value2"' } },
           :match => [
             '    allow test value 3;',
             '    test1 test value 1a;',
@@ -522,8 +512,7 @@ describe 'nginx::resource::location' do
             '    test2 test value 2;',
             '    test4 subtest1 "sub test value1a";',
             '    test4 subtest1 "sub test value1b";',
-            '    test4 subtest2a "sub test value2";',
-            '    test4 subtest2b "sub test value2";',
+            '    test4 subtest2 "sub test value2";',
           ],
         },
       ].each do |param|
