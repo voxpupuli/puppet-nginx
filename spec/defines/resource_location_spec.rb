@@ -384,13 +384,13 @@ describe 'nginx::resource::location' do
           :title => 'should set the allow directive',
           :attr  => 'location_allow',
           :value => ['rule1','rule2'],
-          :match => ['  allow rule1;', '  allow rule2;'],
+          :match => ['    allow rule1;', '    allow rule2;'],
         },
         {
           :title => 'should set the deny directive',
           :attr  => 'location_deny',
           :value => ['rule1','rule2'],
-          :match => ['  deny rule1;', '  deny rule2;'],
+          :match => ['    deny rule1;', '    deny rule2;'],
         },
         {
           :title => 'should contain ordered prepended directives',
