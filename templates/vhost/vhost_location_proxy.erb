@@ -9,7 +9,9 @@
     <%= value %>
 <% end -%><% end -%>
 <% if @location_cfg_prepend -%><% @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
-    <%= key %>         <%= value %>;
+<% Array(value).each do |sub| -%>
+    <%= key %> <%= sub %>;
+<% end %>
 <% end -%><% end -%>
 <% if @proxy_cache -%>
     proxy_cache         <%= @proxy_cache %>;
@@ -27,7 +29,9 @@
     rewrite <%= rewrite_rule %>;
 <% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
-    <%= key %> <%= value %>;
+<% Array(value).each do |sub| -%>
+    <%= key %> <%= sub %>;
+<% end %>
 <% end -%><% end -%>
 <% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
     <%= value %>

@@ -130,10 +130,11 @@ describe 'nginx::resource::vhost' do
         {
           :title => 'should contain ordered prepended directives',
           :attr  => 'vhost_cfg_prepend',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
-            '  test1 test value 1;',
+            '  test1 test value 1a;',
+            '  test1 test value 1b;',
             '  test2 test value 2;',
           ],
         },
@@ -218,11 +219,12 @@ describe 'nginx::resource::vhost' do
         {
           :title => 'should contain ordered appended directives',
           :attr  => 'vhost_cfg_append',
-          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
             '  test1 test value 1;',
-            '  test2 test value 2;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
           ],
         },
         {
@@ -384,6 +386,28 @@ describe 'nginx::resource::vhost' do
           :match => '  error_log             /path/to/error.log;',
         },
         {
+          :title => 'should contain ordered prepend directives',
+          :attr  => 'vhost_cfg_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
+          :match => [
+            '  allow test value 3;',
+            '  test1 test value 1;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
+          ]
+        },
+        {
+          :title => 'should contain ordered ssl prepend directives',
+          :attr  => 'vhost_cfg_ssl_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
+          :match => [
+            '  allow test value 3;',
+            '  test1 test value 1;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
+          ]
+        },
+        {
           :title => 'should set root',
           :attr  => 'use_default_location',
           :value => false,
@@ -434,6 +458,17 @@ describe 'nginx::resource::vhost' do
             '  allow test value 3;',
             '  test1 test value 1;',
             '  test2 test value 2;',
+          ]
+        },
+        {
+          :title => 'should contain ordered ssl appended directives',
+          :attr  => 'vhost_cfg_ssl_append',
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
+          :match => [
+            '  allow test value 3;',
+            '  test1 test value 1;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
           ]
         },
         {
