@@ -100,6 +100,7 @@ class nginx::params {
 
   $nx_configtest_enable = false
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
+  $nx_service_ensure = running
 
   $nx_mail = false
 
