@@ -32,5 +32,10 @@
 <% if @location_custom_cfg_append -%><% @location_custom_cfg_append.each do |value| -%>
     <%= value %>
 <% end -%><% end -%>
+
+<% @location_conditions.each do |condition| -%>
+    <%= condition %>
+<% end -%>
+
   }
 
