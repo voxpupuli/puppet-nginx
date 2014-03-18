@@ -270,6 +270,7 @@ define nginx::resource::location (
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
     concat::fragment { "${vhost_sanitized}-${priority}-${location_sanitized}":
+      ensure  => present,
       target  => $config_file,
       content => $content_real,
       order   => "${priority}",
@@ -280,6 +281,7 @@ define nginx::resource::location (
   if ($ssl == true) {
     $ssl_priority = $priority + 300
     concat::fragment {"${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl":
+      ensure  => present,
       target  => $config_file,
       content => $content_real,
       order   => "${ssl_priority}",
