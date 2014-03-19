@@ -58,6 +58,8 @@ class nginx (
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
   $gzip                   = $nginx::params::nx_gzip,
+  $conf_template          = $nginx::params::nx_conf_template,
+  $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
@@ -145,6 +147,8 @@ class nginx (
     nginx_error_log        => $nginx_error_log,
     http_access_log        => $http_access_log,
     gzip                   => $gzip,
+    conf_template          => $conf_template,
+    proxy_conf_template    => $proxy_conf_template,
     require                => Class['nginx::package'],
     notify                 => Class['nginx::service'],
   }
