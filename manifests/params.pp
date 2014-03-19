@@ -115,4 +115,10 @@ class nginx::params {
   $package_ensure = 'present'
   $package_source = 'nginx'
   $manage_repo    = true
+  
+  # Whether the SSL certifate from the default system directory should be used
+  # or create a copy in the $nx_conf_dir. For backword compatibility the value
+  # is set to true in the current version.
+  # https://github.com/jfryman/puppet-nginx/issues/80
+  $copy_ssl_files = true
 }
