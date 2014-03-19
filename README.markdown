@@ -8,6 +8,11 @@ This module manages NGINX configuration.
 
 ## Quick Start
 
+### Requirements
+
+* Puppet-2.7.0 or later
+* Ruby-1.9.3 or later (Ruby-1.8.7 does not work)
+
 ### Install and bootstrap an NGINX instance
 
 ```puppet
