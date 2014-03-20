@@ -12,7 +12,7 @@ events {
 }
 
 http {
-  include       /etc/nginx/mime.types;
+  include       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/mime.types;
   default_type  application/octet-stream;
 
   access_log  <%= @http_access_log %>;
@@ -44,7 +44,7 @@ http {
 <% end -%>
 <% end -%>
 
-  include /etc/nginx/conf.d/*.conf;
+  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.d/*.conf;
   include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/sites-enabled/*;
 
 }
