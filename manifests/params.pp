@@ -79,23 +79,16 @@ class nginx::params {
     /(?i-mx:sunos)/  => '/var/run/nginx.pid',
   }
 
-  if $::osfamily {
-    $nx_conf_dir = $::osfamily ? {
-      /(?i-mx:solaris)/ => '/opt/local/etc/nginx',
-      default           => '/etc/nginx/',
-    }
-  } else {
-    $nx_conf_dir = $::operatingsystem ? {
-      /(?i-mx:solaris|smartos)/ => '/opt/local/etc/nginx',
-      default                   => '/etc/nginx',
-    }
+  $nx_conf_dir = $::kernelversion ? {
+    /(?i-mx:joyent)/ => '/opt/local/etc/nginx',
+    default           => '/etc/nginx/',
   }
 
   if $::osfamily {
-    $solaris_nx_daemon_user = $::operatingsystem ? {
-      /(?i-mx:smartos)/ => 'www',
+    $solaris_nx_daemon_user = $::kernelversion ? {
+      /(?i-mx:joyent)/ => 'www',
       default           => 'webservd',
-    }      
+    }
     $nx_daemon_user = $::osfamily ? {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
