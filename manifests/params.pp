@@ -22,7 +22,6 @@ class nginx::params {
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
-  $nx_conf_dir                = '/etc/nginx'
   $nx_conf_template           = 'nginx/conf.d/nginx.conf.erb'
   $nx_proxy_conf_template     = 'nginx/conf.d/proxy.conf.erb'
   $nx_confd_purge             = false
@@ -81,10 +80,26 @@ class nginx::params {
   }
 
   if $::osfamily {
+    $nx_conf_dir = $::osfamily ? {
+      /(?i-mx:solaris)/ => '/opt/local/etc/nginx',
+      default           => '/etc/nginx/',
+    }
+  } else {
+    $nx_conf_dir = $::operatingsystem ? {
+      /(?i-mx:solaris|smartos)/ => '/opt/local/etc/nginx',
+      default                   => '/etc/nginx',
+    }
+  }
+
+  if $::osfamily {
+    $solaris_nx_daemon_user = $::operatingsystem ? {
+      /(?i-mx:smartos)/ => 'www',
+      default           => 'webservd',
+    }      
     $nx_daemon_user = $::osfamily ? {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
-      /(?i-mx:solaris)/                  => 'webservd',
+      /(?i-mx:solaris)/                  => $solaris_nx_daemon_user,
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
