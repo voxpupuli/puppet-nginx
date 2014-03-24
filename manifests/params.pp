@@ -81,7 +81,7 @@ class nginx::params {
 
   $nx_conf_dir = $::kernelversion ? {
     /(?i-mx:joyent)/ => '/opt/local/etc/nginx',
-    default           => '/etc/nginx/',
+    default           => '/etc/nginx',
   }
 
   if $::osfamily {

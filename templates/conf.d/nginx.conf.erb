@@ -50,6 +50,6 @@ http {
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {
-  include /etc/nginx/conf.mail.d/*.conf;
+  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.mail.d/*.conf;
 }
 <% end -%>
