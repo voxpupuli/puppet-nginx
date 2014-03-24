@@ -45,7 +45,6 @@ class nginx::params {
   $nx_spdy                    = off
   $nx_ssl_stapling            = off
 
-
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
     'Host $host',
@@ -81,13 +80,13 @@ class nginx::params {
 
   $nx_conf_dir = $::kernelversion ? {
     /(?i-mx:joyent)/ => '/opt/local/etc/nginx',
-    default           => '/etc/nginx',
+    default => '/etc/nginx',
   }
 
   if $::osfamily {
     $solaris_nx_daemon_user = $::kernelversion ? {
       /(?i-mx:joyent)/ => 'www',
-      default           => 'webservd',
+      default => 'webservd',
     }
     $nx_daemon_user = $::osfamily ? {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
