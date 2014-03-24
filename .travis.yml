@@ -21,4 +21,4 @@ matrix:
       env: PUPPET_GEM_VERSION="~> 2.7.0"
       gemfile: .travis/Gemfile
 notifications:
-  email: false
+  email: false  
