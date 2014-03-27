@@ -17,10 +17,6 @@
 # This class file is not called directly
 class nginx::package::suse {
 
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
-
   $suse_packages = [
     'nginx-0.8', 'apache2', 'apache2-itk', 'apache2-utils', 'gd', 'libapr1',
     'libapr-util1', 'libjpeg62', 'libpng14-14', 'libxslt', 'rubygem-daemon_controller',
