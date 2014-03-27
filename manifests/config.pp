@@ -42,10 +42,6 @@ class nginx::config(
   $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
 ) inherits nginx::params {
 
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
-
   File {
     owner => 'root',
     group => 'root',

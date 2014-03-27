@@ -18,10 +18,6 @@ class nginx::service(
   $service_restart   = $nginx::service_restart,
   $service_ensure    = $nginx::service_ensure,
 ) {
-
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
   
   $service_enable = $service_ensure ? {
     running => true,
