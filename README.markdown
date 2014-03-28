@@ -62,6 +62,35 @@ nginx::resource::mailhost { 'domain1.example':
   ssl_key     => '/tmp/server.pem',
 }
 ```
+### Add a proxy_redirect directive when using nginx as a reverse proxy
+nginx docs http://wiki.nginx.org/HttpProxyModule#proxy_redirect
+fixes this jenkins issues:
+https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+says+my+reverse+proxy+setup+is+broken
+
+Add to your hiera vhost
+
+```yaml
+nginx::nginx_vhosts:
+  'jenkins.kvm':
+  ...
+  proxy_redirect_fromhost: 'http://jenkins.kvm'
+  proxy_redirect_tohost: 'https://jenkins.kvm'
+  ...
+```
+Add to your nodes.pp or classes.pp ( where you clasify your resources )
+
+```puppet
+class { 'nginx': }
+```
+
+That will generate an nginx piece of config that looks like this
+
+```bash
+location / {
+  ...
+  proxy_redirect  http://jenkins.kvm https://jenkins.kvm;
+}
+```
 
 ## SSL configuration
 

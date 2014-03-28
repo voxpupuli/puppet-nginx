@@ -33,6 +33,9 @@
 <% end -%>
     proxy_pass          <%= @proxy %>;
     proxy_read_timeout  <%= @proxy_read_timeout %>;
+<% if @proxy_redirect_fromhost and @proxy_redirect_tohost -%>
+    proxy_redirect  <%= @proxy_redirect_fromhost %> <%= @proxy_redirect_tohost %>;
+<% end -%>
 <% if @proxy_method -%>
     proxy_method        <%= @proxy_method %>;
 <% end -%>
