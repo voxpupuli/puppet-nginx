@@ -106,6 +106,9 @@
 #      options like error level to the end.
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #      variables to pass to the backend application
+#   [*conditions*]              - An array of conditionals to be added to the vhost
+#   [*location_conditions*]     - An array of conditionals to be added to the vhost
+#      location block
 # Actions:
 #
 # Requires:
@@ -181,6 +184,8 @@ define nginx::resource::vhost (
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
   $rewrite_rules          = [],
+  $conditions             = [],
+  $location_conditions    = []
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -314,6 +319,9 @@ define nginx::resource::vhost (
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)
+
+  validate_array($conditions)
+  validate_array($location_conditions)
 
   # Variables
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"

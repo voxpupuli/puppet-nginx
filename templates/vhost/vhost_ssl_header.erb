@@ -48,6 +48,10 @@ server {
   access_log            <%= @ssl_access_log %>;
   error_log             <%= @ssl_error_log %>;
   
+<% @conditions.each do |condition| -%>
+  <%= condition %>
+<% end -%>
+
 <% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
 <% Array(subvalue).each do |asubvalue| -%>
