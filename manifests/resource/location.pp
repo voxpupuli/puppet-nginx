@@ -217,8 +217,8 @@ define nginx::resource::location (
     fail('$priority must be an integer.')
   }
   validate_array($rewrite_rules)
-  if ($priority < 401) or ($priority > 599) {
-    fail('$priority must be in the range 401-599.')
+  if ($priority < 401) or ($priority > 899) {
+    fail('$priority must be in the range 401-899.')
   }
 
   # # Shared Variables
