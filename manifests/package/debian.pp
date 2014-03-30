@@ -20,7 +20,6 @@ class nginx::package::debian(
     $package_ensure = 'present'
   ) {
 
-  
   $distro = downcase($::operatingsystem)
 
   package { $package_name:
