@@ -5,7 +5,7 @@ nginx::resource::vhost { 'test2.local test2':
   www_root => '/var/www/nginx-default',
   ssl      => true,
   ssl_cert => 'puppet:///modules/sslkey/whildcard_mydomain.crt',
-  ssl_key  => 'puppet:///modules/sslkey/whildcard_mydomain.key' 
+  ssl_key  => 'puppet:///modules/sslkey/whildcard_mydomain.key'
 }
 
 nginx::resource::location { 'test2.local-bob':
