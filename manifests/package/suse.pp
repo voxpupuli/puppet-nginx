@@ -15,15 +15,15 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::suse {
+class nginx::package::suse (
+  $package_name = 'nginx'
+) {
 
   if $caller_module_name != $module_name {
     warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
   }
 
-  $suse_packages = ['nginx']
-
-  package { $suse_packages:
+  package { $package_name:
     ensure => $nginx::package_ensure,
   }
 }
