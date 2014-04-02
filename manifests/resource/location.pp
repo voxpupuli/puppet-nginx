@@ -20,8 +20,14 @@
 #   [*proxy*]                - Proxy server(s) for a location to connect to.
 #     Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
+#   [*proxy_redirect*]       - sets the text, which must be changed in
+#     response-header "Location" and "Refresh" in the response of the proxied
+#     server.
 #   [*proxy_read_timeout*]   - Override the default the proxy read timeout
 #     value of 90 seconds
+#   [*proxy_connect_timeout*] - Override the default the proxy connect timeout
+#     value of 90 seconds
+#   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
@@ -105,7 +111,10 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
+  $proxy_redirect       = $nginx::params::nx_proxy_redirect,
   $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
+  $proxy_connect_timeout = $nginx::params::nx_proxy_connect_timeout,
+  $proxy_set_header     = $nginx::params::nx_proxy_set_header,
   $fastcgi              = undef,
   $fastcgi_params       = '/etc/nginx/fastcgi_params',
   $fastcgi_script       = undef,
@@ -155,7 +164,10 @@ define nginx::resource::location (
   if ($proxy != undef) {
     validate_string($proxy)
   }
+  validate_string($proxy_redirect)
   validate_string($proxy_read_timeout)
+  validate_string($proxy_connect_timeout)
+  validate_array($proxy_set_header)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }
