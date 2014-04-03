@@ -34,7 +34,7 @@
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
-#   [*resolver*]            - String: Configures name servers used to resolve
+#   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
 #   [*fastcgi_params*]      - optional alternative fastcgi_params file to use
@@ -151,7 +151,7 @@ define nginx::resource::vhost (
   $proxy_cache_valid      = false,
   $proxy_method           = undef,
   $proxy_set_body         = undef,
-  $resolver               = undef,
+  $resolver               = [],
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
@@ -248,9 +248,7 @@ define nginx::resource::vhost (
   if ($proxy_set_body != undef) {
     validate_string($proxy_set_body)
   }
-  if ($resolver != undef) {
-    validate_string($resolver)
-  }
+  validate_array($resolver)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }
