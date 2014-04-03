@@ -130,6 +130,14 @@ class nginx::config(
     content => template($proxy_conf_template),
   }
 
+  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
+    ensure => absent,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.d/example_ssl.conf":
+    ensure => absent,
+  }
+
   file { "${nginx::config::nx_temp_dir}/nginx.d":
     ensure  => absent,
     purge   => true,
