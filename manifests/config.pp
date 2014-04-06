@@ -40,6 +40,7 @@ class nginx::config(
   $gzip                   = $nginx::params::nx_gzip,
   $conf_template          = $nginx::params::nx_conf_template,
   $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
+  $proxy_redirect         = $nginx::params::nx_proxy_redirect,
 ) inherits nginx::params {
 
   File {
