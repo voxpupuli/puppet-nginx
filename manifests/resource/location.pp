@@ -273,7 +273,7 @@ define nginx::resource::location (
       ensure  => present,
       target  => $config_file,
       content => $content_real,
-      order   => "${priority}",
+      order   => $priority,
     }
   }
 
@@ -284,7 +284,7 @@ define nginx::resource::location (
       ensure  => present,
       target  => $config_file,
       content => $content_real,
-      order   => "${ssl_priority}",
+      order   => $ssl_priority,
     }
   }
 
