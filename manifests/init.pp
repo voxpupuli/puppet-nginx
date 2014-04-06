@@ -58,6 +58,7 @@ class nginx (
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
   $gzip                   = $nginx::params::nx_gzip,
+  $sendfile               = $nginx::params::nx_sendfile,
   $conf_template          = $nginx::params::nx_conf_template,
   $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
   $proxy_redirect         = $nginx::params::nx_proxy_redirect,
