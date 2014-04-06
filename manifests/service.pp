@@ -18,7 +18,7 @@ class nginx::service(
   $service_restart   = $nginx::service_restart,
   $service_ensure    = $nginx::service_ensure,
 ) {
-  
+
   $service_enable = $service_ensure ? {
     running => true,
     absent => false,
