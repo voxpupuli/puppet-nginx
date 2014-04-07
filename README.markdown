@@ -111,6 +111,13 @@ nginx::nginx_locations:
     location: /userContent
     vhost: www.puppetlabs.com
     www_root: /var/www/html
+nginx::nginx_mailhosts:
+  'smtp':
+    auth_http: server2.example/cgi-bin/auth
+    protocol: smtp
+    listen_port: 587
+    ssl_port: 465
+    starttls: only
 ```
 
 ## Nginx with precompiled Passenger

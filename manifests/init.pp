@@ -64,6 +64,7 @@ class nginx (
   $nginx_vhosts           = {},
   $nginx_upstreams        = {},
   $nginx_locations        = {},
+  $nginx_mailhosts        = {},
   $manage_repo            = $nginx::params::manage_repo,
 ) inherits nginx::params {
 
@@ -115,6 +116,7 @@ class nginx (
   validate_hash($nginx_upstreams)
   validate_hash($nginx_vhosts)
   validate_hash($nginx_locations)
+  validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
 
   class { 'nginx::package':
@@ -161,6 +163,7 @@ class nginx (
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::vhost', $nginx_vhosts)
   create_resources('nginx::resource::location', $nginx_locations)
+  create_resources('nginx::resource::mailhost', $nginx_mailhosts)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
