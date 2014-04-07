@@ -17,7 +17,7 @@ http {
 
   access_log  <%= @http_access_log %>;
 
-  sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
+  sendfile    <%= @sendfile %>;
 
   server_tokens <%= @server_tokens %>;
 

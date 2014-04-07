@@ -113,6 +113,7 @@ class nginx (
   }
   validate_string($nginx_error_log)
   validate_string($http_access_log)
+  validate_string($sendfile)
   validate_hash($nginx_upstreams)
   validate_hash($nginx_vhosts)
   validate_hash($nginx_locations)
@@ -149,6 +150,7 @@ class nginx (
     nginx_error_log        => $nginx_error_log,
     http_access_log        => $http_access_log,
     gzip                   => $gzip,
+    sendfile               => $sendfile,
     conf_template          => $conf_template,
     proxy_conf_template    => $proxy_conf_template,
     proxy_redirect         => $proxy_redirect,
