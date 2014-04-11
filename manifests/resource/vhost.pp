@@ -396,6 +396,7 @@ define nginx::resource::vhost (
       notify              => Class['nginx::service'],
       rewrite_rules       => $rewrite_rules,
     }
+    $root = undef
   } else {
     $root = $www_root
   }
