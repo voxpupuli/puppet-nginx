@@ -16,7 +16,9 @@
 class nginx::config(
   $worker_processes       = $nginx::params::nx_worker_processes,
   $worker_connections     = $nginx::params::nx_worker_connections,
+  $worker_rlimit_nofile   = $nginx::params::nx_worker_rlimit_nofile,
   $confd_purge            = $nginx::params::nx_confd_purge,
+  $vhost_purge            = $nginx::params::nx_vhost_purge,
   $server_tokens          = $nginx::params::nx_server_tokens,
   $proxy_set_header       = $nginx::params::nx_proxy_set_header,
   $proxy_cache_path       = $nginx::params::nx_proxy_cache_path,
@@ -35,11 +37,11 @@ class nginx::config(
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
   $proxy_buffer_size      = $nginx::params::nx_proxy_buffer_size,
+  $gzip                   = $nginx::params::nx_gzip,
+  $conf_template          = $nginx::params::nx_conf_template,
+  $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
+  $proxy_redirect         = $nginx::params::nx_proxy_redirect,
 ) inherits nginx::params {
-
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
 
   File {
     owner => 'root',
@@ -97,8 +99,22 @@ class nginx::config(
     ensure => directory,
   }
 
+  if $vhost_purge == true {
+    File["${nginx::params::nx_conf_dir}/sites-available"] {
+      purge   => true,
+      recurse => true,
+    }
+  }
+
   file { "${nginx::params::nx_conf_dir}/sites-enabled":
     ensure => directory,
+  }
+
+  if $vhost_purge == true {
+    File["${nginx::params::nx_conf_dir}/sites-enabled"] {
+      purge   => true,
+      recurse => true,
+    }
   }
 
   file { '/etc/nginx/sites-enabled/default':
@@ -107,23 +123,33 @@ class nginx::config(
 
   file { "${nginx::params::nx_conf_dir}/nginx.conf":
     ensure  => file,
-    content => template('nginx/conf.d/nginx.conf.erb'),
+    content => template($conf_template),
   }
 
   file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
     ensure  => file,
-    content => template('nginx/conf.d/proxy.conf.erb'),
+    content => template($proxy_conf_template),
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
+    ensure => absent,
+  }
+
+  file { "${nginx::params::nx_conf_dir}/conf.d/example_ssl.conf":
+    ensure => absent,
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.d":
     ensure  => absent,
     purge   => true,
     recurse => true,
+    force   => true,
   }
 
   file { "${nginx::config::nx_temp_dir}/nginx.mail.d":
     ensure  => absent,
     purge   => true,
     recurse => true,
+    force   => true,
   }
 }

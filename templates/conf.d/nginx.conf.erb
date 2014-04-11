@@ -1,5 +1,6 @@
 user <%= scope.lookupvar('nginx::config::nx_daemon_user') %>;
 worker_processes <%= @worker_processes %>;
+worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 
 error_log  <%= @nginx_error_log %>;
 pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;
@@ -11,7 +12,7 @@ events {
 }
 
 http {
-  include       /etc/nginx/mime.types;
+  include       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/mime.types;
   default_type  application/octet-stream;
 
   access_log  <%= @http_access_log %>;
@@ -19,7 +20,6 @@ http {
   sendfile    <%= scope.lookupvar('nginx::params::nx_sendfile')%>;
 
   server_tokens <%= @server_tokens %>;
-  <% if scope.lookupvar('nginx::params::nx_tcp_nopush') == 'on' %>tcp_nopush on;<% end %>
 
   types_hash_max_size <%= scope.lookupvar('nginx::params::nx_types_hash_max_size')%>;
   types_hash_bucket_size <%= scope.lookupvar('nginx::params::nx_types_hash_bucket_size')%>;
@@ -44,12 +44,12 @@ http {
 <% end -%>
 <% end -%>
 
-  include /etc/nginx/conf.d/*.conf;
+  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.d/*.conf;
   include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/sites-enabled/*;
 
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {
-  include /etc/nginx/conf.mail.d/*.conf;
+  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.mail.d/*.conf;
 }
 <% end -%>

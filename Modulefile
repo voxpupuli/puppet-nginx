@@ -1,5 +1,5 @@
 name    'jfryman-nginx'
-version '0.0.7'
+version '0.0.9'
 source 'http://github.com/jfryman/puppet-nginx'
 author 'James Fryman'
 license 'Apache License Version 2.0'

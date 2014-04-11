@@ -162,6 +162,12 @@ describe 'nginx::config' do
           :match => 'worker_processes 4;',
         },
         {
+          :title => 'should set worker_rlimit_nofile',
+          :attr  => 'worker_rlimit_nofile',
+          :value => '10000',
+          :match => 'worker_rlimit_nofile 10000;',
+        },
+        {
           :title => 'should set error_log',
           :attr  => 'nginx_error_log',
           :value => '/path/to/error.log',
@@ -283,6 +289,32 @@ describe 'nginx::config' do
     context "when confd_purge false" do
       let(:params) {{:confd_purge => false}}
       it { should contain_file('/etc/nginx/conf.d').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+    end
+
+    context "when vhost_purge true" do
+      let(:params) {{:vhost_purge => true}}
+      it { should contain_file('/etc/nginx/sites-available').with(
+        :purge => true,
+        :recurse => true
+      )}
+      it { should contain_file('/etc/nginx/sites-enabled').with(
+        :purge => true,
+        :recurse => true
+      )}
+    end
+
+    context "when vhost_purge false" do
+      let(:params) {{:vhost_purge => false}}
+      it { should contain_file('/etc/nginx/sites-available').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+      it { should contain_file('/etc/nginx/sites-enabled').without([
         'ignore',
         'purge',
         'recurse'

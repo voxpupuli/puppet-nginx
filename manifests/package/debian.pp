@@ -20,10 +20,6 @@ class nginx::package::debian(
     $package_ensure = 'present'
   ) {
 
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
-
   $distro = downcase($::operatingsystem)
 
   package { $package_name:

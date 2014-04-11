@@ -15,17 +15,16 @@
 # This class file is not called directly
 class nginx::params {
 
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
-
   $nx_temp_dir                = '/tmp'
   $nx_run_dir                 = '/var/nginx'
 
-  $nx_conf_dir                = '/etc/nginx'
+  $nx_conf_template           = 'nginx/conf.d/nginx.conf.erb'
+  $nx_proxy_conf_template     = 'nginx/conf.d/proxy.conf.erb'
   $nx_confd_purge             = false
+  $nx_vhost_purge             = false
   $nx_worker_processes        = 1
   $nx_worker_connections      = 1024
+  $nx_worker_rlimit_nofile    = 1024
   $nx_types_hash_max_size     = 1024
   $nx_types_hash_bucket_size  = 512
   $nx_names_hash_bucket_size  = 64
@@ -41,7 +40,6 @@ class nginx::params {
   $nx_server_tokens           = on
   $nx_spdy                    = off
   $nx_ssl_stapling            = off
-
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
@@ -68,16 +66,28 @@ class nginx::params {
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
+    /(?i-mx:sunos)/ => '/var/log/nginx',
   }
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/  => '/var/run/nginx.pid',
+    /(?i-mx:sunos)/  => '/var/run/nginx.pid',
+  }
+
+  $nx_conf_dir = $::kernelversion ? {
+    /(?i-mx:joyent)/ => '/opt/local/etc/nginx',
+    default => '/etc/nginx',
   }
 
   if $::osfamily {
+    $solaris_nx_daemon_user = $::kernelversion ? {
+      /(?i-mx:joyent)/ => 'www',
+      default => 'webservd',
+    }
     $nx_daemon_user = $::osfamily ? {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
+      /(?i-mx:solaris)/                  => $solaris_nx_daemon_user,
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
@@ -85,6 +95,7 @@ class nginx::params {
     $nx_daemon_user = $::operatingsystem ? {
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
+      /(?i-mx:solaris)/                                                                      => 'webservd',
     }
   }
 
@@ -95,6 +106,7 @@ class nginx::params {
 
   $nx_configtest_enable = false
   $nx_service_restart = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
+  $nx_service_ensure = running
 
   $nx_mail = false
 

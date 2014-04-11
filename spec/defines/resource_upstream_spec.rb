@@ -36,11 +36,19 @@ describe 'nginx::resource::upstream' do
             'test3' => 'test value 3',
             'test1' => 'test value 1',
             'test2' => 'test value 2',
+            'test4' => ['test value 1', 'test value 2'],
+            'test5' => {'subkey1' => 'subvalue1'},
+            'test6' => {'subkey1' => ['subvalue1', 'subvalue2']},
           },
           :match => [
             '  test1 test value 1;',
             '  test2 test value 2;',
             '  test3 test value 3;',
+            '  test4 test value 1;',
+            '  test4 test value 2;',
+            '  test5 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue2;',
           ],
         },
         {
@@ -52,9 +60,9 @@ describe 'nginx::resource::upstream' do
             'test2',
           ],
           :match => [
-            '  server     test3;',
-            '  server     test1;',
-            '  server     test2;',
+            '  server     test3  fail_timeout=10s;',
+            '  server     test1  fail_timeout=10s;',
+            '  server     test2  fail_timeout=10s;',
           ],
         },
       ].each do |param|

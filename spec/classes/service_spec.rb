@@ -6,11 +6,11 @@ describe 'nginx::service' do
     :operatingsystem => 'debian',
   } end
 
-  let :pre_condition do
-    [
-      'include ::nginx::params',
-    ]
-  end
+  let :params do {
+      :configtest_enable => false,
+      :service_restart => '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
+      :service_ensure => 'running',
+  } end   
 
   context "using default parameters" do
 
@@ -26,7 +26,7 @@ describe 'nginx::service' do
   end
 
   describe "when configtest_enable => true" do
-    let(:params) {{ :configtest_enable => true }}
+    let(:params) {{ :configtest_enable => true,  :service_restart => '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'}}
     it { should contain_service('nginx').with_restart('/etc/init.d/nginx configtest && /etc/init.d/nginx restart') }
 
     context "when service_restart => 'a restart command'" do

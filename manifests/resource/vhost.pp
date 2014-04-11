@@ -27,14 +27,14 @@
 #     response code is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]         - Default index files for NGINX to read when
 #     traversing a directory
-#   [*autoindex*]           - Set it on 'on' to activate autoindex directory
-#     listing. Undef by default.
+#   [*autoindex*]           - Set it on 'on' or 'off 'to activate/deactivate
+#                             autoindex directory listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
-#   [*resolver*]            - String: Configures name servers used to resolve
+#   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
 #   [*fastcgi_params*]      - optional alternative fastcgi_params file to use
@@ -88,10 +88,15 @@
 #      password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
+#   [*client_max_body_size*]    - This directive sets client_max_body_size.
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
 #     put before everything else inside vhost
+#   [*vhost_cfg_ssl_append*]        - It expects a hash with custom directives to
+#     put after everything else inside vhost ssl
+#   [*vhost_cfg_ssl_prepend*]       - It expects a hash with custom directives to
+#     put before everything else inside vhost ssl
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #      rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
@@ -123,7 +128,7 @@ define nginx::resource::vhost (
   $ipv6_enable            = false,
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
-  $ipv6_listen_options    = 'default',
+  $ipv6_listen_options    = 'default ipv6only=on',
   $add_header             = undef,
   $ssl                    = false,
   $ssl_cert               = undef,
@@ -146,7 +151,7 @@ define nginx::resource::vhost (
   $proxy_cache_valid      = false,
   $proxy_method           = undef,
   $proxy_set_body         = undef,
-  $resolver               = undef,
+  $resolver               = [],
   $fastcgi                = undef,
   $fastcgi_params         = '/etc/nginx/fastcgi_params',
   $fastcgi_script         = undef,
@@ -167,8 +172,11 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $client_max_body_size   = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
+  $vhost_cfg_ssl_prepend      = undef,
+  $vhost_cfg_ssl_append       = undef,
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
@@ -243,9 +251,7 @@ define nginx::resource::vhost (
   if ($proxy_set_body != undef) {
     validate_string($proxy_set_body)
   }
-  if ($resolver != undef) {
-    validate_string($resolver)
-  }
+  validate_array($resolver)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }
@@ -288,6 +294,12 @@ define nginx::resource::vhost (
   }
   if ($vhost_cfg_append != undef) {
     validate_hash($vhost_cfg_append)
+  }
+  if ($vhost_cfg_ssl_prepend != undef) {
+    validate_hash($vhost_cfg_ssl_prepend)
+  }
+  if ($vhost_cfg_ssl_append != undef) {
+    validate_hash($vhost_cfg_ssl_append)
   }
   if ($include_files != undef) {
     validate_array($include_files)
@@ -365,9 +377,7 @@ define nginx::resource::vhost (
     notify => Class['nginx::service'],
   }
 
-  if ($ssl == true) and ($ssl_port == $listen_port) {
-    $ssl_only = true
-  }
+  $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
@@ -390,6 +400,7 @@ define nginx::resource::vhost (
       fastcgi_script      => $fastcgi_script,
       try_files           => $try_files,
       www_root            => $www_root,
+      autoindex           => $autoindex,
       index_files         => [],
       location_custom_cfg => $location_custom_cfg,
       notify              => Class['nginx::service'],
@@ -430,6 +441,7 @@ define nginx::resource::vhost (
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name_sanitized}-header":
+      ensure  => present,
       target  => $config_file,
       content => template('nginx/vhost/vhost_header.erb'),
       order   => '001',
@@ -439,6 +451,7 @@ define nginx::resource::vhost (
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name_sanitized}-footer":
+      ensure  => present,
       target  => $config_file,
       content => template('nginx/vhost/vhost_footer.erb'),
       order   => '699',

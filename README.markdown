@@ -8,6 +8,11 @@ This module manages NGINX configuration.
 
 ## Quick Start
 
+### Requirements
+
+* Puppet-2.7.0 or later
+* Ruby-1.9.3 or later (Ruby-1.8.7 does not work)
+
 ### Install and bootstrap an NGINX instance
 
 ```puppet
@@ -106,6 +111,13 @@ nginx::nginx_locations:
     location: /userContent
     vhost: www.puppetlabs.com
     www_root: /var/www/html
+nginx::nginx_mailhosts:
+  'smtp':
+    auth_http: server2.example/cgi-bin/auth
+    protocol: smtp
+    listen_port: 587
+    ssl_port: 465
+    starttls: only
 ```
 
 ## Nginx with precompiled Passenger

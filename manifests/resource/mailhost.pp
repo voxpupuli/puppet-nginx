@@ -49,7 +49,7 @@ define nginx::resource::mailhost (
   $ipv6_enable         = false,
   $ipv6_listen_ip      = '::',
   $ipv6_listen_port    = '80',
-  $ipv6_listen_options = 'default',
+  $ipv6_listen_options = 'default ipv6only=on',
   $ssl                 = false,
   $ssl_cert            = undef,
   $ssl_key             = undef,
@@ -125,6 +125,7 @@ define nginx::resource::mailhost (
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name}-header":
+      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
       order   => '001',
@@ -134,6 +135,7 @@ define nginx::resource::mailhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
     concat::fragment { "${name}-ssl":
+      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
       order   => '700',

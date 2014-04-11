@@ -19,10 +19,6 @@ class nginx::package::redhat (
   $package_name   = 'nginx',
 ) {
 
-  if $caller_module_name != $module_name {
-    warning("${name} is deprecated as a public API of the ${module_name} module and should no longer be directly included in the manifest.")
-  }
-
   case $::operatingsystem {
     'fedora': {
       # nginx.org does not supply RPMs for fedora
