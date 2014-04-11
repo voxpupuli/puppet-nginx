@@ -64,7 +64,7 @@ define nginx::resource::mailhost (
     group => 'root',
     mode  => '0644',
   }
-  
+
   if !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }
