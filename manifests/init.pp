@@ -58,6 +58,7 @@ class nginx (
   $nginx_error_log        = $nginx::params::nx_nginx_error_log,
   $http_access_log        = $nginx::params::nx_http_access_log,
   $gzip                   = $nginx::params::nx_gzip,
+  $sendfile               = $nginx::params::nx_sendfile,
   $conf_template          = $nginx::params::nx_conf_template,
   $proxy_conf_template    = $nginx::params::nx_proxy_conf_template,
   $proxy_redirect         = $nginx::params::nx_proxy_redirect,
@@ -113,6 +114,7 @@ class nginx (
   }
   validate_string($nginx_error_log)
   validate_string($http_access_log)
+  validate_string($sendfile)
   validate_hash($nginx_upstreams)
   validate_hash($nginx_vhosts)
   validate_hash($nginx_locations)
@@ -150,6 +152,7 @@ class nginx (
     nginx_error_log        => $nginx_error_log,
     http_access_log        => $http_access_log,
     gzip                   => $gzip,
+    sendfile               => $sendfile,
     conf_template          => $conf_template,
     proxy_conf_template    => $proxy_conf_template,
     proxy_redirect         => $proxy_redirect,
