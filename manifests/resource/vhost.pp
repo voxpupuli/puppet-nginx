@@ -449,7 +449,7 @@ define nginx::resource::vhost (
     }
 
     #Generate ssl key/cert with provided file-locations
-    $cert = regsubst($name,' ','_')
+    $cert = regsubst($name,' ','_', 'G')
 
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
