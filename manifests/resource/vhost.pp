@@ -162,6 +162,8 @@ define nginx::resource::vhost (
   $location_custom_cfg    = undef,
   $location_cfg_prepend   = undef,
   $location_cfg_append    = undef,
+  $location_custom_cfg_prepend  = undef,
+  $location_custom_cfg_append   = undef,
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
@@ -170,6 +172,7 @@ define nginx::resource::vhost (
   $include_files          = undef,
   $access_log             = undef,
   $error_log              = undef,
+  $format_log             = undef,
   $passenger_cgi_param    = undef,
   $use_default_location   = true,
   $rewrite_rules          = [],
@@ -336,13 +339,20 @@ define nginx::resource::vhost (
     }
   }
 
+
   # This was a lot to add up in parameter list so add it down here
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
-  $access_log_real = $access_log ? {
+  $access_log_tmp = $access_log ? {
     undef   => "${nginx::params::nx_logdir}/${name_sanitized}.access.log",
     default => $access_log,
   }
+
+  $access_log_real = $format_log ? {
+    undef   => $access_log_tmp,
+    default => "${access_log_tmp} $format_log",
+  } 
+
   $error_log_real = $error_log ? {
     undef   => "${nginx::params::nx_logdir}/${name_sanitized}.error.log",
     default => $error_log,
@@ -398,6 +408,16 @@ define nginx::resource::vhost (
   if $location_cfg_append {
     Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_append => $location_cfg_append }
+  }
+
+  if $location_custom_cfg_prepend {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
+      location_custom_cfg_prepend => $location_custom_cfg_prepend }
+  }
+
+  if $location_custom_cfg_append {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
+      location_custom_cfg_append => $location_custom_cfg_append }
   }
 
   if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
