@@ -281,7 +281,10 @@ define nginx::resource::location (
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
-    concat::fragment { "${vhost_sanitized}-${priority}-${location_sanitized}":
+    
+    $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
+
+    concat::fragment { "${tmpFile}":
       ensure  => present,
       target  => $config_file,
       content => $content_real,
@@ -291,8 +294,12 @@ define nginx::resource::location (
 
   ## Only create SSL Specific locations if $ssl is true.
   if ($ssl == true) {
+    
     $ssl_priority = $priority + 300
-    concat::fragment {"${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl":
+
+    $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
+    
+    concat::fragment {"${sslTmpFile}":
       ensure  => present,
       target  => $config_file,
       content => $content_real,
