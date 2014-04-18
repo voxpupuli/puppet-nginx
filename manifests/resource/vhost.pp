@@ -98,14 +98,20 @@
 #   [*vhost_cfg_ssl_prepend*]       - It expects a hash with custom directives to
 #     put before everything else inside vhost ssl
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
-#      rewrite to ssl
+#     rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
 #   [*access_log*]              - Where to write access log. May add additional
-#      options like log format to the end.
+#     options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
-#      options like error level to the end.
+#     options like error level to the end.
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
-#      variables to pass to the backend application
+#     variables to pass to the backend application
+#   [*log_by_lua*]              - Run the Lua source code inlined as the
+#     <lua-script-str> at the log request processing phase.
+#     This does not replace the current access logs, but runs after.
+#   [*log_by_lua_file*]         - Equivalent to log_by_lua, except that the file
+#     specified by <path-to-lua-script-file> contains the Lua code, or, as from
+#     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
 # Actions:
 #
 # Requires:
@@ -183,6 +189,8 @@ define nginx::resource::vhost (
   $error_log              = undef,
   $format_log             = undef,
   $passenger_cgi_param    = undef,
+  $log_by_lua             = undef,
+  $log_by_lua_file        = undef,
   $use_default_location   = true,
   $rewrite_rules          = [],
 ) {
@@ -313,6 +321,12 @@ define nginx::resource::vhost (
   }
   if ($passenger_cgi_param != undef) {
     validate_hash($passenger_cgi_param)
+  }
+  if ($log_by_lua != undef) {
+    validate_string($log_by_lua)
+  }
+  if ($log_by_lua_file != undef) {
+    validate_string($log_by_lua_file)
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)

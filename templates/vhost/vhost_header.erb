@@ -48,6 +48,14 @@ server {
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
+<% if defined? @log_by_lua -%>
+  log_by_lua '<%= @log_by_lua %>';
+<% end -%>
+<% if defined? @log_by_lua_file -%>
+  log_by_lua_file "<%= @log_by_lua_file %>";
+<% end -%>
+
+
 
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
