@@ -29,9 +29,9 @@ class nginx::package::debian(
 
   anchor { 'nginx::apt_repo' : }
 
-  include '::apt'
-
   if $manage_repo {
+    include '::apt'
+
     case $package_source {
       'nginx': {
         apt::source { 'nginx':
