@@ -22,6 +22,9 @@
 <% end -%>
 <% end -%><% end -%>
     alias      <%= @location_alias %>;
+<% if defined? @autoindex -%>
+    autoindex <%= @autoindex %>;
+<% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
 <% Array(subvalue).each do |asubvalue| -%>
