@@ -66,6 +66,7 @@ class nginx (
   $nginx_locations        = {},
   $nginx_mailhosts        = {},
   $manage_repo            = $nginx::params::manage_repo,
+  $fastcgi_cache_path	  = $nginx::params::nx_fastcgi_cache_path,
 ) inherits nginx::params {
 
   include stdlib
@@ -118,6 +119,9 @@ class nginx (
   validate_hash($nginx_locations)
   validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
+  if ($fastcgi_cache_path != false) {	
+	validate_string($fastcgi_cache_path)
+  }
 
   class { 'nginx::package':
     package_name   => $package_name,
@@ -155,6 +159,7 @@ class nginx (
     proxy_redirect         => $proxy_redirect,
     require                => Class['nginx::package'],
     notify                 => Class['nginx::service'],
+    fastcgi_cache_path	   => $fastcgi_cache_path,
   }
 
   class { 'nginx::service':
