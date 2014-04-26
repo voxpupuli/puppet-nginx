@@ -54,6 +54,10 @@ class nginx::params {
   $nx_proxy_cache_inactive    = '20m'
 
   $nx_fastcgi_cache_path      = false
+  $nx_fastcgi_cache_levels    = 1
+  $nx_fastcgi_cache_keys_zone = 'd3:100m'
+  $nx_fastcgi_cache_max_size  = '500m'
+  $nx_fastcgi_cache_inactive  = '20m'
 
   $nx_client_body_temp_path   = "${nx_run_dir}/client_body_temp"
   $nx_client_body_buffer_size = '128k'
