@@ -49,6 +49,8 @@ class nginx (
   $fastcgi_cache_keys_zone = $nginx::params::nx_fastcgi_cache_keys_zone,
   $fastcgi_cache_max_size  = $nginx::params::nx_fastcgi_cache_max_size,
   $fastcgi_cache_inactive  = $nginx::params::nx_fastcgi_cache_inactive,
+  $fastcgi_cache_key	   = $nginx::params::nx_fastcgi_cache_key,
+  $fastcgi_cache_use_stale = $nginx::params::nx_fastcgi_cache_use_stale,
   $configtest_enable       = $nginx::params::nx_configtest_enable,
   $service_restart         = $nginx::params::nx_service_restart,
   $service_ensure          = $nginx::params::nx_service_ensure,
@@ -110,6 +112,12 @@ class nginx (
   validate_string($fastcgi_cache_keys_zone)
   validate_string($fastcgi_cache_max_size)
   validate_string($fastcgi_cache_inactive)
+  if ($fastcgi_cache_key != false) {
+	validate_string($fastcgi_cache_key)
+  }
+  if ($fastcgi_cache_use_stale != false) {
+  	validate_string($fastcgi_cache_use_stale)
+  }
 
   validate_bool($configtest_enable)
   validate_string($service_restart)
@@ -159,6 +167,8 @@ class nginx (
     fastcgi_cache_keys_zone => $fastcgi_cache_keys_zone,
     fastcgi_cache_max_size  => $fastcgi_cache_max_size,
     fastcgi_cache_inactive  => $fastcgi_cache_inactive,
+    fastcgi_cache_key       => $fastcgi_cache_key,
+    fastcgi_cache_use_stale => $fastcgi_cache_use_stale,
     confd_purge             => $confd_purge,
     vhost_purge             => $vhost_purge,
     server_tokens           => $server_tokens,

@@ -31,6 +31,8 @@ class nginx::config(
   $fastcgi_cache_keys_zone = $nginx::params::nx_fastcgi_cache_keys_zone,
   $fastcgi_cache_max_size  = $nginx::params::nx_fastcgi_cache_max_size,
   $fastcgi_cache_inactive  = $nginx::params::nx_fastcgi_cache_inactive,
+  $fastcgi_cache_key  	   = $nginx::params::nx_fastcgi_cache_key,
+  $fastcgi_cache_use_stale = $nginx::params::nx_fastcgi_cache_use_stale,
   $proxy_http_version      = $nginx::params::nx_proxy_http_version,
   $names_hash_bucket_size  = $nginx::params::nx_names_hash_bucket_size,
   $names_hash_max_size     = $nginx::params::nx_names_hash_max_size,
