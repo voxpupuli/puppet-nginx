@@ -34,6 +34,9 @@ server {
 <% if @passenger_cgi_param -%><% @passenger_cgi_param.keys.sort.each do |key| -%>
   passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
 <% end -%><% end -%>
+<% if @resolver.count > 0 -%>
+  resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
+<% end -%>
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
 <% end -%>
