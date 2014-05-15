@@ -78,7 +78,12 @@ class nginx::params {
   }
 
   $nx_pid = $::kernel ? {
-    /(?i-mx:linux)/  => '/var/run/nginx.pid',
+    /(?i-mx:linux)/  => $::osfamily ? {
+        # archlinux has hardcoded pid in service file to /run/nginx.pid, setting
+        # it will prevent nginx from starting
+        /(?i-mx:archlinux)/ => false,
+        default             => '/var/run/nginx.pid',
+    },
     /(?i-mx:sunos)/  => '/var/run/nginx.pid',
   }
 
@@ -93,14 +98,16 @@ class nginx::params {
       default => 'webservd',
     }
     $nx_daemon_user = $::osfamily ? {
+      /(?i-mx:archlinux)/                => 'http',
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
       /(?i-mx:solaris)/                  => $solaris_nx_daemon_user,
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
-    warning("Please upgrade from factor ${::facterversion} to >= 1.7.2")
+    warning("Please upgrade from facter ${::facterversion} to >= 1.7.2")
     $nx_daemon_user = $::operatingsystem ? {
+      /(?i-mx:archlinux)/                                                                    => 'http',
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
       /(?i-mx:solaris)/                                                                      => 'webservd',
