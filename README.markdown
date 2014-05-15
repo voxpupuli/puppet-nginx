@@ -11,7 +11,7 @@ This module manages NGINX configuration.
 ### Requirements
 
 * Puppet-2.7.0 or later
-* Ruby-1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV). 
+* Ruby-1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV).
 
 ### Install and bootstrap an NGINX instance
 
@@ -74,7 +74,7 @@ To create only a HTTPS vhost, set `ssl => true` and also set `listen_port` to th
 Locations require specific settings depending on whether they should be included in the HTTP, HTTPS or both vhosts.
 
 #### HTTP only vhost (default)
-If you only have a HTTP vhost (i.e. `ssl => false` on the vhost) maks sure you don't set `ssl => true` on any location you associate with the vhost.
+If you only have a HTTP vhost (i.e. `ssl => false` on the vhost) make sure you don't set `ssl => true` on any location you associate with the vhost.
 
 #### HTTP and HTTPS vhost
 If you set `ssl => true` and also set `listen_port` and `ssl_port` to different values on the vhost you will need to be specific with the location settings since you will have a HTTP vhost listening on `listen_port` and a HTTPS vhost listening on `ssl_port`:
@@ -202,7 +202,7 @@ define web::nginx_ssl_with_redirect (
   } else {
     $tmp_www_root = $www_root
   }
-   
+
   nginx::resource::vhost { "${name}.${::domain} ${name}":
     ensure                => present,
     listen_port           => 443,
@@ -211,32 +211,32 @@ define web::nginx_ssl_with_redirect (
     location_cfg_append   => $location_cfg_append,
     index_files           => [ 'index.php' ],
     ssl                   => true,
-    ssl_cert              => 'puppet:///modules/sslkey/whildcard_mydomain.crt',
-    ssl_key               => 'puppet:///modules/sslkey/whildcard_mydomain.key',
+    ssl_cert              => 'puppet:///modules/sslkey/wildcard_mydomain.crt',
+    ssl_key               => 'puppet:///modules/sslkey/wildcard_mydomain.key',
   }
-   
-   
+
+
   if $php {
     nginx::resource::location { "${name}_root":
       ensure          => present,
-      ssl             => true,   
-      ssl_only        => true,   
+      ssl             => true,
+      ssl_only        => true,
       vhost           => "${name}.${::domain} ${name}",
-      www_root        => "${full_web_path}/${name}/",  
+      www_root        => "${full_web_path}/${name}/",
       location        => '~ \.php$',
       index_files     => ['index.php', 'index.html', 'index.htm'],
       proxy           => undef,
       fastcgi         => "127.0.0.1:${backend_port}",
       fastcgi_script  => undef,
-      location_cfg_append => { 
+      location_cfg_append => {
         fastcgi_connect_timeout => '3m',
         fastcgi_read_timeout    => '3m',
-        fastcgi_send_timeout    => '3m' 
+        fastcgi_send_timeout    => '3m'
       }
-    }  
-  }    
-}      
-```       
+    }
+  }
+}
+```
 
 # Call class web::nginx_ssl_with_redirect
 

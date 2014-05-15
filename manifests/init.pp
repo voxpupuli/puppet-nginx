@@ -102,8 +102,8 @@ class nginx (
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
   validate_string($proxy_cache_inactive)
-  
-  if ($fastcgi_cache_path != false) {   
+
+  if ($fastcgi_cache_path != false) {
         validate_string($fastcgi_cache_path)
   }
   if (!is_integer($fastcgi_cache_levels)) {
