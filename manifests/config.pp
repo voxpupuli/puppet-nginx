@@ -49,6 +49,7 @@ class nginx::config(
   $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
   $server_tokens                  = $nginx::params::nx_server_tokens,
+  $super_user                     = $nginx::params::nx_super_user,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
   $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
   $vhost_purge                    = $nginx::params::nx_vhost_purge,

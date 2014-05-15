@@ -115,6 +115,9 @@ class nginx::params {
     }
   }
 
+  # Nginx is default launched as root if not change this parameter
+  $nx_super_user = true
+
   # Service restart after Nginx 0.7.53 could also be just
   # "/path/to/nginx/bin -s HUP" Some init scripts do a configtest, some don't.
   # If configtest_enable it's true then service restart will take
