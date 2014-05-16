@@ -47,6 +47,12 @@
 <% @rewrite_rules.each do |rewrite_rule| -%>
     rewrite <%= rewrite_rule %>;
 <% end -%>
+<% if defined? @auth_basic -%>
+    auth_basic           "<%= @auth_basic %>";
+<% end -%>
+<% if defined? @auth_basic_user_file -%>
+    auth_basic_user_file <%= @auth_basic_user_file %>;
+<% end -%>
 <% if @location_cfg_append -%><% @location_cfg_append.sort_by {|k,v| k}.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
 <% Array(subvalue).each do |asubvalue| -%>
