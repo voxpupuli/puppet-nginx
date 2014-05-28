@@ -210,6 +210,7 @@ class nginx (
     proxy_redirect                 => $proxy_redirect,
     proxy_send_timeout             => $proxy_send_timeout,
     proxy_set_header               => $proxy_set_header,
+    sendfile                       => $sendfile,
     server_tokens                  => $server_tokens,
     super_user                     => $super_user,
     vhost_purge                    => $vhost_purge,
