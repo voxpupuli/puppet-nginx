@@ -45,8 +45,9 @@ class nginx::package(
     }
     'suse': {
       class { 'nginx::package::suse':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
+        package_name => $package_name,
+        require      => Anchor['nginx::package::begin'],
+        before       => Anchor['nginx::package::end'],
       }
     }
     'archlinux': {
