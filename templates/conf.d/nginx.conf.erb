@@ -6,9 +6,13 @@ error_log  <%= @nginx_error_log %>;
 <% if scope.lookupvar('nginx::params::nx_pid') != false %>pid        <%= scope.lookupvar('nginx::params::nx_pid')%>;<% end -%>
 
 events {
-  worker_connections <%= @worker_connections -%>;
-<% if scope.lookupvar('nginx::params::nx_multi_accept') == 'on' %>multi_accept on;<% end -%>
-<% if scope.lookupvar('nginx::params::nx_events_use') %>use <%= scope.lookupvar('nginx::params::nx_events_use')%>;<% end -%>
+    worker_connections <%= @worker_connections -%>;
+  <% if @multi_accept == 'on' -%>
+    multi_accept on;
+  <% end -%>
+  <% if @events_use -%>
+    use <%= @events_use %>;
+  <% end -%>
 }
 
 http {
