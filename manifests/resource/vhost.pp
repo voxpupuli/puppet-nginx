@@ -137,6 +137,7 @@ define nginx::resource::vhost (
   $ipv6_listen_options    = 'default ipv6only=on',
   $add_header             = undef,
   $ssl                    = false,
+  $ssl_listen_option      = true,
   $ssl_cert               = undef,
   $ssl_dhparam            = undef,
   $ssl_key                = undef,
@@ -219,6 +220,7 @@ define nginx::resource::vhost (
   if ($ssl_cert != undef) {
     validate_string($ssl_cert)
   }
+  validate_bool($ssl_listen_option)
   if ($ssl_dhparam != undef) {
     validate_string($ssl_dhparam)
   }
