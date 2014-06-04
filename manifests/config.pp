@@ -18,6 +18,7 @@ class nginx::config(
   $client_max_body_size           = $nginx::params::nx_client_max_body_size,
   $confd_purge                    = $nginx::params::nx_confd_purge,
   $conf_template                  = $nginx::params::nx_conf_template,
+  $daemon_user                    = $nginx::params::nx_daemon_user,
   $events_use                     = $nginx::params::nx_events_use,
   $fastcgi_cache_inactive         = $nginx::params::nx_fastcgi_cache_inactive,
   $fastcgi_cache_key              = $nginx::params::nx_fastcgi_cache_key,
@@ -102,12 +103,12 @@ class nginx::config(
 
   file {$nginx::config::nx_client_body_temp_path:
     ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    owner  => $daemon_user,
   }
 
   file {$nginx::config::nx_proxy_temp_path:
     ensure => directory,
-    owner  => $nginx::params::nx_daemon_user,
+    owner  => $daemon_user,
   }
 
   file { "${nginx::params::nx_conf_dir}/sites-available":
