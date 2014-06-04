@@ -32,6 +32,8 @@ class nginx (
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
+  $multi_accept                   = $nginx::params::nx_multi_accept,
+  $events_use                     = $nginx::params::nx_events_use,
   $package_name                   = $nginx::params::package_name,
   $package_ensure                 = $nginx::params::package_ensure,
   $package_source                 = $nginx::params::package_source,
@@ -87,6 +89,8 @@ class nginx (
   if (!is_integer($worker_rlimit_nofile)) {
     fail('$worker_rlimit_nofile must be an integer.')
   }
+  validate_string($events_use)
+  validate_string($multi_accept)
   validate_string($package_name)
   validate_string($package_ensure)
   validate_string($package_source)
@@ -157,6 +161,8 @@ class nginx (
     worker_processes               => $worker_processes,
     worker_connections             => $worker_connections,
     worker_rlimit_nofile           => $worker_rlimit_nofile,
+    multi_accept                   => $multi_accept,
+    events_use                     => $events_use,
     proxy_set_header               => $proxy_set_header,
     proxy_http_version             => $proxy_http_version,
     proxy_cache_path               => $proxy_cache_path,
