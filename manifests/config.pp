@@ -14,6 +14,7 @@
 #
 # This class file is not called directly
 class nginx::config(
+  $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
   $client_max_body_size           = $nginx::params::nx_client_max_body_size,
   $confd_purge                    = $nginx::params::nx_confd_purge,
   $conf_template                  = $nginx::params::nx_conf_template,
@@ -40,9 +41,12 @@ class nginx::config(
   $proxy_cache_max_size           = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_path               = $nginx::params::nx_proxy_cache_path,
   $proxy_conf_template            = $nginx::params::nx_proxy_conf_template,
+  $proxy_connect_timeout          = $nginx::params::nx_proxy_connect_timeout,
   $proxy_headers_hash_bucket_size = $nginx::params::nx_proxy_headers_hash_bucket_size,
   $proxy_http_version             = $nginx::params::nx_proxy_http_version,
+  $proxy_read_timeout             = $nginx::params::nx_proxy_read_timeout,
   $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
+  $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
   $server_tokens                  = $nginx::params::nx_server_tokens,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,

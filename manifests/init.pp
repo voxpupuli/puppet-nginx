@@ -29,6 +29,7 @@
 #   include nginx
 # }
 class nginx (
+  $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
   $client_max_body_size           = $nginx::params::nx_client_max_body_size,
   $confd_purge                    = $nginx::params::nx_confd_purge,
   $configtest_enable              = $nginx::params::nx_configtest_enable,
@@ -65,9 +66,12 @@ class nginx (
   $proxy_cache_max_size           = $nginx::params::nx_proxy_cache_max_size,
   $proxy_cache_path               = $nginx::params::nx_proxy_cache_path,
   $proxy_conf_template            = $nginx::params::nx_proxy_conf_template,
+  $proxy_connect_timeout          = $nginx::params::nx_proxy_connect_timeout,
   $proxy_headers_hash_bucket_size = $nginx::params::nx_proxy_headers_hash_bucket_size,
   $proxy_http_version             = $nginx::params::nx_proxy_http_version,
+  $proxy_read_timeout             = $nginx::params::nx_proxy_read_timeout,
   $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
+  $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
   $server_tokens                  = $nginx::params::nx_server_tokens,
   $service_ensure                 = $nginx::params::nx_service_ensure,
@@ -158,6 +162,7 @@ class nginx (
   }
 
   class { 'nginx::config':
+    client_body_buffer_size        => $client_body_buffer_size,
     client_max_body_size           => $client_max_body_size,
     confd_purge                    => $confd_purge,
     conf_template                  => $conf_template,
@@ -184,9 +189,12 @@ class nginx (
     proxy_cache_max_size           => $proxy_cache_max_size,
     proxy_cache_path               => $proxy_cache_path,
     proxy_conf_template            => $proxy_conf_template,
+    proxy_connect_timeout          => $proxy_connect_timeout,
     proxy_headers_hash_bucket_size => $proxy_headers_hash_bucket_size,
     proxy_http_version             => $proxy_http_version,
+    proxy_read_timeout             => $proxy_read_timeout,
     proxy_redirect                 => $proxy_redirect,
+    proxy_send_timeout             => $proxy_send_timeout,
     proxy_set_header               => $proxy_set_header,
     server_tokens                  => $server_tokens,
     vhost_purge                    => $vhost_purge,
