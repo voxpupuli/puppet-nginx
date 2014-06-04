@@ -112,7 +112,7 @@ define nginx::resource::location (
     'index.php'],
   $proxy                = undef,
   $proxy_redirect       = $nginx::params::nx_proxy_redirect,
-  $proxy_read_timeout   = $nginx::params::nx_proxy_read_timeout,
+  $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $nginx::params::nx_proxy_connect_timeout,
   $proxy_set_header     = $nginx::params::nx_proxy_set_header,
   $fastcgi              = undef,
