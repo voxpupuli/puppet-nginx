@@ -155,6 +155,7 @@ class nginx (
   validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
   validate_string($proxy_headers_hash_bucket_size)
+  validate_bool($super_user)
 
   class { 'nginx::package':
     package_name   => $package_name,
