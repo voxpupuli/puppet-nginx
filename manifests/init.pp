@@ -118,10 +118,10 @@ class nginx (
   validate_string($fastcgi_cache_max_size)
   validate_string($fastcgi_cache_inactive)
   if ($fastcgi_cache_key != false) {
-	validate_string($fastcgi_cache_key)
+    validate_string($fastcgi_cache_key)
   }
   if ($fastcgi_cache_use_stale != false) {
-  	validate_string($fastcgi_cache_use_stale)
+    validate_string($fastcgi_cache_use_stale)
   }
 
   validate_bool($configtest_enable)
