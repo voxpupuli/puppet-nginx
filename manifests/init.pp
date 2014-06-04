@@ -89,7 +89,9 @@ class nginx (
   if (!is_integer($worker_rlimit_nofile)) {
     fail('$worker_rlimit_nofile must be an integer.')
   }
-  validate_string($events_use)
+  if (!is_string($events_use)) and ($events_use != false) {
+    fail('$events_use must be a string or false.')
+  }
   validate_string($multi_accept)
   validate_string($package_name)
   validate_string($package_ensure)
