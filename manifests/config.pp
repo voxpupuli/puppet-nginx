@@ -19,7 +19,7 @@ class nginx::config(
   $conf_template                  = $nginx::params::nx_conf_template,
   $events_use                     = $nginx::params::nx_events_use,
   $fastcgi_cache_inactive         = $nginx::params::nx_fastcgi_cache_inactive,
-  $fastcgi_cache_key  	          = $nginx::params::nx_fastcgi_cache_key,
+  $fastcgi_cache_key              = $nginx::params::nx_fastcgi_cache_key,
   $fastcgi_cache_keys_zone        = $nginx::params::nx_fastcgi_cache_keys_zone,
   $fastcgi_cache_levels           = $nginx::params::nx_fastcgi_cache_levels,
   $fastcgi_cache_max_size         = $nginx::params::nx_fastcgi_cache_max_size,
