@@ -21,7 +21,7 @@
 #
 #   @@nginx::resource::upstream::member { $::fqdn:
 #     upstream  => 'proxypass',
-#     server    => $::ipaddress
+#     server    => $::ipaddress,
 #     port      => '3000',
 #   }
 #
@@ -32,7 +32,6 @@
 #     ensure    => present,
 #   }
 #
-
 define nginx::resource::upstream::member (
   $upstream,
   $server,
