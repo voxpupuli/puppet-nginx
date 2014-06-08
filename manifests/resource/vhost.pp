@@ -282,6 +282,11 @@ define nginx::resource::vhost (
   if ($www_root != undef) {
     validate_string($www_root)
   }
+  if $proxy {
+    if (!$proxy_redirect_fromhost) or (!$proxy_redirect_tohost) {
+      fail("You must provide both \$proxy_redirect_fromhost and \$proxy_redirect_tohost")
+    }
+  }
   if ($proxy_redirect_fromhost != undef ) {
     validate_string( $proxy_redirect_fromhost )
   }
