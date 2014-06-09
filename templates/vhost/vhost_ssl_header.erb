@@ -48,8 +48,8 @@ server {
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
-  access_log            <%= @ssl_access_log %>;
-  error_log             <%= @ssl_error_log %>;
+  access_log            <%= @ssl_access_log_real %>;
+  error_log             <%= @ssl_error_log_real %>;
   
 <% if @vhost_cfg_prepend -%><% @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>

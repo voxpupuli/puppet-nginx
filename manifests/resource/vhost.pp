@@ -478,11 +478,21 @@ define nginx::resource::vhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
     # Access and error logs are named differently in ssl template
-    $ssl_access_log = $access_log ? {
+
+    # This was a lot to add up in parameter list so add it down here
+    # Also opted to add more logic here and keep template cleaner which
+    # unfortunately means resorting to the $varname_real thing
+    $ssl_access_log_tmp = $access_log ? {
       undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.access.log",
       default => $access_log,
     }
-    $ssl_error_log = $error_log ? {
+
+    $ssl_access_log_real = $format_log ? {
+      undef   => $ssl_access_log_tmp,
+      default => "${ssl_access_log_tmp} ${format_log}",
+    }
+
+    $ssl_error_log_real = $error_log ? {
       undef   => "${nginx::params::nx_logdir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
