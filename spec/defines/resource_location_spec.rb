@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'digest/md5'
 
 describe 'nginx::resource::location' do
   let :title do
@@ -27,7 +28,7 @@ describe 'nginx::resource::location' do
 
       it { should contain_class("nginx::params") }
       it { should contain_class("nginx::config") }
-      it { should contain_concat__fragment("vhost1-500-rspec-test").with_content(/location rspec-test/) }
+      it { should contain_concat__fragment("f25e14942fb58942ee13b1465a4e1719").with_content(/location rspec-test/) }
       it { should_not contain_file('/etc/nginx/fastcgi_params') }
       it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
       it { should_not contain_file("/etc/nginx/rspec-test_htpasswd") }
@@ -134,12 +135,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
@@ -154,7 +155,7 @@ describe 'nginx::resource::location' do
           :proxy_cache_valid => '10m',
         } end
 
-        it { should contain_concat__fragment("vhost1-500-location").with_content(/proxy_cache_valid   10m;/) }
+        it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-location")).with_content(/proxy_cache_valid   10m;/) }
       end
     end
 
@@ -209,12 +210,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :location_alias => 'location_alias_value', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
@@ -266,12 +267,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :stub_status => true, :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
@@ -359,12 +360,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :fastcgi => 'localhost:9000', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(/#{item}/)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(/#{item}/)
             end
           end
         end
@@ -478,12 +479,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :www_root => '/var/www/root', :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
@@ -519,12 +520,12 @@ describe 'nginx::resource::location' do
           let :default_params do { :location => 'location', :location_custom_cfg => {'test1'=>'value1'}, :vhost => 'vhost1' } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("vhost1-500-#{params[:location]}") }
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "vhost1-500-#{params[:location]}").send(:parameters)[:content].split("\n")
+            lines = subject.resource('concat::fragment', Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).send(:parameters)[:content].split("\n")
             (lines & Array(param[:match])).should == Array(param[:match])
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("vhost1-500-#{params[:location]}").without_content(item)
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
@@ -540,25 +541,25 @@ describe 'nginx::resource::location' do
 
       context 'when ssl_only => true' do
         let :params do { :ssl_only => true, :vhost => 'vhost1', :www_root => '/', } end
-        it { should_not contain_concat__fragment("vhost1-500-rspec-test") }
+        it { should_not contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-rspec-test")) }
       end
 
       context 'when ssl_only => false' do
         let :params do { :ssl_only => false, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should contain_concat__fragment("vhost1-500-rspec-test") }
+        it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-rspec-test")) }
       end
 
       context 'when ssl => true' do
         let :params do { :ssl => true, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should contain_concat__fragment("vhost1-800-rspec-test-ssl") }
+        it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-800-rspec-test-ssl")) }
       end
 
       context 'when ssl => false' do
         let :params do { :ssl => false, :vhost => 'vhost1', :www_root => '/', } end
 
-        it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
+        it { should_not contain_concat__fragment(Digest::MD5.hexdigest("vhost1-800-rspec-test-ssl")) }
       end
 
       context 'when auth_basic_user_file => true' do
@@ -613,8 +614,8 @@ describe 'nginx::resource::location' do
           :ssl => true,
         } end
 
-        it { should contain_concat__fragment("www_rspec-vhost_com-500-www.rspec-location.com").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
-        it { should contain_concat__fragment("www_rspec-vhost_com-800-www.rspec-location.com-ssl").with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { should contain_concat__fragment(Digest::MD5.hexdigest("www_rspec-vhost_com-500-www.rspec-location.com")).with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { should contain_concat__fragment(Digest::MD5.hexdigest("www_rspec-vhost_com-800-www.rspec-location.com-ssl")).with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
       end
     end
   end
