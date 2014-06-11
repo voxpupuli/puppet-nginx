@@ -34,6 +34,7 @@ class nginx (
   $confd_purge                    = $nginx::params::nx_confd_purge,
   $configtest_enable              = $nginx::params::nx_configtest_enable,
   $conf_template                  = $nginx::params::nx_conf_template,
+  $daemon_user                    = $nginx::params::nx_daemon_user,
   $events_use                     = $nginx::params::nx_events_use,
   $fastcgi_cache_inactive         = $nginx::params::nx_fastcgi_cache_inactive,
   $fastcgi_cache_key              = $nginx::params::nx_fastcgi_cache_key,
@@ -76,6 +77,7 @@ class nginx (
   $server_tokens                  = $nginx::params::nx_server_tokens,
   $service_ensure                 = $nginx::params::nx_service_ensure,
   $service_restart                = $nginx::params::nx_service_restart,
+  $super_user                     = $nginx::params::nx_super_user,
   $vhost_purge                    = $nginx::params::nx_vhost_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
@@ -154,6 +156,7 @@ class nginx (
   validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
   validate_string($proxy_headers_hash_bucket_size)
+  validate_bool($super_user)
 
   class { 'nginx::package':
     package_name   => $package_name,
@@ -168,6 +171,7 @@ class nginx (
     client_max_body_size           => $client_max_body_size,
     confd_purge                    => $confd_purge,
     conf_template                  => $conf_template,
+    daemon_user                    => $daemon_user,
     events_use                     => $events_use,
     fastcgi_cache_inactive         => $fastcgi_cache_inactive,
     fastcgi_cache_key              => $fastcgi_cache_key,
@@ -199,6 +203,7 @@ class nginx (
     proxy_send_timeout             => $proxy_send_timeout,
     proxy_set_header               => $proxy_set_header,
     server_tokens                  => $server_tokens,
+    super_user                     => $super_user,
     vhost_purge                    => $vhost_purge,
     worker_connections             => $worker_connections,
     worker_processes               => $worker_processes,
