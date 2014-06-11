@@ -10,6 +10,3 @@ upstream <%= @name %> {
 <% end -%>
 <% end -%>
 <% end -%><% end -%>
-  <% @members.each do |i| %>
-  server     <%= i %>  fail_timeout=<%= @upstream_fail_timeout %>;<% end %>
-}
