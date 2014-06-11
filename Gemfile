@@ -7,7 +7,7 @@ group :rake do
   gem 'puppet-lint',  '>=0.1.12'
   gem 'puppetlabs_spec_helper'
   gem 'puppet-blacksmith'
-  gem 'librarian-puppet-maestrodev'
+  gem 'librarian-puppet'
   gem 'rspec-system-puppet',     :require => false
   gem 'rspec-system-serverspec', :require => false
 end

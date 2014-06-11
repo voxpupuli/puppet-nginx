@@ -231,12 +231,6 @@ describe 'nginx::config' do
     describe "proxy.conf template content" do
       [
         {
-          :title => 'should set client_max_body_size',
-          :attr  => 'client_max_body_size',
-          :value => '5m',
-          :match => 'client_max_body_size      5m;',
-        },
-        {
           :title => 'should set proxy_buffers',
           :attr  => 'proxy_buffers',
           :value => '50 5k',
