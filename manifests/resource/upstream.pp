@@ -4,7 +4,6 @@
 #
 # Parameters:
 #   [*members*]               - Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
-#                               If omitted, individual members should be defined with nginx::resource::upstream::member
 #   [*ensure*]                - Enables or disables the specified location (present|absent)
 #   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
 #   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
@@ -39,58 +38,31 @@
 #    upstream_cfg_prepend => $my_config,
 #  }
 define nginx::resource::upstream (
-  $members = undef,
+  $members,
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
   $upstream_fail_timeout = '10s',
 ) {
 
-  if $members != undef {
-    validate_array($members)
-  }
+  validate_array($members)
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
   if ($upstream_cfg_prepend != undef) {
     validate_hash($upstream_cfg_prepend)
   }
 
-  Concat {
+  File {
     owner => 'root',
     group => 'root',
     mode  => '0644',
   }
 
-  concat { "/etc/nginx/conf.d/${name}-upstream.conf":
+  file { "/etc/nginx/conf.d/${name}-upstream.conf":
     ensure  => $ensure ? {
       'absent' => absent,
-      'file'   => present,
-      default  => present,
+      default  => 'file',
     },
+    content => template('nginx/conf.d/upstream.erb'),
     notify  => Class['nginx::service'],
-  }
-
-  # Uses: $name, $upstream_cfg_prepend
-  concat::fragment { "${name}_upstream_header":
-    target  => "/etc/nginx/conf.d/${name}-upstream.conf",
-    order   => 10,
-    content => template('nginx/conf.d/upstream_header.erb'),
-  }
-
-  if $members != undef {
-    # Uses: $members, $upstream_fail_timeout
-    concat::fragment { "${name}_upstream_members":
-      target  => "/etc/nginx/conf.d/${name}-upstream.conf",
-      order   => 50,
-      content => template('nginx/conf.d/upstream_members.erb'),
-    }
-  } else {
-    # Collect exported members:
-    Nginx::Resource::Upstream::Member <<| upstream == $name |>>
-  }
-
-  concat::fragment { "${name}_upstream_footer":
-    target  => "/etc/nginx/conf.d/${name}-upstream.conf",
-    order   => 90,
-    content => "}\n",
   }
 }
