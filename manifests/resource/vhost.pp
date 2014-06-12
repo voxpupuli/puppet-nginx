@@ -194,6 +194,8 @@ define nginx::resource::vhost (
   $log_by_lua_file        = undef,
   $use_default_location   = true,
   $rewrite_rules          = [],
+  $string_mappings        = {},
+  $geo_mappings           = {},
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -332,6 +334,8 @@ define nginx::resource::vhost (
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)
+  validate_hash($string_mappings)
+  validate_hash($geo_mappings)
 
   # Variables
   $vhost_dir = "${nginx::config::nx_conf_dir}/sites-available"
@@ -555,4 +559,7 @@ define nginx::resource::vhost (
     require => Concat[$config_file],
     notify  => Service['nginx'],
   }
+
+  create_resources('nginx::resource::map', $string_mappings)
+  create_resources('nginx::resource::geo', $geo_mappings)
 }
