@@ -17,6 +17,19 @@ describe 'nginx::resource::geo' do
     }
   end
 
+  let :facts do
+    {
+      :osfamily        => 'RedHat',
+      :operatingsystem => 'CentOS',
+    }
+  end
+
+  let :pre_condition do
+    [
+      'include ::nginx::params',
+    ]
+  end
+
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let :params do default_params end
