@@ -57,7 +57,7 @@ define nginx::resource::upstream (
     mode  => '0644',
   }
 
-  file { "/etc/nginx/conf.d/${name}-upstream.conf":
+  file { "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',

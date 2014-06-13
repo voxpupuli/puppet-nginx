@@ -161,7 +161,7 @@ define nginx::resource::vhost (
   $proxy_set_body         = undef,
   $resolver               = [],
   $fastcgi                = undef,
-  $fastcgi_params         = '/etc/nginx/fastcgi_params',
+  $fastcgi_params         = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script         = undef,
   $index_files            = [
     'index.html',
@@ -450,8 +450,8 @@ define nginx::resource::vhost (
       location_custom_cfg_append => $location_custom_cfg_append }
   }
 
-  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
-    file { '/etc/nginx/fastcgi_params':
+  if $fastcgi != undef and !defined(File[$fastcgi_params]) {
+    file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
