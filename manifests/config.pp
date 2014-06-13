@@ -17,6 +17,7 @@ class nginx::config(
   $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
   $client_max_body_size           = $nginx::params::nx_client_max_body_size,
   $confd_purge                    = $nginx::params::nx_confd_purge,
+  $conf_dir                       = $nginx::params::nx_conf_dir,
   $conf_template                  = $nginx::params::nx_conf_template,
   $daemon_user                    = $nginx::params::nx_daemon_user,
   $events_use                     = $nginx::params::nx_events_use,
@@ -65,35 +66,35 @@ class nginx::config(
     mode  => '0644',
   }
 
-  file { $nginx::params::nx_conf_dir:
+  file { $conf_dir:
     ensure => directory,
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d":
+  file { "${conf_dir}/conf.d":
     ensure => directory,
   }
   if $confd_purge == true {
-    File["${nginx::params::nx_conf_dir}/conf.d"] {
+    File["${conf_dir}/conf.d"] {
       purge   => true,
       recurse => true,
     }
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.mail.d":
+  file { "${conf_dir}/conf.mail.d":
     ensure => directory,
   }
   if $confd_purge == true {
-    File["${nginx::params::nx_conf_dir}/conf.mail.d"] {
+    File["${conf_dir}/conf.mail.d"] {
       purge   => true,
       recurse => true,
     }
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/vhost_autogen.conf":
+  file { "${conf_dir}/conf.d/vhost_autogen.conf":
     ensure => absent,
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.mail.d/vhost_autogen.conf":
+  file { "${conf_dir}/conf.mail.d/vhost_autogen.conf":
     ensure => absent,
   }
 
@@ -111,47 +112,47 @@ class nginx::config(
     owner  => $daemon_user,
   }
 
-  file { "${nginx::params::nx_conf_dir}/sites-available":
+  file { "${conf_dir}/sites-available":
     ensure => directory,
   }
 
   if $vhost_purge == true {
-    File["${nginx::params::nx_conf_dir}/sites-available"] {
+    File["${conf_dir}/sites-available"] {
       purge   => true,
       recurse => true,
     }
   }
 
-  file { "${nginx::params::nx_conf_dir}/sites-enabled":
+  file { "${conf_dir}/sites-enabled":
     ensure => directory,
   }
 
   if $vhost_purge == true {
-    File["${nginx::params::nx_conf_dir}/sites-enabled"] {
+    File["${conf_dir}/sites-enabled"] {
       purge   => true,
       recurse => true,
     }
   }
 
-  file { '/etc/nginx/sites-enabled/default':
+  file { "${conf_dir}/sites-enabled/default":
     ensure => absent,
   }
 
-  file { "${nginx::params::nx_conf_dir}/nginx.conf":
+  file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/proxy.conf":
+  file { "${conf_dir}/conf.d/proxy.conf":
     ensure  => file,
     content => template($proxy_conf_template),
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
+  file { "${conf_dir}/conf.d/default.conf":
     ensure => absent,
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/example_ssl.conf":
+  file { "${conf_dir}/conf.d/example_ssl.conf":
     ensure => absent,
   }
 

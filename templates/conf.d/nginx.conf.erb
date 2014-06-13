@@ -18,7 +18,7 @@ events {
 }
 
 http {
-  include       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/mime.types;
+  include       <%= @conf_dir %>/mime.types;
   default_type  application/octet-stream;
 
   access_log  <%= @http_access_log %>;
@@ -60,12 +60,12 @@ http {
 <% end -%>
 <% end -%>
 
-  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.d/*.conf;
-  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/sites-enabled/*;
+  include <%= @conf_dir %>/conf.d/*.conf;
+  include <%= @conf_dir %>/sites-enabled/*;
 
 }
 <% if scope.lookupvar('nginx::mail') %>
 mail {
-  include <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/conf.mail.d/*.conf;
+  include <%= @conf_dir %>/conf.mail.d/*.conf;
 }
 <% end -%>

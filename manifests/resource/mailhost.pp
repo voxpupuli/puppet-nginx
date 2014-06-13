@@ -101,7 +101,7 @@ define nginx::resource::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_file = "${nginx::config::nx_conf_dir}/conf.mail.d/${name}.conf"
+  $config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
