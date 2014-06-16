@@ -63,7 +63,7 @@ define nginx::resource::map (
     mode  => '0644',
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/${name}-map.conf":
+  file { "${nginx::config::conf_dir}/conf.d/${name}-map.conf":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',
