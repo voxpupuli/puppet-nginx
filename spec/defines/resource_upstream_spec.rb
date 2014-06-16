@@ -10,6 +10,18 @@ describe 'nginx::resource::upstream' do
       :members => ['test'],
     }
   end
+  let :facts do
+      {
+          :osfamily        => 'Debian',
+          :operatingsystem => 'debian',
+      }
+  end
+  let :pre_condition do
+      [
+      'include ::nginx::params',
+      'include ::nginx::config',
+      ]
+  end
 
   describe 'os-independent items' do
 

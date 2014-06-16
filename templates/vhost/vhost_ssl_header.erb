@@ -7,10 +7,10 @@ server {
 
   ssl on;
 
-  ssl_certificate           <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
-  ssl_certificate_key       <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
+  ssl_certificate           <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
+  ssl_certificate_key       <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
 <% if defined? @ssl_dhparam -%>
-  ssl_dhparam               <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.dh.pem;
+  ssl_dhparam               <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.dh.pem;
 <% end -%>
   ssl_session_cache         <%= @ssl_cache %>;
   ssl_session_timeout       5m;
@@ -21,7 +21,7 @@ server {
   ssl_stapling              on;
 <% end -%>
 <% if defined? @ssl_stapling_file -%>
-  ssl_stapling_file         <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
+  ssl_stapling_file         <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
 <% end -%>
 <% if defined? @ssl_stapling_responder -%>
   ssl_stapling_responder    <%= @ssl_stapling_responder %>;
@@ -30,7 +30,7 @@ server {
   ssl_stapling_verify       on;
 <% end -%>
 <% if defined? @ssl_trusted_cert -%>
-  ssl_trusted_certificate   <%= scope.lookupvar('nginx::params::nx_conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
+  ssl_trusted_certificate   <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
 <% end -%>
 <% if @resolver.count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
