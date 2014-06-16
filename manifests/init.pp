@@ -83,6 +83,8 @@ class nginx (
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
+  $geo_mappings                   = {},
+  $string_mappings                = {},
 ) inherits nginx::params {
 
   include stdlib
@@ -159,6 +161,9 @@ class nginx (
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
 
+  validate_hash($string_mappings)
+  validate_hash($geo_mappings)
+
   class { 'nginx::package':
     package_name   => $package_name,
     package_source => $package_source,
@@ -221,6 +226,8 @@ class nginx (
   create_resources('nginx::resource::vhost', $nginx_vhosts)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
+  create_resources('nginx::resource::map', $string_mappings)
+  create_resources('nginx::resource::geo', $geo_mappings)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
