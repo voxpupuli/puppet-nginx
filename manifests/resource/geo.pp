@@ -79,7 +79,7 @@ define nginx::resource::geo (
     mode  => '0644',
   }
 
-  file { "${nginx::params::nx_conf_dir}/conf.d/${name}-geo.conf":
+  file { "${nginx::config::conf_dir}/conf.d/${name}-geo.conf":
     ensure  => $ensure ? {
       'absent' => absent,
       default  => 'file',
