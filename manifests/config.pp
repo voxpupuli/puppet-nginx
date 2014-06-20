@@ -50,6 +50,7 @@ class nginx::config(
   $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
   $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
+  $sendfile                       = $nginx::params::nx_sendfile,
   $server_tokens                  = $nginx::params::nx_server_tokens,
   $super_user                     = $nginx::params::nx_super_user,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
