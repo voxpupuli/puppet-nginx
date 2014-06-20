@@ -87,24 +87,7 @@ describe 'nginx::package' do
   shared_examples 'suse' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Suse'}}
     [
-      'nginx-0.8',
-      'apache2',
-      'apache2-itk',
-      'apache2-utils',
-      'gd',
-      'libapr1',
-      'libapr-util1',
-      'libjpeg62',
-      'libpng14-14',
-      'libxslt',
-      'rubygem-daemon_controller',
-      'rubygem-fastthread',
-      'rubygem-file-tail',
-      'rubygem-passenger',
-      'rubygem-passenger-nginx',
-      'rubygem-rack',
-      'rubygem-rake',
-      'rubygem-spruz',
+      'nginx',
     ].each do |package|
       it { should contain_package("#{package}") }
     end
