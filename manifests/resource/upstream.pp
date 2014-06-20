@@ -39,9 +39,9 @@
 #    upstream_cfg_prepend => $my_config,
 #  }
 define nginx::resource::upstream (
-  $members = undef,
-  $ensure = 'present',
-  $upstream_cfg_prepend = undef,
+  $members               = undef,
+  $ensure                = 'present',
+  $upstream_cfg_prepend  = undef,
   $upstream_fail_timeout = '10s',
 ) {
 
@@ -60,7 +60,7 @@ define nginx::resource::upstream (
     mode  => '0644',
   }
 
-  concat { "/etc/nginx/conf.d/${name}-upstream.conf":
+  concat { "${nginx::params::nx_conf_dir}/conf.d/${name}-upstream.conf":
     ensure  => $ensure ? {
       'absent' => absent,
       'file'   => present,
@@ -71,7 +71,7 @@ define nginx::resource::upstream (
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
-    target  => "/etc/nginx/conf.d/${name}-upstream.conf",
+    target  => "${nginx::params::nx_conf_dir}/conf.d/${name}-upstream.conf",
     order   => 10,
     content => template('nginx/conf.d/upstream_header.erb'),
   }
@@ -79,7 +79,7 @@ define nginx::resource::upstream (
   if $members != undef {
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
-      target  => "/etc/nginx/conf.d/${name}-upstream.conf",
+      target  => "${nginx::params::nx_conf_dir}/conf.d/${name}-upstream.conf",
       order   => 50,
       content => template('nginx/conf.d/upstream_members.erb'),
     }
@@ -89,7 +89,7 @@ define nginx::resource::upstream (
   }
 
   concat::fragment { "${name}_upstream_footer":
-    target  => "/etc/nginx/conf.d/${name}-upstream.conf",
+    target  => "${nginx::params::nx_conf_dir}/conf.d/${name}-upstream.conf",
     order   => 90,
     content => "}\n",
   }

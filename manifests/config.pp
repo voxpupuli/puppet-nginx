@@ -133,7 +133,7 @@ class nginx::config(
     }
   }
 
-  file { '/etc/nginx/sites-enabled/default':
+  file { "${nginx::params::nx_conf_dir}/sites-enabled/default":
     ensure => absent,
   }
 

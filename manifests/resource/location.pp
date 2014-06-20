@@ -116,7 +116,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
   $fastcgi              = undef,
-  $fastcgi_params       = '/etc/nginx/fastcgi_params',
+  $fastcgi_params       = "${nginx::params::nx_conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
   $ssl                  = false,
@@ -271,12 +271,12 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
 
-  if $fastcgi != undef and !defined(File['/etc/nginx/fastcgi_params']) {
-    file { '/etc/nginx/fastcgi_params':
+  if ($fastcgi != undef) {
+    ensure_resource('file', "${nginx::params::nx_conf_dir}/fastcgi_params", {
       ensure  => present,
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
-    }
+    })
   }
 
   ## Create stubs for vHost File Fragment Pattern
