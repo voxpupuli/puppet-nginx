@@ -257,6 +257,18 @@ describe 'nginx::config' do
             'proxy_set_header        header2;',
           ],
         },
+        {
+            :title    => 'should set client_body_temp_path',
+            :attr     => 'client_body_temp_path',
+            :value    => '/path/to/body_temp',
+            :match => 'client_body_temp_path   /path/to/body_temp;',
+        },
+        {
+            :title    => 'should set proxy_temp_path',
+            :attr     => 'proxy_temp_path',
+            :value    => '/path/to/proxy_temp',
+            :match => 'proxy_temp_path         /path/to/proxy_temp;',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do { param[:attr].to_sym => param[:value] } end
