@@ -34,6 +34,7 @@
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
+#   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
 #   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
@@ -152,6 +153,7 @@ define nginx::resource::vhost (
   $ssl_trusted_cert       = undef,
   $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
+  $proxy_redirect         = undef,
   $proxy_read_timeout     = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout  = $nginx::config::proxy_connect_timeout,
   $proxy_set_header       = [],
@@ -251,6 +253,7 @@ define nginx::resource::vhost (
     validate_string($proxy)
   }
   validate_string($proxy_read_timeout)
+  validate_string($proxy_redirect)
   validate_array($proxy_set_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
@@ -411,6 +414,7 @@ define nginx::resource::vhost (
       location_allow        => $location_allow,
       location_deny         => $location_deny,
       proxy                 => $proxy,
+      proxy_redirect        => $proxy_redirect,
       proxy_read_timeout    => $proxy_read_timeout,
       proxy_connect_timeout => $proxy_connect_timeout,
       proxy_cache           => $proxy_cache,
