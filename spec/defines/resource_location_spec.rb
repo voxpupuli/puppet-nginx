@@ -43,6 +43,18 @@ describe 'nginx::resource::location' do
           :match => '  location my_location {',
         },
         {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
+        },
+        {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
@@ -168,6 +180,18 @@ describe 'nginx::resource::location' do
           :match => '  location my_location {',
         },
         {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
+        },
+        {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
@@ -231,6 +255,18 @@ describe 'nginx::resource::location' do
           :match => '  location my_location {',
         },
         {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
+        },
+        {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3',
@@ -286,6 +322,18 @@ describe 'nginx::resource::location' do
           :attr  => 'location',
           :value => 'my_location',
           :match => '  location my_location {',
+        },
+        {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
         },
         {
           :title => 'should contain ordered prepended directives',
@@ -379,6 +427,18 @@ describe 'nginx::resource::location' do
           :attr  => 'location',
           :value => 'my_location',
           :match => '  location my_location {',
+        },
+        {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
         },
         {
           :title => 'should set the allow directive',
@@ -498,6 +558,18 @@ describe 'nginx::resource::location' do
           :attr  => 'location',
           :value => 'my_location',
           :match => '  location my_location {',
+        },
+        {
+          :title    => 'should not set internal',
+          :attr     => 'internal',
+          :value    => false,
+          :notmatch => /internal;/
+        },
+        {
+          :title => 'should set internal',
+          :attr  => 'internal',
+          :value => true,
+          :match => '    internal;'
         },
         {
           :title => 'should contain ordered config directives',
