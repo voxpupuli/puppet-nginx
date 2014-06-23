@@ -232,9 +232,9 @@ describe 'nginx::resource::vhost' do
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
           :match => [
-            '  listen                *:80;',
-            '  server_name           www.rspec.example.com;',
-            '  rewrite               ^ http://rspec.example.com$uri permanent;',
+            '  listen       *:80;',
+            '  server_name  www.rspec.example.com;',
+            '  return       301 http://rspec.example.com$uri;',
           ],
         },
         {
@@ -242,9 +242,9 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_www_to_non_www',
           :value    => false,
           :notmatch => [
-            /  listen                \*:80;/,
-            /  server_name           www\.rspec\.example\.com;/,
-            /  rewrite               \^ http:\/\/rspec\.example\.com\$uri permanent;/,
+            %r|  listen       \*:80;|,
+            %r|  server_name  www\.rspec\.example\.com;|,
+            %r|  return       301 http://rspec\.example\.com\$uri;|
           ],
         },
       ].each do |param|
@@ -476,9 +476,9 @@ describe 'nginx::resource::vhost' do
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
           :match => [
-            '  listen                *:443 ssl;',
-            '  server_name           www.rspec.example.com;',
-            '  rewrite               ^ https://rspec.example.com$uri permanent;',
+            '  listen       *:443 ssl;',
+            '  server_name  www.rspec.example.com;',
+            '  return       301 https://rspec.example.com$uri;',
           ],
         },
         {
@@ -486,9 +486,9 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_www_to_non_www',
           :value    => false,
           :notmatch => [
-            /  listen                \*:443 ssl;/,
-            /  server_name           www\.rspec\.example\.com;/,
-            /  rewrite               \^ https:\/\/rspec\.example\.com\$uri permanent;/,
+            %r|  listen       \*:443 ssl;|,
+            %r|  server_name  www\.rspec\.example\.com;|,
+            %r|  return       301 https://rspec\.example\.com\$uri;|
           ],
         },
       ].each do |param|

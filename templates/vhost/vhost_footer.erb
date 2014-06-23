@@ -18,8 +18,8 @@ include <%= file %>;
 }
 <% if @rewrite_www_to_non_www -%>
 server {
-  listen                <%= @listen_ip %>:<%= @listen_port %>;
-  server_name           www.<%= @name.gsub(/^www\./, '') %>;
-  rewrite               ^ http://<%= @name.gsub(/^www\./, '') %>$uri permanent;
+  listen       <%= @listen_ip %>:<%= @listen_port %>;
+  server_name  www.<%= @name.gsub(/^www\./, '') %>;
+  return       301 http://<%= @name.gsub(/^www\./, '') %>$uri;
 }
 <% end -%>
