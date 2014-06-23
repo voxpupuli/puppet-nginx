@@ -213,6 +213,30 @@ describe 'nginx::config' do
             '  test2 test value 2;',
           ],
         },
+        {
+            :title => 'should set pid',
+            :attr  => 'pid',
+            :value => '/path/to/pid',
+            :match => 'pid        /path/to/pid;',
+        },
+        {
+            :title => 'should set tcp_nodelay',
+            :attr  => 'http_tcp_nodelay',
+            :value => 'on',
+            :match => '  tcp_nodelay        on;',
+        },
+        {
+            :title => 'should set tcp_nopush',
+            :attr  => 'http_tcp_nopush',
+            :value => 'on',
+            :match => '  tcp_nopush on;',
+        },
+        {
+            :title => 'should set keepalive_timeout',
+            :attr  => 'keepalive_timeout',
+            :value => '123',
+            :match => '  keepalive_timeout  123;',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do { param[:attr].to_sym => param[:value] } end
