@@ -377,7 +377,7 @@ define nginx::resource::vhost (
 
   $access_log_real = $format_log ? {
     undef   => $access_log_tmp,
-    default => "${access_log_tmp} $format_log",
+    default => "${access_log_tmp} ${format_log}",
   }
 
   $error_log_real = $error_log ? {
