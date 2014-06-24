@@ -33,6 +33,8 @@
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
 #     that you can split the script_name and path_info via regex
+#   [*uwsgi*]              - location of uwsgi (host:port)
+#   [*uwsgi_params*]       - optional alternative uwsgi_params file to use
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for
 #     this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the
@@ -119,6 +121,8 @@ define nginx::resource::location (
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
+  $uwsgi                = undef,
+  $uwsgi_params         = "${nginx::config::conf_dir}/uwsgi_params",
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
@@ -178,6 +182,10 @@ define nginx::resource::location (
   if ($fastcgi_split_path != undef) {
     validate_string($fastcgi_split_path)
   }
+  if ($fastcgi != undef) {
+    validate_string($fastcgi)
+  }
+  validate_string($fastcgi_params)
   validate_bool($ssl)
   validate_bool($ssl_only)
   if ($location_alias != undef) {
@@ -249,14 +257,14 @@ define nginx::resource::location (
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($uwsgi == undef) and ($location_custom_cfg == undef)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
 
-  # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
+  # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/locations/proxy.erb')
   } elsif ($location_alias != undef) {
@@ -265,6 +273,8 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/locations/fastcgi.erb')
+  } elsif ($wusgi != undef) {
+    $content_real = template('nginx/vhost/locations/wusgi.erb')
   } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/locations/directory.erb')
   } else {
@@ -278,6 +288,15 @@ define nginx::resource::location (
       content => template('nginx/vhost/fastcgi_params.erb'),
     }
   }
+
+  if $uwsgi != undef and !defined(File[$wusgi_params]) {
+    file { $wusgi_params:
+      ensure  => present,
+      mode    => '0770',
+      content => template('nginx/vhost/uwsgi_params.erb'),
+    }
+  }
+
 
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
