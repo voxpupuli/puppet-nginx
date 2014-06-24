@@ -270,7 +270,7 @@ define nginx::resource::location (
   } else {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
-  
+
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
