@@ -258,17 +258,17 @@ define nginx::resource::location (
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
-    $content_real = template('nginx/vhost/vhost_location_proxy.erb')
+    $content_real = template('nginx/vhost/locations/proxy.erb')
   } elsif ($location_alias != undef) {
-    $content_real = template('nginx/vhost/vhost_location_alias.erb')
+    $content_real = template('nginx/vhost/locations/alias.erb')
   } elsif ($stub_status != undef) {
-    $content_real = template('nginx/vhost/vhost_location_stub_status.erb')
+    $content_real = template('nginx/vhost/locations/stub_status.erb')
   } elsif ($fastcgi != undef) {
-    $content_real = template('nginx/vhost/vhost_location_fastcgi.erb')
+    $content_real = template('nginx/vhost/locations/fastcgi.erb')
   } elsif ($www_root != undef) {
-    $content_real = template('nginx/vhost/vhost_location_directory.erb')
+    $content_real = template('nginx/vhost/locations/directory.erb')
   } else {
-    $content_real = template('nginx/vhost/vhost_location_empty.erb')
+    $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
@@ -286,7 +286,11 @@ define nginx::resource::location (
     concat::fragment { "${tmpFile}":
       ensure  => present,
       target  => $config_file,
-      content => $content_real,
+      content => join([
+        template('nginx/vhost/location_header.erb'),
+        $content_real,
+        template('nginx/vhost/location_footer.erb')
+      ], ''),
       order   => "${priority}",
     }
   }
@@ -299,7 +303,11 @@ define nginx::resource::location (
     concat::fragment {"${sslTmpFile}":
       ensure  => present,
       target  => $config_file,
-      content => $content_real,
+      content => join([
+        template('nginx/vhost/location_header.erb'),
+        $content_real,
+        template('nginx/vhost/location_footer.erb')
+      ], ''),
       order   => "${ssl_priority}",
     }
   }
