@@ -145,10 +145,10 @@ describe 'nginx::resource::vhost' do
           :match => '  root /;',
         },
         {
-          :title    => 'should not set root',
+          :title    => 'should set root',
           :attr     => 'use_default_location',
           :value    => true,
-          :notmatch => /  root \/;/,
+          :match    => '  root /;',
         },
         {
           :title => 'should set proxy_set_header',
@@ -417,7 +417,7 @@ describe 'nginx::resource::vhost' do
           :title    => 'should not set root',
           :attr     => 'use_default_location',
           :value    => true,
-          :notmatch => /  root \/;/,
+          :match    => '  root /;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do

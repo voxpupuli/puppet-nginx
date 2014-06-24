@@ -432,10 +432,8 @@ define nginx::resource::vhost (
       notify                => Class['nginx::service'],
       rewrite_rules         => $rewrite_rules,
     }
-    $root = undef
-  } else {
-    $root = $www_root
   }
+  $root = $www_root
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
