@@ -273,8 +273,8 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/locations/fastcgi.erb')
-  } elsif ($wusgi != undef) {
-    $content_real = template('nginx/vhost/locations/wusgi.erb')
+  } elsif ($uwsgi != undef) {
+    $content_real = template('nginx/vhost/locations/uwsgi.erb')
   } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/locations/directory.erb')
   } else {
@@ -289,8 +289,8 @@ define nginx::resource::location (
     }
   }
 
-  if $uwsgi != undef and !defined(File[$wusgi_params]) {
-    file { $wusgi_params:
+  if $uwsgi != undef and !defined(File[$uwsgi_params]) {
+    file { $uwsgi_params:
       ensure  => present,
       mode    => '0770',
       content => template('nginx/vhost/uwsgi_params.erb'),

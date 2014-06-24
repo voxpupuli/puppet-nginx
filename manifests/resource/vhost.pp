@@ -280,7 +280,7 @@ define nginx::resource::vhost (
   if ($uwsgi != undef) {
     validate_string($uwsgi)
   }
-  validate_string($wusgi_params)
+  validate_string($uwsgi_params)
   validate_array($index_files)
   if ($autoindex != undef) {
     validate_string($autoindex)
@@ -474,11 +474,11 @@ define nginx::resource::vhost (
     }
   }
 
-  if $wusgi != undef and !defined(File[$wusgi_params]) {
+  if $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0770',
-      content => template('nginx/vhost/wusgi_params.erb'),
+      content => template('nginx/vhost/uwsgi_params.erb'),
     }
   }
 
