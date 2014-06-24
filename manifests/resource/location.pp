@@ -270,7 +270,7 @@ define nginx::resource::location (
   } else {
     $content_real = template('nginx/vhost/vhost_location_empty.erb')
   }
-
+  
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
@@ -292,7 +292,7 @@ define nginx::resource::location (
   }
 
   ## Only create SSL Specific locations if $ssl is true.
-  if ($ssl == true) {
+  if ($ssl == true or $ssl_only == true) {
     $ssl_priority = $priority + 300
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
