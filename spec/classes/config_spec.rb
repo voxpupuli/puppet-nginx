@@ -49,8 +49,8 @@ describe 'nginx::config' do
           :group => 'root',
           :mode => '0644'
         )}
-        it { should contain_file("/etc/nginx/conf.d/vhost_autogen.conf").with_ensure('absent') }
-        it { should contain_file("/etc/nginx/conf.mail.d/vhost_autogen.conf").with_ensure('absent') }
+        it { should contain_file("/etc/nginx/conf.d/server_autogen.conf").with_ensure('absent') }
+        it { should contain_file("/etc/nginx/conf.mail.d/server_autogen.conf").with_ensure('absent') }
         it { should contain_file("/var/nginx").with(
           :ensure => 'directory',
           :owner => 'root',
@@ -325,8 +325,8 @@ describe 'nginx::config' do
       ])}
     end
 
-    context "when vhost_purge true" do
-      let(:params) {{:vhost_purge => true}}
+    context "when server_purge true" do
+      let(:params) {{:server_purge => true}}
       it { should contain_file('/etc/nginx/sites-available').with(
         :purge => true,
         :recurse => true
@@ -337,8 +337,8 @@ describe 'nginx::config' do
       )}
     end
 
-    context "when vhost_purge false" do
-      let(:params) {{:vhost_purge => false}}
+    context "when server_purge false" do
+      let(:params) {{:server_purge => false}}
       it { should contain_file('/etc/nginx/sites-available').without([
         'ignore',
         'purge',

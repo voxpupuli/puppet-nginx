@@ -13,7 +13,7 @@ describe "nginx::resource::upstream define:" do
         'localhost:3002',
       ],
     }
-    nginx::resource::vhost { 'rack.puppetlabs.com':
+    nginx::resource::server { 'rack.puppetlabs.com':
       ensure => present,
       proxy  => 'http://puppet_rack_app',
     }
