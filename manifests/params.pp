@@ -21,7 +21,7 @@ class nginx::params {
   $nx_conf_template                  = 'nginx/conf.d/nginx.conf.erb'
   $nx_proxy_conf_template            = 'nginx/conf.d/proxy.conf.erb'
   $nx_confd_purge                    = false
-  $nx_vhost_purge                    = false
+  $nx_server_purge                    = false
   $nx_worker_processes               = 1
   $nx_worker_connections             = 1024
   $nx_worker_rlimit_nofile           = 1024

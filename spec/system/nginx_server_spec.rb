@@ -1,12 +1,12 @@
 require 'spec_helper_system'
 
-describe "nginx::resource::vhost define:" do
-  context 'new vhost on port 80' do
-    it 'should configure a nginx vhost' do
+describe "nginx::resource::server define:" do
+  context 'new server on port 80' do
+    it 'should configure a nginx server' do
 
       pp = "
       class { 'nginx': }
-      nginx::resource::vhost { 'www.puppetlabs.com':
+      nginx::resource::server { 'www.puppetlabs.com':
         ensure   => present,
         www_root => '/var/www/www.puppetlabs.com',
       }
@@ -45,11 +45,11 @@ describe "nginx::resource::vhost define:" do
   end
 
   context 'should run successfully with ssl' do
-    it 'should configure a nginx SSL vhost' do
+    it 'should configure a nginx SSL server' do
 
       pp = "
       class { 'nginx': }
-      nginx::resource::vhost { 'www.puppetlabs.com':
+      nginx::resource::server { 'www.puppetlabs.com':
         ensure   => present,
         ssl      => true,
         ssl_cert => '/tmp/blah.cert',

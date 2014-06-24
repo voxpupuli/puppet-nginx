@@ -61,7 +61,7 @@ class nginx (
   $nginx_locations                = {},
   $nginx_mailhosts                = {},
   $nginx_upstreams                = {},
-  $nginx_vhosts                   = {},
+  $nginx_servers                   = {},
   $package_ensure                 = $nginx::params::package_ensure,
   $package_name                   = $nginx::params::package_name,
   $package_source                 = $nginx::params::package_source,
@@ -92,7 +92,7 @@ class nginx (
   $temp_dir                       = $nginx::params::nx_temp_dir,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
   $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
-  $vhost_purge                    = $nginx::params::nx_vhost_purge,
+  $server_purge                    = $nginx::params::nx_server_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
@@ -121,7 +121,7 @@ class nginx (
   validate_array($proxy_set_header)
   validate_string($proxy_http_version)
   validate_bool($confd_purge)
-  validate_bool($vhost_purge)
+  validate_bool($server_purge)
   if ($proxy_cache_path != false) {
     validate_string($proxy_cache_path)
   }
@@ -167,7 +167,7 @@ class nginx (
   validate_string($nginx_error_log)
   validate_string($http_access_log)
   validate_hash($nginx_upstreams)
-  validate_hash($nginx_vhosts)
+  validate_hash($nginx_servers)
   validate_hash($nginx_locations)
   validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
@@ -238,7 +238,7 @@ class nginx (
     temp_dir                       => $temp_dir,
     types_hash_bucket_size         => $types_hash_bucket_size,
     types_hash_max_size            => $types_hash_max_size,
-    vhost_purge                    => $vhost_purge,
+    server_purge                    => $server_purge,
     worker_connections             => $worker_connections,
     worker_processes               => $worker_processes,
     worker_rlimit_nofile           => $worker_rlimit_nofile,
@@ -250,7 +250,7 @@ class nginx (
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
-  create_resources('nginx::resource::vhost', $nginx_vhosts)
+  create_resources('nginx::resource::server', $nginx_servers)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
   create_resources('nginx::resource::map', $string_mappings)

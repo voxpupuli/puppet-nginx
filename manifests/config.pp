@@ -66,7 +66,7 @@ class nginx::config(
   $temp_dir                       = $nginx::params::nx_temp_dir,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
   $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
-  $vhost_purge                    = $nginx::params::nx_vhost_purge,
+  $server_purge                    = $nginx::params::nx_server_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile
@@ -102,11 +102,11 @@ class nginx::config(
     }
   }
 
-  file { "${conf_dir}/conf.d/vhost_autogen.conf":
+  file { "${conf_dir}/conf.d/server_autogen.conf":
     ensure => absent,
   }
 
-  file { "${conf_dir}/conf.mail.d/vhost_autogen.conf":
+  file { "${conf_dir}/conf.mail.d/server_autogen.conf":
     ensure => absent,
   }
 
@@ -128,7 +128,7 @@ class nginx::config(
     ensure => directory,
   }
 
-  if $vhost_purge == true {
+  if $server_purge == true {
     File["${conf_dir}/sites-available"] {
       purge   => true,
       recurse => true,
@@ -139,7 +139,7 @@ class nginx::config(
     ensure => directory,
   }
 
-  if $vhost_purge == true {
+  if $server_purge == true {
     File["${conf_dir}/sites-enabled"] {
       purge   => true,
       recurse => true,

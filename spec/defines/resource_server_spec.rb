@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::vhost' do
+describe 'nginx::resource::server' do
   let :title do
     'www.rspec.example.com'
   end
@@ -47,7 +47,7 @@ describe 'nginx::resource::vhost' do
       })}
     end
 
-    describe "vhost_header template content" do
+    describe "server_header template content" do
       [
         {
           :title => 'should set the IPv4 listen IP',
@@ -129,7 +129,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered prepended directives',
-          :attr  => 'vhost_cfg_prepend',
+          :attr  => 'server_cfg_prepend',
           :value => { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -205,7 +205,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe "vhost_footer template content" do
+    describe "server_footer template content" do
       [
         {
           :title => 'should contain include directives',
@@ -218,7 +218,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered appended directives',
-          :attr  => 'vhost_cfg_append',
+          :attr  => 'server_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -263,7 +263,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe "vhost_ssl_header template content" do
+    describe "server_ssl_header template content" do
       [
         {
           :title => 'should set the IPv4 listen IP',
@@ -387,7 +387,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered prepend directives',
-          :attr  => 'vhost_cfg_prepend',
+          :attr  => 'server_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -398,7 +398,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered ssl prepend directives',
-          :attr  => 'vhost_cfg_ssl_prepend',
+          :attr  => 'server_cfg_ssl_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -439,7 +439,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe "vhost_ssl_footer template content" do
+    describe "server_ssl_footer template content" do
       [
         {
           :title => 'should contain include directives',
@@ -452,7 +452,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered appended directives',
-          :attr  => 'vhost_cfg_append',
+          :attr  => 'server_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -462,7 +462,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should contain ordered ssl appended directives',
-          :attr  => 'vhost_cfg_ssl_append',
+          :attr  => 'server_cfg_ssl_append',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
@@ -515,13 +515,13 @@ describe 'nginx::resource::vhost' do
       context "SSL cert missing" do
         let(:params) {{ :ssl => true, :ssl_key => 'key' }}
 
-        it { expect { should contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { should contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
       end
 
       context "SSL key missing" do
         let(:params) {{ :ssl => true, :ssl_cert => 'cert' }}
 
-        it { expect { should contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { should contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
       end
 
       context 'when use_default_location => true' do
@@ -636,11 +636,11 @@ describe 'nginx::resource::vhost' do
         it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
-      context 'when vhost name is sanitized' do
-        let :title do 'www rspec-vhost com' end
+      context 'when server name is sanitized' do
+        let :title do 'www rspec-server com' end
         let :params do default_params end
 
-        it { should contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { should contain_concat('/etc/nginx/sites-available/www_rspec-server_com.conf') }
       end
     end
   end

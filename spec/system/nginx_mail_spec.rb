@@ -7,7 +7,7 @@ describe "nginx::resource::mailhost define:" do
     class { 'nginx':
       mail => true,
     }
-    nginx::resource::vhost { 'www.puppetlabs.com':
+    nginx::resource::server { 'www.puppetlabs.com':
       ensure   => present,
       www_root => '/var/www/www.puppetlabs.com',
     }

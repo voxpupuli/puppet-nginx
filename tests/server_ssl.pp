@@ -1,6 +1,6 @@
 include nginx
 
-nginx::resource::vhost { 'test2.local test2':
+nginx::resource::server { 'test2.local test2':
   ensure   => present,
   www_root => '/var/www/nginx-default',
   ssl      => true,
@@ -12,6 +12,6 @@ nginx::resource::location { 'test2.local-bob':
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
-  vhost    => 'test2.local test2',
+  server    => 'test2.local test2',
 }
 
