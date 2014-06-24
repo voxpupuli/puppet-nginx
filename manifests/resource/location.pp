@@ -289,7 +289,7 @@ define nginx::resource::location (
   if ($ssl_only != true) {
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
-    concat::fragment { "${tmpFile}":
+    concat::fragment { $tmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -297,7 +297,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${priority}",
+      order   => $priority,
     }
   }
 
@@ -306,7 +306,7 @@ define nginx::resource::location (
     $ssl_priority = $priority + 300
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
-    concat::fragment {"${sslTmpFile}":
+    concat::fragment {$sslTmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -314,7 +314,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${ssl_priority}",
+      order   => $ssl_priority,
     }
   }
 

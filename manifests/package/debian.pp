@@ -47,7 +47,7 @@ class nginx::package::debian(
 
         apt::source { 'nginx':
           location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos      => "main",
+          repos      => 'main',
           key        => '561F9B9CAC40B2F7',
           key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
           notify     => Exec['apt_get_update_for_nginx'],
