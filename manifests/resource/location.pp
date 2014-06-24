@@ -5,6 +5,8 @@
 # Parameters:
 #   [*ensure*]               - Enables or disables the specified location
 #     (present|absent)
+#   [*internal*]             - Indicates whether or not this loation can be
+#     used for internal requests only. Default: false
 #   [*vhost*]                - Defines the default vHost for this location
 #     entry to include with
 #   [*location*]             - Specifies the URI associated with this location
@@ -102,6 +104,7 @@
 
 define nginx::resource::location (
   $ensure               = present,
+  $internal             = false,
   $location             = $name,
   $vhost                = undef,
   $www_root             = undef,
@@ -178,6 +181,9 @@ define nginx::resource::location (
   if ($fastcgi_split_path != undef) {
     validate_string($fastcgi_split_path)
   }
+
+  validate_bool($internal)
+
   validate_bool($ssl)
   validate_bool($ssl_only)
   if ($location_alias != undef) {
