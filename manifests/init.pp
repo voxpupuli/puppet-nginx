@@ -248,7 +248,7 @@ class nginx (
 
   class { 'nginx::service':
   }
-
+  
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::vhost', $nginx_vhosts)
   create_resources('nginx::resource::location', $nginx_locations)

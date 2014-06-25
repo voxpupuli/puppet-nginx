@@ -1,4 +1,3 @@
-  location <%= @location %> {
 <%- if @location_custom_cfg -%>
 	<%- @location_custom_cfg.sort_by {|k,v| k}.each do |key,value| -%>
 		<%- if value.is_a?(Hash) -%>
@@ -14,5 +13,3 @@
 		<%- end -%>
 	<%- end -%>
 <%- end -%>
-  }
-
