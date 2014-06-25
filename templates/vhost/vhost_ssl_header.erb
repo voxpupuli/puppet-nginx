@@ -50,6 +50,9 @@ server {
 <% if defined? @client_max_body_size -%>
   client_max_body_size <%= @client_max_body_size %>;
 <% end -%>
+<% if defined? @gzip_types -%>
+  gzip_types <%= @gzip_types %>;
+<% end -%>
 <% if @index_files.count > 0 -%>
     index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>

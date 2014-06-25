@@ -117,6 +117,7 @@
 #   [*log_by_lua_file*]         - Equivalent to log_by_lua, except that the file
 #     specified by <path-to-lua-script-file> contains the Lua code, or, as from
 #     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
+#   [*gzip_types*]              - Defines gzip_types, nginx default is text/html
 # Actions:
 #
 # Requires:
@@ -204,6 +205,7 @@ define nginx::resource::vhost (
   $rewrite_rules          = [],
   $string_mappings        = {},
   $geo_mappings           = {},
+  $gzip_types             = undef,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -346,6 +348,9 @@ define nginx::resource::vhost (
   }
   if ($client_header_timeout != undef) {
     validate_string($client_header_timeout)
+  }
+  if ($gzip_types != undef) {
+    validate_string($gzip_types)
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)
