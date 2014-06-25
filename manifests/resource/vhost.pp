@@ -90,6 +90,10 @@
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
 #   [*client_max_body_size*]    - This directive sets client_max_body_size.
+#   [*client_body_timeout*]     - Sets how long the server will wait for a 
+#      client body. Default is 60s
+#   [*client_header_timeout*]     - Sets how long the server will wait for a
+#      client header. Default is 60s
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
@@ -182,6 +186,8 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $client_body_timeout    = undef,
+  $client_header_timeout  = undef,
   $client_max_body_size   = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
@@ -334,6 +340,12 @@ define nginx::resource::vhost (
   }
   if ($log_by_lua_file != undef) {
     validate_string($log_by_lua_file)
+  }
+  if ($client_body_timeout != undef) {
+    validate_string($client_body_timeout)
+  }
+  if ($client_header_timeout != undef) {
+    validate_string($client_header_timeout)
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)

@@ -11,6 +11,12 @@ server {
 <% if defined? @auth_basic_user_file -%>
   auth_basic_user_file <%= @auth_basic_user_file %>;
 <% end -%>
+<% if defined? @client_body_timeout -%>
+  client_body_timeout <%= @client_body_timeout %>;
+<% end -%>
+<% if defined? @client_header_timeout -%>
+  client_header_timeout <%= @client_header_timeout %>;
+<% end -%>
 <% if defined? @client_max_body_size -%>
   client_max_body_size <%= @client_max_body_size %>;
 <% end -%>
