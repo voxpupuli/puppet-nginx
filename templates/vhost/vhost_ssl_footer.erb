@@ -27,7 +27,7 @@ include <%= file %>;
 <% if @rewrite_www_to_non_www -%>
 server {
   listen       <%= @listen_ip %>:<%= @ssl_port %> ssl;
-  server_name  www.<%= @name.gsub(/^www\./, '') %>;
-  return       301 https://<%= @name.gsub(/^www\./, '') %>$uri;
+  server_name  www.<%= @server_name[0].gsub(/^www\./, '') %>;
+  return       301 https://<%= @server_name[0].gsub(/^www\./, '') %>$uri;
 }
 <% end %>
