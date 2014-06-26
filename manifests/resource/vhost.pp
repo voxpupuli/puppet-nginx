@@ -90,6 +90,10 @@
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
 #   [*client_max_body_size*]    - This directive sets client_max_body_size.
+#   [*client_body_timeout*]     - Sets how long the server will wait for a 
+#      client body. Default is 60s
+#   [*client_header_timeout*]     - Sets how long the server will wait for a
+#      client header. Default is 60s
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
@@ -113,6 +117,7 @@
 #   [*log_by_lua_file*]         - Equivalent to log_by_lua, except that the file
 #     specified by <path-to-lua-script-file> contains the Lua code, or, as from
 #     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
+#   [*gzip_types*]              - Defines gzip_types, nginx default is text/html
 # Actions:
 #
 # Requires:
@@ -182,6 +187,8 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $client_body_timeout    = undef,
+  $client_header_timeout  = undef,
   $client_max_body_size   = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
@@ -198,6 +205,7 @@ define nginx::resource::vhost (
   $rewrite_rules          = [],
   $string_mappings        = {},
   $geo_mappings           = {},
+  $gzip_types             = undef,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -334,6 +342,15 @@ define nginx::resource::vhost (
   }
   if ($log_by_lua_file != undef) {
     validate_string($log_by_lua_file)
+  }
+  if ($client_body_timeout != undef) {
+    validate_string($client_body_timeout)
+  }
+  if ($client_header_timeout != undef) {
+    validate_string($client_header_timeout)
+  }
+  if ($gzip_types != undef) {
+    validate_string($gzip_types)
   }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)
