@@ -43,6 +43,12 @@
 #     for this location
 #   [*stub_status*]          - If true it will point configure module
 #     stub_status to provide nginx stats on location
+#   [*raw_prepend*]          - A single string, or an array of strings to
+#     prepend to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_append*]           - A single string, or an array of strings to
+#     append to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
 #   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot
 #     be used with other location types (proxy, fastcgi, root, or stub_status)
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put
@@ -129,6 +135,8 @@ define nginx::resource::location (
   $location_deny        = undef,
   $option               = undef,
   $stub_status          = undef,
+  $raw_prepend          = undef,
+  $raw_append           = undef,
   $location_custom_cfg  = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
@@ -200,6 +208,20 @@ define nginx::resource::location (
   }
   if ($stub_status != undef) {
     validate_bool($stub_status)
+  }
+  if ($raw_prepend != undef) {
+    if (is_array($raw_prepend)) {
+      validate_array($raw_prepend)
+    } else {
+      validate_string($raw_prepend)
+    }
+  }
+  if ($raw_append != undef) {
+    if (is_array($raw_append)) {
+      validate_array($raw_append)
+    } else {
+      validate_string($raw_append)
+    }
   }
   if ($location_custom_cfg != undef) {
     validate_hash($location_custom_cfg)
