@@ -44,8 +44,29 @@ http {
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
 <% if @gzip == 'on' -%>
-  gzip         on;
-  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+  gzip              on;
+<% if @gzip_buffers != '' -%>
+  gzip_buffers      <%= @gzip_buffers %>;
+<% end -%>
+<% if @gzip_comp_level != '' -%>
+  gzip_comp_level   <%= @gzip_comp_level %>;
+<% end -%>
+  gzip_disable      <%= @gzip_disable %>;
+<% if @gzip_min_length != '' -%>
+  gzip_min_length   <%= @gzip_min_length %>;
+<% end -%>
+<% if @gzip_http_version != '' -%>
+  gzip_http_version <%= @gzip_http_version %>;
+<% end -%>
+<% if @gzip_proxied != '' -%>
+  gzip_proxied      <%= @gzip_proxied %>;
+<% end -%>
+<% if @gzip_types != '' -%>
+  gzip_types        <%= @gzip_types %>;
+<% end -%>
+<% if @gzip_vary != '' -%>
+  gzip_vary         <%= @gzip_vary %>;
+<% end -%>
 <% end -%>
 
 <% if @proxy_cache_path -%>
