@@ -62,7 +62,7 @@ http {
   gzip_proxied      <%= @gzip_proxied %>;
 <% end -%>
 <% if @gzip_types != '' -%>
-  gzip_types        <%= @gzip_types %>;
+  gzip_types        <%= @gzip_types.kind_of?(Array) ? @gzip_types.join(' ') : @gzip_types %>;
 <% end -%>
 <% if @gzip_vary != '' -%>
   gzip_vary         <%= @gzip_vary %>;
