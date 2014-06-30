@@ -45,26 +45,26 @@ http {
 
 <% if @gzip == 'on' -%>
   gzip              on;
-<% if @gzip_buffers != '' -%>
+<% if @gzip_buffers -%>
   gzip_buffers      <%= @gzip_buffers %>;
 <% end -%>
-<% if @gzip_comp_level != '' -%>
+<% if @gzip_comp_level -%>
   gzip_comp_level   <%= @gzip_comp_level %>;
 <% end -%>
   gzip_disable      <%= @gzip_disable %>;
-<% if @gzip_min_length != '' -%>
+<% if @gzip_min_length -%>
   gzip_min_length   <%= @gzip_min_length %>;
 <% end -%>
-<% if @gzip_http_version != '' -%>
+<% if @gzip_http_version -%>
   gzip_http_version <%= @gzip_http_version %>;
 <% end -%>
-<% if @gzip_proxied != '' -%>
+<% if @gzip_proxied -%>
   gzip_proxied      <%= @gzip_proxied %>;
 <% end -%>
-<% if @gzip_types != '' -%>
+<% if @gzip_types -%>
   gzip_types        <%= @gzip_types.kind_of?(Array) ? @gzip_types.join(' ') : @gzip_types %>;
 <% end -%>
-<% if @gzip_vary != '' -%>
+<% if @gzip_vary -%>
   gzip_vary         <%= @gzip_vary %>;
 <% end -%>
 <% end -%>
