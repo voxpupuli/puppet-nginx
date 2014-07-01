@@ -162,8 +162,11 @@ class nginx (
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
   if ($http_cfg_append != false) {
-    validate_hash($http_cfg_append)
+    if !is_hash($http_cfg_append) or !is_array($http_cfg_append) {
+      fail('$http_cfg_append must be either a hash or array')
+    }
   }
+
   validate_string($nginx_error_log)
   validate_string($http_access_log)
   validate_hash($nginx_upstreams)
