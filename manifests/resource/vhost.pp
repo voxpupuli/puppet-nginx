@@ -130,6 +130,9 @@
 #     specified by <path-to-lua-script-file> contains the Lua code, or, as from
 #     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
 #   [*gzip_types*]              - Defines gzip_types, nginx default is text/html
+#   [*owner*]                   - Defines owner of the .conf file
+#   [*group*]                   - Defines group of the .conf file
+#   [*mode*]                    - Defines mode of the .conf file
 # Actions:
 #
 # Requires:
@@ -222,6 +225,9 @@ define nginx::resource::vhost (
   $string_mappings        = {},
   $geo_mappings           = {},
   $gzip_types             = undef,
+  $owner                  = $nginx::config::global_owner,
+  $group                  = $nginx::config::global_group,
+  $mode                   = $nginx::config::global_mode,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -401,6 +407,11 @@ define nginx::resource::vhost (
   validate_hash($string_mappings)
   validate_hash($geo_mappings)
 
+  validate_string($owner)
+  validate_string($group)
+  validate_re($mode, '^\d{4}$',
+    "${mode} is not valid. It should be 4 digits (0644 by default).")
+
   # Variables
   $vhost_dir = "${nginx::config::conf_dir}/sites-available"
   $vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
@@ -418,9 +429,9 @@ define nginx::resource::vhost (
       default  => 'file',
     },
     notify => Class['nginx::service'],
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
   }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
@@ -456,9 +467,9 @@ define nginx::resource::vhost (
   }
 
   concat { $config_file:
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
     notify => Class['nginx::service'],
   }
 
