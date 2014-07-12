@@ -75,23 +75,26 @@ class nginx::params {
   $nx_proxy_headers_hash_bucket_size = '64'
 
   $nx_logdir = $::kernel ? {
-    /(?i-mx:linux)/ => '/var/log/nginx',
-    /(?i-mx:sunos)/ => '/var/log/nginx',
+    /(?i-mx:linux)/   => '/var/log/nginx',
+    /(?i-mx:sunos)/   => '/var/log/nginx',
+    /(?i-mx:freebsd)/ => '/var/log/nginx',
   }
 
   $nx_pid = $::kernel ? {
-    /(?i-mx:linux)/  => $::osfamily ? {
+    /(?i-mx:linux)/   => $::osfamily ? {
         # archlinux has hardcoded pid in service file to /run/nginx.pid, setting
         # it will prevent nginx from starting
         /(?i-mx:archlinux)/ => false,
         default             => '/var/run/nginx.pid',
     },
-    /(?i-mx:sunos)/  => '/var/run/nginx.pid',
+    /(?i-mx:sunos)/   => '/var/run/nginx.pid',
+    /(?i-mx:freebsd)/ => '/var/run/nginx.pid',
   }
 
-  $nx_conf_dir = $::kernelversion ? {
-    /(?i-mx:joyent)/ => '/opt/local/etc/nginx',
-    default => '/etc/nginx',
+  $nx_conf_dir = $::kernel ? {
+    /(?i-mx:joyent)/  => '/opt/local/etc/nginx',
+    /(?i-mx:freebsd)/ => '/usr/local/etc/nginx',
+    default           => '/etc/nginx',
   }
 
   if $::osfamily {
@@ -104,6 +107,7 @@ class nginx::params {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
       /(?i-mx:solaris)/                  => $solaris_nx_daemon_user,
+      /(?i-mx:freebsd)/                  => 'www',
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
@@ -136,6 +140,7 @@ class nginx::params {
   $nx_http_access_log = "${nx_logdir}/access.log"
 
   # package name depends on distribution, e.g. for Debian nginx-full | nginx-light
+
   $package_name   = 'nginx'
   $package_ensure = 'present'
   $package_source = 'nginx'
