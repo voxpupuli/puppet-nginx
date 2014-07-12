@@ -30,7 +30,7 @@ describe 'nginx::resource::mailhost' do
       it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with({
         'owner' => 'root',
-        'group' => 'root',
+        'group' => '0',
         'mode'  => '0644',
       })}
       it { should contain_concat__fragment("#{title}-header") }

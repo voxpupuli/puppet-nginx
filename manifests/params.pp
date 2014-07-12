@@ -147,11 +147,11 @@ class nginx::params {
 
   # Specific owner for sites-available directory
   $sites_available_owner = 'root'
-  $sites_available_group = 'root'
+  $sites_available_group = '0'
   $sites_available_mode  = '0644'
 
   # Owner for all other files
   $global_owner = 'root'
-  $global_group = 'root'
+  $global_group = '0'
   $global_mode  = '0644'
 }

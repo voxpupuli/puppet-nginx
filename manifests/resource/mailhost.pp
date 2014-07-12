@@ -59,9 +59,10 @@ define nginx::resource::mailhost (
   $auth_http           = undef,
   $xclient             = 'on',
   $server_name         = [$name]) {
+
   File {
     owner => 'root',
-    group => 'root',
+    group => '0',
     mode  => '0644',
   }
 
@@ -118,7 +119,7 @@ define nginx::resource::mailhost (
 
   concat { $config_file:
     owner  => 'root',
-    group  => 'root',
+    group  => '0',
     mode   => '0644',
     notify => Class['nginx::service'],
   }

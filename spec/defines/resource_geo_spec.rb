@@ -38,7 +38,7 @@ describe 'nginx::resource::geo' do
       it { should contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
         {
           'owner'   => 'root',
-          'group'   => 'root',
+          'group'   => '0',
           'mode'    => '0644',
           'ensure'  => 'file',
           'content' => /geo \$#{title}/,

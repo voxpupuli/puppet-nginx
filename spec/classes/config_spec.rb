@@ -32,21 +32,21 @@ describe 'nginx::config' do
           :path   => "/etc/nginx",
           :ensure => 'directory',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/etc/nginx/conf.d").only_with(
           :path   => '/etc/nginx/conf.d',
           :ensure => 'directory',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/etc/nginx/conf.mail.d").only_with(
           :path   => '/etc/nginx/conf.mail.d',
           :ensure => 'directory',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/etc/nginx/conf.d/vhost_autogen.conf").with_ensure('absent') }
@@ -54,30 +54,30 @@ describe 'nginx::config' do
         it { should contain_file("/var/nginx").with(
           :ensure => 'directory',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/var/nginx/client_body_temp").with(
           :ensure => 'directory',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/var/nginx/proxy_temp").with(
           :ensure => 'directory',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file('/etc/nginx/sites-enabled/default').with_ensure('absent') }
         it { should contain_file("/etc/nginx/nginx.conf").with(
           :ensure => 'file',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/etc/nginx/conf.d/proxy.conf").with(
           :ensure => 'file',
           :owner => 'root',
-          :group => 'root',
+          :group => '0',
           :mode => '0644'
         )}
         it { should contain_file("/tmp/nginx.d").with(

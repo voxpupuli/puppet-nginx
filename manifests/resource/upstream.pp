@@ -56,7 +56,7 @@ define nginx::resource::upstream (
 
   Concat {
     owner => 'root',
-    group => 'root',
+    group => '0',
     mode  => '0644',
   }
 

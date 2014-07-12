@@ -75,7 +75,7 @@ define nginx::resource::geo (
 
   File {
     owner => 'root',
-    group => 'root',
+    group => '0',
     mode  => '0644',
   }
 
