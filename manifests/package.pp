@@ -14,11 +14,11 @@
 #
 # This class file is not called directly
 class nginx::package(
-  $package_name   = 'nginx',
-  $package_source = 'nginx',
-  $package_ensure = 'present',
-  $manage_repo    = true,
-) {
+  $package_name   = $nginx::package_name,
+  $package_source = $nginx::package_source,
+  $package_ensure = $nginx::package_ensure,
+  $manage_repo    = $nginx::manage_repo,
+) inherits ::nginx {
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
