@@ -4,7 +4,7 @@ branches:
   - refactor
   - gh-pages
 language: ruby
-script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
+script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
 bundler_args: --without rake
 matrix:
   fast_finish: true
