@@ -57,6 +57,11 @@ define nginx::resource::upstream (
   include nginx::params
   $root_group = $nginx::params::root_group
 
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    default  => present,
+  }
+
   Concat {
     owner => 'root',
     group => $root_group,
@@ -64,12 +69,8 @@ define nginx::resource::upstream (
   }
 
   concat { "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
-    ensure  => $ensure ? {
-      'absent' => absent,
-      'file'   => present,
-      default  => present,
-    },
-    notify  => Class['nginx::service'],
+    ensure => $ensure_real,
+    notify => Class['nginx::service'],
   }
 
   # Uses: $name, $upstream_cfg_prepend

@@ -60,6 +60,11 @@ define nginx::resource::map (
   include nginx::params
   $root_group = $nginx::params::root_group
 
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    default  => 'file',
+  }
+
   File {
     owner => 'root',
     group => $root_group,
@@ -67,10 +72,7 @@ define nginx::resource::map (
   }
 
   file { "${nginx::config::conf_dir}/conf.d/${name}-map.conf":
-    ensure  => $ensure ? {
-      'absent' => absent,
-      default  => 'file',
-    },
+    ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
     notify  => Class['nginx::service'],
   }
