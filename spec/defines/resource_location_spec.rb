@@ -9,6 +9,8 @@ describe 'nginx::resource::location' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'debian',
+      :lsbdistcodename => 'wheezy',
+      :lsbdistid       => 'Debian',
     }
   end
   let :pre_condition do

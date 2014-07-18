@@ -48,8 +48,13 @@ describe 'nginx::package' do
     end
   end
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Debian', :lsbdistcodename => lsbdistcodename }}
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename, lsbdistid|
+    let(:facts) {{
+      :operatingsystem => operatingsystem,
+      :osfamily        => 'Debian',
+      :lsbdistcodename => lsbdistcodename,
+      :lsbdistid       => lsbdistid
+    }}
 
     context "using defaults" do
       it { should contain_package('nginx') }
@@ -105,8 +110,8 @@ describe 'nginx::package' do
   end
 
   context 'debian' do
-    it_behaves_like 'debian', 'debian', 'wheezy'
-    it_behaves_like 'debian', 'ubuntu', 'precise'
+    it_behaves_like 'debian', 'debian', 'wheezy', 'debian'
+    it_behaves_like 'debian', 'ubuntu', 'precise', 'ubuntu'
   end
 
   context 'suse' do

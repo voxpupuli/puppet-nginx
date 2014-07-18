@@ -8,6 +8,8 @@ describe 'nginx::resource::mailhost' do
     {
       :osfamily        => 'debian',
       :operatingsystem => 'debian',
+      :lsbdistcodename => 'wheezy',
+      :lsbdistid       => 'Debian',
       :ipaddress6      => '::',
     }
   end
