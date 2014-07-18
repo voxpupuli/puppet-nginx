@@ -54,10 +54,10 @@
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put
 #     before anything else inside location (used with all other types except
 #     custom_cfg)
-#   [*location_custom_cfg_prepend*]   - Expects a array with extra directives
+#   [*location_custom_cfg_prepend*]   - Expects a hash with extra directives
 #     to put before anything else inside location (used with all other types
 #     except custom_cfg). Used for logical structures such as if.
-#   [*location_custom_cfg_append*]    - Expects a array with extra directives
+#   [*location_custom_cfg_append*]    - Expects a hash with extra directives
 #     to put before anything else inside location (used with all other types
 #     except custom_cfg). Used for logical structures such as if.
 #   [*location_cfg_append*]  - Expects a hash with extra directives to put
@@ -231,6 +231,12 @@ define nginx::resource::location (
   }
   if ($location_cfg_append != undef) {
     validate_hash($location_cfg_append)
+  }
+  if ($location_custom_cfg_prepend != undef) {
+    validate_hash($location_custom_cfg_prepend)
+  }
+  if ($location_custom_cfg_append != undef) {
+    validate_hash($location_custom_cfg_append)
   }
   if ($try_files != undef) {
     validate_array($try_files)
