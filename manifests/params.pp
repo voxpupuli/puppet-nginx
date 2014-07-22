@@ -48,6 +48,10 @@ class nginx::params {
     'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
   ]
+  $nx_proxy_set_header_ssl           = [
+    'X-Forwarded-Proto https',
+    'X-Forwarded-Ssl   on',
+  ]
   $nx_proxy_cache_path               = false
   $nx_proxy_cache_levels             = 1
   $nx_proxy_cache_keys_zone          = 'd2:100m'

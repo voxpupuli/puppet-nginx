@@ -9,6 +9,9 @@
 <% @proxy_set_header.each do |header| -%>
     proxy_set_header        <%= header %>;
 <% end -%>
+<% if @ssl then -%><% @proxy_set_header_ssl.each do |header| -%>
+    proxy_set_header        <%= header %>;
+<% end -%><% end -%>
 <% if @proxy_method -%>
     proxy_method        <%= @proxy_method %>;
 <% end -%>
