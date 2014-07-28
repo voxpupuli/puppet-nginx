@@ -32,7 +32,7 @@ describe 'nginx::resource::vhost' do
       it { should contain_class("nginx::config") }
       it { should contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
-        'group' => '0',
+        'group' => 'root',
         'mode'  => '0644',
       })}
       it { should contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }

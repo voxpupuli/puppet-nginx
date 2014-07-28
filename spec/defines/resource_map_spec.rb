@@ -38,7 +38,7 @@ describe 'nginx::resource::map' do
       it { should contain_file("/etc/nginx/conf.d/#{title}-map.conf").with(
         {
           'owner'   => 'root',
-          'group'   => '0',
+          'group'   => 'root',
           'mode'    => '0644',
           'ensure'  => 'file',
           'content' => /map \$uri \$#{title}/,
