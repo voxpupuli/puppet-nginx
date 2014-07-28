@@ -123,6 +123,11 @@ class nginx::params {
     }
   }
 
+  $root_group = $::operatingsystem ? {
+    'FreeBSD' => 'wheel',
+    default   => 'root',
+  }
+
   # Nginx is default launched as root if not change this parameter
   $nx_super_user = true
 
@@ -150,16 +155,11 @@ class nginx::params {
 
   # Specific owner for sites-available directory
   $sites_available_owner = 'root'
-  $sites_available_group = '0'
+  $sites_available_group = $root_group
   $sites_available_mode  = '0644'
 
   # Owner for all other files
   $global_owner = 'root'
-  $global_group = '0'
+  $global_group = $root_group
   $global_mode  = '0644'
-
-  $root_group = $::operatingsystem ? {
-    'FreeBSD' => 'wheel',
-    default   => 'root',
-  }
 }

@@ -73,9 +73,12 @@ define nginx::resource::geo (
   if ($proxies != undef) { validate_array($proxies) }
   if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
+  include nginx::params
+  $root_group = $nginx::params::root_group
+
   File {
     owner => 'root',
-    group => '0',
+    group => $root_group,
     mode  => '0644',
   }
 
