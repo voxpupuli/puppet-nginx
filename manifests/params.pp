@@ -74,11 +74,7 @@ class nginx::params {
   $nx_proxy_buffer_size              = '8k'
   $nx_proxy_headers_hash_bucket_size = '64'
 
-  $nx_logdir = $::kernel ? {
-    /(?i-mx:linux)/   => '/var/log/nginx',
-    /(?i-mx:sunos)/   => '/var/log/nginx',
-    /(?i-mx:freebsd)/ => '/var/log/nginx',
-  }
+  $nx_logdir = '/var/log/nginx'
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/   => $::osfamily ? {
