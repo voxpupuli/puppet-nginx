@@ -91,10 +91,12 @@ class nginx::params {
     /(?i-mx:freebsd)/ => '/var/run/nginx.pid',
   }
 
-  $nx_conf_dir = $::kernel ? {
-    /(?i-mx:joyent)/  => '/opt/local/etc/nginx',
-    /(?i-mx:freebsd)/ => '/usr/local/etc/nginx',
-    default           => '/etc/nginx',
+  $nx_conf_dir = $::kernelversion ? {
+    /(?i-mx:joyent)/    => '/opt/local/etc/nginx',
+    default             => $::kernel ? {
+      /(?i-mx:freebsd)/ => '/usr/local/etc/nginx',
+      default           => '/etc/nginx',
+    }
   }
 
   if $::osfamily {
