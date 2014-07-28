@@ -152,9 +152,13 @@ define nginx::resource::location (
   $rewrite_rules        = [],
   $priority             = 500
 ) {
+
+  include nginx::params
+  $root_group = $nginx::params::root_group
+
   File {
     owner  => 'root',
-    group  => 'root',
+    group  => $root_group,
     mode   => '0644',
     notify => Class['nginx::service'],
   }
