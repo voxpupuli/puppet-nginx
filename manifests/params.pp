@@ -119,6 +119,7 @@ class nginx::params {
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
       /(?i-mx:solaris)/                                                                      => 'webservd',
+      /(?i-mx:freebsd)/                                                                      => 'www',
     }
   }
 
