@@ -157,4 +157,9 @@ class nginx::params {
   $global_owner = 'root'
   $global_group = '0'
   $global_mode  = '0644'
+
+  $root_group = $::operatingsystem ? {
+    'FreeBSD' => 'wheel',
+    default   => 'root',
+  }
 }
