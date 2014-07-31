@@ -156,6 +156,15 @@ describe 'nginx::resource::location' do
           ],
         },
         {
+          :title => 'should contain include directives',
+          :attr  => 'include',
+          :value => [ '/file1', '/file2' ],
+          :match => [
+            %r'^\s+include\s+/file1;',
+            %r'^\s+include\s+/file2;',
+          ],
+        },
+        {
           :title => 'should contain custom appended directives',
           :attr  => 'location_custom_cfg_append',
           :value => { 'test1' => 'bar', 'test2' => ['foobar', 'barbaz'],
