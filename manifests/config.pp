@@ -57,6 +57,7 @@ class nginx::config(
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
+  $log_format                     = {},
   $mail                           = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
