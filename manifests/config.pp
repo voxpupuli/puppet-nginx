@@ -36,6 +36,7 @@ class nginx::config(
   $http_tcp_nopush                = $nginx::params::nx_http_tcp_nopush,
   $keepalive_timeout              = $nginx::params::nx_keepalive_timeout,
   $logdir                         = $nginx::params::nx_logdir,
+  $log_format                     = $nginx::params::nx_log_format,
   $mail                           = $nginx::params::nx_mail,
   $multi_accept                   = $nginx::params::nx_multi_accept,
   $names_hash_bucket_size         = $nginx::params::nx_names_hash_bucket_size,
