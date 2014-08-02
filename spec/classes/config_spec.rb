@@ -178,6 +178,18 @@ describe 'nginx::config' do
           :match => '  worker_connections 100;',
         },
         {
+          :title => 'should set log formats',
+          :attr  => 'log_format',
+          :value => {
+            'format1' => 'FORMAT1',
+            'format2' => 'FORMAT2',
+          },
+          :match => [
+            '  log_format format1 \'FORMAT1\';',
+            '  log_format format2 \'FORMAT2\';',
+          ],
+        },
+        {
           :title => 'should set access_log',
           :attr  => 'http_access_log',
           :value => '/path/to/access.log',
