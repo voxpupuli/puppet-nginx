@@ -65,6 +65,7 @@
 #     custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
+#   [*params*]               - Set additional fastcgi_params
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
@@ -107,6 +108,17 @@
 #    vhost               => 'test2.local',
 #    location_cfg_append => $my_config,
 #  }
+#
+#  Add Custom fastcgi_params
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    vhost    => 'test2.local',
+#    params   => {
+#       'APP_ENV' => 'local',
+#    }
+#  }
 
 define nginx::resource::location (
   $ensure               = present,
@@ -143,6 +155,7 @@ define nginx::resource::location (
   $location_custom_cfg_prepend  = undef,
   $location_custom_cfg_append   = undef,
   $try_files            = undef,
+  $params               = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
@@ -239,6 +252,9 @@ define nginx::resource::location (
   if ($try_files != undef) {
     validate_array($try_files)
   }
+  if ($params != undef) {
+    validate_hash($params)
+  }
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
@@ -286,6 +302,9 @@ define nginx::resource::location (
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
+  }
+  if (($params != undef) and defined(File[$fastcgi_params])) {
+    fail('Cannot define both custom fastcgi_params and a fastcgi_params template')
   }
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.

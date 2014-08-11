@@ -232,9 +232,25 @@ define web::nginx_ssl_with_redirect (
         fastcgi_connect_timeout => '3m',
         fastcgi_read_timeout    => '3m',
         fastcgi_send_timeout    => '3m'
-      }
+      },
+      params       => {
+        'APP_ENV'     => 'production',
+      },
     }
   }
+}
+```
+
+## Add custom fastcgi_params
+
+```puppet
+nginx::resource::location { "some_root":
+  ensure         => present,
+  location       => '/some/url',
+  vhost          => 'www.test.com',
+  params         => {
+    'APP_ENV' => 'production',
+  },
 }
 ```
 
