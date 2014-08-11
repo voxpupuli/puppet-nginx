@@ -247,9 +247,9 @@ define web::nginx_ssl_with_redirect (
 nginx::resource::location { "some_root":
   ensure         => present,
   location       => '/some/url',
-  vhost          => 'www.test.com',
+  fastcgi        => "127.0.0.1:9000",
   params         => {
-    'APP_ENV' => 'production',
+    'APP_ENV' => 'local',
   },
 }
 ```
