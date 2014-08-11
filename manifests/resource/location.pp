@@ -65,7 +65,7 @@
 #     custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
-#   [*params*]               - Set additional fastcgi_params
+#   [*params*]               - Set additional custom fastcgi_params
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
