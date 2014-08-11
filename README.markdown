@@ -232,10 +232,7 @@ define web::nginx_ssl_with_redirect (
         fastcgi_connect_timeout => '3m',
         fastcgi_read_timeout    => '3m',
         fastcgi_send_timeout    => '3m'
-      },
-      params       => {
-        'APP_ENV'     => 'production',
-      },
+      }
     }
   }
 }
