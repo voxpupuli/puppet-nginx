@@ -69,13 +69,19 @@ class nginx::config(
   $vhost_purge                    = $nginx::params::nx_vhost_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
-  $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile
+  $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
+  $global_owner                   = $nginx::params::global_owner,
+  $global_group                   = $nginx::params::global_group,
+  $global_mode                    = $nginx::params::global_mode,
+  $sites_available_owner          = $nginx::params::sites_available_owner,
+  $sites_available_group          = $nginx::params::sites_available_group,
+  $sites_available_mode           = $nginx::params::sites_available_mode,
 ) inherits nginx::params {
 
   File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
+    owner => $global_owner,
+    group => $global_group,
+    mode  => $global_mode,
   }
 
   file { $conf_dir:
@@ -125,6 +131,9 @@ class nginx::config(
   }
 
   file { "${conf_dir}/sites-available":
+    owner  => $sites_available_owner,
+    group  => $sites_available_group,
+    mode   => $sites_available_mode,
     ensure => directory,
   }
 

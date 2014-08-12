@@ -65,6 +65,14 @@ class nginx::package(
         before         => Anchor['nginx::package::end'],
       }
     }
+    'FreeBSD': {
+      class { 'nginx::package::freebsd':
+        package_name   => $package_name,
+        package_ensure => $package_ensure,
+        require        => Anchor['nginx::package::begin'],
+        before         => Anchor['nginx::package::end'],
+      }
+    }
     default: {
       case $::operatingsystem {
         'amazon': {

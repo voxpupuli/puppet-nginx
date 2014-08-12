@@ -204,13 +204,22 @@ describe 'nginx::config' do
           :notmatch => /  proxy_cache_path    \/path\/to\/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;/,
         },
         {
-          :title => 'should contain ordered appended directives',
+          :title => 'should contain ordered appended directives from hash',
           :attr  => 'http_cfg_append',
           :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
           :match => [
             '  allow test value 3;',
             '  test1 test value 1;',
             '  test2 test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from list of hashes',
+          :attr  => 'http_cfg_append',
+          :value => [[ 'allow', 'test value 1'], ['allow', 'test value 2' ]],
+          :match => [
+            '  allow test value 1;',
+            '  allow test value 2;',
           ],
         },
         {
