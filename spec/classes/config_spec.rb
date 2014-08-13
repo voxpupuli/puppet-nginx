@@ -3,8 +3,8 @@ describe 'nginx::config' do
 
   describe 'with defaults' do
     [
-      { :osfamily => 'debian', :operatingsystem => 'debian', },
-      { :osfamily => 'debian', :operatingsystem => 'ubuntu', },
+      { :osfamily => 'debian', :operatingsystem => 'debian', :lsbdistcodename => 'debian', :lsbdistid => 'Debian', },
+      { :osfamily => 'debian', :operatingsystem => 'ubuntu', :lsbdistcodename => 'ubuntu', :lsbdistid => 'Ubuntu', },
       { :osfamily => 'redhat', :operatingsystem => 'fedora', },
       { :osfamily => 'redhat', :operatingsystem => 'rhel', },
       { :osfamily => 'redhat', :operatingsystem => 'redhat', },
@@ -13,8 +13,6 @@ describe 'nginx::config' do
       { :osfamily => 'redhat', :operatingsystem => 'amazon', },
       { :osfamily => 'suse',   :operatingsystem => 'suse', },
       { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
     ].each do |facts|
 
       context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
@@ -23,6 +21,8 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
+            :lsbdistcodename => facts[:lsbdistcodename],
+            :lsbdistid       => facts[:lsbdistid],
           }
         end
 
@@ -96,8 +96,8 @@ describe 'nginx::config' do
 
   describe 'with defaults' do
     [
-      { :osfamily => 'debian', :operatingsystem => 'debian', },
-      { :osfamily => 'debian', :operatingsystem => 'ubuntu', },
+      { :osfamily => 'debian', :operatingsystem => 'debian', :lsbdistcodename => 'wheezy', :lsbdistid => 'Debian', },
+      { :osfamily => 'debian', :operatingsystem => 'ubuntu', :lsbdistcodename => 'precise', :lsbdistid => 'Ubuntu', },
     ].each do |facts|
 
       context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
@@ -106,6 +106,8 @@ describe 'nginx::config' do
           {
             :osfamily        => facts[:osfamily],
             :operatingsystem => facts[:operatingsystem],
+            :lsbdistcodename => facts[:lsbdistcodename],
+            :lsbdistid       => facts[:lsbdistid],
           }
         end
         it { should contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
@@ -125,8 +127,6 @@ describe 'nginx::config' do
       { :osfamily => 'redhat', :operatingsystem => 'amazon', },
       { :osfamily => 'suse',   :operatingsystem => 'suse', },
       { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
     ].each do |facts|
 
       context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
@@ -150,6 +150,8 @@ describe 'nginx::config' do
       {
         :osfamily        => 'debian',
         :operatingsystem => 'debian',
+        :lsbdistcodename => 'wheezy',
+        :lsbdistid       => 'Debian',
       }
     end
 

@@ -14,6 +14,8 @@ describe 'nginx::resource::vhost' do
     {
       :osfamily        => 'Debian',
       :operatingsystem => 'debian',
+      :lsbdistcodename => 'wheezy',
+      :lsbdistid       => 'Debian',
       :ipaddress6      => '::',
     }
   end
