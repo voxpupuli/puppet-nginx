@@ -30,6 +30,7 @@ describe 'nginx::resource::location' do
       it { should contain_class("nginx::config") }
       it { should contain_concat__fragment("f25e14942fb58942ee13b1465a4e1719").with_content(/location rspec-test/) }
       it { should_not contain_file('/etc/nginx/fastcgi_params') }
+      it { should_not contain_file('/etc/nginx/uwsgi_params') }
       it { should_not contain_concat__fragment("vhost1-800-rspec-test-ssl") }
       it { should_not contain_file("/etc/nginx/rspec-test_htpasswd") }
     end
@@ -472,6 +473,64 @@ describe 'nginx::resource::location' do
       end
     end
 
+    describe "vhost_location_uwsgi template content" do
+      let :default_params do
+        {
+          :location => 'location',
+          :uwsgi    => 'uwsgi_upstream',
+          :vhost    => 'vhost1'
+        }
+      end
+
+      [
+        {
+          :title => 'should set www_root',
+          :attr  => 'www_root',
+          :value => '/',
+          :match => '    root  /;'
+        },
+        {
+          :title => 'should set try_file(s)',
+          :attr  => 'try_files',
+          :value => ['name1','name2'],
+          :match => '    try_files name1 name2;',
+        },
+        {
+          :title => 'should set uwsgi_params',
+          :attr  => 'uwsgi_params',
+          :value => 'value',
+          :match => /^[ ]+include\s+value;/
+        },
+        {
+          :title => 'should set uwsgi_pass',
+          :attr  => 'uwsgi',
+          :value => 'value',
+          :match => '    uwsgi_pass value;'
+        },
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+
+          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
+          it param[:title] do
+            fragment = Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| should contain_concat__fragment(fragment).with_content(item) }
+            else
+              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              (lines & matches).should == matches
+            end
+
+            Array(param[:notmatch]).each do |item|
+              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
+            end
+          end
+        end
+      end
+    end
+
     describe "vhost_location_proxy template content" do
       [
         {
@@ -603,6 +662,13 @@ describe 'nginx::resource::location' do
         it { should contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
+      context 'when uwsgi => "uwsgi_upstream"' do
+        let :params do { :fastcgi => 'uwsgi_upstream', :vhost => 'vhost1' } end
+
+        it { should contain_file('/etc/nginx/uwsgi_params').with_mode('0770') }
+      end
+
+
       context 'when ssl_only => true' do
         let :params do { :ssl_only => true, :vhost => 'vhost1', :www_root => '/', } end
         it { should_not contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-rspec-test")) }
@@ -657,7 +723,7 @@ describe 'nginx::resource::location' do
           :vhost => 'vhost1',
         } end
 
-        it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined/) }
+        it { expect { should contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, or location_custom_cfg defined/) }
       end
 
       context "www_root and proxy are set" do

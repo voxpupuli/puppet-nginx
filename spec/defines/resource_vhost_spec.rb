@@ -40,6 +40,7 @@ describe 'nginx::resource::vhost' do
       it { should contain_concat__fragment("#{title}-footer") }
       it { should contain_nginx__resource__location("#{title}-default") }
       it { should_not contain_file("/etc/nginx/fastcgi_params") }
+      it { should_not contain_file("/etc/nginx/uwsgi_params") }
       it { should contain_file("#{title}.conf symlink").with({
         'ensure' => 'link',
         'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
@@ -737,6 +738,15 @@ describe 'nginx::resource::vhost' do
 
         it { should contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
+
+      context 'when uwsgi => "uwsgi_upstream"' do
+        let :params do default_params.merge({
+          :uwsgi => 'uwsgi_upstream',
+        }) end
+
+        it { should contain_file('/etc/nginx/uwsgi_params').with_mode('0770') }
+      end
+
 
       context 'when listen_port == ssl_port' do
         let :params do default_params.merge({
