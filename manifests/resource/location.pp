@@ -31,6 +31,7 @@
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*fastcgi*]              - location of fastcgi (host:port)
+#   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
@@ -107,6 +108,17 @@
 #    vhost               => 'test2.local',
 #    location_cfg_append => $my_config,
 #  }
+#
+#  Add Custom fastcgi_params
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    vhost    => 'test2.local',
+#    fastcgi_param => {
+#       'APP_ENV' => 'local',
+#    }
+#  }
 
 define nginx::resource::location (
   $ensure               = present,
@@ -125,6 +137,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
   $fastcgi              = undef,
+  $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
@@ -185,6 +198,9 @@ define nginx::resource::location (
   validate_array($proxy_set_header)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
+  }
+  if ($fastcgi_param != undef) {
+    validate_hash($fastcgi_param)
   }
   validate_string($fastcgi_params)
   if ($fastcgi_script != undef) {
@@ -286,6 +302,11 @@ define nginx::resource::location (
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
+  }
+  
+  # fastcgi_script is deprecated
+  if ($fastcgi_script != undef) {
+    warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
