@@ -245,7 +245,7 @@ nginx::resource::location { "some_root":
   ensure         => present,
   location       => '/some/url',
   fastcgi        => "127.0.0.1:9000",
-  params         => {
+  fastcgi_param  => {
     'APP_ENV' => 'local',
   },
 }

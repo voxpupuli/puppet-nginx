@@ -31,6 +31,7 @@
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*fastcgi*]              - location of fastcgi (host:port)
+#   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
@@ -65,7 +66,6 @@
 #     custom_cfg)
 #   [*try_files*]            - An array of file locations to try
 #   [*option*]               - Reserved for future use
-#   [*params*]               - Set additional custom fastcgi_params
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
@@ -115,7 +115,7 @@
 #    www_root => '/var/www/bob',
 #    location => '/bob',
 #    vhost    => 'test2.local',
-#    params   => {
+#    fastcgi_param => {
 #       'APP_ENV' => 'local',
 #    }
 #  }
@@ -137,6 +137,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
   $fastcgi              = undef,
+  $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
@@ -155,7 +156,6 @@ define nginx::resource::location (
   $location_custom_cfg_prepend  = undef,
   $location_custom_cfg_append   = undef,
   $try_files            = undef,
-  $params               = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
@@ -198,6 +198,9 @@ define nginx::resource::location (
   validate_array($proxy_set_header)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
+  }
+  if ($fastcgi_param != undef) {
+    validate_hash($fastcgi_param)
   }
   validate_string($fastcgi_params)
   if ($fastcgi_script != undef) {
@@ -252,9 +255,6 @@ define nginx::resource::location (
   if ($try_files != undef) {
     validate_array($try_files)
   }
-  if ($params != undef) {
-    validate_hash($params)
-  }
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
@@ -303,8 +303,10 @@ define nginx::resource::location (
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
-  if (($params != undef) and defined(File[$fastcgi_params])) {
-    fail('Cannot define both custom fastcgi_params and a fastcgi_params template')
+  
+  # fastcgi_script is deprecated
+  if ($fastcgi_script != undef) {
+    warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.

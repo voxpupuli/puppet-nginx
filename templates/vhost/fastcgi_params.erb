@@ -25,10 +25,3 @@ fastcgi_param	HTTPS			    $https;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param	REDIRECT_STATUS		200;
-
-<% if @params %>
-# Enable custom fastcgi_params
-	<% params.each_pair do |key, val| -%>
-fastcgi_param	<%= key %>			<%= val %>;
-	<% end -%>
-<% end %>
