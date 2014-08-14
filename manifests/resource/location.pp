@@ -15,6 +15,8 @@
 #   [*location_deny*]        - Array: Locations to deny connections from.
 #   [*www_root*]             - Specifies the location on disk for files to be
 #     read from. Cannot be set in conjunction with $proxy
+#   [*add_header*]          - Hash: Adds headers to the HTTP response when
+#     response code is equal to 200, 204, 301, 302 or 304.
 #   [*autoindex*]            - Set it on 'on' to activate autoindex directory
 #     listing. Undef by default.
 #   [*index_files*]          - Default index files for NGINX to read when
@@ -126,6 +128,7 @@ define nginx::resource::location (
   $location             = $name,
   $vhost                = undef,
   $www_root             = undef,
+  $add_header           = undef,
   $autoindex            = undef,
   $index_files          = [
     'index.html',
@@ -184,6 +187,9 @@ define nginx::resource::location (
   }
   if ($www_root != undef) {
     validate_string($www_root)
+  }
+  if ($add_header != undef) {
+    validate_hash($add_header)
   }
   if ($autoindex != undef) {
     validate_string($autoindex)
