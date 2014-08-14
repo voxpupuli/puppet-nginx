@@ -2,7 +2,7 @@ server {
 <% if @vhost_cfg_prepend -%><% vhost_cfg_prepend.each do |key,value| -%>
   <%= key %> <%= value %>
 <% end -%><% end -%>
-  listen       <%= ssl_port %>;
+  listen       <%= ssl_port %> <% if @listen_options %><%= listen_options %><% end %>;
   <% if ipv6_enable == 'true' && (defined? ipaddress6) %>
   listen [<%= ipv6_listen_ip %>]:<%= ipv6_listen_port %> <% if @ipv6_listen_options %><%= ipv6_listen_options %><% end %> ipv6only=on;
   <% end %>
