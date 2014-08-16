@@ -155,7 +155,7 @@ define nginx::resource::vhost (
   $ipv6_enable            = false,
   $ipv6_listen_ip         = '::',
   $ipv6_listen_port       = '80',
-  $ipv6_listen_options    = 'default ipv6only=on',
+  $ipv6_listen_options    = undef,
   $add_header             = undef,
   $ssl                    = false,
   $ssl_listen_option      = undef,
@@ -246,7 +246,12 @@ define nginx::resource::vhost (
   if !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
-  validate_string($ipv6_listen_options)
+  if ($ipv6_listen_options != undef) {
+    validate_string($ipv6_listen_options)
+  } else {
+    warning('$ipv6_listen_options no longer sets "default ipv6only=on". If you want
+      to retain this configuration please set this value manually.')
+  }
   if ($add_header != undef) {
     validate_hash($add_header)
   }
