@@ -7,7 +7,7 @@ server {
 
 <% end %>
 server {
-  listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= @listen_ip %>:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- if @ipv6_enable && (defined? @ipaddress6) %>
   listen [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
   <%- end %>
