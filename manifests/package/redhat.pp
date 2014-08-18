@@ -32,7 +32,7 @@ class nginx::package::redhat (
     }
     default: {
       case $::lsbmajdistrelease {
-        5, 6: {
+        5, 6, 7: {
           $os_rel = $::lsbmajdistrelease
         }
         default: {
