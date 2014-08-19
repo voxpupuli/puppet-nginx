@@ -80,6 +80,10 @@
 #   [*priority*]              - Location priority. Default: 500. User priority
 #     401-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
+#   [*mp4*]             - Indicates whether or not this loation can be
+#     used for mp4 streaming. Default: false
+#   [*flv*]             - Indicates whether or not this loation can be
+#     used for flv streaming. Default: false
 #
 #
 # Actions:
@@ -163,7 +167,9 @@ define nginx::resource::location (
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $rewrite_rules        = [],
-  $priority             = 500
+  $priority             = 500,
+  $mp4             = false,
+  $flv             = false,
 ) {
 
   include nginx::params
@@ -303,7 +309,7 @@ define nginx::resource::location (
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
-  
+
   # fastcgi_script is deprecated
   if ($fastcgi_script != undef) {
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
