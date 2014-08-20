@@ -65,6 +65,8 @@
 #     extension.
 #   [*ssl_stapling_verify*] - Bool: Enables or disables verification of
 #     OCSP responses by the server. Defaults to false.
+#   [*ssl_timeout*]         - String: Specifies a time during which a client
+#     may reuse the session parameters stored in a cache. Defaults to 5m.
 #   [*ssl_trusted_cert*]    - String: Specifies a file with trusted CA
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
@@ -170,6 +172,7 @@ define nginx::resource::vhost (
   $ssl_stapling_file      = undef,
   $ssl_stapling_responder = undef,
   $ssl_stapling_verify    = false,
+  $ssl_timeout            = '5m',
   $ssl_trusted_cert       = undef,
   $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
@@ -275,6 +278,7 @@ define nginx::resource::vhost (
     validate_string($ssl_stapling_responder)
   }
   validate_bool($ssl_stapling_verify)
+  validate_string($ssl_timeout)
   if ($ssl_trusted_cert != undef) {
     validate_string($ssl_trusted_cert)
   }
