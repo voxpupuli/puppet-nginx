@@ -62,6 +62,7 @@ class nginx (
   $nginx_mailhosts                = {},
   $nginx_upstreams                = {},
   $nginx_vhosts                   = {},
+  $nginx_vhosts_defaults          = {},
   $package_ensure                 = $nginx::params::package_ensure,
   $package_name                   = $nginx::params::package_name,
   $package_source                 = $nginx::params::package_source,
@@ -177,6 +178,7 @@ class nginx (
   validate_string($http_access_log)
   validate_hash($nginx_upstreams)
   validate_hash($nginx_vhosts)
+  validate_hash($nginx_vhosts_defaults)
   validate_hash($nginx_locations)
   validate_hash($nginx_mailhosts)
   validate_bool($manage_repo)
@@ -265,7 +267,7 @@ class nginx (
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
-  create_resources('nginx::resource::vhost', $nginx_vhosts)
+  create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
   create_resources('nginx::resource::map', $string_mappings)
