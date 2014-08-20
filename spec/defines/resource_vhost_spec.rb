@@ -433,6 +433,12 @@ describe 'nginx::resource::vhost' do
           :match => '  ssl_session_cache         shared:SSL:1m;',
         },
         {
+          :title => 'should set the SSL timeout',
+          :attr  => 'ssl_session_timeout',
+          :value => '30m',
+          :match => '  ssl_session_timeout       30m;',
+        },
+        {
           :title => 'should set the SSL protocols',
           :attr  => 'ssl_protocols',
           :value => 'SSLv3',
