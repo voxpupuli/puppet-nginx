@@ -494,6 +494,32 @@ describe 'nginx::resource::location' do
                   without_content(/^[ ]+fastcgi_param\s+SCRIPT_FILENAME\s+.+?;/)
         end
       end
+
+      context "when fastcgi_param is {'CUSTOM_PARAM' => 'value'}" do
+        let :params do default_params.merge({ :fastcgi_param => {'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2'} }) end
+        it "should set fastcgi_param" do
+        should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).
+                  with_content(%r|fastcgi_param\s+CUSTOM_PARAM\s+value;|).
+                  with_content(%r|fastcgi_param\s+CUSTOM_PARAM2\s+value2;|)
+        end
+        it "should add comment # Enable custom fastcgi_params" do
+        should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).
+                  with_content(%r|# Enable custom fastcgi_params\s+|)
+        end
+      end
+
+      context "when fastcgi_param is not set" do
+        let :params do default_params end
+        it "should not set fastcgi_param" do
+        should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).
+                  without_content(/fastcgi_param\s+CUSTOM_PARAM\s+.+?;/).
+                  without_content(/fastcgi_param\s+CUSTOM_PARAM2\s+.+?;/)
+        end
+        it "should not add comment # Enable custom fastcgi_params" do
+        should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).
+                  without_content(/# Enable custom fastcgi_params\s+/)
+        end
+      end
     end
 
     describe "vhost_location_proxy template content" do
