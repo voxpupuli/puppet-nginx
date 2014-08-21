@@ -238,6 +238,19 @@ define web::nginx_ssl_with_redirect (
 }
 ```
 
+## Add custom fastcgi_params
+
+```puppet
+nginx::resource::location { "some_root":
+  ensure         => present,
+  location       => '/some/url',
+  fastcgi        => "127.0.0.1:9000",
+  fastcgi_param  => {
+    'APP_ENV' => 'local',
+  },
+}
+```
+
 # Call class web::nginx_ssl_with_redirect
 
 ```puppet

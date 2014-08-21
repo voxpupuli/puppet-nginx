@@ -54,9 +54,12 @@ define nginx::resource::upstream (
     validate_hash($upstream_cfg_prepend)
   }
 
+  include nginx::params
+  $root_group = $nginx::params::root_group
+
   Concat {
     owner => 'root',
-    group => 'root',
+    group => $root_group,
     mode  => '0644',
   }
 

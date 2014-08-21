@@ -31,6 +31,7 @@
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*fastcgi*]              - location of fastcgi (host:port)
+#   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
@@ -43,6 +44,12 @@
 #     for this location
 #   [*stub_status*]          - If true it will point configure module
 #     stub_status to provide nginx stats on location
+#   [*raw_prepend*]          - A single string, or an array of strings to
+#     prepend to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_append*]           - A single string, or an array of strings to
+#     append to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
 #   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot
 #     be used with other location types (proxy, fastcgi, root, or stub_status)
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put
@@ -101,6 +108,17 @@
 #    vhost               => 'test2.local',
 #    location_cfg_append => $my_config,
 #  }
+#
+#  Add Custom fastcgi_params
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    vhost    => 'test2.local',
+#    fastcgi_param => {
+#       'APP_ENV' => 'local',
+#    }
+#  }
 
 define nginx::resource::location (
   $ensure               = present,
@@ -119,6 +137,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
   $fastcgi              = undef,
+  $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
@@ -129,6 +148,8 @@ define nginx::resource::location (
   $location_deny        = undef,
   $option               = undef,
   $stub_status          = undef,
+  $raw_prepend          = undef,
+  $raw_append           = undef,
   $location_custom_cfg  = undef,
   $location_cfg_prepend = undef,
   $location_cfg_append  = undef,
@@ -144,9 +165,13 @@ define nginx::resource::location (
   $rewrite_rules        = [],
   $priority             = 500
 ) {
+
+  include nginx::params
+  $root_group = $nginx::params::root_group
+
   File {
     owner  => 'root',
-    group  => 'root',
+    group  => $root_group,
     mode   => '0644',
     notify => Class['nginx::service'],
   }
@@ -174,6 +199,9 @@ define nginx::resource::location (
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }
+  if ($fastcgi_param != undef) {
+    validate_hash($fastcgi_param)
+  }
   validate_string($fastcgi_params)
   if ($fastcgi_script != undef) {
     validate_string($fastcgi_script)
@@ -200,6 +228,20 @@ define nginx::resource::location (
   }
   if ($stub_status != undef) {
     validate_bool($stub_status)
+  }
+  if ($raw_prepend != undef) {
+    if (is_array($raw_prepend)) {
+      validate_array($raw_prepend)
+    } else {
+      validate_string($raw_prepend)
+    }
+  }
+  if ($raw_append != undef) {
+    if (is_array($raw_append)) {
+      validate_array($raw_append)
+    } else {
+      validate_string($raw_append)
+    }
   }
   if ($location_custom_cfg != undef) {
     validate_hash($location_custom_cfg)
@@ -260,6 +302,11 @@ define nginx::resource::location (
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
+  }
+  
+  # fastcgi_script is deprecated
+  if ($fastcgi_script != undef) {
+    warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.

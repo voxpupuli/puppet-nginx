@@ -96,6 +96,12 @@ class nginx (
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
+  $global_owner                   = $nginx::params::nx_global_owner,
+  $global_group                   = $nginx::params::nx_global_group,
+  $global_mode                    = $nginx::params::nx_global_mode,
+  $sites_available_owner          = $nginx::params::nx_sites_available_owner,
+  $sites_available_group          = $nginx::params::nx_sites_available_group,
+  $sites_available_mode           = $nginx::params::nx_sites_available_mode,
   $geo_mappings                   = {},
   $string_mappings                = {},
 ) inherits nginx::params {
@@ -162,8 +168,11 @@ class nginx (
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
   if ($http_cfg_append != false) {
-    validate_hash($http_cfg_append)
+    if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
+      fail('$http_cfg_append must be either a hash or array')
+    }
   }
+
   validate_string($nginx_error_log)
   validate_string($http_access_log)
   validate_hash($nginx_upstreams)
@@ -242,6 +251,12 @@ class nginx (
     worker_connections             => $worker_connections,
     worker_processes               => $worker_processes,
     worker_rlimit_nofile           => $worker_rlimit_nofile,
+    global_owner                   => $global_owner,
+    global_group                   => $global_group,
+    global_mode                    => $global_mode,
+    sites_available_owner          => $sites_available_owner,
+    sites_available_group          => $sites_available_group,
+    sites_available_mode           => $sites_available_mode,
     require                        => Class['nginx::package'],
     notify                         => Class['nginx::service'],
   }

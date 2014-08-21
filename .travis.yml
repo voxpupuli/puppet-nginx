@@ -1,7 +1,8 @@
 ---
 branches:
-  only:
-  - master
+  except:
+  - refactor
+  - gh-pages
 language: ruby
 script: "bundle exec rake --rakefile $PWD/.travis/Rakefile spec SPEC_OPTS='--format documentation'"
 rvm:

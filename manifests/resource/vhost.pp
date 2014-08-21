@@ -90,6 +90,22 @@
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
 #   [*client_max_body_size*]    - This directive sets client_max_body_size.
+#   [*client_body_timeout*]     - Sets how long the server will wait for a
+#      client body. Default is 60s
+#   [*client_header_timeout*]     - Sets how long the server will wait for a
+#      client header. Default is 60s
+#   [*raw_prepend*]            - A single string, or an array of strings to
+#     prepend to the server directive (after cfg prepend directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_append*]             - A single string, or an array of strings to
+#     append to the server directive (after cfg append directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
+#   [*location_raw_prepend*]          - A single string, or an array of strings
+#     to prepend to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
+#   [*location_raw_append*]           - A single string, or an array of strings
+#     to append to the location directive (after custom_cfg directives). NOTE:
+#     YOU are responsible for a semicolon on each line that requires one.
 #   [*vhost_cfg_append*]        - It expects a hash with custom directives to
 #     put after everything else inside vhost
 #   [*vhost_cfg_prepend*]       - It expects a hash with custom directives to
@@ -113,6 +129,10 @@
 #   [*log_by_lua_file*]         - Equivalent to log_by_lua, except that the file
 #     specified by <path-to-lua-script-file> contains the Lua code, or, as from
 #     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
+#   [*gzip_types*]              - Defines gzip_types, nginx default is text/html
+#   [*owner*]                   - Defines owner of the .conf file
+#   [*group*]                   - Defines group of the .conf file
+#   [*mode*]                    - Defines mode of the .conf file
 # Actions:
 #
 # Requires:
@@ -182,7 +202,13 @@ define nginx::resource::vhost (
   $try_files              = undef,
   $auth_basic             = undef,
   $auth_basic_user_file   = undef,
+  $client_body_timeout    = undef,
+  $client_header_timeout  = undef,
   $client_max_body_size   = undef,
+  $raw_prepend            = undef,
+  $raw_append             = undef,
+  $location_raw_prepend   = undef,
+  $location_raw_append    = undef,
   $vhost_cfg_prepend      = undef,
   $vhost_cfg_append       = undef,
   $vhost_cfg_ssl_prepend      = undef,
@@ -198,6 +224,10 @@ define nginx::resource::vhost (
   $rewrite_rules          = [],
   $string_mappings        = {},
   $geo_mappings           = {},
+  $gzip_types             = undef,
+  $owner                  = $nginx::config::global_owner,
+  $group                  = $nginx::config::global_group,
+  $mode                   = $nginx::config::global_mode,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -287,6 +317,34 @@ define nginx::resource::vhost (
   if ($rewrite_to_https != undef) {
     validate_bool($rewrite_to_https)
   }
+  if ($raw_prepend != undef) {
+    if (is_array($raw_prepend)) {
+      validate_array($raw_prepend)
+    } else {
+      validate_string($raw_prepend)
+    }
+  }
+  if ($raw_append != undef) {
+    if (is_array($raw_append)) {
+      validate_array($raw_append)
+    } else {
+      validate_string($raw_append)
+    }
+  }
+  if ($location_raw_prepend != undef) {
+    if (is_array($location_raw_prepend)) {
+      validate_array($location_raw_prepend)
+    } else {
+      validate_string($location_raw_prepend)
+    }
+  }
+  if ($location_raw_append != undef) {
+    if (is_array($location_raw_append)) {
+      validate_array($location_raw_append)
+    } else {
+      validate_string($location_raw_append)
+    }
+  }
   if ($location_custom_cfg != undef) {
     validate_hash($location_custom_cfg)
   }
@@ -335,10 +393,24 @@ define nginx::resource::vhost (
   if ($log_by_lua_file != undef) {
     validate_string($log_by_lua_file)
   }
+  if ($client_body_timeout != undef) {
+    validate_string($client_body_timeout)
+  }
+  if ($client_header_timeout != undef) {
+    validate_string($client_header_timeout)
+  }
+  if ($gzip_types != undef) {
+    validate_string($gzip_types)
+  }
   validate_bool($use_default_location)
   validate_array($rewrite_rules)
   validate_hash($string_mappings)
   validate_hash($geo_mappings)
+
+  validate_string($owner)
+  validate_string($group)
+  validate_re($mode, '^\d{4}$',
+    "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
   $vhost_dir = "${nginx::config::conf_dir}/sites-available"
@@ -357,9 +429,9 @@ define nginx::resource::vhost (
       default  => 'file',
     },
     notify => Class['nginx::service'],
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
   }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
@@ -395,9 +467,9 @@ define nginx::resource::vhost (
   }
 
   concat { $config_file:
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
     notify => Class['nginx::service'],
   }
 
@@ -431,6 +503,8 @@ define nginx::resource::vhost (
       location_custom_cfg   => $location_custom_cfg,
       notify                => Class['nginx::service'],
       rewrite_rules         => $rewrite_rules,
+      raw_prepend           => $location_raw_prepend,
+      raw_append            => $location_raw_append
     }
     $root = undef
   } else {
