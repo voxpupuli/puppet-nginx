@@ -34,6 +34,7 @@ describe 'nginx' do
           :operatingsystem => 'Debian',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'precise',
+          :lsbdistid       => 'Debian',
         }
       end
     end

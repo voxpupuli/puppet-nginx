@@ -291,7 +291,7 @@ define nginx::resource::location (
   $config_file = "${nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
-  $location_sanitized = regsubst($location_sanitized_tmp, "\\\\", '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
   ## Check for various error conditions
   if ($vhost == undef) {
@@ -336,7 +336,7 @@ define nginx::resource::location (
   if ($ssl_only != true) {
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
-    concat::fragment { "${tmpFile}":
+    concat::fragment { $tmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -344,7 +344,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${priority}",
+      order   => "${priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
     }
   }
 
@@ -353,7 +353,7 @@ define nginx::resource::location (
     $ssl_priority = $priority + 300
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
-    concat::fragment {"${sslTmpFile}":
+    concat::fragment { $sslTmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -361,7 +361,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${ssl_priority}",
+      order   => "${ssl_priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
     }
   }
 

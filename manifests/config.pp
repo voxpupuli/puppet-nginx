@@ -131,10 +131,10 @@ class nginx::config(
   }
 
   file { "${conf_dir}/sites-available":
+    ensure => directory,
     owner  => $sites_available_owner,
     group  => $sites_available_group,
     mode   => $sites_available_mode,
-    ensure => directory,
   }
 
   if $vhost_purge == true {
