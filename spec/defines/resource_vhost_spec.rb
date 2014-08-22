@@ -28,19 +28,19 @@ describe 'nginx::resource::vhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { should contain_class("nginx::params") }
-      it { should contain_class("nginx::config") }
-      it { should contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
+      it { is_expected.to contain_class("nginx::params") }
+      it { is_expected.to contain_class("nginx::config") }
+      it { is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
         'mode'  => '0644',
       })}
-      it { should contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
-      it { should contain_concat__fragment("#{title}-header").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
-      it { should contain_concat__fragment("#{title}-footer") }
-      it { should contain_nginx__resource__location("#{title}-default") }
-      it { should_not contain_file("/etc/nginx/fastcgi_params") }
-      it { should contain_file("#{title}.conf symlink").with({
+      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
+      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
+      it { is_expected.to contain_concat__fragment("#{title}-footer") }
+      it { is_expected.to contain_nginx__resource__location("#{title}-default") }
+      it { is_expected.not_to contain_file("/etc/nginx/fastcgi_params") }
+      it { is_expected.to contain_file("#{title}.conf symlink").with({
         'ensure' => 'link',
         'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
         'target' => "/etc/nginx/sites-available/#{title}.conf"
@@ -242,18 +242,18 @@ describe 'nginx::resource::vhost' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("#{title}-header") }
+          it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| should contain_concat__fragment("#{title}-header").with_content(item) }
+              matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
             else
               lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
-              (lines & Array(param[:match])).should == Array(param[:match])
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("#{title}-header").without_content(item)
+              is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
             end
           end
         end
@@ -307,18 +307,18 @@ describe 'nginx::resource::vhost' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment("#{title}-footer") }
+          it { is_expected.to contain_concat__fragment("#{title}-footer") }
           it param[:title] do
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| should contain_concat__fragment("#{title}-footer").with_content(item) }
+              matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
             else
               lines  = subject.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
-              (lines & Array(param[:match])).should == Array(param[:match])
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("#{title}-footer").without_content(item)
+              is_expected.to contain_concat__fragment("#{title}-footer").without_content(item)
             end
           end
         end
@@ -538,18 +538,18 @@ describe 'nginx::resource::vhost' do
             :ssl_key            => 'dummy.key',
             :ssl_cert           => 'dummy.crt',
           }) end
-          it { should contain_concat__fragment("#{title}-ssl-header") }
+          it { is_expected.to contain_concat__fragment("#{title}-ssl-header") }
           it param[:title] do
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| should contain_concat__fragment("#{title}-ssl-header").with_content(item) }
+              matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
             else
               lines = subject.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
-              (lines & Array(param[:match])).should == Array(param[:match])
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("#{title}-ssl-header").without_content(item)
+              is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(item)
             end
           end
         end
@@ -618,18 +618,18 @@ describe 'nginx::resource::vhost' do
             :ssl_cert           => 'dummy.crt',
           }) end
 
-          it { should contain_concat__fragment("#{title}-ssl-footer") }
+          it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
           it param[:title] do
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| should contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
+              matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
             else
               lines = subject.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
-              (lines & Array(param[:match])).should == Array(param[:match])
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment("#{title}-ssl-footer").without_content(item)
+              is_expected.to contain_concat__fragment("#{title}-ssl-footer").without_content(item)
             end
           end
         end
@@ -651,7 +651,7 @@ describe 'nginx::resource::vhost' do
         end
 
         it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          should contain_concat__fragment("#{title}-ssl-header").with_content(/^[ ]+server_name\s+foo.com;/)
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^[ ]+server_name\s+foo.com;/)
         end
       end
 
@@ -666,20 +666,20 @@ describe 'nginx::resource::vhost' do
         end
 
         it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          should contain_concat__fragment("#{title}-header").with_content(/^[ ]+server_name\s+foo.com;/)
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^[ ]+server_name\s+foo.com;/)
         end
       end
 
       context "SSL cert missing" do
         let(:params) {{ :ssl => true, :ssl_key => 'key' }}
 
-        it { expect { should contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context "SSL key missing" do
         let(:params) {{ :ssl => true, :ssl_cert => 'cert' }}
 
-        it { expect { should contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context 'when use_default_location => true' do
@@ -687,7 +687,7 @@ describe 'nginx::resource::vhost' do
           :use_default_location => true,
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default") }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default") }
       end
 
       context 'when use_default_location => false' do
@@ -695,7 +695,7 @@ describe 'nginx::resource::vhost' do
           :use_default_location => false,
         }) end
 
-        it { should_not contain_nginx__resource__location("#{title}-default") }
+        it { is_expected.not_to contain_nginx__resource__location("#{title}-default") }
       end
 
       context 'when location_cfg_prepend => { key => value }' do
@@ -703,7 +703,7 @@ describe 'nginx::resource::vhost' do
           :location_cfg_prepend => { 'key' => 'value' },
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_location_cfg_prepend({ 'key' => 'value' }) }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_location_cfg_prepend({ 'key' => 'value' }) }
       end
 
       context "when location_raw_prepend => [ 'foo;' ]" do
@@ -711,7 +711,7 @@ describe 'nginx::resource::vhost' do
           :location_raw_prepend => [ 'foo;' ],
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_raw_prepend([ 'foo;' ]) }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_raw_prepend([ 'foo;' ]) }
       end
 
       context "when location_raw_append => [ 'foo;' ]" do
@@ -719,7 +719,7 @@ describe 'nginx::resource::vhost' do
           :location_raw_append => [ 'foo;' ],
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_raw_append([ 'foo;' ]) }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_raw_append([ 'foo;' ]) }
       end
 
       context 'when location_cfg_append => { key => value }' do
@@ -727,7 +727,7 @@ describe 'nginx::resource::vhost' do
           :location_cfg_append => { 'key' => 'value' },
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_location_cfg_append({ 'key' => 'value' }) }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_location_cfg_append({ 'key' => 'value' }) }
       end
 
       context 'when fastcgi => "localhost:9000"' do
@@ -735,7 +735,7 @@ describe 'nginx::resource::vhost' do
           :fastcgi => 'localhost:9000',
         }) end
 
-        it { should contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
+        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
       context 'when listen_port == ssl_port' do
@@ -744,8 +744,8 @@ describe 'nginx::resource::vhost' do
           :ssl_port    => 80,
         }) end
 
-        it { should_not contain_concat__fragment("#{title}-header") }
-        it { should_not contain_concat__fragment("#{title}-footer") }
+        it { is_expected.not_to contain_concat__fragment("#{title}-header") }
+        it { is_expected.not_to contain_concat__fragment("#{title}-footer") }
       end
 
       context 'when listen_port != ssl_port' do
@@ -754,8 +754,8 @@ describe 'nginx::resource::vhost' do
           :ssl_port    => 443,
         }) end
 
-        it { should contain_concat__fragment("#{title}-header") }
-        it { should contain_concat__fragment("#{title}-footer") }
+        it { is_expected.to contain_concat__fragment("#{title}-header") }
+        it { is_expected.to contain_concat__fragment("#{title}-footer") }
       end
 
       context 'when ensure => absent' do
@@ -766,8 +766,8 @@ describe 'nginx::resource::vhost' do
           :ssl_cert => 'dummy.cert',
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
-        it { should contain_file("#{title}.conf symlink").with_ensure('absent') }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
+        it { is_expected.to contain_file("#{title}.conf symlink").with_ensure('absent') }
       end
 
       context 'when ssl => true and ssl_port == listen_port' do
@@ -779,12 +779,12 @@ describe 'nginx::resource::vhost' do
           :ssl_cert    => 'dummy.cert',
         }) end
 
-        it { should contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
-        it { should contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
-        it { should contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
-        it { should contain_concat__fragment("#{title}-ssl-footer") }
-        it { should contain_file("/etc/nginx/#{title}.crt") }
-        it { should contain_file("/etc/nginx/#{title}.key") }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
 
       context 'when passenger_cgi_param is set' do
@@ -792,9 +792,9 @@ describe 'nginx::resource::vhost' do
           :passenger_cgi_param => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
         }) end
 
-        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
-        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
-        it { should contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
       context 'when passenger_cgi_param is set and ssl => true' do
@@ -805,16 +805,16 @@ describe 'nginx::resource::vhost' do
           :ssl_cert            => 'dummy.cert',
         }) end
 
-        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
-        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
-        it { should contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
       context 'when vhost name is sanitized' do
         let :title do 'www rspec-vhost com' end
         let :params do default_params end
 
-        it { should contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
       end
     end
   end
