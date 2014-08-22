@@ -30,7 +30,7 @@
 #
 # Sample Hiera usage:
 #
-#  nginx::maps:
+#  nginx::string_mappings:
 #    client_network:
 #      ensure: present
 #      hostnames: true
