@@ -55,6 +55,30 @@ describe 'nginx::resource::location' do
           :match => '    internal;'
         },
         {
+          :title    => 'should not set mp4',
+          :attr     => 'mp4',
+          :value    => false,
+          :notmatch => /mp4;/
+        },
+        {
+          :title => 'should set mp4',
+          :attr  => 'mp4',
+          :value => true,
+          :match => '    mp4;'
+        },
+        {
+          :title    => 'should not set flv',
+          :attr     => 'flv',
+          :value    => false,
+          :notmatch => /flv;/
+        },
+        {
+          :title => 'should set flv',
+          :attr  => 'flv',
+          :value => true,
+          :match => '    flv;'
+        },
+        {
           :title => 'should set location_allow',
           :attr  => 'location_allow',
           :value => %w( 127.0.0.1 10.0.0.1 ),
