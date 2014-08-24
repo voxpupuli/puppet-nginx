@@ -80,6 +80,10 @@
 #   [*priority*]              - Location priority. Default: 500. User priority
 #     401-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
+#   [*mp4*]             - Indicates whether or not this loation can be
+#     used for mp4 streaming. Default: false
+#   [*flv*]             - Indicates whether or not this loation can be
+#     used for flv streaming. Default: false
 #
 #
 # Actions:
@@ -121,60 +125,56 @@
 #  }
 
 define nginx::location (
-  $ensure               = present,
-  $internal             = false,
-  $location             = $name,
-  $vhost                = undef,
-  $www_root             = undef,
-  $autoindex            = undef,
-  $index_files          = [
+  $ensure                       = present,
+  $internal                     = false,
+  $location                     = $name,
+  $vhost                        = undef,
+  $www_root                     = undef,
+  $autoindex                    = undef,
+  $index_files                  = [
     'index.html',
     'index.htm',
-    'index.php'],
-  $proxy                = undef,
-  $proxy_redirect       = $nginx::config::proxy_redirect,
-  $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
-  $proxy_set_header     = $nginx::config::proxy_set_header,
-  $fastcgi              = undef,
-  $fastcgi_param        = undef,
-  $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
-  $fastcgi_script       = undef,
-  $fastcgi_split_path   = undef,
-  $ssl                  = false,
-  $ssl_only             = false,
-  $location_alias       = undef,
-  $location_allow       = undef,
-  $location_deny        = undef,
-  $option               = undef,
-  $stub_status          = undef,
-  $raw_prepend          = undef,
-  $raw_append           = undef,
-  $location_custom_cfg  = undef,
-  $location_cfg_prepend = undef,
-  $location_cfg_append  = undef,
+    'index.php'
+  ],
+  $proxy                        = undef,
+  $proxy_redirect               = $nginx::config::proxy_redirect,
+  $proxy_read_timeout           = $nginx::config::proxy_read_timeout,
+  $proxy_connect_timeout        = $nginx::config::proxy_connect_timeout,
+  $proxy_set_header             = $nginx::config::proxy_set_header,
+  $fastcgi                      = undef,
+  $fastcgi_param                = undef,
+  $fastcgi_params               = "${nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_script               = undef,
+  $fastcgi_split_path           = undef,
+  $ssl                          = false,
+  $ssl_only                     = false,
+  $location_alias               = undef,
+  $location_allow               = undef,
+  $location_deny                = undef,
+  $option                       = undef,
+  $stub_status                  = undef,
+  $raw_prepend                  = undef,
+  $raw_append                   = undef,
+  $location_custom_cfg          = undef,
+  $location_cfg_prepend         = undef,
+  $location_cfg_append          = undef,
   $location_custom_cfg_prepend  = undef,
   $location_custom_cfg_append   = undef,
-  $try_files            = undef,
-  $proxy_cache          = false,
-  $proxy_cache_valid    = false,
-  $proxy_method         = undef,
-  $proxy_set_body       = undef,
-  $auth_basic           = undef,
-  $auth_basic_user_file = undef,
-  $rewrite_rules        = [],
-  $priority             = 500
+  $try_files                    = undef,
+  $proxy_cache                  = false,
+  $proxy_cache_valid            = false,
+  $proxy_method                 = undef,
+  $proxy_set_body               = undef,
+  $auth_basic                   = undef,
+  $auth_basic_user_file         = undef,
+  $rewrite_rules                = [],
+  $priority                     = 500,
+  $mp4                          = false,
+  $flv                          = false,
 ) {
 
   include nginx::params
   $root_group = $nginx::params::root_group
-
-  File {
-    owner  => 'root',
-    group  => $root_group,
-    mode   => '0644',
-    notify => Class['nginx::service'],
-  }
 
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
@@ -303,7 +303,7 @@ define nginx::location (
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
-  
+
   # fastcgi_script is deprecated
   if ($fastcgi_script != undef) {
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
@@ -327,6 +327,9 @@ define nginx::location (
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
+      owner  => 'root',
+      group  => $root_group,
+      mode   => '0644',
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
     }
@@ -369,6 +372,8 @@ define nginx::location (
     #Generate htpasswd with provided file-locations
     file { "${nginx::config::conf_dir}/${location_sanitized}_htpasswd":
       ensure => $ensure,
+      owner  => 'root',
+      group  => $root_group,
       mode   => '0644',
       source => $auth_basic_user_file,
     }

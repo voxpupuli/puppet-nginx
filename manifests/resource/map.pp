@@ -1,7 +1,6 @@
 # define: nginx::resource::map
 #
 # Legacy defined type. Will be removed soon.
-
 define nginx::resource::map (
   $string,
   $mappings,

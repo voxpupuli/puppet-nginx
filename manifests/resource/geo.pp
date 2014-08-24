@@ -11,7 +11,6 @@ define nginx::resource::geo (
   $proxies         = undef,
   $proxy_recursive = undef
 ) {
-
   notify { '**WARNING**: Usage of the nginx::resource::geo defined type will be deprecated soon. Please use nginx::geo.': }
 
   nginx::geo { $name:

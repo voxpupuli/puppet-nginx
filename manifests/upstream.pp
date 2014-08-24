@@ -57,19 +57,17 @@ define nginx::upstream (
   include nginx::params
   $root_group = $nginx::params::root_group
 
-  Concat {
-    owner => 'root',
-    group => $root_group,
-    mode  => '0644',
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    'file'   => present,
+    default  => present,
   }
 
   concat { "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
-    ensure  => $ensure ? {
-      'absent' => absent,
-      'file'   => present,
-      default  => present,
-    },
-    notify  => Class['nginx::service'],
+    ensure => $ensure_real,
+    owner  => 'root',
+    group  => $root_group,
+    mode   => '0644',
   }
 
   # Uses: $name, $upstream_cfg_prepend

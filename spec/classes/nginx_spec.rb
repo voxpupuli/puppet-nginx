@@ -11,20 +11,20 @@ describe 'nginx' do
   end
 
   shared_examples "a Linux OS" do
-    it { should compile.with_all_deps }
-    it { should contain_class('nginx') }
-    it { should contain_anchor('nginx::begin') }
-    it { should contain_nginx__package.that_requires('Anchor[nginx::begin]') }
-    it { should contain_nginx__config.that_requires('Class[nginx::package]') }
-    it { should contain_nginx__service.that_subscribes_to('Anchor[nginx::begin]') }
-    it { should contain_nginx__service.that_subscribes_to('Class[nginx::package]') }
-    it { should contain_nginx__service.that_subscribes_to('Class[nginx::config]') }
-    it { should contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
-    it { should contain_class("nginx::params") }
-    it { should contain_nginx__resource__upstream("upstream1") }
-    it { should contain_nginx__resource__vhost("test2.local") }
-    it { should contain_nginx__resource__location("test2.local") }
-    it { should contain_nginx__resource__mailhost("smtp.test2.local") }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_class('nginx') }
+    it { is_expected.to contain_anchor('nginx::begin') }
+    it { is_expected.to contain_nginx__package.that_requires('Anchor[nginx::begin]') }
+    it { is_expected.to contain_nginx__config.that_requires('Class[nginx::package]') }
+    it { is_expected.to contain_nginx__service.that_subscribes_to('Anchor[nginx::begin]') }
+    it { is_expected.to contain_nginx__service.that_subscribes_to('Class[nginx::package]') }
+    it { is_expected.to contain_nginx__service.that_subscribes_to('Class[nginx::config]') }
+    it { is_expected.to contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
+    it { is_expected.to contain_class("nginx::params") }
+    it { is_expected.to contain_nginx__resource__upstream("upstream1") }
+    it { is_expected.to contain_nginx__resource__vhost("test2.local") }
+    it { is_expected.to contain_nginx__resource__location("test2.local") }
+    it { is_expected.to contain_nginx__resource__mailhost("smtp.test2.local") }
   end
 
   context "Debian OS" do
@@ -34,6 +34,7 @@ describe 'nginx' do
           :operatingsystem => 'Debian',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'precise',
+          :lsbdistid       => 'Debian',
         }
       end
     end

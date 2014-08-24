@@ -60,18 +60,15 @@ define nginx::map (
   include nginx::params
   $root_group = $nginx::params::root_group
 
-  File {
-    owner => 'root',
-    group => $root_group,
-    mode  => '0644',
-  }
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    default  => 'file',
+  },
 
   file { "${nginx::config::conf_dir}/conf.d/${name}-map.conf":
-    ensure  => $ensure ? {
-      'absent' => absent,
-      default  => 'file',
-    },
+    owner   => 'root',
+    group   => $root_group,
+    mode    => '0644',
     content => template('nginx/conf.d/map.erb'),
-    notify  => Class['nginx::service'],
   }
 }

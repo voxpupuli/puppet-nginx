@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
 
-James Fryman <james@frymanet.com>
+* James Fryman <james@frymanet.com>
+* Matthew Haughton <matt@3flex.com.au>
 
 This module manages NGINX configuration.
 
