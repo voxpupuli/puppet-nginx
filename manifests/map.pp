@@ -39,8 +39,6 @@
 #      mappings:
 #        '*.nyc.example.com': 'ny-pool-1'
 #        '*.sf.example.com': 'sf-pool-1'
-
-
 define nginx::map (
   $string,
   $mappings,
@@ -48,6 +46,11 @@ define nginx::map (
   $ensure     = 'present',
   $hostnames  = false
 ) {
+
+  ###
+  ### Validations
+  ###
+
   validate_string($string)
   validate_re($string, '^.{2,}$',
     "Invalid string value [${string}]. Expected a minimum of 2 characters.")
@@ -57,18 +60,26 @@ define nginx::map (
     "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
   if ($default != undef) { validate_string($default) }
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  ###
+  ### Local Variables
+  ###
 
-  $ensure_real = $ensure ? {
+  $_root_group = $nginx::params::root_group	
+  $_ensure = $ensure ? {
     'absent' => absent,
     default  => 'file',
-  },
+  }
+
+  ###
+  ### Resources
+  ###
 
   file { "${nginx::config::conf_dir}/conf.d/${name}-map.conf":
+    ensure  => $_ensure,
     owner   => 'root',
-    group   => $root_group,
+    group   => $_root_group,
     mode    => '0644',
     content => template('nginx/conf.d/map.erb'),
+    notify  => Anchor['nginx::config'],
   }
 }

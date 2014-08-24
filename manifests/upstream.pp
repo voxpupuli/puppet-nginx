@@ -45,6 +45,11 @@ define nginx::upstream (
   $upstream_fail_timeout = '10s',
 ) {
 
+  
+  ####
+  #### Validations
+  ####
+
   if $members != undef {
     validate_array($members)
   }
@@ -54,19 +59,21 @@ define nginx::upstream (
     validate_hash($upstream_cfg_prepend)
   }
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
 
-  $ensure_real = $ensure ? {
+  ###
+  ### Local Variables
+  ###
+  $_root_group = $nginx::params::root_group
+  $_ensure = $ensure ? {
     'absent' => absent,
     'file'   => present,
     default  => present,
   }
 
   concat { "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
-    ensure => $ensure_real,
+    ensure => $_ensure,
     owner  => 'root',
-    group  => $root_group,
+    group  => $_root_group,
     mode   => '0644',
   }
 

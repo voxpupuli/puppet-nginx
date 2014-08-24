@@ -50,17 +50,15 @@
 #        '10.0.0.0/8': 'intra'
 #        '172.16.0.0/12': 'intra'
 #        '192.168.0.0/16': 'intra'
-
-
 define nginx::geo (
-  $networks,
+  $ensure          = present,
+  $networks        = undef,
   $default         = undef,
-  $ensure          = 'present',
   $ranges          = false,
   $address         = undef,
   $delete          = undef,
   $proxies         = undef,
-  $proxy_recursive = undef
+  $proxy_recursive = undef,
 ) {
 
   validate_hash($networks)
@@ -73,19 +71,18 @@ define nginx::geo (
   if ($proxies != undef) { validate_array($proxies) }
   if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
-
-  $ensure_real = $ensure ? {
-    'absent' => absent,
+  $_root_group  = $nginx::config::root_group,
+  $_ensure      = $ensure ? {
+    /absent/ => absent,
     default  => 'file',
   }
 
   file { "${nginx::config::conf_dir}/conf.d/${name}-geo.conf":
-    ensure  => $ensure_real,
+    ensure  => $_ensure,
     owner   => 'root',
-    group   => $root_group,
+    group   => $_root_group
     mode    => '0644',
     content => template('nginx/conf.d/geo.erb'),
+    notify  => Anchor['nginx::config'],
   }
 }

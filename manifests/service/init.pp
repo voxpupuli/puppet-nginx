@@ -1,6 +1,6 @@
-# Class: nginx::service
+# Class: nginx::service::init
 #
-# This module manages NGINX service management and vhost rebuild
+# This module manages NGINX service management via init.d
 #
 # Parameters:
 #
@@ -13,10 +13,10 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::service(
-  $configtest_enable = $nginx::configtest_enable,
-  $service_restart   = $nginx::service_restart,
-  $service_ensure    = $nginx::service_ensure,
+class nginx::service::init (
+  $configtest_enable = true,
+  $service_restart   = true,
+  $service_ensure    = true,
 ) {
 
   $service_enable = $service_ensure ? {
@@ -38,7 +38,9 @@ class nginx::service(
     enable     => $service_enable,
     hasstatus  => true,
     hasrestart => true,
+    subscribe  => Class['nginx::config'],
   }
+
   if $configtest_enable == true {
     Service['nginx'] {
       restart => $service_restart,

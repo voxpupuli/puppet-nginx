@@ -173,8 +173,9 @@ define nginx::location (
   $flv                          = false,
 ) {
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  ####
+  #### Validations
+  ####
 
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
@@ -281,14 +282,19 @@ define nginx::location (
     fail('$priority must be in the range 401-899.')
   }
 
-  # # Shared Variables
-  $ensure_real = $ensure ? {
+  ###
+  ### Local Variables
+  ###
+
+  $_root_group = $nginx::params::root_group
+  $_conf_dir   = $nginx::config::conf_dir
+  $_ensure = $ensure ? {
     'absent' => absent,
     default  => file,
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+  $config_file = "${_conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, "\\\\", '_', 'G')
@@ -324,14 +330,19 @@ define nginx::location (
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
+  ###
+  ### Resources
+  ###
+
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
-      ensure  => present,
+      ensure  => $_ensure,
       owner  => 'root',
-      group  => $root_group,
+      group  => $_root_group,
       mode   => '0644',
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
+      notify  => Anchor['nginx::config'],      
     }
   }
 
@@ -340,7 +351,7 @@ define nginx::location (
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { "${tmpFile}":
-      ensure  => present,
+      ensure  => $_ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -357,7 +368,7 @@ define nginx::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment {"${sslTmpFile}":
-      ensure  => present,
+      ensure  => $_ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -370,12 +381,13 @@ define nginx::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${nginx::config::conf_dir}/${location_sanitized}_htpasswd":
-      ensure => $ensure,
+    file { "${_conf_dir}/${location_sanitized}_htpasswd":
+      ensure => $_ensure,
       owner  => 'root',
-      group  => $root_group,
+      group  => $_root_group,
       mode   => '0644',
       source => $auth_basic_user_file,
+      notify  => Anchor['nginx::config'],
     }
   }
 }

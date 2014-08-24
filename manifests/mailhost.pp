@@ -60,15 +60,10 @@ define nginx::mailhost (
   $xclient             = 'on',
   $server_name         = [$name]
 ) {
-
-  include nginx::params
-  $root_group = $nginx::params::root_group
-
-  File {
-    owner => 'root',
-    group => $root_group,
-    mode  => '0644',
-  }
+  
+  ####
+  #### Validations
+  ####
 
   if !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
@@ -106,8 +101,6 @@ define nginx::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
-
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
   if ($ipv6_enable and !$::ipaddress6) {
@@ -121,17 +114,29 @@ define nginx::mailhost (
     }
   }
 
-  concat { $config_file:
+
+  ###
+  ### Local Variables
+  ###
+
+  $_root_group  = $nginx::params::root_group
+  $_config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
+
+  ###
+  ### Resources
+  ###
+
+  concat { $_config_file:
     owner  => 'root',
-    group  => $root_group,
+    group  => $_root_group,
     mode   => '0644',
-    notify => Class['nginx::service'],
+    notify => Anchor['nginx::config'],
   }
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name}-header":
       ensure  => present,
-      target  => $config_file,
+      target  => $_config_file,
       content => template('nginx/mailhost/mailhost.erb'),
       order   => '001',
     }
@@ -141,7 +146,7 @@ define nginx::mailhost (
   if ($ssl) {
     concat::fragment { "${name}-ssl":
       ensure  => present,
-      target  => $config_file,
+      target  => $_config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
       order   => '700',
     }

@@ -2,12 +2,24 @@
 #
 # This module manages NGINX.
 #
+# This class is basically a factory class used to instantiate the module.
+# Instead of attempting to define every logic path for a package and/or
+# service class, this class instead allows the user to define the
+# classes necessary to bootstrap and manage the service (if even desired!)
+#
+# This allows the user to use site-specific classes for installing a package,
+# or to manage a service. We include some default classes to be used,
+# but this should allow a good deal of flexibility for the user.
+#
 # Parameters:
 #
-# There are no default parameters for this class. All module parameters
-# are managed via the nginx::params class
+#  [*package_class*]
+#    The class(es) that will be used to install nginx. 
+#    Takes a string (or array of classes if Puppet 3)
 #
-# Actions:
+#  [*service_class*]
+#    The class(es) that will be used to manage nginx service. 
+#    Takes a string (or array of classes if Puppet 3)
 #
 # Requires:
 #  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
@@ -20,18 +32,18 @@
 #   include nginx
 # }
 class nginx(
-  $package_class = "nginx::package::$::osfamily",
+  $package_class = "nginx::package::${::osfamily}",
   $service_class = "nginx::service::init",
 ) (
   if $package_class != undef {
-    class { $package_class: 
-      before => Class['nginx::config'],
-    }
+    include $package_class
+
+    Class[$package_class] -> Class['nginx::config']
   }
 
   if $service_class != undef {
-    class { $service_class:
-      subscribe => Class['nginx::config'],
-    }
+    include $service_class
+
+    Class['nginx::config'] ~> Class[$service_class] 
   }
 }

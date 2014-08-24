@@ -26,8 +26,6 @@ describe 'nginx::config' do
           }
         end
 
-        it { is_expected.to contain_class("nginx::params") }
-
         it { is_expected.to contain_file("/etc/nginx").only_with(
           :path   => "/etc/nginx",
           :ensure => 'directory',

@@ -230,6 +230,10 @@ define nginx::vhost (
   $mode                   = $nginx::config::global_mode,
 ) {
 
+  ####
+  #### Validations
+  ####
+
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
   validate_string($listen_ip)
@@ -412,27 +416,20 @@ define nginx::vhost (
   validate_re($mode, '^\d{4}$',
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
-  # Variables
-  $vhost_dir = "${nginx::config::conf_dir}/sites-available"
-  $vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
-  $vhost_symlink_ensure = $ensure ? {
+  ###
+  ### Local Variables
+  ###
+
+  $_vhost_dir = "${nginx::config::conf_dir}/sites-available"
+  $_vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
+  $_vhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',
   }
+  $_name_sanitized = regsubst($name, ' ', '_', 'G')
+  $_config_file = "${vhost_dir}/${name_sanitized}.conf"
 
-  $name_sanitized = regsubst($name, ' ', '_', 'G')
-  $config_file = "${vhost_dir}/${name_sanitized}.conf"
 
-  File {
-    ensure => $ensure ? {
-      'absent' => absent,
-      default  => 'file',
-    },
-    notify => Class['nginx::service'],
-    owner  => $owner,
-    group  => $group,
-    mode   => $mode,
-  }
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
@@ -470,7 +467,7 @@ define nginx::vhost (
     owner  => $owner,
     group  => $group,
     mode   => $mode,
-    notify => Class['nginx::service'],
+    notify => Anchor['nginx::config'],
   }
 
   $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
@@ -635,7 +632,7 @@ define nginx::vhost (
     path    => "${vhost_enable_dir}/${name_sanitized}.conf",
     target  => $config_file,
     require => Concat[$config_file],
-    notify  => Service['nginx'],
+    notify  => Anchor['nginx::config'],
   }
 
   create_resources('nginx::map', $string_mappings)
