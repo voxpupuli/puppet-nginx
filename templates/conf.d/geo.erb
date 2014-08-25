@@ -7,8 +7,8 @@ geo <%= @address ? "#{@address} " : '' %>$<%= @name %> {
 <% if @ranges -%>
   ranges;
 <% end -%>
-<% if @default -%>
-  default <%= @default %>;
+<% if @default_value -%>
+  default <%= @default_value %>;
 <% end -%>
 <% if @delete -%>
   delete <%= @delete %>;
