@@ -434,7 +434,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           :title => 'should set the SSL timeout',
-          :attr  => 'ssl_timeout',
+          :attr  => 'ssl_session_timeout',
           :value => '30m',
           :match => '  ssl_session_timeout       30m;',
         },
