@@ -7,9 +7,9 @@ describe 'nginx::params' do
       :operatingsystem => 'debian',
     } end
 
-    it { should contain_nginx__params }
-    it { should have_class_count(1) }    #only nginx::params itself
-    it { should have_resource_count(0) } #params class should never declare resources
+    it { is_expected.to contain_nginx__params }
+    it { is_expected.to have_class_count(1) }    #only nginx::params itself
+    it { is_expected.to have_resource_count(0) } #params class should never declare resources
 
   end
 end
