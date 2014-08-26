@@ -66,6 +66,7 @@ class nginx::config(
   $temp_dir                       = $nginx::params::nx_temp_dir,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
   $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
+  $underscores_in_headers         = $nginx::params::nx_underscores_in_headers,
   $vhost_purge                    = $nginx::params::nx_vhost_purge,
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
