@@ -72,6 +72,7 @@ nginx::config::package_ensure: 'present'
 nginx::config::package_source: 'nginx'
 nginx::config::manage_repo: true
 
+nginx::config::root_group: root
 # Specific owner for sites-available directory
 nginx::config::sites_available_owner: 'root'
 nginx::config::sites_available_group: 'root'
@@ -86,4 +87,5 @@ nginx::config::pid: '/var/run/nginx.pid'
 
 nginx::config::conf_dir: '/etc/nginx'
 
+nginx::config::super_user: true
 nginx::config::daemon_user: 'nginx'

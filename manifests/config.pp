@@ -58,6 +58,7 @@ class nginx::config(
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
   $proxy_temp_path                = undef,
+  $root_group                     = undef,
   $run_dir                        = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
