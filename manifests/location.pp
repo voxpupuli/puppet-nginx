@@ -339,7 +339,6 @@ define nginx::location (
       ensure  => $_ensure,
       owner  => 'root',
       group  => $_root_group,
-      mode   => '0644',
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
       notify  => Anchor['nginx::config'],      

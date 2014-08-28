@@ -64,7 +64,7 @@ define nginx::map (
   ### Local Variables
   ###
 
-  $_root_group = $nginx::params::root_group	
+  $_root_group = $nginx::config::root_group
   $_ensure = $ensure ? {
     'absent' => absent,
     default  => 'file',

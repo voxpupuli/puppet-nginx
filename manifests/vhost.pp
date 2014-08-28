@@ -427,7 +427,7 @@ define nginx::vhost (
     default  => 'link',
   }
   $_name_sanitized = regsubst($name, ' ', '_', 'G')
-  $_config_file = "${vhost_dir}/${name_sanitized}.conf"
+  $_config_file = "${_vhost_dir}/${_name_sanitized}.conf"
 
 
 
@@ -449,7 +449,7 @@ define nginx::vhost (
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $access_log_tmp = $access_log ? {
-    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
+    undef   => "${nginx::config::logdir}/${_name_sanitized}.access.log",
     default => $access_log,
   }
 
@@ -459,11 +459,11 @@ define nginx::vhost (
   }
 
   $error_log_real = $error_log ? {
-    undef   => "${nginx::config::logdir}/${name_sanitized}.error.log",
+    undef   => "${nginx::config::logdir}/${_name_sanitized}.error.log",
     default => $error_log,
   }
 
-  concat { $config_file:
+  concat { $_config_file:
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -474,9 +474,9 @@ define nginx::vhost (
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    nginx::location {"${name_sanitized}-default":
+    nginx::location {"${_name_sanitized}-default":
       ensure                => $ensure,
-      vhost                 => $name_sanitized,
+      vhost                 => $_name_sanitized,
       ssl                   => $ssl,
       ssl_only              => $ssl_only,
       location              => '/',
@@ -510,37 +510,39 @@ define nginx::vhost (
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Location["${_name_sanitized}-default"] {
       location_cfg_prepend => $location_cfg_prepend }
   }
 
   if $location_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Location["${_name_sanitized}-default"] {
       location_cfg_append => $location_cfg_append }
   }
 
   if $location_custom_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Location["${_name_sanitized}-default"] {
       location_custom_cfg_prepend => $location_custom_cfg_prepend }
   }
 
   if $location_custom_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Location["${_name_sanitized}-default"] {
       location_custom_cfg_append => $location_custom_cfg_append }
   }
 
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
+      owner   => $owner,
+      group   => $group,
       mode    => '0770',
       content => template('nginx/vhost/fastcgi_params.erb'),
     }
   }
 
   if ($listen_port != $ssl_port) {
-    concat::fragment { "${name_sanitized}-header":
+    concat::fragment { "${_name_sanitized}-header":
       ensure  => present,
-      target  => $config_file,
+      target  => $_config_file,
       content => template('nginx/vhost/vhost_header.erb'),
       order   => '001',
     }
@@ -548,9 +550,9 @@ define nginx::vhost (
 
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
-    concat::fragment { "${name_sanitized}-footer":
+    concat::fragment { "${_name_sanitized}-footer":
       ensure  => present,
-      target  => $config_file,
+      target  => $_config_file,
       content => template('nginx/vhost/vhost_footer.erb'),
       order   => '699',
     }
@@ -564,7 +566,7 @@ define nginx::vhost (
     # Also opted to add more logic here and keep template cleaner which
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_tmp = $access_log ? {
-      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
+      undef   => "${nginx::config::logdir}/ssl-${_name_sanitized}.access.log",
       default => $access_log,
     }
 
@@ -574,65 +576,73 @@ define nginx::vhost (
     }
 
     $ssl_error_log_real = $error_log ? {
-      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.error.log",
+      undef   => "${nginx::config::logdir}/ssl-${_name_sanitized}.error.log",
       default => $error_log,
     }
 
-    concat::fragment { "${name_sanitized}-ssl-header":
-      target  => $config_file,
+    concat::fragment { "${_name_sanitized}-ssl-header":
+      target  => $_config_file,
       content => template('nginx/vhost/vhost_ssl_header.erb'),
       order   => '700',
     }
-    concat::fragment { "${name_sanitized}-ssl-footer":
-      target  => $config_file,
+    concat::fragment { "${_name_sanitized}-ssl-footer":
+      target  => $_config_file,
       content => template('nginx/vhost/vhost_ssl_footer.erb'),
       order   => '999',
     }
 
     #Generate ssl key/cert with provided file-locations
-    $cert = regsubst($name,' ','_', 'G')
+    $_cert = regsubst($name,' ','_', 'G')
 
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
-    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.crt", {
+    ensure_resource('file', "${nginx::config::conf_dir}/${_cert}.crt", {
       owner  => $nginx::config::daemon_user,
+      group  => $group,
       mode   => '0444',
       source => $ssl_cert,
     })
-    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.key", {
+    ensure_resource('file', "${nginx::config::conf_dir}/${_cert}.key", {
       owner  => $nginx::config::daemon_user,
+      group  => $group,
       mode   => '0440',
       source => $ssl_key,
     })
     if ($ssl_dhparam != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.dh.pem", {
+      ensure_resource('file', "${nginx::config::conf_dir}/${_cert}.dh.pem", {
         owner  => $nginx::config::daemon_user,
+        group  => $group,
         mode   => '0440',
         source => $ssl_dhparam,
       })
     }
     if ($ssl_stapling_file != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.ocsp.resp", {
+      ensure_resource('file', "${nginx::config::conf_dir}/${_cert}.ocsp.resp", {
         owner  => $nginx::config::daemon_user,
+        group  => $group,
         mode   => '0440',
         source => $ssl_stapling_file,
       })
     }
     if ($ssl_trusted_cert != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.trusted.crt", {
+      ensure_resource('file', "${nginx::config::conf_dir}/${_cert}.trusted.crt", {
         owner  => $nginx::config::daemon_user,
+        group  => $group,
         mode   => '0440',
         source => $ssl_trusted_cert,
       })
     }
   }
 
-  file{ "${name_sanitized}.conf symlink":
-    ensure  => $vhost_symlink_ensure,
-    path    => "${vhost_enable_dir}/${name_sanitized}.conf",
-    target  => $config_file,
-    require => Concat[$config_file],
+  file{ "${_name_sanitized}.conf symlink":
+    ensure  => $_vhost_symlink_ensure,
+    path    => "${_vhost_enable_dir}/${_name_sanitized}.conf",
+    target  => $_config_file,
+    require => Concat[$_config_file],
     notify  => Anchor['nginx::config'],
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
   }
 
   create_resources('nginx::map', $string_mappings)

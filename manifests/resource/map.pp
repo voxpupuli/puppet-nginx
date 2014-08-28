@@ -11,7 +11,7 @@ define nginx::resource::map (
 
   notify { '**WARNING**: Usage of the nginx::resource::map defined type will be deprecated soon. Please use nginx::map.': }
 
-  nginx::resource::map { $name:
+  nginx::map { $name:
     string     => $string,
     mappings   => $mappings,
     default    => $default,

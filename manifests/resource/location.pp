@@ -52,7 +52,7 @@ define nginx::resource::location (
 
   notify { '**WARNING**: Usage of the nginx::resource::location defined type will be deprecated soon. Please use nginx::location.': }
 
-  nginx::resource::location { $name:
+  nginx::location { $name:
     ensure                      => $ensure,
     internal                    => $internal,
     location                    => $location,

@@ -78,7 +78,7 @@ class nginx::config(
   $sites_available_mode           = undef,
 ) {
   # Clean up old resources from days long past
-  include nginx::tombstome
+  include nginx::tombstone
 
   ###
   ### Validations

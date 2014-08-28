@@ -119,7 +119,7 @@ define nginx::mailhost (
   ### Local Variables
   ###
 
-  $_root_group  = $nginx::params::root_group
+  $_root_group  = $nginx::config::root_group
   $_config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
 
   ###

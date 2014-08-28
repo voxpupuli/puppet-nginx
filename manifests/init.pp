@@ -24,7 +24,7 @@
 # Requires:
 #  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
 #  puppetlabs-concat - https://github.com/puppetlabs/puppetlabs-concat
-#  ripinear-module_data - https://github.com/ripienaar/puppet-module-data/
+#  ripineaar-module_data - https://github.com/ripienaar/puppet-module-data/
 #
 # Sample Usage:
 #
@@ -34,9 +34,13 @@
 class nginx(
   $package_class = "nginx::package::${::osfamily}",
   $service_class = "nginx::service::init",
-) (
+) {
+  $_package_class = downcase($package_class)
+
+  include ::nginx::config
+
   if $package_class != undef {
-    include $package_class
+    include $_package_class
 
     Class[$package_class] -> Class['nginx::config']
   }

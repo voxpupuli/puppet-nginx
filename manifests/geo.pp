@@ -71,7 +71,7 @@ define nginx::geo (
   if ($proxies != undef) { validate_array($proxies) }
   if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
-  $_root_group  = $nginx::config::root_group,
+  $_root_group  = $nginx::config::root_group
   $_ensure      = $ensure ? {
     /absent/ => absent,
     default  => 'file',
@@ -80,7 +80,7 @@ define nginx::geo (
   file { "${nginx::config::conf_dir}/conf.d/${name}-geo.conf":
     ensure  => $_ensure,
     owner   => 'root',
-    group   => $_root_group
+    group   => $_root_group,
     mode    => '0644',
     content => template('nginx/conf.d/geo.erb'),
     notify  => Anchor['nginx::config'],

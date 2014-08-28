@@ -24,9 +24,9 @@ nginx::config::spdy: 'off'
 nginx::config::ssl_stapling: 'off'
 nginx::config::proxy_redirect: 'off'
 nginx::config::proxy_set_header:
-  - 'Host $host',
-  - 'X-Real-IP $remote_addr',
-  - 'X-Forwarded-For $proxy_add_x_forwarded_for',
+  - 'Host $host'
+  - 'X-Real-IP $remote_addr'
+  - 'X-Forwarded-For $proxy_add_x_forwarded_for'
 nginx::config::proxy_cache_path: false
 nginx::config::proxy_cache_levels: 1
 nginx::config::proxy_cache_keys_zone: 'd2:100m'
@@ -39,10 +39,10 @@ nginx::config::fastcgi_cache_max_size: '500m'
 nginx::config::fastcgi_cache_inactive: '20m'
 nginx::config::fastcgi_cache_key: false
 nginx::config::fastcgi_cache_use_stale: false
-nginx::config::client_body_temp_path: "${nx_run_dir}/client_body_temp"
+nginx::config::client_body_temp_path: "/var/nginx/client_body_temp"
 nginx::config::client_body_buffer_size: '128k'
 nginx::config::client_max_body_size: '10m'
-nginx::config::proxy_temp_path: "${nx_run_dir}/proxy_temp"
+nginx::config::proxy_temp_path: "/var/nginx/proxy_temp"
 nginx::config::proxy_connect_timeout: '90'
 nginx::config::proxy_send_timeout: '90'
 nginx::config::proxy_read_timeout: '90'
@@ -63,8 +63,8 @@ nginx::config::service_ensure: 'running'
 nginx::config::mail: false
 
 nginx::config::http_cfg_append: false
-nginx::config::nginx_error_log: "${nx_logdir}/error.log"
-nginx::config::http_access_log: "${nx_logdir}/access.log"
+nginx::config::nginx_error_log: "/var/log/nginx/error.log"
+nginx::config::http_access_log: "/var/log/nginx/access.log"
 
 # package name depends on distribution, e.g. for Debian nginx-full | nginx-light
 nginx::config::package_name: 'nginx'
@@ -74,12 +74,12 @@ nginx::config::manage_repo: true
 
 # Specific owner for sites-available directory
 nginx::config::sites_available_owner: 'root'
-nginx::config::sites_available_group: "%{nginx::config::root_group}"
+nginx::config::sites_available_group: 'root'
 nginx::config::sites_available_mode: '0644'
 
 # Owner for all other files
 nginx::config::global_owner: 'root'
-nginx::config::global_group: "%{nginx::config::root_group}"
+nginx::config::global_group: 'root'
 nginx::config::global_mode: '0644'
 
 nginx::config::pid: '/var/run/nginx.pid'
