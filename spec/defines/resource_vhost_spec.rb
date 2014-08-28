@@ -13,7 +13,7 @@ describe 'nginx::resource::vhost' do
   let :facts do
     {
       :osfamily        => 'Debian',
-      :operatingsystem => 'debian',
+      :operatingsystem => 'Debian',
       :ipaddress6      => '::',
     }
   end
@@ -36,7 +36,7 @@ describe 'nginx::resource::vhost' do
       it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
       it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
       it { is_expected.to contain_concat__fragment("#{title}-footer") }
-      it { is_expected.to contain_nginx__resource__location("#{title}-default") }
+      it { is_expected.to contain_nginx__location("#{title}-default") }
       it { is_expected.not_to contain_file("/etc/nginx/fastcgi_params") }
       it { is_expected.to contain_file("#{title}.conf symlink").with({
         'ensure' => 'link',
@@ -671,13 +671,13 @@ describe 'nginx::resource::vhost' do
       context "SSL cert missing" do
         let(:params) {{ :ssl => true, :ssl_key => 'key' }}
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context "SSL key missing" do
         let(:params) {{ :ssl => true, :ssl_cert => 'cert' }}
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context 'when use_default_location => true' do
@@ -685,7 +685,7 @@ describe 'nginx::resource::vhost' do
           :use_default_location => true,
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default") }
+        it { is_expected.to contain_nginx__location("#{title}-default") }
       end
 
       context 'when use_default_location => false' do
@@ -693,7 +693,7 @@ describe 'nginx::resource::vhost' do
           :use_default_location => false,
         }) end
 
-        it { is_expected.not_to contain_nginx__resource__location("#{title}-default") }
+        it { is_expected.not_to contain_nginx__location("#{title}-default") }
       end
 
       context 'when location_cfg_prepend => { key => value }' do
@@ -701,7 +701,7 @@ describe 'nginx::resource::vhost' do
           :location_cfg_prepend => { 'key' => 'value' },
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_location_cfg_prepend({ 'key' => 'value' }) }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_location_cfg_prepend({ 'key' => 'value' }) }
       end
 
       context "when location_raw_prepend => [ 'foo;' ]" do
@@ -709,7 +709,7 @@ describe 'nginx::resource::vhost' do
           :location_raw_prepend => [ 'foo;' ],
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_raw_prepend([ 'foo;' ]) }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_raw_prepend([ 'foo;' ]) }
       end
 
       context "when location_raw_append => [ 'foo;' ]" do
@@ -717,7 +717,7 @@ describe 'nginx::resource::vhost' do
           :location_raw_append => [ 'foo;' ],
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_raw_append([ 'foo;' ]) }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_raw_append([ 'foo;' ]) }
       end
 
       context 'when location_cfg_append => { key => value }' do
@@ -725,7 +725,7 @@ describe 'nginx::resource::vhost' do
           :location_cfg_append => { 'key' => 'value' },
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_location_cfg_append({ 'key' => 'value' }) }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_location_cfg_append({ 'key' => 'value' }) }
       end
 
       context 'when fastcgi => "localhost:9000"' do
@@ -764,7 +764,7 @@ describe 'nginx::resource::vhost' do
           :ssl_cert => 'dummy.cert',
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_ensure('absent') }
         it { is_expected.to contain_file("#{title}.conf symlink").with_ensure('absent') }
       end
 
@@ -777,7 +777,7 @@ describe 'nginx::resource::vhost' do
           :ssl_cert    => 'dummy.cert',
         }) end
 
-        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+        it { is_expected.to contain_nginx__location("#{title}-default").with_ssl_only(true) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
