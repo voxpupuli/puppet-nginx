@@ -78,6 +78,10 @@ class nginx::params {
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/   => $::osfamily ? {
+        /(?i-mx:redhat)/ => $::operatingsystemmajrelease ? {
+            /7/     => '/run/nginx.pid',
+            default => '/var/run/nginx.pid',
+        },
         # archlinux has hardcoded pid in service file to /run/nginx.pid, setting
         # it will prevent nginx from starting
         /(?i-mx:archlinux)/ => false,
