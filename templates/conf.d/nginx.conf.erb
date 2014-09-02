@@ -40,6 +40,9 @@ http {
   server_names_hash_bucket_size <%= @names_hash_bucket_size %>;
   server_names_hash_max_size <%= @names_hash_max_size %>;
 
+  map_hash_bucket_size <%= @map_hash_bucket_size %>;
+  map_hash_max_size <%= @map_hash_max_size %>;
+
   keepalive_timeout  <%= @keepalive_timeout %>;
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
