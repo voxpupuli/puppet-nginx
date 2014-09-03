@@ -1,5 +1,7 @@
 <% if @proxy_cache -%>
     proxy_cache         <%= @proxy_cache %>;
+<% end -%>
+<% if @proxy_cache_valid -%>
     proxy_cache_valid   <%= @proxy_cache_valid %>;
 <% end -%>
     proxy_pass          <%= @proxy %>;
