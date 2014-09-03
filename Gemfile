@@ -13,7 +13,7 @@ end
 group :rake do
   gem 'rspec-puppet', '>=1.0.1'
   gem 'rake',         '>=0.9.2.2'
-  gem 'puppet-lint',  '>=0.1.12'
+  gem 'puppet-lint',  '>=1.0.1'
   gem 'rspec-system-serverspec', :require => false
 end
 
