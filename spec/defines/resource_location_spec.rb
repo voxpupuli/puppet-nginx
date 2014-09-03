@@ -531,12 +531,24 @@ describe 'nginx::resource::location' do
           :match => /^[ ]+proxy_cache\s+value;/,
         },
         {
+          :title    => 'should not set proxy_cache_valid',
+          :attr     => 'proxy_cache_valid',
+          :value    => false,
+          :notmatch => /proxy_cache_valid\b/
+        },
+        {
+          :title => 'should set proxy_cache_valid',
+          :attr  => 'proxy_cache_valid',
+          :value => 'value',
+          :match => /^[ ]+proxy_cache_valid\s+value;/,
+        },
+        {
           :title    => 'should not set proxy_cache',
           :attr     => 'proxy_cache',
           :value    => false,
           :notmatch => /proxy_cache\b/
         },
-        {
+	{
           :title => 'should set proxy_pass',
           :attr  => 'proxy',
           :value => 'value',
