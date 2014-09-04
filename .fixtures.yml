@@ -2,6 +2,15 @@ fixtures:
   symlinks:
     nginx: "#{source_dir}"
   forge_modules:
-    apt: "puppetlabs/apt"
-    concat: "puppetlabs/concat"
-    stdlib: "puppetlabs/stdlib"
+    # Puppet Labs-support dependencies.
+    # Reference latest supported versions per
+    # https://forge.puppetlabs.com/puppetlabs
+    apt:
+      repo: 'puppetlabs/apt'
+      ref: '1.6.0'
+    concat:
+      repo: 'puppetlabs/concat'
+      ref: '1.0.4'
+    stdlib:
+      repo: 'puppetlabs/stdlib'
+      ref: '4.3.2'

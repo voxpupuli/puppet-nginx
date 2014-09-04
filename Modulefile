@@ -9,4 +9,4 @@ project_page 'http://github.com/jfryman/puppet-nginx'
 
 dependency 'puppetlabs/stdlib', '>= 3.0.0'
 dependency 'puppetlabs/apt',    '>= 1.0.0'
-dependency 'puppetlabs/concat', '>= 1.1.0'
+dependency 'puppetlabs/concat', '>= 1.0.4'
