@@ -76,7 +76,7 @@ define nginx::resource::upstream (
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
     target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-    order   => 10,
+    order   => '10',
     content => template('nginx/conf.d/upstream_header.erb'),
   }
 
@@ -84,7 +84,7 @@ define nginx::resource::upstream (
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
       target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-      order   => 50,
+      order   => '50',
       content => template('nginx/conf.d/upstream_members.erb'),
     }
   } else {
@@ -94,7 +94,7 @@ define nginx::resource::upstream (
 
   concat::fragment { "${name}_upstream_footer":
     target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-    order   => 90,
+    order   => '90',
     content => "}\n",
   }
 }
