@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'nginx::service::init' do
+describe 'nginx::service' do
 
   let :facts do {
     :osfamily        => 'Debian',
