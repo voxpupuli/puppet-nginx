@@ -32,7 +32,9 @@ http {
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
   <% end %>
-  
+
+  add_header X-Frame-Options SAMEORIGIN;
+
   include /etc/nginx/conf.d/*.conf;
 <% if @http_cfg_append -%><% http_cfg_append.each do |key,value| -%>
   <%= key %> <%= value %>
