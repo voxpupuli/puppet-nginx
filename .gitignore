@@ -4,4 +4,3 @@ pkg/
 pkg/
 Gemfile.lock
 spec/fixtures/
-/metadata.json

@@ -1,0 +1,16 @@
+{
+  "name": "jfryman-nginx",
+  "version": "0.0.10",
+  "author": "James Fryman",
+  "summary": "Puppet NGINX management module",
+  "license": "Apache License Version 2.0",
+  "source": "http://github.com/jfryman/puppet-nginx",
+  "project_page": "http://github.com/jfryman/puppet-nginx",
+  "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
+  "description": "This module can be used for basic NGINX Management",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.0.0"},
+    {"name":"puppetlabs/apt","version_requirement":">= 1.0.0"},
+    {"name":"puppetlabs/concat","version_requirement":">= 1.1.0"}
+  ]
+}
