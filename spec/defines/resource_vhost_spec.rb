@@ -530,6 +530,12 @@ describe 'nginx::resource::vhost' do
           :value    => true,
           :notmatch => /  root \/;/,
         },
+        {
+        :title => 'should set a header for sts_max_age',
+        :attr  => 'sts_max_age',
+        :value => '315360000',
+        :match => ' add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({

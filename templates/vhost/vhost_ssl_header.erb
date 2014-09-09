@@ -13,6 +13,8 @@ server {
   <%- end %>
   server_name  <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
 
+  <% if @sts_max_age %>add_header Strict-Transport-Security "max-age=<%= sts_max_age %>; includeSubdomains";<% end %>
+
   ssl on;
 
   ssl_certificate           <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;

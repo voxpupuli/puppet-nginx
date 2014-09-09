@@ -133,6 +133,10 @@
 #   [*owner*]                   - Defines owner of the .conf file
 #   [*group*]                   - Defines group of the .conf file
 #   [*mode*]                    - Defines mode of the .conf file
+#
+#   [*sts_max_age*]         - in seconds. Adds a Strict-Transport-Security header using the given seconds value.
+#                             http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+#
 # Actions:
 #
 # Requires:
@@ -228,6 +232,9 @@ define nginx::resource::vhost (
   $owner                  = $nginx::config::global_owner,
   $group                  = $nginx::config::global_group,
   $mode                   = $nginx::config::global_mode,
+  
+  $sts_max_age            = undef,
+  
 ) {
 
   validate_re($ensure, '^(present|absent)$',
