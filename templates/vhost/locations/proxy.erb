@@ -1,28 +1,38 @@
-<% if @proxy_cache -%>
-    proxy_cache         <%= @proxy_cache %>;
-<% end -%>
-<% if @proxy_cache_valid -%>
-    proxy_cache_valid   <%= @proxy_cache_valid %>;
-<% end -%>
-    proxy_pass          <%= @proxy %>;
-    proxy_read_timeout  <%= @proxy_read_timeout %>;
-    proxy_connect_timeout  <%= @proxy_connect_timeout %>;
-    proxy_redirect  <%= @proxy_redirect %>;
-<% @proxy_set_header.each do |header| -%>
-    proxy_set_header        <%= header %>;
-<% end -%>
+    proxy_pass            <%= @proxy %>;
+    proxy_read_timeout    <%= @proxy_read_timeout %>;
+    proxy_connect_timeout <%= @proxy_connect_timeout %>;
+    proxy_redirect        <%= @proxy_redirect %>;
 <% if @proxy_method -%>
-    proxy_method        <%= @proxy_method %>;
+    proxy_method          <%= @proxy_method %>;
 <% end -%>
 <% if @proxy_set_body -%>
-    proxy_set_body      <%= @proxy_set_body %>;
+    proxy_set_body        <%= @proxy_set_body %>;
 <% end -%>
-<% @rewrite_rules.each do |rewrite_rule| -%>
+<% unless @proxy_set_header.nil? -%>
+
+    <%- @proxy_set_header.each do |header| -%>
+    proxy_set_header      <%= header %>;
+    <%- end -%>
+
+<% end -%>
+<% if @proxy_cache -%>
+    proxy_cache           <%= @proxy_cache %>;
+<% end -%>
+<% if @proxy_cache_valid -%>
+    proxy_cache_valid     <%= @proxy_cache_valid %>;
+<% end -%>
+<%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
+
+    <%- @rewrite_rules.each do |rewrite_rule| -%>
     rewrite <%= rewrite_rule %>;
+    <%- end -%>
 <% end -%>
-<% if defined? @auth_basic -%>
+<% if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
+
+    <%- if @auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
-<% end -%>
-<% if defined? @auth_basic_user_file -%>
+    <%- end -%>
+    <%- if defined? @auth_basic_user_file -%>
     auth_basic_user_file <%= @auth_basic_user_file %>;
+    <%- end -%>
 <% end -%>

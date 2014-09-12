@@ -274,7 +274,7 @@ describe 'nginx::resource::location' do
         {
           :location => 'location',
           :www_root => '/var/www/root',
-          :vhost    => 'vhost1'
+          :vhost    => 'vhost1',
         }
       end
 
@@ -283,7 +283,7 @@ describe 'nginx::resource::location' do
           :title => 'should set www_root',
           :attr  => 'www_root',
           :value => '/',
-          :match => '    root  /;'
+          :match => '    root      /;'
         },
         {
           :title => 'should set try_file(s)',
@@ -295,7 +295,7 @@ describe 'nginx::resource::location' do
           :title => 'should set index_file(s)',
           :attr  => 'index_files',
           :value => ['name1','name2'],
-          :match => '    index  name1 name2;',
+          :match => '    index     name1 name2;',
         },
         {
           :title => 'should contain rewrite rules',
@@ -428,31 +428,31 @@ describe 'nginx::resource::location' do
           :title => 'should set www_root',
           :attr  => 'www_root',
           :value => '/',
-          :match => '    root  /;'
+          :match => %r'\s+root\s+/;'
         },
         {
           :title => 'should set fastcgi_split_path',
           :attr  => 'fastcgi_split_path',
           :value => 'value',
-          :match => '    fastcgi_split_path_info value;'
+          :match => %r'\s+fastcgi_split_path_info\s+value;'
         },
         {
           :title => 'should set try_file(s)',
           :attr  => 'try_files',
           :value => ['name1','name2'],
-          :match => '    try_files name1 name2;',
+          :match => %r'\s+try_files\s+name1 name2;',
         },
         {
           :title => 'should set fastcgi_params',
           :attr  => 'fastcgi_params',
           :value => 'value',
-          :match => /^[ ]+include\s+value;/
+          :match => %r'\s+include\s+value;'
         },
         {
           :title => 'should set fastcgi_pass',
           :attr  => 'fastcgi',
           :value => 'value',
-          :match => '    fastcgi_pass value;'
+          :match => %r'\s+fastcgi_pass\s+value;'
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -502,10 +502,6 @@ describe 'nginx::resource::location' do
                   with_content(%r|fastcgi_param\s+CUSTOM_PARAM\s+value;|).
                   with_content(%r|fastcgi_param\s+CUSTOM_PARAM2\s+value2;|)
         end
-        it "should add comment # Enable custom fastcgi_params" do
-        should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).
-                  with_content(%r|# Enable custom fastcgi_params\s+|)
-        end
       end
 
       context "when fastcgi_param is not set" do
@@ -528,7 +524,7 @@ describe 'nginx::resource::location' do
           :title => 'should set proxy_cache',
           :attr  => 'proxy_cache',
           :value => 'value',
-          :match => /^[ ]+proxy_cache\s+value;/,
+          :match => /^\s+proxy_cache\s+value;/,
         },
         {
           :title    => 'should not set proxy_cache_valid',
@@ -540,7 +536,7 @@ describe 'nginx::resource::location' do
           :title => 'should set proxy_cache_valid',
           :attr  => 'proxy_cache_valid',
           :value => 'value',
-          :match => /^[ ]+proxy_cache_valid\s+value;/,
+          :match => /^\s+proxy_cache_valid\s+value;/,
         },
         {
           :title    => 'should not set proxy_cache',
@@ -552,46 +548,46 @@ describe 'nginx::resource::location' do
           :title => 'should set proxy_pass',
           :attr  => 'proxy',
           :value => 'value',
-          :match => /^[ ]+proxy_pass\s+value;/,
+          :match => /^\s+proxy_pass\s+value;/,
         },
         {
           :title => 'should set proxy_read_timeout',
           :attr  => 'proxy_read_timeout',
           :value => 'value',
-          :match => '    proxy_read_timeout  value;',
+          :match => %r'\s+proxy_read_timeout\s+value;',
         },
         {
           :title => 'should set proxy_connect_timeout',
           :attr  => 'proxy_connect_timeout',
           :value => 'value',
-          :match => '    proxy_connect_timeout  value;',
+          :match => %r'\s+proxy_connect_timeout\s+value;',
         },
         {
           :title => 'should set proxy_read_timeout',
           :attr  => 'proxy_read_timeout',
           :value => 'value',
-          :match => '    proxy_read_timeout  value;',
+          :match => %r'\s+proxy_read_timeout\s+value;',
         },
         {
           :title => 'should set proxy headers',
           :attr  => 'proxy_set_header',
           :value => [ 'X-TestHeader1 value1', 'X-TestHeader2 value2' ],
           :match => [
-            /^[ ]+proxy_set_header\s+X-TestHeader1 value1;/,
-            /^[ ]+proxy_set_header\s+X-TestHeader2 value2;/,
+            /^\s+proxy_set_header\s+X-TestHeader1 value1;/,
+            /^\s+proxy_set_header\s+X-TestHeader2 value2;/,
           ]
         },
         {
           :title => 'should set proxy_method',
           :attr  => 'proxy_method',
           :value => 'value',
-          :match => '    proxy_method        value;',
+          :match => %r'\s+proxy_method\s+value;',
         },
         {
           :title => 'should set proxy_set_body',
           :attr  => 'proxy_set_body',
           :value => 'value',
-          :match => '    proxy_set_body      value;',
+          :match => %r'\s+proxy_set_body\s+value;',
         },
         {
           :title => 'should contain rewrite rules',
@@ -646,7 +642,7 @@ describe 'nginx::resource::location' do
           :proxy_cache_valid => '10m',
         } end
 
-        it { is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-location")).with_content(/proxy_cache_valid   10m;/) }
+        it { is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-location")).with_content(/proxy_cache_valid\s+10m;/) }
       end
     end
 
