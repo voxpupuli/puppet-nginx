@@ -5,12 +5,12 @@ server {
   return       301 https://<%= @server_name[0].gsub(/^www\./, '') %>$uri;
 }
 
-<% end %>
+<% end -%>
 server {
   listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
-  <%- if @ipv6_enable && (defined? @ipaddress6) %>
+  <%- if @ipv6_enable && (defined? @ipaddress6) -%>
   listen [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
-  <%- end %>
+  <%- end -%>
   server_name  <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
 
   ssl on;
@@ -25,22 +25,25 @@ server {
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
-<% if @ssl_stapling -%>
+<%- if instance_variables.any? { |iv| iv.to_s.include? 'ssl_' } -%>
+  <%- if @ssl_stapling -%>
   ssl_stapling              on;
-<% end -%>
-<% if defined? @ssl_stapling_file -%>
+  <%- end -%>
+  <%- if defined? @ssl_stapling_file -%>
   ssl_stapling_file         <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
-<% end -%>
-<% if defined? @ssl_stapling_responder -%>
+  <%- end -%>
+  <%- if defined? @ssl_stapling_responder -%>
   ssl_stapling_responder    <%= @ssl_stapling_responder %>;
-<% end -%>
-<% if @ssl_stapling_verify -%>
+  <%- end -%>
+  <%- if @ssl_stapling_verify -%>
   ssl_stapling_verify       on;
-<% end -%>
-<% if defined? @ssl_trusted_cert -%>
+  <%- end -%>
+  <%- if defined? @ssl_trusted_cert -%>
   ssl_trusted_certificate   <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
+  <%- end -%>
+
 <% end -%>
-<% if @resolver.count > 0 -%>
+<% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
 <% if defined? @auth_basic -%>
@@ -49,20 +52,24 @@ server {
 <% if defined? @auth_basic_user_file -%>
   auth_basic_user_file      "<%= @auth_basic_user_file %>";
 <% end -%>
-<% if defined? @client_body_timeout -%>
+<%- if instance_variables.any? { |iv| iv.to_s.include? 'client_' } -%>
+
+  <%- if defined? @client_body_timeout -%>
   client_body_timeout <%= @client_body_timeout %>;
-<% end -%>
-<% if defined? @client_header_timeout -%>
+  <%- end -%>
+  <%- if defined? @client_header_timeout -%>
   client_header_timeout <%= @client_header_timeout %>;
-<% end -%>
-<% if defined? @client_max_body_size -%>
+  <%- end -%>
+  <%- if defined? @client_max_body_size -%>
   client_max_body_size <%= @client_max_body_size %>;
+  <%- end -%>
+
 <% end -%>
 <% if defined? @gzip_types -%>
   gzip_types <%= @gzip_types %>;
 <% end -%>
 <% if @index_files.count > 0 -%>
-    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+  index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 
   access_log            <%= @ssl_access_log_real %>;
@@ -100,7 +107,7 @@ server {
 <% end -%>
 <% Array(@raw_prepend).each do |line| -%>
   <%= line %>
-<% end %>
+<% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>

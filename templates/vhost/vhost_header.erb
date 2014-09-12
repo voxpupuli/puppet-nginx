@@ -8,25 +8,29 @@ server {
 <% end -%>
 server {
   listen                <%= @listen_ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
-<% # check to see if ipv6 support exists in the kernel before applying %>
-<% if @ipv6_enable && (defined? @ipaddress6) %>
+<%# check to see if ipv6 support exists in the kernel before applying -%>
+<% if @ipv6_enable && (defined? @ipaddress6) -%>
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
-<% end %>
+<% end -%>
   server_name           <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
 <% if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
-<% end -%>
-<% if defined? @auth_basic_user_file -%>
+  <%- if defined? @auth_basic_user_file -%>
   auth_basic_user_file <%= @auth_basic_user_file %>;
+  <%- end -%>
 <% end -%>
-<% if defined? @client_body_timeout -%>
+<% if instance_variables.any? { |iv| iv.to_s.include? 'client_' } -%>
+
+  <%- if defined? @client_body_timeout -%>
   client_body_timeout <%= @client_body_timeout %>;
-<% end -%>
-<% if defined? @client_header_timeout -%>
+  <%- end -%>
+  <%- if defined? @client_header_timeout -%>
   client_header_timeout <%= @client_header_timeout %>;
-<% end -%>
-<% if defined? @client_max_body_size -%>
+  <%- end -%>
+  <%- if defined? @client_max_body_size -%>
   client_max_body_size <%= @client_max_body_size %>;
+  <%- end -%>
+
 <% end -%>
 <% if defined? @gzip_types -%>
   gzip_types <%= @gzip_types %>;
@@ -60,7 +64,7 @@ server {
   passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
   <%- end -%>
 <% end -%>
-<% if @resolver.count > 0 -%>
+<% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
 <% @proxy_set_header.each do |header| -%>
@@ -88,4 +92,3 @@ server {
 
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
-
