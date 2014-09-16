@@ -246,6 +246,60 @@ describe 'nginx::config' do
             :value => '123',
             :match => '  keepalive_timeout  123;',
         },
+        {
+            :title  => 'should set gzip',
+            :attr   => 'gzip',
+            :value  => 'on',
+            :match  => '  gzip              on;',
+        },
+        {
+            :title  => 'should set gzip_buffers',
+            :attr   => 'gzip_buffers',
+            :value  => '32 4k',
+            :match  => '  gzip_buffers      32 4k;',
+        },
+        {
+            :title  => 'should set gzip_comp_level',
+            :attr   => 'gzip_comp_level',
+            :value  => '1',
+            :match  => '  gzip_comp_level   1;',
+        },
+        {
+            :title  => 'should set gzip_disable',
+            :attr   => 'gzip_disable',
+            :value  => 'MSIE [1-6]\.(?!.*SV1)',
+            :match  => '  gzip_disable      MSIE [1-6]\.(?!.*SV1);',
+        },
+        {
+            :title  => 'should set gzip_min_length',
+            :attr   => 'gzip_min_length',
+            :value  => '20',
+            :match  => '  gzip_min_length   20;',
+        },
+        {
+            :title  => 'should set gzip_http_version',
+            :attr   => 'gzip_http_version',
+            :value  => '1.1',
+            :match  => '  gzip_http_version 1.1;',
+        },
+        {
+            :title  => 'should set gzip_proxied',
+            :attr   => 'gzip_proxied',
+            :value  => 'any',
+            :match  => '  gzip_proxied      any;',
+        },
+        {
+            :title  => 'should set gzip_types',
+            :attr   => 'gzip_types',
+            :value  => ['text/plain','text/html'],
+            :match  => '  gzip_types        text/plain text/html;',
+        },
+        {
+            :title  => 'should set gzip_vary',
+            :attr   => 'gzip_vary',
+            :value  => 'on',
+            :match  => '  gzip_vary         on;',
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do { param[:attr].to_sym => param[:value] } end
