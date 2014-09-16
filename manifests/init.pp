@@ -57,6 +57,8 @@ class nginx (
   $multi_accept                   = $nginx::params::nx_multi_accept,
   $names_hash_bucket_size         = $nginx::params::nx_names_hash_bucket_size,
   $names_hash_max_size            = $nginx::params::nx_names_hash_max_size,
+  $map_hash_bucket_size           = $nginx::params::nx_map_hash_bucket_size,
+  $map_hash_max_size              = $nginx::params::nx_map_hash_max_size,
   $nginx_error_log                = $nginx::params::nx_nginx_error_log,
   $nginx_locations                = {},
   $nginx_mailhosts                = {},
@@ -162,6 +164,12 @@ class nginx (
   if (!is_integer($names_hash_max_size)) {
     fail('$names_hash_max_size must be an integer.')
   }
+  if (!is_integer($map_hash_bucket_size)) {
+    fail('$map_hash_bucket_size must be an integer.')
+  }
+  if (!is_integer($map_hash_max_size)) {
+    fail('$map_hash_max_size must be an integer.')
+  }
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
   if ($http_cfg_append != false) {
@@ -219,6 +227,8 @@ class nginx (
     multi_accept                   => $multi_accept,
     names_hash_bucket_size         => $names_hash_bucket_size,
     names_hash_max_size            => $names_hash_max_size,
+    map_hash_bucket_size           => $map_hash_bucket_size,
+    map_hash_max_size              => $map_hash_max_size,
     nginx_error_log                => $nginx_error_log,
     pid                            => $pid,
     proxy_buffers                  => $proxy_buffers,
