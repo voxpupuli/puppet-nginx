@@ -520,6 +520,15 @@ describe 'nginx::resource::location' do
           ]
         },
         {
+          :title => 'should set proxy headers ssl',
+          :attr  => 'proxy_set_header_ssl',
+          :value => [ 'X-TestHeader1 sslvalue1', 'X-TestHeader2 sslvalue2' ],
+          :match => [
+            /^[ ]+proxy_set_header\s+X-TestHeader1 sslvalue1;/,
+            /^[ ]+proxy_set_headerl\s+X-TestHeader2 sslvalue2;/,
+          ]
+        },
+        {
           :title => 'should set proxy_method',
           :attr  => 'proxy_method',
           :value => 'value',
