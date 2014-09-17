@@ -82,6 +82,7 @@ class nginx (
   $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
   $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
   $proxy_set_header               = $nginx::params::nx_proxy_set_header,
+  $proxy_set_header_ssl           = $nginx::params::nx_proxy_set_header_ssl,
   $proxy_temp_path                = $nginx::params::nx_proxy_temp_path,
   $run_dir                        = $nginx::params::nx_run_dir,
   $sendfile                       = $nginx::params::nx_sendfile,

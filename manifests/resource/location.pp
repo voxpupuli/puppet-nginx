@@ -140,6 +140,7 @@ define nginx::resource::location (
   $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
+  $proxy_set_header_ssl = $nginx::config::proxy_set_header_ssl,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
@@ -202,6 +203,7 @@ define nginx::resource::location (
   validate_string($proxy_read_timeout)
   validate_string($proxy_connect_timeout)
   validate_array($proxy_set_header)
+  validate_array($proxy_set_header_ssl)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }
