@@ -4,7 +4,7 @@
 #
 # Parameters:
 #   [*networks*]        - Hash of geo lookup keys and resultant values
-#   [*default*]         - Sets the resulting value if the source value fails to
+#   [*default_value*]         - Sets the resulting value if the source value fails to
 #                         match any of the variants.
 #   [*ensure*]          - Enables or disables the specified location
 #   [*ranges*]          - Indicates that lookup keys (network addresses) are
@@ -26,7 +26,7 @@
 #  nginx::resource::geo { 'client_network':
 #    ensure          => present,
 #    ranges          => false,
-#    default         => extra,
+#    default_value   => extra,
 #    proxy_recursive => false,
 #    proxies         => [ '192.168.99.99' ],
 #    networks        => {
@@ -42,7 +42,7 @@
 #    client_network:
 #      ensure: present
 #      ranges: false
-#      default: 'extra'
+#      default_value: 'extra'
 #      proxy_recursive: false
 #      proxies:
 #         - 192.168.99.99
@@ -54,7 +54,7 @@
 
 define nginx::resource::geo (
   $networks,
-  $default         = undef,
+  $default_value   = undef,
   $ensure          = 'present',
   $ranges          = false,
   $address         = undef,
@@ -67,7 +67,7 @@ define nginx::resource::geo (
   validate_bool($ranges)
   validate_re($ensure, '^(present|absent)$',
     "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
-  if ($default != undef) { validate_string($default) }
+  if ($default_value != undef) { validate_string($default_value) }
   if ($address != undef) { validate_string($address) }
   if ($delete != undef) { validate_string($delete) }
   if ($proxies != undef) { validate_array($proxies) }

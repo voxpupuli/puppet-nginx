@@ -168,6 +168,7 @@ define nginx::resource::vhost (
   $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $ssl_cache              = 'shared:SSL:10m',
+  $ssl_session_timeout    = '5m',
   $ssl_stapling           = false,
   $ssl_stapling_file      = undef,
   $ssl_stapling_responder = undef,
@@ -270,6 +271,7 @@ define nginx::resource::vhost (
   validate_string($ssl_protocols)
   validate_string($ssl_ciphers)
   validate_string($ssl_cache)
+  validate_string($ssl_session_timeout)
   validate_bool($ssl_stapling)
   if ($ssl_stapling_file != undef) {
     validate_string($ssl_stapling_file)
