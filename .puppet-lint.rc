@@ -2,3 +2,4 @@
 --relative
 --no-80chars-check
 --no-class_inherits_from_params_class-check
+--no-documentation-check

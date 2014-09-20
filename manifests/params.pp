@@ -1,18 +1,3 @@
-# Class: nginx::param
-#
-# This module manages NGINX paramaters
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
 class nginx::params {
 
   $nx_temp_dir                       = '/tmp'
