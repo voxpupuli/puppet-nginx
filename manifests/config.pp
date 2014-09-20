@@ -14,70 +14,149 @@
 #
 # This class file is not called directly
 class nginx::config(
-  $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
-  $client_body_temp_path          = $nginx::params::nx_client_body_temp_path,
-  $client_max_body_size           = $nginx::params::nx_client_max_body_size,
-  $confd_purge                    = $nginx::params::nx_confd_purge,
-  $conf_dir                       = $nginx::params::nx_conf_dir,
-  $conf_template                  = $nginx::params::nx_conf_template,
-  $daemon_user                    = $nginx::params::nx_daemon_user,
-  $events_use                     = $nginx::params::nx_events_use,
-  $fastcgi_cache_inactive         = $nginx::params::nx_fastcgi_cache_inactive,
-  $fastcgi_cache_key              = $nginx::params::nx_fastcgi_cache_key,
-  $fastcgi_cache_keys_zone        = $nginx::params::nx_fastcgi_cache_keys_zone,
-  $fastcgi_cache_levels           = $nginx::params::nx_fastcgi_cache_levels,
-  $fastcgi_cache_max_size         = $nginx::params::nx_fastcgi_cache_max_size,
-  $fastcgi_cache_path             = $nginx::params::nx_fastcgi_cache_path,
-  $fastcgi_cache_use_stale        = $nginx::params::nx_fastcgi_cache_use_stale,
-  $gzip                           = $nginx::params::nx_gzip,
-  $http_access_log                = $nginx::params::nx_http_access_log,
-  $http_cfg_append                = $nginx::params::nx_http_cfg_append,
-  $http_tcp_nodelay               = $nginx::params::nx_http_tcp_nodelay,
-  $http_tcp_nopush                = $nginx::params::nx_http_tcp_nopush,
-  $keepalive_timeout              = $nginx::params::nx_keepalive_timeout,
-  $logdir                         = $nginx::params::nx_logdir,
-  $mail                           = $nginx::params::nx_mail,
-  $multi_accept                   = $nginx::params::nx_multi_accept,
-  $names_hash_bucket_size         = $nginx::params::nx_names_hash_bucket_size,
-  $names_hash_max_size            = $nginx::params::nx_names_hash_max_size,
-  $nginx_error_log                = $nginx::params::nx_nginx_error_log,
-  $pid                            = $nginx::params::nx_pid,
-  $proxy_buffers                  = $nginx::params::nx_proxy_buffers,
-  $proxy_buffer_size              = $nginx::params::nx_proxy_buffer_size,
-  $proxy_cache_inactive           = $nginx::params::nx_proxy_cache_inactive,
-  $proxy_cache_keys_zone          = $nginx::params::nx_proxy_cache_keys_zone,
-  $proxy_cache_levels             = $nginx::params::nx_proxy_cache_levels,
-  $proxy_cache_max_size           = $nginx::params::nx_proxy_cache_max_size,
-  $proxy_cache_path               = $nginx::params::nx_proxy_cache_path,
-  $proxy_conf_template            = $nginx::params::nx_proxy_conf_template,
-  $proxy_connect_timeout          = $nginx::params::nx_proxy_connect_timeout,
-  $proxy_headers_hash_bucket_size = $nginx::params::nx_proxy_headers_hash_bucket_size,
-  $proxy_http_version             = $nginx::params::nx_proxy_http_version,
-  $proxy_read_timeout             = $nginx::params::nx_proxy_read_timeout,
-  $proxy_redirect                 = $nginx::params::nx_proxy_redirect,
-  $proxy_send_timeout             = $nginx::params::nx_proxy_send_timeout,
-  $proxy_set_header               = $nginx::params::nx_proxy_set_header,
-  $proxy_temp_path                = $nginx::params::nx_proxy_temp_path,
-  $run_dir                        = $nginx::params::nx_run_dir,
-  $sendfile                       = $nginx::params::nx_sendfile,
-  $server_tokens                  = $nginx::params::nx_server_tokens,
-  $spdy                           = $nginx::params::nx_spdy,
-  $super_user                     = $nginx::params::nx_super_user,
-  $temp_dir                       = $nginx::params::nx_temp_dir,
-  $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,
-  $types_hash_max_size            = $nginx::params::nx_types_hash_max_size,
-  $vhost_purge                    = $nginx::params::nx_vhost_purge,
-  $worker_connections             = $nginx::params::nx_worker_connections,
-  $worker_processes               = $nginx::params::nx_worker_processes,
-  $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
-  $global_owner                   = $nginx::params::global_owner,
-  $global_group                   = $nginx::params::global_group,
-  $global_mode                    = $nginx::params::global_mode,
-  $sites_available_owner          = $nginx::params::sites_available_owner,
-  $sites_available_group          = $nginx::params::sites_available_group,
-  $sites_available_mode           = $nginx::params::sites_available_mode,
-) inherits nginx::params {
+  $client_body_buffer_size        = undef,
+  $client_body_temp_path          = undef,
+  $client_max_body_size           = undef,
+  $confd_purge                    = undef,
+  $conf_dir                       = undef,
+  $conf_template                  = undef,
+  $daemon_user                    = undef,
+  $events_use                     = undef,
+  $fastcgi_cache_inactive         = undef,
+  $fastcgi_cache_key              = undef,
+  $fastcgi_cache_keys_zone        = undef,
+  $fastcgi_cache_levels           = undef,
+  $fastcgi_cache_max_size         = undef,
+  $fastcgi_cache_path             = undef,
+  $fastcgi_cache_use_stale        = undef,
+  $gzip                           = undef,
+  $http_access_log                = undef,
+  $http_cfg_append                = undef,
+  $http_tcp_nodelay               = undef,
+  $http_tcp_nopush                = undef,
+  $keepalive_timeout              = undef,
+  $logdir                         = undef,
+  $mail                           = undef,
+  $multi_accept                   = undef,
+  $names_hash_bucket_size         = undef,
+  $names_hash_max_size            = undef,
+  $nginx_error_log                = undef,
+  $pid                            = undef,
+  $proxy_buffers                  = undef,
+  $proxy_buffer_size              = undef,
+  $proxy_cache_inactive           = undef,
+  $proxy_cache_keys_zone          = undef,
+  $proxy_cache_levels             = undef,
+  $proxy_cache_max_size           = undef,
+  $proxy_cache_path               = undef,
+  $proxy_conf_template            = undef,
+  $proxy_connect_timeout          = undef,
+  $proxy_headers_hash_bucket_size = undef,
+  $proxy_http_version             = undef,
+  $proxy_read_timeout             = undef,
+  $proxy_redirect                 = undef,
+  $proxy_send_timeout             = undef,
+  $proxy_set_header               = undef,
+  $proxy_temp_path                = undef,
+  $run_dir                        = undef,
+  $sendfile                       = undef,
+  $server_tokens                  = undef,
+  $spdy                           = undef,
+  $super_user                     = undef,
+  $temp_dir                       = undef,
+  $types_hash_bucket_size         = undef,
+  $types_hash_max_size            = undef,
+  $vhost_purge                    = undef,
+  $worker_connections             = undef,
+  $worker_processes               = undef,
+  $worker_rlimit_nofile           = undef,
+  $global_owner                   = undef,
+  $global_group                   = undef,
+  $global_mode                    = undef,
+  $sites_available_owner          = undef,
+  $sites_available_group          = undef,
+  $sites_available_mode           = undef,
+) {
 
+  ### Validations ###
+  if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
+    fail('$worker_processes must be an integer or have value "auto".')
+  }
+  if (!is_integer($worker_connections)) {
+    fail('$worker_connections must be an integer.')
+  }
+  if (!is_integer($worker_rlimit_nofile)) {
+    fail('$worker_rlimit_nofile must be an integer.')
+  }
+  if (!is_string($events_use)) and ($events_use != false) {
+    fail('$events_use must be a string or false.')
+  }
+  validate_string($multi_accept)
+  validate_string($package_name)
+  validate_string($package_ensure)
+  validate_string($package_source)
+  validate_array($proxy_set_header)
+  validate_string($proxy_http_version)
+  validate_bool($confd_purge)
+  validate_bool($vhost_purge)
+  if ($proxy_cache_path != false) {
+    validate_string($proxy_cache_path)
+  }
+  validate_re($proxy_cache_levels, '^[12](:[12])*$')
+  validate_string($proxy_cache_keys_zone)
+  validate_string($proxy_cache_max_size)
+  validate_string($proxy_cache_inactive)
+
+  if ($fastcgi_cache_path != false) {
+        validate_string($fastcgi_cache_path)
+  }
+  validate_re($fastcgi_cache_levels, '^[12](:[12])*$')
+  validate_string($fastcgi_cache_keys_zone)
+  validate_string($fastcgi_cache_max_size)
+  validate_string($fastcgi_cache_inactive)
+  if ($fastcgi_cache_key != false) {
+    validate_string($fastcgi_cache_key)
+  }
+  if ($fastcgi_cache_use_stale != false) {
+    validate_string($fastcgi_cache_use_stale)
+  }
+
+  validate_bool($configtest_enable)
+  validate_string($service_restart)
+  validate_bool($mail)
+  validate_string($server_tokens)
+  validate_string($client_max_body_size)
+  if (!is_integer($names_hash_bucket_size)) {
+    fail('$names_hash_bucket_size must be an integer.')
+  }
+  if (!is_integer($names_hash_max_size)) {
+    fail('$names_hash_max_size must be an integer.')
+  }
+  validate_string($proxy_buffers)
+  validate_string($proxy_buffer_size)
+  if ($http_cfg_append != false) {
+    if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
+      fail('$http_cfg_append must be either a hash or array')
+    }
+  }
+
+  validate_string($nginx_error_log)
+  validate_string($http_access_log)
+  validate_hash($nginx_upstreams)
+  validate_hash($nginx_vhosts)
+  validate_hash($nginx_vhosts_defaults)
+  validate_hash($nginx_locations)
+  validate_hash($nginx_mailhosts)
+  validate_bool($manage_repo)
+  validate_string($proxy_headers_hash_bucket_size)
+  validate_bool($super_user)
+
+  validate_hash($string_mappings)
+  validate_hash($geo_mappings)
+  ### END VALIDATIONS ###
+
+
+  ### CONFIGURATION ###
   File {
     owner => $global_owner,
     group => $global_group,

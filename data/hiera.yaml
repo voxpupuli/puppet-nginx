@@ -1,0 +1,6 @@
+--
+:hierarchy:
+- osfamily/%{::osfamily}
+- kernelversion/%{::kernelversion}
+- kernel/%{::kernel}
+- common

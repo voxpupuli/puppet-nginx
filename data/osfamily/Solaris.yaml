@@ -1,0 +1,2 @@
+---
+nginx::config::daemon_user: webservd

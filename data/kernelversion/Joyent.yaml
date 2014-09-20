@@ -1,0 +1,3 @@
+---
+nginx::config::conf_dir: /opt/local/etc/nginx
+nginx::config::daemon_user: www
