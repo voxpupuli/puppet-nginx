@@ -11,19 +11,22 @@ geo <%= @address ? "#{@address} " : '' %>$<%= @name %> {
   default <%= @default %>;
 <% end -%>
 <% if @delete -%>
-  delete <%= @delete %>;
+  delete  <%= @delete %>;
 <% end -%>
 <% if @proxies -%>
+
+  <%- if @proxy_recursive -%>
+  proxy_recursive;
+  <%- end -%>
   <%- [@proxies].flatten.each do |proxy| -%>
   proxy <%= proxy %>;
   <%- end -%>
 <% end -%>
-<% if @proxy_recursive && @proxies -%>
-  proxy_recursive;
-<% end -%>
 <% if @networks -%>
+
+  <%- field_width = @networks.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @networks.sort_by{|k,v| IPAddr.new(k.split('-').first).to_i }.each do |key,value| -%>
-  <%= key %> <%= value %>;
+  <%= sprintf("%-*s", field_width, key) %> <%= value %>;
   <%- end -%>
 <% end -%>
 }

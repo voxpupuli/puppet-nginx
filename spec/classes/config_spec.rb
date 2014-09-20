@@ -195,13 +195,13 @@ describe 'nginx::config' do
           :title => 'should set proxy_cache_path',
           :attr  => 'proxy_cache_path',
           :value => '/path/to/proxy.cache',
-          :match => '  proxy_cache_path    /path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :match => %r'\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
         },
         {
           :title    => 'should not set proxy_cache_path',
           :attr     => 'proxy_cache_path',
           :value    => false,
-          :notmatch => /  proxy_cache_path    \/path\/to\/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;/,
+          :notmatch => %r'\s+proxy_cache_path\s+/path/to/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
         },
         {
           :title => 'should contain ordered appended directives from hash',
@@ -252,7 +252,15 @@ describe 'nginx::config' do
 
           it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/nginx.conf", Array(param[:match]))
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(item) }
+            else
+              lines = subject.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            end
+
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/nginx.conf").without_content(item)
             end
@@ -308,7 +316,15 @@ describe 'nginx::config' do
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/conf.d/proxy.conf", Array(param[:match]))
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_file('/etc/nginx/conf.d/proxy.conf').with_content(item) }
+            else
+              lines = subject.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            end
+
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").without_content(item)
             end
