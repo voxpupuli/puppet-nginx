@@ -172,8 +172,7 @@ define nginx::resource::location (
   $flv             = false,
 ) {
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  $root_group = $nginx::config::root_group
 
   File {
     owner  => 'root',
