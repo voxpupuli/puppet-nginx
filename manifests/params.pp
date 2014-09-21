@@ -16,7 +16,10 @@
 class nginx::params {
 
   $nx_temp_dir                       = '/tmp'
-  $nx_run_dir                        = '/var/nginx'
+  $nx_run_dir = $::kernel ? {
+    /(?i-mx:openbsd)/ => '/var/www',
+    default           => '/var/nginx',
+  }
 
   $nx_conf_template                  = 'nginx/conf.d/nginx.conf.erb'
   $nx_proxy_conf_template            = 'nginx/conf.d/proxy.conf.erb'
@@ -74,7 +77,10 @@ class nginx::params {
   $nx_proxy_buffer_size              = '8k'
   $nx_proxy_headers_hash_bucket_size = '64'
 
-  $nx_logdir = '/var/log/nginx'
+  $nx_logdir = $::kernel ? {
+    /(?i-mx:openbsd)/ => "$nx_run_dir/logs",
+    default           => '/var/log/nginx',
+  }
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/   => $::osfamily ? {
@@ -83,8 +89,8 @@ class nginx::params {
         /(?i-mx:archlinux)/ => false,
         default             => '/var/run/nginx.pid',
     },
-    /(?i-mx:sunos)/   => '/var/run/nginx.pid',
-    /(?i-mx:freebsd)/ => '/var/run/nginx.pid',
+    /(?i-mx:sunos)/           => '/var/run/nginx.pid',
+    /(?i-mx:freebsd|openbsd)/ => '/var/run/nginx.pid',
   }
 
   $nx_conf_dir = $::kernelversion ? {
@@ -105,7 +111,7 @@ class nginx::params {
       /(?i-mx:redhat|suse|gentoo|linux)/ => 'nginx',
       /(?i-mx:debian)/                   => 'www-data',
       /(?i-mx:solaris)/                  => $solaris_nx_daemon_user,
-      /(?i-mx:freebsd)/                  => 'www',
+      /(?i-mx:freebsd|openbsd)/          => 'www',
     }
   } else {
     warning('$::osfamily not defined. Support for $::operatingsystem is deprecated')
@@ -115,12 +121,13 @@ class nginx::params {
       /(?i-mx:debian|ubuntu)/                                                                => 'www-data',
       /(?i-mx:fedora|rhel|redhat|centos|scientific|suse|opensuse|amazon|gentoo|oraclelinux)/ => 'nginx',
       /(?i-mx:solaris)/                                                                      => 'webservd',
-      /(?i-mx:freebsd)/                                                                      => 'www',
+      /(?i-mx:freebsd|openbsd)/                                                              => 'www',
     }
   }
 
   $root_group = $::operatingsystem ? {
     'FreeBSD' => 'wheel',
+    'OpenBSD' => 'wheel',
     default   => 'root',
   }
 
