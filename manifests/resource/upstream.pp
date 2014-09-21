@@ -54,8 +54,7 @@ define nginx::resource::upstream (
     validate_hash($upstream_cfg_prepend)
   }
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  $root_group = $nginx::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,

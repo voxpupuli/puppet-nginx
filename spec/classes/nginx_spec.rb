@@ -21,7 +21,6 @@ describe 'nginx' do
     it { is_expected.to contain_nginx__service.that_subscribes_to('Class[nginx::package]') }
     it { is_expected.to contain_nginx__service.that_subscribes_to('Class[nginx::config]') }
     it { is_expected.to contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
-    it { is_expected.to contain_class("nginx::params") }
     it { is_expected.to contain_nginx__resource__upstream("upstream1") }
     it { is_expected.to contain_nginx__resource__vhost("test2.local") }
     it { is_expected.to contain_nginx__resource__vhost("test2.local").with_listen_options('default_server') }

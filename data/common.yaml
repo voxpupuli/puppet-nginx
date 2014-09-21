@@ -12,28 +12,28 @@ nginx::config::types_hash_max_size: 1024
 nginx::config::types_hash_bucket_size: 512
 nginx::config::names_hash_bucket_size: 64
 nginx::config::names_hash_max_size: 512
-nginx::config::multi_accept: off
+nginx::config::multi_accept: 'off'
 nginx::config::events_use: false
-nginx::config::sendfile: on
+nginx::config::sendfile: 'on'
 nginx::config::keepalive_timeout: 65
-nginx::config::http_tcp_nodelay: on
-nginx::config::http_tcp_nopush: off
-nginx::config::gzip: on
-nginx::config::server_tokens: on
-nginx::config::spdy: off
-nginx::config::ssl_stapling: off
-nginx::config::proxy_redirect: off
+nginx::config::http_tcp_nodelay: 'on'
+nginx::config::http_tcp_nopush: 'off'
+nginx::config::gzip: 'on'
+nginx::config::server_tokens: 'on'
+nginx::config::spdy: 'off'
+nginx::config::ssl_stapling: 'off'
+nginx::config::proxy_redirect: 'off'
 nginx::config::proxy_set_header:
   - 'Host $host'
   - 'X-Real-IP $remote_addr'
   - 'X-Forwarded-For $proxy_add_x_forwarded_for'
 nginx::config::proxy_cache_path: false
-nginx::config::proxy_cache_levels: 1
+nginx::config::proxy_cache_levels: '1'
 nginx::config::proxy_cache_keys_zone: 'd2:100m'
 nginx::config::proxy_cache_max_size: 500m
 nginx::config::proxy_cache_inactive: 20m
 nginx::config::fastcgi_cache_path: false
-nginx::config::fastcgi_cache_levels: 1
+nginx::config::fastcgi_cache_levels: '1'
 nginx::config::fastcgi_cache_keys_zone: 'd3:100m'
 nginx::config::fastcgi_cache_max_size: 500m
 nginx::config::fastcgi_cache_inactive: 20m
@@ -43,13 +43,13 @@ nginx::config::client_body_temp_path: /var/nginx/client_body_temp
 nginx::config::client_body_buffer_size: 128k
 nginx::config::client_max_body_size: 10m
 nginx::config::proxy_temp_path: /var/nginx/proxy_temp
-nginx::config::proxy_connect_timeout: 90
-nginx::config::proxy_send_timeout: 90
-nginx::config::proxy_read_timeout: 90
+nginx::config::proxy_connect_timeout: '90'
+nginx::config::proxy_send_timeout: '90'
+nginx::config::proxy_read_timeout: '90'
 nginx::config::proxy_buffers: '32 4k'
-nginx::config::proxy_http_version: 1.0
+nginx::config::proxy_http_version: '1.0'
 nginx::config::proxy_buffer_size: 8k
-nginx::config::proxy_headers_hash_bucket_size: 64
+nginx::config::proxy_headers_hash_bucket_size: '64'
 nginx::config::logdir: /var/log/nginx
 
 # Service restart after Nginx 0.7.53 could also be just

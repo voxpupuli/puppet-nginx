@@ -20,6 +20,7 @@ class nginx::config(
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $conf_template                  = undef,
+  $configtest_enable              = undef,
   $daemon_user                    = undef,
   $events_use                     = undef,
   $fastcgi_cache_inactive         = undef,
@@ -58,6 +59,7 @@ class nginx::config(
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
   $proxy_temp_path                = undef,
+  $root_group                     = undef,
   $run_dir                        = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
@@ -92,9 +94,6 @@ class nginx::config(
     fail('$events_use must be a string or false.')
   }
   validate_string($multi_accept)
-  validate_string($package_name)
-  validate_string($package_ensure)
-  validate_string($package_source)
   validate_array($proxy_set_header)
   validate_string($proxy_http_version)
   validate_bool($confd_purge)
@@ -122,7 +121,6 @@ class nginx::config(
   }
 
   validate_bool($configtest_enable)
-  validate_string($service_restart)
   validate_bool($mail)
   validate_string($server_tokens)
   validate_string($client_max_body_size)
@@ -142,17 +140,9 @@ class nginx::config(
 
   validate_string($nginx_error_log)
   validate_string($http_access_log)
-  validate_hash($nginx_upstreams)
-  validate_hash($nginx_vhosts)
-  validate_hash($nginx_vhosts_defaults)
-  validate_hash($nginx_locations)
-  validate_hash($nginx_mailhosts)
-  validate_bool($manage_repo)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
 
-  validate_hash($string_mappings)
-  validate_hash($geo_mappings)
   ### END VALIDATIONS ###
 
 
