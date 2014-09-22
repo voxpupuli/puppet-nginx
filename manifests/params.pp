@@ -75,6 +75,7 @@ class nginx::params {
   $nx_proxy_headers_hash_bucket_size = '64'
 
   $nx_logdir = '/var/log/nginx'
+  $nx_log_format = false
 
   $nx_pid = $::kernel ? {
     /(?i-mx:linux)/   => $::osfamily ? {

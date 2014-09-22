@@ -24,6 +24,11 @@ events {
 http {
   include       <%= @conf_dir %>/mime.types;
   default_type  application/octet-stream;
+<% if @log_format -%>
+<% @log_format.sort_by{|k,v| k}.each do |key,value| -%>
+  log_format <%= key %> '<%= value %>';
+<% end -%>
+<% end -%>
 
   access_log  <%= @http_access_log %>;
 
