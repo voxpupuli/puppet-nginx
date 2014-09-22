@@ -17,6 +17,7 @@ class nginx::service(
   $configtest_enable = $nginx::configtest_enable,
   $service_restart   = $nginx::service_restart,
   $service_ensure    = $nginx::service_ensure,
+  $service_name      = 'nginx',
 ) {
 
   $service_enable = $service_ensure ? {
@@ -34,6 +35,7 @@ class nginx::service(
   }
 
   service { 'nginx':
+    name       => $service_name,
     ensure     => $service_ensure_real,
     enable     => $service_enable,
     hasstatus  => true,
