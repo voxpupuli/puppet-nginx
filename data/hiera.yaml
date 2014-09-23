@@ -3,5 +3,4 @@
 - operatingsystem/%{::operatingsystem}/%{::operatingsystemmajrelease}
 - operatingsystem/%{::operatingsystem}
 - osfamily/%{::osfamily}
-- kernel/%{::kernel}
 - common
