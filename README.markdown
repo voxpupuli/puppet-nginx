@@ -2,7 +2,7 @@
 
 ## INSTALLING OR UPGRADING
 ** Please note **: This module is currently undergoing some structural
-maintenance. Please take a look at https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md
+maintenance. Please take a look at [https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md](https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
 
 [![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
