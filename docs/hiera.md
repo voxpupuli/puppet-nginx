@@ -5,6 +5,18 @@ by R.I. Pinnear to allow for a significant amount of flexibility with base
 configuration of the module. This is to reduce the amount of clutter starting
 to gather in `params.pp`, and provide a foundation for future enhancements.
 
+## Installation
+
+In order to leverage `puppet-module-data`, you must add an additional
+configuration item to your `hiera.yaml` file to load the new backend. Simply
+add the following code block.
+
+```
+:backends:
+...
+  - module_data
+```
+
 ## Upgrading
 
 If you happen to be here because of some silly deprecation notice, it is
@@ -31,3 +43,20 @@ nginx::config::logdir: /data/nginx/logs
 
 Please note: This module takes advantage of Puppet 3 data module bindings.
 Be aware of any gotchas that accompany this. Take a look at https://docs.puppetlabs.com/hiera/1/puppet.html#limitations
+
+## I cannot/do not use Hiera! NOW WHAT!
+
+Do not fret! This is a big change to the core module, and it may be difficult
+to make the conversion right away. First off, we intend to make it blatantly
+clear when the module will tear out the parameters in Class[nginx] as
+detailed in the deprecation notice. (The current target is v1.0)
+
+In the event that you are unable to leverage Hiera for your attribute configuration, you can use the Spaceship Operator to set the parameters for the nginx::config class. For example:
+
+```ruby
+Class<| title == 'nginx::class' |> {
+  proxy_cache_levels => '2',
+}
+```
+The recommended path is to use Hiera, but this pattern should give you an intermediate step during the upgrade process.
+
