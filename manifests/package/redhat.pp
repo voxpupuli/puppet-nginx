@@ -17,6 +17,7 @@ class nginx::package::redhat (
   $manage_repo    = true,
   $package_ensure = 'present',
   $package_name   = 'nginx',
+  $use_mainline   = false,
 ) {
 
   if $::lsbmajdistrelease {
@@ -48,13 +49,22 @@ class nginx::package::redhat (
         }
       }
 
+      case $use_mainline {
+        true: {
+          $baseurl = "http://nginx.org/packages/mainline/rhel/${os_rel}/\$basearch/"
+        }
+        default: {
+          $baseurl = "http://nginx.org/packages/rhel/${os_rel}/\$basearch/"
+        }
+      }
+
       # as of 2013-07-28
       # http://nginx.org/packages/centos appears to be identical to
       # http://nginx.org/packages/rhel
       # no other dedicated dirs exist for platforms under $::osfamily == redhat
       if $manage_repo {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
+          baseurl  => $baseurl,
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
