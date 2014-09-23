@@ -5,18 +5,6 @@ by R.I. Pinnear to allow for a significant amount of flexibility with base
 configuration of the module. This is to reduce the amount of clutter starting
 to gather in `params.pp`, and provide a foundation for future enhancements.
 
-## Installation
-
-In order to leverage `puppet-module-data`, you must add an additional
-configuration item to your `hiera.yaml` file to load the new backend. Simply
-add the following code block.
-
-```
-:backends:
-...
-  - module_data
-```
-
 ## Upgrading
 
 If you happen to be here because of some silly deprecation notice, it is
