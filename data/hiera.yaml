@@ -1,6 +1,7 @@
 ---
 :hierarchy:
+- operatingsystem/%{::operatingsystem}/%{::operatingsystemmajrelease}
+- operatingsystem/%{::operatingsystem}
 - osfamily/%{::osfamily}
-- kernelversion/%{::kernelversion}
 - kernel/%{::kernel}
 - common
