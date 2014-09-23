@@ -20,7 +20,6 @@ class nginx::config(
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $conf_template                  = undef,
-  $configtest_enable              = undef,
   $daemon_user                    = undef,
   $events_use                     = undef,
   $fastcgi_cache_inactive         = undef,
@@ -120,7 +119,6 @@ class nginx::config(
     validate_string($fastcgi_cache_use_stale)
   }
 
-  validate_bool($configtest_enable)
   validate_bool($mail)
   validate_string($server_tokens)
   validate_string($client_max_body_size)
