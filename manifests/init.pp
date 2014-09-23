@@ -126,7 +126,6 @@ class nginx (
 	 $client_body_temp_path or
 	 $client_max_body_size or
 	 $confd_purge or
-	 $configtest_enable or
 	 $conf_dir or
 	 $conf_template or
 	 $daemon_user or
@@ -146,14 +145,10 @@ class nginx (
 	 $keepalive_timeout or
 	 $logdir or
 	 $mail or
-	 $manage_repo or
 	 $multi_accept or
 	 $names_hash_bucket_size or
 	 $names_hash_max_size or
 	 $nginx_error_log or
-	 $package_ensure or
-	 $package_name or
-	 $package_source or
 	 $pid or
 	 $proxy_buffers or
 	 $proxy_buffer_size or
@@ -174,8 +169,6 @@ class nginx (
 	 $run_dir or
 	 $sendfile or
 	 $server_tokens or
-	 $service_ensure or
-	 $service_restart or
 	 $spdy or
 	 $super_user or
 	 $temp_dir or
@@ -191,7 +184,7 @@ class nginx (
 	 $sites_available_owner or
 	 $sites_available_group or
 	 $sites_available_mode {
-	
+
 	  include nginx::notice::puppet_module_data
 	}
 
