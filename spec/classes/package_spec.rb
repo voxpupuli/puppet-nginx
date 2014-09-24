@@ -4,7 +4,6 @@ describe 'nginx::package' do
 
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat' }}
-
     context "using defaults" do
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(

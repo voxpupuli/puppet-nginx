@@ -1,6 +1,6 @@
 {
   "name": "jfryman-nginx",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "author": "James Fryman",
   "summary": "Puppet NGINX management module",
   "license": "Apache License Version 2.0",
@@ -11,6 +11,7 @@
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 3.0.0"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.0.0"},
-    {"name":"puppetlabs/concat","version_requirement":">= 1.1.0"}
+    {"name":"puppetlabs/concat","version_requirement":">= 1.1.0"},
+    {"name":"ripienaar/module_data","version_requirement":">= 0.0.3"}
   ]
 }

@@ -8,12 +8,11 @@ describe 'nginx::resource::location' do
   let :facts do
     {
       :osfamily        => 'Debian',
-      :operatingsystem => 'debian',
+      :operatingsystem => 'Debian',
     }
   end
   let :pre_condition do
     [
-      'include ::nginx::params',
       'include ::nginx::config',
     ]
   end
@@ -26,7 +25,6 @@ describe 'nginx::resource::location' do
         :vhost    => 'vhost1',
       } end
 
-      it { is_expected.to contain_class("nginx::params") }
       it { is_expected.to contain_class("nginx::config") }
       it { is_expected.to contain_concat__fragment("f25e14942fb58942ee13b1465a4e1719").with_content(/location rspec-test/) }
       it { is_expected.not_to contain_file('/etc/nginx/fastcgi_params') }

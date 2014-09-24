@@ -3,4 +3,5 @@ files/server_test.pem
 pkg/
 pkg/
 Gemfile.lock
-spec/fixtures/
+spec/fixtures/modules
+spec/fixtures/manifests

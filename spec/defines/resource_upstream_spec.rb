@@ -13,7 +13,6 @@ describe 'nginx::resource::upstream' do
 
   let :pre_condition do
       [
-      'include ::nginx::params',
       'include ::nginx::config',
       ]
   end
@@ -28,7 +27,6 @@ describe 'nginx::resource::upstream' do
 
   let :pre_condition do
     [
-      'include ::nginx::params',
       'include ::nginx::config',
     ]
   end
@@ -39,7 +37,6 @@ describe 'nginx::resource::upstream' do
     describe 'basic assumptions' do
       let :params do default_params end
 
-      it { is_expected.to contain_class("nginx::params") }
       it { is_expected.to contain_class('concat::setup') }
       it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-upstream.conf") }
       it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(/upstream #{title}/) }
