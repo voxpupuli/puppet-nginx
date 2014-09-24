@@ -1,18 +1,3 @@
-# Class: nginx::config
-#
-# This module manages NGINX bootstrap and configuration
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
 class nginx::config(
   $client_body_buffer_size        = $nginx::params::nx_client_body_buffer_size,
   $client_body_temp_path          = $nginx::params::nx_client_body_temp_path,
