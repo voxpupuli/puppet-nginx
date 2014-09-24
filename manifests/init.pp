@@ -105,6 +105,7 @@ class nginx (
   $sites_available_mode           = $nginx::params::sites_available_mode,
   $geo_mappings                   = {},
   $string_mappings                = {},
+  $use_mainline                   = $nginx::params::use_mainline,
 ) inherits nginx::params {
 
   include stdlib
@@ -180,6 +181,7 @@ class nginx (
   validate_bool($manage_repo)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
+  validate_bool($use_mainline)
 
   validate_hash($string_mappings)
   validate_hash($geo_mappings)
@@ -190,6 +192,7 @@ class nginx (
     package_ensure => $package_ensure,
     notify         => Class['nginx::service'],
     manage_repo    => $manage_repo,
+    use_mainline   => $use_mainline,
   }
 
   class { 'nginx::config':

@@ -148,6 +148,7 @@ class nginx::params {
   $package_ensure = 'present'
   $package_source = 'nginx'
   $manage_repo    = true
+  $use_mainline   = false
 
   # Specific owner for sites-available directory
   $sites_available_owner = 'root'

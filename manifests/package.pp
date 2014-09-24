@@ -18,6 +18,7 @@ class nginx::package(
   $package_source = 'nginx',
   $package_ensure = 'present',
   $manage_repo    = true,
+  $use_mainline   = false,
 ) {
 
   anchor { 'nginx::package::begin': }
@@ -29,6 +30,7 @@ class nginx::package(
         manage_repo    => $manage_repo,
         package_ensure => $package_ensure,
         package_name   => $package_name,
+        use_mainline   => $use_mainline,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
       }
@@ -39,6 +41,7 @@ class nginx::package(
         package_source => $package_source,
         package_ensure => $package_ensure,
         manage_repo    => $manage_repo,
+        use_mainline   => $use_mainline,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
       }

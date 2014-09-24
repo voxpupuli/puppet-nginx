@@ -17,7 +17,8 @@ class nginx::package::debian(
     $manage_repo    = true,
     $package_name   = 'nginx',
     $package_source = 'nginx',
-    $package_ensure = 'present'
+    $package_ensure = 'present',
+    $use_mainline   = false,
   ) {
 
   $distro = downcase($::operatingsystem)
@@ -34,8 +35,17 @@ class nginx::package::debian(
 
     case $package_source {
       'nginx': {
+        case $use_mainline {
+          true: {
+            $location = "http://nginx.org/packages/mainline/${distro}"
+          }
+          default: {
+            $location = "http://nginx.org/packages/${distro}"
+          }
+        }
+
         apt::source { 'nginx':
-          location   => "http://nginx.org/packages/${distro}",
+          location   => $location,
           repos      => 'nginx',
           key        => '7BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
