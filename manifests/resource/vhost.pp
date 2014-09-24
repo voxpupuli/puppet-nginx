@@ -287,7 +287,9 @@ define nginx::resource::vhost (
     validate_string($proxy)
   }
   validate_string($proxy_read_timeout)
-  validate_string($proxy_redirect)
+  if ($proxy_redirect != undef) {
+    validate_string($proxy_redirect)
+  }
   validate_array($proxy_set_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
