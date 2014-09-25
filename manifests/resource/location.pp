@@ -309,10 +309,10 @@ define nginx::resource::location (
     fail('Cannot create a location reference without attaching to a virtual host')
   }
   if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined')
+    fail("Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, or location_custom_cfg defined: ${name}")
   }
   if (($www_root != undef) and ($proxy != undef)) {
-    fail('Cannot define both directory and proxy in a virtual host')
+    fail("Cannot define both directory and proxy in virtual host: ${name}")
   }
 
   # fastcgi_script is deprecated
