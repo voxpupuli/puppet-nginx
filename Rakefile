@@ -10,3 +10,9 @@ require 'puppet_blacksmith/rake_tasks'
 require 'rspec-system/rake_task'
 
 task :default => [:clean, :spec]
+
+PuppetLint.configuration.fail_on_warnings
+PuppetLint.configuration.send('relative')
+PuppetLint.configuration.send('disable_80chars')
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.send('disable_documentation')
