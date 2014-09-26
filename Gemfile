@@ -5,7 +5,7 @@ group :test do
 end
 
 group :rake, :test do
-  gem 'puppetlabs_spec_helper',  :require => false
+  gem 'puppetlabs_spec_helper', '0.8.0',  :require => false
   gem 'puppet-blacksmith',       :require => false
   gem 'rspec-system-puppet',     :require => false
 end
