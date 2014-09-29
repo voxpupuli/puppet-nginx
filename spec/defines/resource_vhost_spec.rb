@@ -199,15 +199,6 @@ describe 'nginx::resource::vhost' do
           :notmatch => /  root \/;/,
         },
         {
-          :title => 'should set proxy_set_header',
-          :attr  => 'proxy_set_header',
-          :value => ['header1','header2'],
-          :match => [
-            '  proxy_set_header        header1;',
-            '  proxy_set_header        header2;',
-          ],
-        },
-        {
           :title => 'should rewrite to HTTPS',
           :attr  => 'rewrite_to_https',
           :value => true,
