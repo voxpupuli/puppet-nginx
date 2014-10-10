@@ -98,7 +98,7 @@ If you have set `ssl => true` and also set `listen_port` and `ssl_port` to the s
 Defining nginx resources in Hiera.
 
 ```yaml
-nginx::nginx_upstreams:
+nginx::nginx_upstream:
   'puppet_rack_app':
     ensure: present
     members:
