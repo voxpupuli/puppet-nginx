@@ -442,7 +442,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the SSL protocols',
           :attr  => 'ssl_protocols',
           :value => 'SSLv3',
-          :match => %r'\s+ssl_protocols\s+SSLv3;',
+          :match => %r'\s+ssl_protocols\s+TLSv1;',
         },
         {
           :title => 'should set the SSL ciphers',
