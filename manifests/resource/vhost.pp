@@ -72,7 +72,7 @@ define nginx::resource::vhost (
   $ssl_cert               = undef,
   $ssl_key                = undef,
   $ssl_port               = '443',
-  $ssl_protocols          = 'SSLv3 TLSv1 TLSv1.1 TLSv1.2',
+  $ssl_protocols          = 'TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers            = 'HIGH:!aNULL:!MD5',
   $spdy                   = $nginx::params::nx_spdy,
   $proxy                  = undef,
