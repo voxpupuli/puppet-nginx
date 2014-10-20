@@ -69,7 +69,7 @@
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
-#     different replies.
+#     different replies. Must be specified as an array of strings.
 #   [*proxy_method*]         - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
 #   [*proxy_set_body*]       - If defined, sets the body passed to the backend.
@@ -162,7 +162,7 @@ define nginx::resource::location (
   $include              = undef,
   $try_files            = undef,
   $proxy_cache          = false,
-  $proxy_cache_valid    = false,
+  $proxy_cache_valid    = [],
   $proxy_method         = undef,
   $proxy_set_body       = undef,
   $auth_basic           = undef,
@@ -269,9 +269,7 @@ define nginx::resource::location (
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
-  if ($proxy_cache_valid != false) {
-    validate_string($proxy_cache_valid)
-  }
+  validate_array($proxy_cache_valid)
   if ($proxy_method != undef) {
     validate_string($proxy_method)
   }
