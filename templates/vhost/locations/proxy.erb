@@ -18,8 +18,10 @@
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>
-<% if @proxy_cache_valid -%>
-    proxy_cache_valid     <%= @proxy_cache_valid %>;
+<%- unless @proxy_cache_valid.nil? || @proxy_cache_valid.empty? -%>
+    <%- @proxy_cache_valid.each do |proxy_cache_valid_rule| -%>
+    proxy_cache_valid     <%= @proxy_cache_valid_rule %>;
+    <%- end -%>
 <% end -%>
 <%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
 
