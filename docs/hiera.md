@@ -72,7 +72,7 @@ In the event that you are unable to leverage Hiera for your attribute configurat
 
 ```ruby
 Class<| title == 'nginx::class' |> {
-  proxy_cache_levels => '2',
+  proxy_cache => {'/tmp/www/cache' => 'keys_zone=my-cache:8m'},
 }
 ```
 The recommended path is to use Hiera, but this pattern should give you an intermediate step during the upgrade process.
