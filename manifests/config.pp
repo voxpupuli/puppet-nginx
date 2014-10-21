@@ -44,11 +44,7 @@ class nginx::config(
   $pid                            = undef,
   $proxy_buffers                  = undef,
   $proxy_buffer_size              = undef,
-  $proxy_cache_inactive           = undef,
-  $proxy_cache_keys_zone          = undef,
-  $proxy_cache_levels             = undef,
-  $proxy_cache_max_size           = undef,
-  $proxy_cache_path               = undef,
+  $proxy_cache                    = undef,
   $proxy_conf_template            = undef,
   $proxy_connect_timeout          = undef,
   $proxy_headers_hash_bucket_size = undef,
@@ -97,13 +93,11 @@ class nginx::config(
   validate_string($proxy_http_version)
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
-  if ($proxy_cache_path != false) {
-    validate_string($proxy_cache_path)
+  if ($proxy_cache != false) {
+    if !(is_hash($proxy_cache) or is_array($proxy_cache)) {
+      fail('$proxy_cache must be either a hash or array')
+    }
   }
-  validate_re($proxy_cache_levels, '^[12](:[12])*$')
-  validate_string($proxy_cache_keys_zone)
-  validate_string($proxy_cache_max_size)
-  validate_string($proxy_cache_inactive)
 
   if ($fastcgi_cache_path != false) {
         validate_string($fastcgi_cache_path)

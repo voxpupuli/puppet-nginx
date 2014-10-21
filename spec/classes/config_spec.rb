@@ -191,15 +191,15 @@ describe 'nginx::config' do
         },
         {
           :title => 'should set proxy_cache_path',
-          :attr  => 'proxy_cache_path',
-          :value => '/path/to/proxy.cache',
-          :match => %r'\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :attr  => 'proxy_cache',
+          :value => {'/path/to/proxy.cache' => 'keys_zone=d2:100m'},
+          :match => %r'\s+proxy_cache_path\s+/path/to/proxy.cache keys_zone=d2:100m;',
         },
         {
           :title    => 'should not set proxy_cache_path',
-          :attr     => 'proxy_cache_path',
+          :attr     => 'proxy_cache',
           :value    => false,
-          :notmatch => %r'\s+proxy_cache_path\s+/path/to/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :notmatch => %r'\s+proxy_cache_path\s+/path/to/proxy\.cache keys_zone=d2:100m;',
         },
         {
           :title => 'should contain ordered appended directives from hash',

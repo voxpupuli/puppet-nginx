@@ -27,11 +27,7 @@ nginx::config::proxy_set_header:
   - 'Host $host'
   - 'X-Real-IP $remote_addr'
   - 'X-Forwarded-For $proxy_add_x_forwarded_for'
-nginx::config::proxy_cache_path: false
-nginx::config::proxy_cache_levels: '1'
-nginx::config::proxy_cache_keys_zone: 'd2:100m'
-nginx::config::proxy_cache_max_size: 500m
-nginx::config::proxy_cache_inactive: 20m
+nginx::config::proxy_cache: false
 nginx::config::fastcgi_cache_path: false
 nginx::config::fastcgi_cache_levels: '1'
 nginx::config::fastcgi_cache_keys_zone: 'd3:100m'
