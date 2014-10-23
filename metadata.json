@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "author": "James Fryman",
   "summary": "Puppet NGINX management module",
-  "license": "Apache License Version 2.0",
+  "license": "MIT License",
   "source": "https://github.com/jfryman/puppet-nginx.git",
   "project_page": "http://github.com/jfryman/puppet-nginx",
   "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
