@@ -79,7 +79,7 @@ server {
 <% end -%>
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
-       return 301 https://$host$request_uri;
+       return 301 https://$host<% if @ssl_port != 443 %>:<%= @ssl_port %><% end %>$request_uri;
   }
 <% end -%>
 <% if @index_files.count > 0 -%>
