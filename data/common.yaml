@@ -1,4 +1,15 @@
 ---
+#passed to nginx::package class
+nginx::package_name: nginx
+nginx::package_source: nginx
+nginx::package_ensure: present
+nginx::manage_repo: true
+
+#passed to nginx::service class
+nginx::configtest_enable: false
+nginx::service_ensure: running
+nginx::service_restart: '/etc/init.d/nginx configtest && /etc/init.d/nginx restart'
+
 nginx::config::temp_dir: /tmp
 nginx::config::run_dir: /var/nginx
 nginx::config::conf_template: nginx/conf.d/nginx.conf.erb
