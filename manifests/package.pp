@@ -77,8 +77,8 @@ class nginx::package(
       class { 'nginx::package::gentoo':
         package_name   => $package_name,
         package_ensure => $package_ensure,
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
+        require        => Anchor['nginx::package::begin'],
+        before         => Anchor['nginx::package::end'],
       }
     }
     default: {
