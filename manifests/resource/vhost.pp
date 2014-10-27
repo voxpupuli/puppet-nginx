@@ -70,6 +70,7 @@
 #   [*ssl_trusted_cert*]    - String: Specifies a file with trusted CA
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
+#   [*ssl_crl*]             - String: Specifies CRL path in file system
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
@@ -174,6 +175,7 @@ define nginx::resource::vhost (
   $ssl_stapling_verify    = false,
   $ssl_session_timeout    = '5m',
   $ssl_trusted_cert       = undef,
+  $ssl_crl                = undef,
   $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
   $proxy_redirect         = undef,
@@ -281,6 +283,9 @@ define nginx::resource::vhost (
   validate_string($ssl_session_timeout)
   if ($ssl_trusted_cert != undef) {
     validate_string($ssl_trusted_cert)
+  }
+  if ($ssl_crl != undef) {
+    validate_string($ssl_crl)
   }
   validate_string($spdy)
   if ($proxy != undef) {
