@@ -142,6 +142,7 @@ define nginx::resource::location (
   $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
+  $proxy_ignore_headers = [],
   $proxy_cache_min_uses = 1,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
