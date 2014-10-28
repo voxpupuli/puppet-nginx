@@ -289,7 +289,7 @@ define nginx::resource::location (
   if ($auth_basic_user_file != undef) {
     validate_string($auth_basic_user_file)
   }
-  validate_integer($proxy_cache_min_uses)
+  validate_re($proxy_cache_min_uses, '^\d+$')
   if !is_integer($priority) {
     fail('$priority must be an integer.')
   }
