@@ -166,6 +166,7 @@ define nginx::resource::location (
   $try_files            = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
+  $proxy_cache_use_stale = 'off',
   $proxy_method         = undef,
   $proxy_set_body       = undef,
   $auth_basic           = undef,

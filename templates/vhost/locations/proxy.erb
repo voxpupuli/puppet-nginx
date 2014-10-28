@@ -24,6 +24,9 @@
 <% if @proxy_cache_min_uses %>
     proxy_cache_min_uses  <%= @proxy_cache_min_uses %>;
 <% end %>
+<% if @proxy_cache_use_stale %>
+    proxy_cache_use_stale <%= @proxy_cache_use_stale %>;
+<% end %>
 <%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
 
     <%- @rewrite_rules.each do |rewrite_rule| -%>
