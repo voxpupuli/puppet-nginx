@@ -42,7 +42,7 @@ server {
   ssl_trusted_certificate   <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
   <%- end -%>
   <%- if defined? @ssl_crl -%>
-  ssl_crl                   <%= @ssl_crl %>
+  ssl_crl                   <%= @ssl_crl %>;
   <%- end -%>
 
 <% end -%>
