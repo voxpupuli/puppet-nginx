@@ -71,6 +71,9 @@
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
 #   [*ssl_crl*]             - String: Specifies CRL path in file system
+#   [*ssl_client_certificate*] - String: CA to verify client certs
+#   [*ssl_verify_client*]   - String: Enables verification of client certificates.
+#     The verification result is stored in the $ssl_client_verify variable.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
@@ -176,6 +179,8 @@ define nginx::resource::vhost (
   $ssl_session_timeout    = '5m',
   $ssl_trusted_cert       = undef,
   $ssl_crl                = undef,
+  $ssl_client_certificate = undef,
+  $ssl_verify_client      = 'off',
   $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
   $proxy_redirect         = undef,
@@ -290,6 +295,7 @@ define nginx::resource::vhost (
   if ($ssl_crl != undef) {
     validate_string($ssl_crl)
   }
+  validate_string($ssl_verify_client)
   validate_string($spdy)
   if ($proxy != undef) {
     validate_string($proxy)
