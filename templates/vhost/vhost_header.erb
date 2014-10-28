@@ -37,63 +37,61 @@ server {
 <% if defined? @gzip_types -%>
   gzip_types <%= @gzip_types %>;
 <% end -%>
-<%# make sure that allow comes before deny by forcing the allow key (if it -%>
-<%# exists) to be first in the output order.  The hash keys also need to be -%>
-<%# sorted so that the ordering is stable. -%>
-<% if @vhost_cfg_prepend -%>
-  <%- @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
-    <%- if value.is_a?(Hash) -%>
-      <%- value.each do |subkey,subvalue| -%>
-        <%- Array(subvalue).each do |asubvalue| -%>
-  <%= key %> <%= subkey %> <%= asubvalue %>;
+<% if @rewrite_to_https -%>
+  return      301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;
+<% else %>
+  <%# make sure that allow comes before deny by forcing the allow key (if it -%>
+  <%# exists) to be first in the output order.  The hash keys also need to be -%>
+  <%# sorted so that the ordering is stable. -%>
+  <% if @vhost_cfg_prepend -%>
+    <%- @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+      <%- if value.is_a?(Hash) -%>
+        <%- value.each do |subkey,subvalue| -%>
+          <%- Array(subvalue).each do |asubvalue| -%>
+    <%= key %> <%= subkey %> <%= asubvalue %>;
+          <%- end -%>
+        <%- end -%>
+      <%- else -%>
+        <%- Array(value).each do |asubvalue| -%>
+    <%= key %> <%= asubvalue %>;
         <%- end -%>
       <%- end -%>
-    <%- else -%>
-      <%- Array(value).each do |asubvalue| -%>
-  <%= key %> <%= asubvalue %>;
-      <%- end -%>
     <%- end -%>
-  <%- end -%>
-<% end -%>
-<% Array(@raw_prepend).each do |line| -%>
-  <%= line %>
+  <% end -%>
+  <% Array(@raw_prepend).each do |line| -%>
+    <%= line %>
+  <% end %>
+  <% if @root -%>
+    root <%= @root %>;
+  <% end -%>
+  <% if @passenger_cgi_param -%>
+    <%- @passenger_cgi_param.keys.sort.each do |key| -%>
+    passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
+    <%- end -%>
+  <% end -%>
+  <% if Array(@resolver).count > 0 -%>
+    resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
+  <% end -%>
+  <% @proxy_set_header.each do |header| -%>
+    proxy_set_header        <%= header %>;
+  <% end -%>
+  <% @proxy_ignore_headers.each do |header| -%>
+    proxy_ignore_headers    <%= header %>;
+  <% end -%>
+  <% if @add_header -%>
+    <%- @add_header.each do |key,value| -%>
+    add_header              <%= key %> <%= value %>;
+    <%- end -%>
+  <% end -%>
+  <% if @index_files.count > 0 -%>
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+  <% end -%>
+  <% if defined? @log_by_lua -%>
+    log_by_lua '<%= @log_by_lua %>';
+  <% end -%>
+  <% if defined? @log_by_lua_file -%>
+    log_by_lua_file "<%= @log_by_lua_file %>";
+  <% end -%>
 <% end %>
-<% if @root -%>
-  root <%= @root %>;
-<% end -%>
-<% if @passenger_cgi_param -%>
-  <%- @passenger_cgi_param.keys.sort.each do |key| -%>
-  passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
-  <%- end -%>
-<% end -%>
-<% if Array(@resolver).count > 0 -%>
-  resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
-<% end -%>
-<% @proxy_set_header.each do |header| -%>
-  proxy_set_header        <%= header %>;
-<% end -%>
-<% @proxy_ignore_headers.each do |header| -%>
-  proxy_ignore_headers    <%= header %>;
-<% end -%>
-<% if @add_header -%>
-  <%- @add_header.each do |key,value| -%>
-  add_header              <%= key %> <%= value %>;
-  <%- end -%>
-<% end -%>
-<% if @rewrite_to_https -%>
-  if ($ssl_protocol = "") {
-       return 301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;
-  }
-<% end -%>
-<% if @index_files.count > 0 -%>
-  index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
-<% end -%>
-<% if defined? @log_by_lua -%>
-  log_by_lua '<%= @log_by_lua %>';
-<% end -%>
-<% if defined? @log_by_lua_file -%>
-  log_by_lua_file "<%= @log_by_lua_file %>";
-<% end -%>
-
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
