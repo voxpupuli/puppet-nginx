@@ -208,12 +208,20 @@ describe 'nginx::resource::vhost' do
           ],
         },
         {
+          :title => 'should set proxy_ignore_headers',
+          :attr  => 'proxy_ignore_headers',
+          :value => ['header1', 'header2'],
+          :match => [
+            '  proxy_ignore_header        header1;',
+            '  proxy_ignore_header        header2;',
+          ]
+        },
+        {
           :title => 'should rewrite to HTTPS',
           :attr  => 'rewrite_to_https',
           :value => true,
           :match => [
-            '  if ($ssl_protocol = "") {',
-            '       return 301 https://$host$request_uri;',
+            %r'\s*return\s+301\s+https://\$host\$request_uri;',
           ],
         },
         {
@@ -221,7 +229,6 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_to_https',
           :value    => false,
           :notmatch => [
-            %r'if \(\$ssl_protocol = ""\) \{',
             %r'\s+return 301 https://\$host\$request_uri;',
           ],
         },

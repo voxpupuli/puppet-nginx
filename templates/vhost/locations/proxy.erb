@@ -15,6 +15,13 @@
     <%- end -%>
 
 <% end -%>
+<% unless @proxy_ignore_headers.nil? -%>
+
+    <%- @proxy_ignore_headers.each do |header| -%>
+    proxy_ignore_header      <%= header %>;
+    <%- end -%>
+
+<% end -%>
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>
