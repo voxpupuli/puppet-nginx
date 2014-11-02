@@ -29,14 +29,10 @@
 #   include nginx
 # }
 class nginx (
+  ### START Nginx Configuration ###
   $client_body_buffer_size        = undef,
   $client_body_temp_path          = undef,
   $client_max_body_size           = undef,
-  $confd_purge                    = undef,
-  $configtest_enable              = undef,
-  $conf_dir                       = undef,
-  $conf_template                  = undef,
-  $daemon_user                    = undef,
   $events_use                     = undef,
   $fastcgi_cache_inactive         = undef,
   $fastcgi_cache_key              = undef,
@@ -46,27 +42,14 @@ class nginx (
   $fastcgi_cache_path             = undef,
   $fastcgi_cache_use_stale        = undef,
   $gzip                           = undef,
-  $http_access_log                = undef,
   $http_cfg_append                = undef,
   $http_tcp_nodelay               = undef,
   $http_tcp_nopush                = undef,
   $keepalive_timeout              = undef,
-  $logdir                         = undef,
   $mail                           = undef,
-  $manage_repo                    = undef,
   $multi_accept                   = undef,
   $names_hash_bucket_size         = undef,
   $names_hash_max_size            = undef,
-  $nginx_error_log                = undef,
-  $nginx_locations                = {},
-  $nginx_mailhosts                = {},
-  $nginx_upstreams                = {},
-  $nginx_vhosts                   = {},
-  $nginx_vhosts_defaults          = {},
-  $package_ensure                 = undef,
-  $package_name                   = undef,
-  $package_source                 = undef,
-  $pid                            = undef,
   $proxy_buffers                  = undef,
   $proxy_buffer_size              = undef,
   $proxy_cache_inactive           = undef,
@@ -74,7 +57,6 @@ class nginx (
   $proxy_cache_levels             = undef,
   $proxy_cache_max_size           = undef,
   $proxy_cache_path               = undef,
-  $proxy_conf_template            = undef,
   $proxy_connect_timeout          = undef,
   $proxy_headers_hash_bucket_size = undef,
   $proxy_http_version             = undef,
@@ -83,28 +65,63 @@ class nginx (
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
   $proxy_temp_path                = undef,
-  $run_dir                        = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
-  $service_ensure                 = undef,
-  $service_restart                = undef,
   $spdy                           = undef,
-  $super_user                     = undef,
-  $temp_dir                       = undef,
   $types_hash_bucket_size         = undef,
   $types_hash_max_size            = undef,
-  $vhost_purge                    = undef,
   $worker_connections             = undef,
   $worker_processes               = undef,
   $worker_rlimit_nofile           = undef,
+
+  ### END Nginx Configuration
+
+  ### START Package Configuration ###
+  $package_ensure                 = undef,
+  $package_name                   = undef,
+  $package_source                 = undef,
+  $manage_repo                    = undef,
+  ### END Package Configuration ###
+
+  ### START Service Configuation ###
+  $configtest_enable              = undef,
+  $service_ensure                 = undef,
+  $service_restart                = undef,
+  ### END Service Configuration ###
+
+  ### START Module/App Configuration ###
+  $confd_purge                    = undef,
+  $conf_dir                       = undef,
+  $daemon_user                    = undef,
+  $logdir                         = undef,
   $global_owner                   = undef,
   $global_group                   = undef,
   $global_mode                    = undef,
+  $http_access_log                = undef,
+  $nginx_error_log                = undef,
+  $pid                            = undef,
+  $run_dir                        = undef,
   $sites_available_owner          = undef,
   $sites_available_group          = undef,
   $sites_available_mode           = undef,
+  $super_user                     = undef,
+  $temp_dir                       = undef,
+  $vhost_purge                    = undef,
+
+  # Primary Templates
+  $conf_template                  = undef,
+  $proxy_conf_template            = undef,
+  ### END Module/App Configuration ###
+
+  ### START Hiera Lookups ###
   $geo_mappings                   = {},
   $string_mappings                = {},
+  $nginx_locations                = {},
+  $nginx_mailhosts                = {},
+  $nginx_upstreams                = {},
+  $nginx_vhosts                   = {},
+  $nginx_vhosts_defaults          = {},
+  ### END Hiera Lookups ###
 ) {
 
   ### DEPRECATION WARNING ###
