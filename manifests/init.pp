@@ -64,7 +64,6 @@ class nginx (
   $proxy_redirect                 = undef,
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
-  $proxy_temp_path                = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
   $spdy                           = undef,
@@ -73,33 +72,21 @@ class nginx (
   $worker_connections             = undef,
   $worker_processes               = undef,
   $worker_rlimit_nofile           = undef,
-
   ### END Nginx Configuration
-
-  ### START Package Configuration ###
-  $package_ensure                 = undef,
-  $package_name                   = undef,
-  $package_source                 = undef,
-  $manage_repo                    = undef,
-  ### END Package Configuration ###
-
-  ### START Service Configuation ###
-  $configtest_enable              = undef,
-  $service_ensure                 = undef,
-  $service_restart                = undef,
-  ### END Service Configuration ###
 
   ### START Module/App Configuration ###
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $daemon_user                    = undef,
-  $logdir                         = undef,
   $global_owner                   = undef,
   $global_group                   = undef,
   $global_mode                    = undef,
+  $logdir                         = undef,
   $http_access_log                = undef,
   $nginx_error_log                = undef,
   $pid                            = undef,
+  $proxy_temp_path                = undef,
+  $root_group                     = undef,
   $run_dir                        = undef,
   $sites_available_owner          = undef,
   $sites_available_group          = undef,
@@ -112,6 +99,19 @@ class nginx (
   $conf_template                  = undef,
   $proxy_conf_template            = undef,
   ### END Module/App Configuration ###
+
+  ### START Package Configuration ###
+  $package_ensure                 = present,
+  $package_name                   = 'nginx',
+  $package_source                 = 'nginx',
+  $manage_repo                    = true,
+  ### END Package Configuration ###
+
+  ### START Service Configuation ###
+  $configtest_enable              = false,
+  $service_ensure                 = running,
+  $service_restart                = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
+  ### END Service Configuration ###
 
   ### START Hiera Lookups ###
   $geo_mappings                   = {},

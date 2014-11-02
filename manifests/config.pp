@@ -14,28 +14,7 @@
 #
 # This class file is not called directly
 class nginx::config(
-  # START: Module Bootstrap Config
-  $confd_purge                    = undef,
-  $conf_dir                       = undef,
-  $conf_template                  = undef,
-  $daemon_user                    = undef,
-  $global_owner                   = undef,
-  $global_group                   = undef,
-  $global_mode                    = undef,
-  $logdir                         = undef,
-  $nginx_error_log                = undef,
-  $pid                            = undef,
-  $root_group                     = undef,
-  $run_dir                        = undef,
-  $sites_available_owner          = undef,
-  $sites_available_group          = undef,
-  $sites_available_mode           = undef,
-  $super_user                     = undef,
-  $temp_dir                       = undef,
-  $vhost_purge                    = undef,
-  # END: Module Bootstrap Config
-
-  # START: User Parameters
+  ### START Nginx Configuration ###
   $client_body_buffer_size        = undef,
   $client_body_temp_path          = undef,
   $client_max_body_size           = undef,
@@ -48,7 +27,6 @@ class nginx::config(
   $fastcgi_cache_path             = undef,
   $fastcgi_cache_use_stale        = undef,
   $gzip                           = undef,
-  $http_access_log                = undef,
   $http_cfg_append                = undef,
   $http_tcp_nodelay               = undef,
   $http_tcp_nopush                = undef,
@@ -64,7 +42,6 @@ class nginx::config(
   $proxy_cache_levels             = undef,
   $proxy_cache_max_size           = undef,
   $proxy_cache_path               = undef,
-  $proxy_conf_template            = undef,
   $proxy_connect_timeout          = undef,
   $proxy_headers_hash_bucket_size = undef,
   $proxy_http_version             = undef,
@@ -72,16 +49,42 @@ class nginx::config(
   $proxy_redirect                 = undef,
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
-  $proxy_temp_path                = undef,
-  $server_tokens                  = undef,
   $sendfile                       = undef,
+  $server_tokens                  = undef,
   $spdy                           = undef,
+  $types_hash_bucket_size         = undef,
+  $types_hash_max_size            = undef,
   $worker_connections             = undef,
   $worker_processes               = undef,
   $worker_rlimit_nofile           = undef,
-  $types_hash_bucket_size         = undef,
-  $types_hash_max_size            = undef,
-  # END: User Parameters
+  ### END Nginx Configuration ###
+
+  ### START Module/App Configuration ###
+  $confd_purge                    = undef,
+  $conf_dir                       = undef,
+  $daemon_user                    = undef,
+  $global_owner                   = undef,
+  $global_group                   = undef,
+  $global_mode                    = undef,
+  $logdir                         = undef,
+  $http_access_log                = undef,
+  $nginx_error_log                = undef,
+  $pid                            = undef,
+  $proxy_temp_path                = undef,
+  $root_group                     = undef,
+  $run_dir                        = undef,
+  $sites_available_owner          = undef,
+  $sites_available_group          = undef,
+  $sites_available_mode           = undef,
+  $super_user                     = undef,
+  $temp_dir                       = undef,
+  $vhost_purge                    = undef,
+
+  # Primary Templates
+  $conf_template                  = undef,
+  $proxy_conf_template            = undef,
+  ### END Module/App Configuration ###
+
 ) {
 
   ### Validations ###
@@ -145,7 +148,6 @@ class nginx::config(
   validate_string($http_access_log)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
-
   ### END VALIDATIONS ###
 
 
