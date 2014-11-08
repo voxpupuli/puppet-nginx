@@ -1,5 +1,0 @@
----
-:hierarchy:
-- operatingsystem/%{::operatingsystem}
-- osfamily/%{::osfamily}
-- common

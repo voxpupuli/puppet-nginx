@@ -1,3 +1,0 @@
----
-nginx::config::pid: false
-nginx::config::daemon_user: http
