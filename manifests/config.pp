@@ -22,7 +22,7 @@ class nginx::config(
   $global_owner                   = $nginx::params::global_owner
   $global_group                   = $nginx::params::global_group,
   $global_mode                    = $nginx::params::global_mode,
-  $logdir                         = $nginx::params::logdir,
+  $log_dir                        = $nginx::params::log_dir,
   $http_access_log                = $nginx::params::http_access_log,
   $nginx_error_log                = $nginx::params::nginx_error_log,
   $pid                            = $nginx::params::pid,
