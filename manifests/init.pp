@@ -201,7 +201,7 @@ class nginx (
         $sites_available_owner or
         $sites_available_group or
         $sites_available_mode {
-          include nginx::notice::puppet_module_data
+          include nginx::notice::config
         }
 
   ### END DEPRECATION WARNING ###
