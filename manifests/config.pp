@@ -19,7 +19,7 @@ class nginx::config(
   $confd_purge                    = false,
   $conf_dir                       = $nginx::params::conf_dir,
   $daemon_user                    = $nginx::params::daemon_user,
-  $global_owner                   = $nginx::params::global_owner
+  $global_owner                   = $nginx::params::global_owner,
   $global_group                   = $nginx::params::global_group,
   $global_mode                    = $nginx::params::global_mode,
   $log_dir                        = $nginx::params::log_dir,
