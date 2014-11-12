@@ -1,7 +1,7 @@
 # Usage of Hiera
 
 This module takes advantage of the `puppet-module-data` pattern as introduced
-by R.I. Pinnear to allow for a significant amount of flexibility with base
+by R.I. Pienaar to allow for a significant amount of flexibility with base
 configuration of the module. This is to reduce the amount of clutter starting
 to gather in `params.pp`, and provide a foundation for future enhancements.
 
