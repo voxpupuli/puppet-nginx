@@ -86,7 +86,7 @@ class nginx::config(
   $types_hash_bucket_size         = 512,
   $types_hash_max_size            = 1024,
   $worker_connections             = 1024,
-  $worker_processes               = 0,
+  $worker_processes               = 1,
   $worker_rlimit_nofile           = 1024,
   ### END Nginx Configuration ###
 ) {
