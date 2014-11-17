@@ -219,7 +219,7 @@ class nginx (
     http_tcp_nodelay               => $http_tcp_nodelay,
     http_tcp_nopush                => $http_tcp_nopush,
     keepalive_timeout              => $keepalive_timeout,
-    log_dir                        => $logdir,
+    logdir                         => $logdir,
     mail                           => $mail,
     multi_accept                   => $multi_accept,
     names_hash_bucket_size         => $names_hash_bucket_size,
