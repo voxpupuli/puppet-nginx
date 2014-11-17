@@ -6,7 +6,7 @@ class nginx::params {
       $_daemon_user = 'http'
     }
     'Debian': {
-      $_pid         = 'www-data'
+      $_daemon_user = 'www-data'
     }
     'FreeBSD': {
       $_conf_dir    = '/usr/local/etc/nginx'
@@ -36,7 +36,7 @@ class nginx::params {
   ### END Operating System Configuration
 
   ### Referenced Variables
-  $conf_dir              = '/etc/nginx'
+  $conf_dir              = $_conf_dir
   $log_dir               = '/var/log/nginx'
   $run_dir               = '/var/nginx'
   $temp_dir              = '/tmp'
