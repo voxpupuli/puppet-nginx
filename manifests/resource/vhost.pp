@@ -453,12 +453,11 @@ define nginx::resource::vhost (
     }
   }
 
-
   # This was a lot to add up in parameter list so add it down here
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $access_log_tmp = $access_log ? {
-    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
+    undef   => "${nginx::config::log_dir}/${name_sanitized}.access.log",
     default => $access_log,
   }
 
@@ -468,7 +467,7 @@ define nginx::resource::vhost (
   }
 
   $error_log_real = $error_log ? {
-    undef   => "${nginx::config::logdir}/${name_sanitized}.error.log",
+    undef   => "${nginx::config::log_dir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
