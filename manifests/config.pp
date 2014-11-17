@@ -89,7 +89,7 @@ class nginx::config(
   $worker_processes               = 1,
   $worker_rlimit_nofile           = 1024,
   ### END Nginx Configuration ###
-) {
+) inherits nginx::params {
 
   ### Validations ###
   if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
