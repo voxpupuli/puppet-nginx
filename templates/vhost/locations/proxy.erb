@@ -15,12 +15,25 @@
     <%- end -%>
 
 <% end -%>
+<% unless @proxy_ignore_headers.nil? -%>
+
+    <%- @proxy_ignore_headers.each do |header| -%>
+    proxy_ignore_header      <%= header %>;
+    <%- end -%>
+
+<% end -%>
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>
 <% if @proxy_cache_valid -%>
     proxy_cache_valid     <%= @proxy_cache_valid %>;
 <% end -%>
+<% if @proxy_cache_min_uses %>
+    proxy_cache_min_uses  <%= @proxy_cache_min_uses %>;
+<% end %>
+<% if @proxy_cache_use_stale %>
+    proxy_cache_use_stale <%= @proxy_cache_use_stale %>;
+<% end %>
 <%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
 
     <%- @rewrite_rules.each do |rewrite_rule| -%>

@@ -70,6 +70,10 @@
 #   [*ssl_trusted_cert*]    - String: Specifies a file with trusted CA
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
+#   [*ssl_crl*]             - String: Specifies CRL path in file system
+#   [*ssl_client_certificate*] - String: CA to verify client certs
+#   [*ssl_verify_client*]   - String: Enables verification of client certificates.
+#     The verification result is stored in the $ssl_client_verify variable.
 #   [*spdy*]                - Toggles SPDY protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
@@ -174,14 +178,20 @@ define nginx::resource::vhost (
   $ssl_stapling_verify    = false,
   $ssl_session_timeout    = '5m',
   $ssl_trusted_cert       = undef,
+  $ssl_crl                = undef,
+  $ssl_client_certificate = undef,
+  $ssl_verify_client      = 'off',
   $spdy                   = $nginx::config::spdy,
   $proxy                  = undef,
   $proxy_redirect         = undef,
   $proxy_read_timeout     = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout  = $nginx::config::proxy_connect_timeout,
+  $proxy_ignore_headers   = [],
   $proxy_set_header       = [],
   $proxy_cache            = false,
   $proxy_cache_valid      = false,
+  $proxy_cache_min_uses   = 1,
+  $proxy_cache_use_stale  = 'off',
   $proxy_method           = undef,
   $proxy_set_body         = undef,
   $resolver               = [],
@@ -282,6 +292,10 @@ define nginx::resource::vhost (
   if ($ssl_trusted_cert != undef) {
     validate_string($ssl_trusted_cert)
   }
+  if ($ssl_crl != undef) {
+    validate_string($ssl_crl)
+  }
+  validate_string($ssl_verify_client)
   validate_string($spdy)
   if ($proxy != undef) {
     validate_string($proxy)
@@ -291,6 +305,7 @@ define nginx::resource::vhost (
     validate_string($proxy_redirect)
   }
   validate_array($proxy_set_header)
+  validate_array($proxy_ignore_headers)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
@@ -497,6 +512,8 @@ define nginx::resource::vhost (
       proxy_connect_timeout => $proxy_connect_timeout,
       proxy_cache           => $proxy_cache,
       proxy_cache_valid     => $proxy_cache_valid,
+      proxy_cache_min_uses  => $proxy_cache_min_uses,
+      proxy_cache_use_stale => $proxy_cache_use_stale,
       proxy_method          => $proxy_method,
       proxy_set_body        => $proxy_set_body,
       fastcgi               => $fastcgi,
@@ -604,33 +621,33 @@ define nginx::resource::vhost (
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
     ensure_resource('file', "${nginx::config::conf_dir}/${cert}.crt", {
-      owner  => $nginx::config::daemon_user,
-      mode   => '0444',
+      owner  => 'root',
+      mode   => '0400',
       source => $ssl_cert,
     })
     ensure_resource('file', "${nginx::config::conf_dir}/${cert}.key", {
-      owner  => $nginx::config::daemon_user,
-      mode   => '0440',
+      owner  => 'root',
+      mode   => '0400',
       source => $ssl_key,
     })
     if ($ssl_dhparam != undef) {
       ensure_resource('file', "${nginx::config::conf_dir}/${cert}.dh.pem", {
-        owner  => $nginx::config::daemon_user,
-        mode   => '0440',
+        owner  => 'root',
+        mode   => '0400',
         source => $ssl_dhparam,
       })
     }
     if ($ssl_stapling_file != undef) {
       ensure_resource('file', "${nginx::config::conf_dir}/${cert}.ocsp.resp", {
-        owner  => $nginx::config::daemon_user,
-        mode   => '0440',
+        owner  => 'root',
+        mode   => '0400',
         source => $ssl_stapling_file,
       })
     }
     if ($ssl_trusted_cert != undef) {
       ensure_resource('file', "${nginx::config::conf_dir}/${cert}.trusted.crt", {
-        owner  => $nginx::config::daemon_user,
-        mode   => '0440',
+        owner  => 'root',
+        mode   => '0400',
         source => $ssl_trusted_cert,
       })
     }

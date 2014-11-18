@@ -30,6 +30,8 @@
 #   [*proxy_connect_timeout*] - Override the default the proxy connect timeout
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
+#   [*proxy_cache_min_uses*] - String: Sets the number of requests after which
+#     the response will be cached.
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
@@ -140,6 +142,8 @@ define nginx::resource::location (
   $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
+  $proxy_ignore_headers = [],
+  $proxy_cache_min_uses = 1,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
@@ -163,6 +167,7 @@ define nginx::resource::location (
   $try_files            = undef,
   $proxy_cache          = false,
   $proxy_cache_valid    = false,
+  $proxy_cache_use_stale = 'off',
   $proxy_method         = undef,
   $proxy_set_body       = undef,
   $auth_basic           = undef,
@@ -284,6 +289,7 @@ define nginx::resource::location (
   if ($auth_basic_user_file != undef) {
     validate_string($auth_basic_user_file)
   }
+  validate_re($proxy_cache_min_uses, '^\d+$')
   if !is_integer($priority) {
     fail('$priority must be an integer.')
   }
