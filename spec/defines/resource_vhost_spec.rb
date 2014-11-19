@@ -229,7 +229,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
         },
         {
           :title => 'should set error_log',
@@ -484,7 +484,7 @@ describe 'nginx::resource::vhost' do
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
         },
         {
           :title => 'should set error_log',
