@@ -1,6 +1,5 @@
 # Usage of Hiera
 
-<<<<<<< HEAD
 Passing through parameters from the main Class[nginx] and then having them chain down to Class[nginx::config] creates a ton of unnecessary spaghetti code that makes the module more complex to understand and difficult to extend.
 
 Going forward, it is recommended to declare your changes in Hiera based on the system(s) role and location in your environment. In Puppet < 3.x, this is accomplished with Hiera bindings.

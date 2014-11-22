@@ -15,25 +15,25 @@
 # This class file is not called directly
 class nginx::config(
   ### START Module/App Configuration ###
-  $client_body_temp_path          = $nginx::params::client_body_temp_path,
+  $client_body_temp_path          = $::nginx::params::client_body_temp_path,
   $confd_purge                    = false,
-  $conf_dir                       = $nginx::params::conf_dir,
-  $daemon_user                    = $nginx::params::daemon_user,
-  $global_owner                   = $nginx::params::global_owner,
-  $global_group                   = $nginx::params::global_group,
-  $global_mode                    = $nginx::params::global_mode,
-  $log_dir                        = $nginx::params::log_dir,
-  $http_access_log                = $nginx::params::http_access_log,
-  $nginx_error_log                = $nginx::params::nginx_error_log,
-  $pid                            = $nginx::params::pid,
-  $proxy_temp_path                = $nginx::params::proxy_temp_path,
-  $root_group                     = $nginx::params::root_group,
-  $run_dir                        = $nginx::params::run_dir,
-  $sites_available_owner          = $nginx::params::sites_available_owner,
-  $sites_available_group          = $nginx::params::sites_available_group,
-  $sites_available_mode           = $nginx::params::sites_available_mode,
-  $super_user                     = $nginx::params::super_user,
-  $temp_dir                       = $nginx::params::temp_dir,
+  $conf_dir                       = $::nginx::params::conf_dir,
+  $daemon_user                    = $::nginx::params::daemon_user,
+  $global_owner                   = $::nginx::params::global_owner,
+  $global_group                   = $::nginx::params::global_group,
+  $global_mode                    = $::nginx::params::global_mode,
+  $log_dir                        = $::nginx::params::log_dir,
+  $http_access_log                = $::nginx::params::http_access_log,
+  $nginx_error_log                = $::nginx::params::nginx_error_log,
+  $pid                            = $::nginx::params::pid,
+  $proxy_temp_path                = $::nginx::params::proxy_temp_path,
+  $root_group                     = $::nginx::params::root_group,
+  $run_dir                        = $::nginx::params::run_dir,
+  $sites_available_owner          = $::nginx::params::sites_available_owner,
+  $sites_available_group          = $::nginx::params::sites_available_group,
+  $sites_available_mode           = $::nginx::params::sites_available_mode,
+  $super_user                     = $::nginx::params::super_user,
+  $temp_dir                       = $::nginx::params::temp_dir,
   $vhost_purge                    = false,
 
   # Primary Templates
@@ -89,7 +89,7 @@ class nginx::config(
   $worker_processes               = 1,
   $worker_rlimit_nofile           = 1024,
   ### END Nginx Configuration ###
-) inherits nginx::params {
+) inherits ::nginx::params {
 
   ### Validations ###
   if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {

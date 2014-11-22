@@ -5,3 +5,5 @@ pkg/
 Gemfile.lock
 spec/fixtures/modules
 spec/fixtures/manifests
+vendor
+.ruby-version
