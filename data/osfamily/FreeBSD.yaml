@@ -1,4 +1,0 @@
----
-nginx::config::conf_dir: /usr/local/etc/nginx
-nginx::config::daemon_user: www
-nginx::config::root_group: wheel

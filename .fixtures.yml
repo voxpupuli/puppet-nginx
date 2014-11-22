@@ -5,4 +5,3 @@ fixtures:
     apt: "puppetlabs/apt"
     concat: "puppetlabs/concat"
     stdlib: "puppetlabs/stdlib"
-    module_data: "ripienaar/module_data"
