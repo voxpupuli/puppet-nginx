@@ -511,10 +511,8 @@ define nginx::resource::vhost (
       raw_prepend           => $location_raw_prepend,
       raw_append            => $location_raw_append
     }
-    $root = undef
-  } else {
-    $root = $www_root
   }
+  $root = $www_root
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
