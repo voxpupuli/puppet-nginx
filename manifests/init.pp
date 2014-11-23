@@ -4,9 +4,6 @@
 #
 # Parameters:
 #
-# There are no default parameters for this class. All module parameters
-# are managed via puppet-module-data (see data/ dir)
-#
 # Actions:
 #
 # Requires:
