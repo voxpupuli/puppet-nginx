@@ -61,7 +61,7 @@ define nginx::resource::mailhost (
   $server_name         = [$name]
 ) {
 
-  $root_group = $nginx::config::root_group
+  $root_group = $::nginx::config::root_group
 
   File {
     owner => 'root',
@@ -105,7 +105,7 @@ define nginx::resource::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
+  $config_file = "${::nginx::config::conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
@@ -124,7 +124,7 @@ define nginx::resource::mailhost (
     owner  => 'root',
     group  => $root_group,
     mode   => '0644',
-    notify => Class['nginx::service'],
+    notify => Class['::nginx::service'],
   }
 
   if ($listen_port != $ssl_port) {

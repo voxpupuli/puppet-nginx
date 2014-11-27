@@ -73,7 +73,7 @@ define nginx::resource::geo (
   if ($proxies != undef) { validate_array($proxies) }
   if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
-  $root_group = $nginx::config::root_group
+  $root_group = $::nginx::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => 'absent',
@@ -86,9 +86,9 @@ define nginx::resource::geo (
     mode  => '0644',
   }
 
-  file { "${nginx::config::conf_dir}/conf.d/${name}-geo.conf":
+  file { "${::nginx::config::conf_dir}/conf.d/${name}-geo.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/geo.erb'),
-    notify  => Class['nginx::service'],
+    notify  => Class['::nginx::service'],
   }
 }

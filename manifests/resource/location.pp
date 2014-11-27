@@ -136,13 +136,13 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
-  $proxy_redirect       = $nginx::config::proxy_redirect,
-  $proxy_read_timeout   = $nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
-  $proxy_set_header     = $nginx::config::proxy_set_header,
+  $proxy_redirect       = $::nginx::config::proxy_redirect,
+  $proxy_read_timeout   = $::nginx::config::proxy_read_timeout,
+  $proxy_connect_timeout = $::nginx::config::proxy_connect_timeout,
+  $proxy_set_header     = $::nginx::config::proxy_set_header,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
-  $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_params       = "${::nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
   $ssl                  = false,
@@ -173,13 +173,13 @@ define nginx::resource::location (
   $flv             = false,
 ) {
 
-  $root_group = $nginx::config::root_group
+  $root_group = $::nginx::config::root_group
 
   File {
     owner  => 'root',
     group  => $root_group,
     mode   => '0644',
-    notify => Class['nginx::service'],
+    notify => Class['::nginx::service'],
   }
 
   validate_re($ensure, '^(present|absent)$',
@@ -299,7 +299,7 @@ define nginx::resource::location (
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
@@ -378,7 +378,7 @@ define nginx::resource::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${nginx::config::conf_dir}/${location_sanitized}_htpasswd":
+    file { "${::nginx::config::conf_dir}/${location_sanitized}_htpasswd":
       ensure => $ensure,
       mode   => '0644',
       source => $auth_basic_user_file,
