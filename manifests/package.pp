@@ -25,7 +25,7 @@ class nginx::package(
 
   case $::osfamily {
     'redhat': {
-      class { 'nginx::package::redhat':
+      class { '::nginx::package::redhat':
         manage_repo    => $manage_repo,
         package_ensure => $package_ensure,
         package_name   => $package_name,
@@ -34,7 +34,7 @@ class nginx::package(
       }
     }
     'debian': {
-      class { 'nginx::package::debian':
+      class { '::nginx::package::debian':
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
@@ -44,20 +44,20 @@ class nginx::package(
       }
     }
     'suse': {
-      class { 'nginx::package::suse':
+      class { '::nginx::package::suse':
         package_name => $package_name,
         require      => Anchor['nginx::package::begin'],
         before       => Anchor['nginx::package::end'],
       }
     }
     'archlinux': {
-      class { 'nginx::package::archlinux':
+      class { '::nginx::package::archlinux':
         require => Anchor['nginx::package::begin'],
         before  => Anchor['nginx::package::end'],
       }
     }
     'Solaris': {
-      class { 'nginx::package::solaris':
+      class { '::nginx::package::solaris':
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
@@ -66,7 +66,7 @@ class nginx::package(
       }
     }
     'FreeBSD': {
-      class { 'nginx::package::freebsd':
+      class { '::nginx::package::freebsd':
         package_name   => $package_name,
         package_ensure => $package_ensure,
         require        => Anchor['nginx::package::begin'],
@@ -74,7 +74,7 @@ class nginx::package(
       }
     }
     'Gentoo': {
-      class { 'nginx::package::gentoo':
+      class { '::nginx::package::gentoo':
         package_name   => $package_name,
         package_ensure => $package_ensure,
         require        => Anchor['nginx::package::begin'],
@@ -82,7 +82,7 @@ class nginx::package(
       }
     }
     'OpenBSD': {
-      class { 'nginx::package::openbsd':
+      class { '::nginx::package::openbsd':
         package_name   => $package_name,
         package_ensure => $package_ensure,
         require        => Anchor['nginx::package::begin'],
@@ -96,7 +96,7 @@ class nginx::package(
           # https://github.com/puppetlabs/facter/commit/c12d3b6c557df695a7b2b009da099f6a93c7bd31#lib/facter/osfamily.rb
           warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.2 is deprecated")
           warning("Please upgrade from facter ${::facterversion} to >= 1.7.2")
-          class { 'nginx::package::redhat':
+          class { '::nginx::package::redhat':
             require => Anchor['nginx::package::begin'],
             before  => Anchor['nginx::package::end'],
           }

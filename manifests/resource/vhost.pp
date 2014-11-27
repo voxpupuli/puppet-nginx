@@ -174,11 +174,11 @@ define nginx::resource::vhost (
   $ssl_stapling_verify          = false,
   $ssl_session_timeout          = '5m',
   $ssl_trusted_cert             = undef,
-  $spdy                         = $nginx::config::spdy,
+  $spdy                         = $::nginx::config::spdy,
   $proxy                        = undef,
   $proxy_redirect               = undef,
-  $proxy_read_timeout           = $nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout        = $nginx::config::proxy_connect_timeout,
+  $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
+  $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header             = [],
   $proxy_cache                  = false,
   $proxy_cache_valid            = false,
@@ -186,7 +186,7 @@ define nginx::resource::vhost (
   $proxy_set_body               = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
-  $fastcgi_params               = "${nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script               = undef,
   $index_files                  = [
     'index.html',
@@ -228,9 +228,9 @@ define nginx::resource::vhost (
   $string_mappings              = {},
   $geo_mappings                 = {},
   $gzip_types                   = undef,
-  $owner                        = $nginx::config::global_owner,
-  $group                        = $nginx::config::global_group,
-  $mode                         = $nginx::config::global_mode,
+  $owner                        = $::nginx::config::global_owner,
+  $group                        = $::nginx::config::global_group,
+  $mode                         = $::nginx::config::global_mode,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -419,8 +419,8 @@ define nginx::resource::vhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  $vhost_dir = "${nginx::config::conf_dir}/sites-available"
-  $vhost_enable_dir = "${nginx::config::conf_dir}/sites-enabled"
+  $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
+  $vhost_enable_dir = "${::nginx::config::conf_dir}/sites-enabled"
   $vhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',
@@ -434,7 +434,7 @@ define nginx::resource::vhost (
       'absent' => absent,
       default  => 'file',
     },
-    notify => Class['nginx::service'],
+    notify => Class['::nginx::service'],
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -458,12 +458,12 @@ define nginx::resource::vhost (
   # unfortunately means resorting to the $varname_real thing
   $access_log_real = $access_log ? {
     'off'   => 'off',
-    undef   => "${nginx::config::log_dir}/${name_sanitized}.access.log ${format_log}",
+    undef   => "${::nginx::config::log_dir}/${name_sanitized}.access.log ${format_log}",
     default => "${access_log} ${format_log}",
   }
 
   $error_log_real = $error_log ? {
-    undef   => "${nginx::config::log_dir}/${name_sanitized}.error.log",
+    undef   => "${::nginx::config::log_dir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
@@ -471,14 +471,14 @@ define nginx::resource::vhost (
     owner  => $owner,
     group  => $group,
     mode   => $mode,
-    notify => Class['nginx::service'],
+    notify => Class['::nginx::service'],
   }
 
   $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    nginx::resource::location {"${name_sanitized}-default":
+    ::nginx::resource::location {"${name_sanitized}-default":
       ensure                => $ensure,
       vhost                 => $name_sanitized,
       ssl                   => $ssl,
@@ -502,7 +502,7 @@ define nginx::resource::vhost (
       autoindex             => $autoindex,
       index_files           => [],
       location_custom_cfg   => $location_custom_cfg,
-      notify                => Class['nginx::service'],
+      notify                => Class['::nginx::service'],
       rewrite_rules         => $rewrite_rules,
       raw_prepend           => $location_raw_prepend,
       raw_append            => $location_raw_append
@@ -514,22 +514,22 @@ define nginx::resource::vhost (
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    ::Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_prepend => $location_cfg_prepend }
   }
 
   if $location_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    ::Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_append => $location_cfg_append }
   }
 
   if $location_custom_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    ::Nginx::Resource::Location["${name_sanitized}-default"] {
       location_custom_cfg_prepend => $location_custom_cfg_prepend }
   }
 
   if $location_custom_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
+    ::Nginx::Resource::Location["${name_sanitized}-default"] {
       location_custom_cfg_append => $location_custom_cfg_append }
   }
 
@@ -569,12 +569,12 @@ define nginx::resource::vhost (
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_real = $access_log ? {
       'off'   => 'off',
-      undef   => "${nginx::config::log_dir}/ssl-${name_sanitized}.access.log ${format_log}",
+      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.access.log ${format_log}",
       default => "${access_log} ${format_log}",
     }
 
     $ssl_error_log_real = $error_log ? {
-      undef   => "${nginx::config::log_dir}/ssl-${name_sanitized}.error.log",
+      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
 
@@ -594,33 +594,33 @@ define nginx::resource::vhost (
 
     # Check if the file has been defined before creating the file to
     # avoid the error when using wildcard cert on the multiple vhosts
-    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.crt", {
-      owner  => $nginx::config::daemon_user,
+    ensure_resource('file', "${::nginx::config::conf_dir}/${cert}.crt", {
+      owner  => $::nginx::config::daemon_user,
       mode   => '0444',
       source => $ssl_cert,
     })
-    ensure_resource('file', "${nginx::config::conf_dir}/${cert}.key", {
-      owner  => $nginx::config::daemon_user,
+    ensure_resource('file', "${::nginx::config::conf_dir}/${cert}.key", {
+      owner  => $::nginx::config::daemon_user,
       mode   => '0440',
       source => $ssl_key,
     })
     if ($ssl_dhparam != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.dh.pem", {
-        owner  => $nginx::config::daemon_user,
+      ensure_resource('file', "${::nginx::config::conf_dir}/${cert}.dh.pem", {
+        owner  => $::nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_dhparam,
       })
     }
     if ($ssl_stapling_file != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.ocsp.resp", {
-        owner  => $nginx::config::daemon_user,
+      ensure_resource('file', "${::nginx::config::conf_dir}/${cert}.ocsp.resp", {
+        owner  => $::nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_stapling_file,
       })
     }
     if ($ssl_trusted_cert != undef) {
-      ensure_resource('file', "${nginx::config::conf_dir}/${cert}.trusted.crt", {
-        owner  => $nginx::config::daemon_user,
+      ensure_resource('file', "${::nginx::config::conf_dir}/${cert}.trusted.crt", {
+        owner  => $::nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_trusted_cert,
       })
@@ -635,6 +635,6 @@ define nginx::resource::vhost (
     notify  => Service['nginx'],
   }
 
-  create_resources('nginx::resource::map', $string_mappings)
-  create_resources('nginx::resource::geo', $geo_mappings)
+  create_resources('::nginx::resource::map', $string_mappings)
+  create_resources('::nginx::resource::geo', $geo_mappings)
 }

@@ -24,6 +24,6 @@ class nginx::package::suse (
   }
 
   package { $package_name:
-    ensure => $nginx::package_ensure,
+    ensure => $::nginx::package_ensure,
   }
 }
