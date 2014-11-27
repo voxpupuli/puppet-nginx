@@ -33,7 +33,7 @@ describe 'nginx::resource::vhost' do
         'group' => 'root',
         'mode'  => '0644',
       })}
-      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log\s+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
+      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log\s+/var/log/nginx/www\.rspec\.example\.com\.access\.log combined;}) }
       it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log\s+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
       it { is_expected.to contain_concat__fragment("#{title}-footer") }
       it { is_expected.to contain_nginx__resource__location("#{title}-default") }
@@ -229,7 +229,25 @@ describe 'nginx::resource::vhost' do
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
+        },
+        {
+          :title => 'should set access_log off',
+          :attr  => 'access_log',
+          :value => 'off',
+          :match => '  access_log            off;',
+        },
+        {
+          :title => 'should set access_log to syslog',
+          :attr  => 'access_log',
+          :value => 'syslog:server=localhost',
+          :match => '  access_log            syslog:server=localhost combined;',
+        },
+        {
+          :title => 'should set format_log custom_format',
+          :attr  => 'format_log',
+          :value => 'custom',
+          :match => '  access_log            /var/log/nginx/www.rspec.example.com.access.log custom;',
         },
         {
           :title => 'should set error_log',
@@ -484,7 +502,25 @@ describe 'nginx::resource::vhost' do
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
+        },
+        {
+          :title => 'should set access_log off',
+          :attr  => 'access_log',
+          :value => 'off',
+          :match => '  access_log            off;',
+        },
+        {
+          :title => 'should set access_log to syslog',
+          :attr  => 'access_log',
+          :value => 'syslog:server=localhost',
+          :match => '  access_log            syslog:server=localhost combined;',
+        },
+        {
+          :title => 'should set format_log custom_format',
+          :attr  => 'format_log',
+          :value => 'custom',
+          :match => '  access_log            /var/log/nginx/ssl-www.rspec.example.com.access.log custom;',
         },
         {
           :title => 'should set error_log',
@@ -786,7 +822,7 @@ describe 'nginx::resource::vhost' do
         }) end
 
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
-        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
         it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
