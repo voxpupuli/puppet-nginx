@@ -253,7 +253,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -317,7 +317,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
             else
-              lines  = subject.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
+              lines  = catalogue.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -571,7 +571,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -650,7 +650,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|

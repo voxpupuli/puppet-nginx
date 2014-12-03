@@ -162,7 +162,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 
@@ -239,7 +239,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 
@@ -250,7 +250,7 @@ describe 'nginx::resource::location' do
 
           it "should end with a closing brace" do
             fragment = Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")
-            content = subject.resource('concat::fragment', fragment).send(:parameters)[:content]
+            content = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content]
             expect((content.split("\n").reject {|l| l =~ /^(\s*#|$)/ }.last).strip).to eq('}')
           end
         end
@@ -342,7 +342,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 
@@ -403,7 +403,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 
@@ -467,7 +467,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 
@@ -603,7 +603,7 @@ describe 'nginx::resource::location' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
               expect(lines & matches).to eq(matches)
             end
 

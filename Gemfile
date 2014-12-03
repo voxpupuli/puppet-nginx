@@ -11,7 +11,7 @@ group :rake, :test do
 end
 
 group :rake do
-  gem 'rspec-puppet', '~>1.0'
+  gem 'rspec-puppet', '>=2',     :require => false
   gem 'rake',         '>=0.9.2.2'
   gem 'puppet-lint',  '>=1.0.1'
   gem 'rspec-system-serverspec', :require => false

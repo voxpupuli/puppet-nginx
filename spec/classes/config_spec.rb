@@ -228,7 +228,7 @@ describe 'nginx::config' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(item) }
             else
-              lines = subject.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
 
@@ -298,7 +298,7 @@ describe 'nginx::config' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_file('/etc/nginx/conf.d/proxy.conf').with_content(item) }
             else
-              lines = subject.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
 
