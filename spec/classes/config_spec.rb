@@ -190,6 +190,12 @@ describe 'nginx::config' do
           ],
         },
         {
+          :title    => 'should not set log formats',
+          :attr     => 'log_format',
+          :value    => {},
+          :notmatch => /log_format/,
+        },
+        {
           :title => 'should set access_log',
           :attr  => 'http_access_log',
           :value => '/path/to/access.log',
