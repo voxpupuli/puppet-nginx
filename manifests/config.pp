@@ -23,6 +23,7 @@ class nginx::config(
   $global_group                   = $::nginx::params::global_group,
   $global_mode                    = $::nginx::params::global_mode,
   $log_dir                        = $::nginx::params::log_dir,
+  $log_format                     = $::nginx::params::log_format,
   $http_access_log                = $::nginx::params::http_access_log,
   $nginx_error_log                = $::nginx::params::nginx_error_log,
   $pid                            = $::nginx::params::pid,
