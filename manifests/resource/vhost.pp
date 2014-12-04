@@ -514,22 +514,22 @@ define nginx::resource::vhost (
 
   # Support location_cfg_prepend and location_cfg_append on default location created by vhost
   if $location_cfg_prepend {
-    ::Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_prepend => $location_cfg_prepend }
   }
 
   if $location_cfg_append {
-    ::Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_cfg_append => $location_cfg_append }
   }
 
   if $location_custom_cfg_prepend {
-    ::Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_custom_cfg_prepend => $location_custom_cfg_prepend }
   }
 
   if $location_custom_cfg_append {
-    ::Nginx::Resource::Location["${name_sanitized}-default"] {
+    Nginx::Resource::Location["${name_sanitized}-default"] {
       location_custom_cfg_append => $location_custom_cfg_append }
   }
 
