@@ -18,7 +18,7 @@
 <% unless @proxy_ignore_headers.nil? -%>
 
     <%- @proxy_ignore_headers.each do |header| -%>
-    proxy_ignore_header      <%= header %>;
+    proxy_ignore_headers      <%= header %>;
     <%- end -%>
 
 <% end -%>
