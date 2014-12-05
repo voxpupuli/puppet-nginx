@@ -493,6 +493,7 @@ define nginx::resource::vhost (
       proxy_cache           => $proxy_cache,
       proxy_cache_valid     => $proxy_cache_valid,
       proxy_method          => $proxy_method,
+      proxy_set_header      => $proxy_set_header,
       proxy_set_body        => $proxy_set_body,
       fastcgi               => $fastcgi,
       fastcgi_params        => $fastcgi_params,
