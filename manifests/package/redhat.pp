@@ -27,16 +27,6 @@ class nginx::package::redhat (
   }
 
   case $::operatingsystem {
-    'fedora': {
-      # nginx.org does not supply RPMs for fedora
-      # fedora 18 provides 1.2.x packages
-      # fedora 19 has 1.4.x packages are in
-
-      # fedora 18 users will need to supply their own nginx 1.4 rpms and/or repo
-      if $::lsbmajdistrelease and $::lsbmajdistrelease < 19 {
-        notice("${::operatingsystem} ${::lsbmajdistrelease} does not supply nginx >= 1.4 packages")
-      }
-    }
     default: {
       case $major_dist_release {
         5, 6, 7: {

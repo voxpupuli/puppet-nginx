@@ -100,15 +100,6 @@ describe 'nginx::package' do
     it_behaves_like 'debian', 'Ubuntu', 'precise', 'Ubuntu', '12.04'
   end
 
-  context 'fedora' do
-    # fedora is identical to the rest of osfamily RedHat except for not
-    # including nginx-release
-    let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat', :lsbmajdistrelease => 6 }}
-    it { is_expected.to contain_package('nginx') }
-    it { is_expected.not_to contain_yumrepo('nginx-release') }
-    it { is_expected.not_to contain_file('/etc/yum.repos.d/nginx-release.repo') }
-  end
-
   context 'other' do
     let(:facts) {{ :operatingsystem => 'xxx', :osfamily => 'linux' }}
     it { is_expected.to contain_package('nginx') }
