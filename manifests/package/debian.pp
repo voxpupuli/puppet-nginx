@@ -61,6 +61,10 @@ class nginx::package::debian(
           ensure  => 'present',
           require => Exec['apt_update'],
         }
+        
+        if $package_name != 'nginx-extras' {
+          warning('You must set $package_name to "nginx-extras" to enable Passenger')
+        }
       }
       default: {
         fail("\$package_source must be 'nginx-stable', 'nginx-mainline' or 'passenger'. It was set to '${package_source}'")
