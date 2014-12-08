@@ -22,8 +22,9 @@ class nginx::package::debian(
 
   $distro = downcase($::operatingsystem)
 
-  package { $package_name:
+  package { 'nginx':
     ensure  => $package_ensure,
+    name    => $package_name,
     require => Anchor['nginx::apt_repo'],
   }
 
