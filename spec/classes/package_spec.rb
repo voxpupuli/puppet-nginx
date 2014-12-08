@@ -99,21 +99,6 @@ describe 'nginx::package' do
     it_behaves_like 'debian', 'Debian', 'wheezy', 'Debian', '6'
     it_behaves_like 'debian', 'Ubuntu', 'precise', 'Ubuntu', '12.04'
   end
-  context 'amazon with facter < 1.7.2' do
-    let(:facts) {{ :operatingsystem => 'Amazon', :osfamily => 'Linux' }}
-      it { is_expected.to contain_package('nginx') }
-      it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/6/$basearch/',
-        'descr'    => 'nginx repo',
-        'enabled'  => '1',
-        'gpgcheck' => '1',
-        'priority' => '1',
-        'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
-      )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
-      it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
-      it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
-  end
 
   context 'fedora' do
     # fedora is identical to the rest of osfamily RedHat except for not
