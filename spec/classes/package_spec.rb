@@ -7,7 +7,7 @@ describe 'nginx::package' do
     context "using defaults" do
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/6/$basearch/',
+        'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/",
         'descr'    => 'nginx repo',
         'enabled'  => '1',
         'gpgcheck' => '1',
@@ -31,7 +31,7 @@ describe 'nginx::package' do
       let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '5' }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/5/$basearch/'
+        'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/5/$basearch/"
       )}
       it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
     end

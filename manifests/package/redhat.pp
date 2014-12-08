@@ -19,32 +19,18 @@ class nginx::package::redhat (
   $package_name   = 'nginx',
 ) {
 
-  if $::lsbmajdistrelease {
-    $major_dist_release = $::lsbmajdistrelease
-  }
-  else {
-    $major_dist_release = $::operatingsystemmajrelease
+  #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
+  #clone and provide the Red Hat-specific package. This comes into play when not
+  #on RHEL or CentOS and $manage_repo is set manually to 'true'.
+  if $::operatingsystem == 'centos' {
+    $_os = 'centos'
+  } else {
+    $_os = 'rhel'
   }
 
-  case $::operatingsystem {
-    default: {
-      case $major_dist_release {
-        5, 6, 7: {
-          $os_rel = $major_dist_release
-        }
-        default: {
-          # Amazon uses the year as the $::lsbmajdistrelease
-          $os_rel = 6
-        }
-      }
-
-      # as of 2013-07-28
-      # http://nginx.org/packages/centos appears to be identical to
-      # http://nginx.org/packages/rhel
-      # no other dedicated dirs exist for platforms under $::osfamily == redhat
       if $manage_repo {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/rhel/${os_rel}/\$basearch/",
+          baseurl  => "http://nginx.org/packages/${_os}/${::operatingsystemmajrelease}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
@@ -58,8 +44,6 @@ class nginx::package::redhat (
           require => Yumrepo['nginx-release'],
         }
       }
-    }
-  }
 
   package { 'nginx':
     ensure => $package_ensure,
