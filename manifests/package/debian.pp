@@ -54,7 +54,7 @@ class nginx::package::debian(
           repos             => 'main',
           key               => '561F9B9CAC40B2F7',
           key_source        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
-          required_packages => 'apt-transport-https',
+          required_packages => 'apt-transport-https ca-certificates',
         }
 
         package { 'passenger':
