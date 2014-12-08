@@ -38,11 +38,6 @@ class nginx::package::redhat (
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
           before   => Package[$package_name],
         }
-
-        file { '/etc/yum.repos.d/nginx-release.repo':
-          ensure  => present,
-          require => Yumrepo['nginx-release'],
-        }
       }
 
   package { 'nginx':

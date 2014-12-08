@@ -14,7 +14,6 @@ describe 'nginx::package' do
         'priority' => '1',
         'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
       )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
@@ -24,7 +23,6 @@ describe 'nginx::package' do
       let(:params) {{ :manage_repo => false }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.not_to contain_yumrepo('nginx-release') }
-      it { is_expected.not_to contain_file('/etc/yum.repos.d/nginx-release.repo') }
     end
 
     context "operatingsystemmajrelease = 5" do
@@ -33,7 +31,6 @@ describe 'nginx::package' do
       it { is_expected.to contain_yumrepo('nginx-release').with(
         'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/5/$basearch/"
       )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
     end
 
     describe 'installs the requested package version' do
