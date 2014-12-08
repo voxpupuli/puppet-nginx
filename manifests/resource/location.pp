@@ -335,7 +335,7 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
-  if $fastcgi != undef and !defined(File[$fastcgi_params]) {
+  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
@@ -348,7 +348,7 @@ define nginx::resource::location (
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { $tmpFile:
-      ensure  => present,
+      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -365,7 +365,7 @@ define nginx::resource::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment { $sslTmpFile:
-      ensure  => present,
+      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -379,7 +379,7 @@ define nginx::resource::location (
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
     file { "${::nginx::config::conf_dir}/${location_sanitized}_htpasswd":
-      ensure => $ensure,
+      ensure => $ensure_real,
       mode   => '0644',
       source => $auth_basic_user_file,
     }
