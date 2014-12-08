@@ -23,15 +23,13 @@ class nginx::package::debian(
   $distro = downcase($::operatingsystem)
 
   package { 'nginx':
-    ensure  => $package_ensure,
-    name    => $package_name,
-    require => Anchor['nginx::apt_repo'],
+    ensure => $package_ensure,
+    name   => $package_name,
   }
-
-  anchor { 'nginx::apt_repo' : }
 
   if $manage_repo {
     include '::apt'
+    Exec['apt_update'] -> Package['nginx']
 
     case $package_source {
       'nginx': {
@@ -40,34 +38,23 @@ class nginx::package::debian(
           repos      => 'nginx',
           key        => '7BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
-          notify     => Exec['apt_get_update_for_nginx'],
         }
       }
       'passenger': {
-        ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
-
         apt::source { 'nginx':
-          location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos      => 'main',
-          key        => '561F9B9CAC40B2F7',
-          key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
-          notify     => Exec['apt_get_update_for_nginx'],
+          location          => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          repos             => 'main',
+          key               => '561F9B9CAC40B2F7',
+          key_source        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+          required_packages => 'apt-transport-https',
         }
 
         package { 'passenger':
           ensure  => 'present',
-          require => Anchor['nginx::apt_repo'],
+          require => Exec['apt_update'],
         }
       }
       default: {}
-    }
-
-    exec { 'apt_get_update_for_nginx':
-      command     => '/usr/bin/apt-get update',
-      timeout     => 240,
-      returns     => [ 0, 100 ],
-      refreshonly => true,
-      before      => Anchor['nginx::apt_repo'],
     }
   }
 }
