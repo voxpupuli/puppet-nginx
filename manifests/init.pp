@@ -285,7 +285,11 @@ class nginx (
     }
   }
 
-  class { '::nginx::service': }
+  class { '::nginx::service':
+    configtest_enable => $configtest_enable,
+    service_ensure    => $service_ensure,
+    service_restart   => $service_restart,
+  }
 
   create_resources('::nginx::resource::upstream', $nginx_upstreams)
   create_resources('::nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
