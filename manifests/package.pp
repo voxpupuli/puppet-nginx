@@ -46,6 +46,10 @@ class nginx::package(
     'Solaris': {
       # $package_name needs to be specified. SFEnginx,CSWnginx depending on
       # where you get it.
+      if $package_name == undef {
+        fail('You must supply a value for $package_name on Solaris')
+      }
+
       package { 'nginx':
         ensure => $package_ensure,
         name   => $package_name,
