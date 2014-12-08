@@ -111,6 +111,6 @@ describe 'nginx::package' do
 
   context 'other' do
     let(:facts) {{ :operatingsystem => 'xxx', :osfamily => 'linux' }}
-    it { expect { subject }.to raise_error(Puppet::Error, /Module nginx is not supported on xxx/) }
+    it { is_expected.to contain_package('nginx') }
   end
 end

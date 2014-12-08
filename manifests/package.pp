@@ -90,10 +90,8 @@ class nginx::package(
       }
     }
     default: {
-      case $::operatingsystem {
-        default: {
-          fail("Module ${module_name} is not supported on ${::operatingsystem}")
-        }
+      package { 'nginx':
+        ensure => $package_ensure,
       }
     }
   }
