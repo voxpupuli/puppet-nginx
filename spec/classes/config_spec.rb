@@ -1,31 +1,7 @@
 require 'spec_helper'
 describe 'nginx::config' do
 
-  describe 'with defaults' do
-    [
-      { :osfamily => 'Debian', :operatingsystem => 'Debian', },
-      { :osfamily => 'Debian', :operatingsystem => 'Ubuntu', },
-      { :osfamily => 'Redhat', :operatingsystem => 'Fedora', },
-      { :osfamily => 'Redhat', :operatingsystem => 'RedHat', },
-      { :osfamily => 'Redhat', :operatingsystem => 'OracleLinux', },
-      { :osfamily => 'Redhat', :operatingsystem => 'CentOS', },
-      { :osfamily => 'Redhat', :operatingsystem => 'Scientific', },
-      { :osfamily => 'Redhat', :operatingsystem => 'Amazon', },
-      { :osfamily => 'SuSE',   :operatingsystem => 'SuSE', },
-      { :osfamily => 'SuSE',   :operatingsystem => 'OpenSuSE', },
-      { :osfamily => 'Gentoo', :operatingsystem => 'Gentoo', },
-      { :osfamily => 'Linux',  :operatingsystem => 'Gentoo', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
-
+  context 'with defaults' do
         it { is_expected.to contain_file("/etc/nginx").only_with(
           :path   => "/etc/nginx",
           :ensure => 'directory',
@@ -88,68 +64,9 @@ describe 'nginx::config' do
           :purge => true,
           :recurse => true
         )}
-      end
-    end
-  end
-
-  describe 'with defaults' do
-    [
-      { :osfamily => 'Debian', :operatingsystem => 'Debian', },
-      { :osfamily => 'Debian', :operatingsystem => 'Ubuntu', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
-        it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
-        it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'www-data')}
-        it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user www-data;}}
-      end
-    end
-  end
-
-  describe 'with defaults' do
-    [
-      { :osfamily => 'RedHat', :operatingsystem => 'Fedora', },
-      { :osfamily => 'RedHat', :operatingsystem => 'RedHat', },
-      { :osfamily => 'RedHat', :operatingsystem => 'OracleLinux', },
-      { :osfamily => 'RedHat', :operatingsystem => 'CentOS', },
-      { :osfamily => 'RedHat', :operatingsystem => 'Scientific', },
-      { :osfamily => 'RedHat', :operatingsystem => 'Amazon', },
-      { :osfamily => 'SuSE',   :operatingsystem => 'SuSE', },
-      { :osfamily => 'SuSE',   :operatingsystem => 'openSuSE', },
-      { :osfamily => 'Gentoo', :operatingsystem => 'Gentoo', },
-      { :osfamily => 'Linux',  :operatingsystem => 'Gentoo', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
         it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user nginx;}}
-      end
-    end
-  end
-
-  describe 'os-independent items' do
-
-    let :facts do
-      {
-        :osfamily        => 'Debian',
-        :operatingsystem => 'Debian',
-      }
-    end
 
     describe "nginx.conf template content" do
       [
@@ -390,6 +307,17 @@ describe 'nginx::config' do
         'purge',
         'recurse'
       ])}
+    end
+
+    context "when daemon_user = www-data" do
+      let :params do
+        {
+          :daemon_user => 'www-data',
+        }
+      end
+      it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
+      it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'www-data')}
+      it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user www-data;}}
     end
   end
 end

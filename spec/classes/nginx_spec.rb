@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe 'nginx' do
+  let :facts do
+    {
+      :osfamily => 'Gentoo',
+    }
+  end
+
   let :params do
     {
       :nginx_upstreams       => { 'upstream1' => { 'members' => ['localhost:3000']} },
@@ -11,7 +17,7 @@ describe 'nginx' do
     }
   end
 
-  shared_examples "a Linux OS" do
+  describe "with defaults" do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_class('nginx') }
     it { is_expected.to contain_anchor('nginx::begin') }
@@ -26,40 +32,5 @@ describe 'nginx' do
     it { is_expected.to contain_nginx__resource__vhost("test2.local").with_listen_options('default_server') }
     it { is_expected.to contain_nginx__resource__location("test2.local") }
     it { is_expected.to contain_nginx__resource__mailhost("smtp.test2.local") }
-  end
-
-  context "Debian OS" do
-    it_behaves_like "a Linux OS" do
-      let :facts do
-        {
-          :operatingsystem => 'Debian',
-          :osfamily        => 'Debian',
-          :lsbdistcodename => 'precise',
-          :lsbdistid       => 'Debian',
-        }
-      end
-    end
-  end
-
-  context "RedHat OS" do
-    it_behaves_like "a Linux OS" do
-      let :facts do
-        {
-          :operatingsystem => 'RedHat',
-          :osfamily        => 'RedHat',
-        }
-      end
-    end
-  end
-
-  context "Suse OS" do
-    it_behaves_like "a Linux OS" do
-      let :facts do
-        {
-          :operatingsystem => 'SuSE',
-          :osfamily        => 'Suse',
-        }
-      end
-    end
   end
 end

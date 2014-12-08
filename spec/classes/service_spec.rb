@@ -1,11 +1,6 @@
 require 'spec_helper'
 describe 'nginx::service' do
 
-  let :facts do {
-    :osfamily        => 'Debian',
-    :operatingsystem => 'Debian',
-  } end
-
   let :params do {
       :configtest_enable => false,
       :service_restart => '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
