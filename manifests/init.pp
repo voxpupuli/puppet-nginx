@@ -100,7 +100,7 @@ class nginx (
 
   ### START Package Configuration ###
   $package_ensure                 = present,
-  $package_name                   = 'nginx',
+  $package_name                   = $::nginx::params::package_name,
   $package_source                 = 'nginx',
   $manage_repo                    = true,
   ### END Package Configuration ###

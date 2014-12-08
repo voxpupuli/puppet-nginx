@@ -8,6 +8,7 @@ class nginx::params {
     'root_group'  => 'root',
     'log_dir'     => '/var/log/nginx',
     'run_dir'     => '/var/nginx',
+    'package_name' => 'nginx',
   }
   case $::osfamily {
     'ArchLinux': {
@@ -28,9 +29,15 @@ class nginx::params {
         'root_group'  => 'wheel',
       }
     }
+    'Gentoo': {
+      $_module_os_overrides = {
+        'package_name' => 'www-servers/nginx',
+      }
+    }
     'Solaris': {
       $_module_os_overrides = {
-        'daemon_user' => 'webservd',
+        'daemon_user'  => 'webservd',
+        'package_name' => undef,
       }
     }
     'OpenBSD': {
@@ -73,6 +80,7 @@ class nginx::params {
   $http_access_log       = "${log_dir}/access.log"
   $nginx_error_log       = "${log_dir}/error.log"
   $root_group            = $_module_parameters['root_group']
+  $package_name          = $_module_parameters['package_name']
   $proxy_temp_path       = "${run_dir}/proxy_temp"
   $sites_available_owner = 'root'
   $sites_available_group = $_module_parameters['root_group']

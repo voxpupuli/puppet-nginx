@@ -14,11 +14,11 @@
 #
 # This class file is not called directly
 class nginx::package(
-  $package_name   = 'nginx',
+  $package_name   = $::nginx::params::package_name,
   $package_source = 'nginx',
   $package_ensure = 'present',
   $manage_repo    = true,
-) {
+) inherits ::nginx::params {
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
@@ -43,50 +43,13 @@ class nginx::package(
         before         => Anchor['nginx::package::end'],
       }
     }
-    'suse': {
-      class { '::nginx::package::suse':
-        package_name => $package_name,
-        require      => Anchor['nginx::package::begin'],
-        before       => Anchor['nginx::package::end'],
-      }
-    }
-    'archlinux': {
-      class { '::nginx::package::archlinux':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
-      }
-    }
     'Solaris': {
-      class { '::nginx::package::solaris':
-        package_name   => $package_name,
-        package_source => $package_source,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
-      }
-    }
-    'FreeBSD': {
-      class { '::nginx::package::freebsd':
-        package_name   => $package_name,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
-      }
-    }
-    'Gentoo': {
-      class { '::nginx::package::gentoo':
-        package_name   => $package_name,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
-      }
-    }
-    'OpenBSD': {
-      class { '::nginx::package::openbsd':
-        package_name   => $package_name,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
+      # $package_name needs to be specified. SFEnginx,CSWnginx depending on
+      # where you get it.
+      package { 'nginx':
+        ensure => $package_ensure,
+        name   => $package_name,
+        source => $package_source,
       }
     }
     default: {
