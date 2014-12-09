@@ -355,7 +355,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
+      order   => $priority,
     }
   }
 
@@ -372,7 +372,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${ssl_priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
+      order   => $ssl_priority,
     }
   }
 
