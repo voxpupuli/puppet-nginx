@@ -14,11 +14,13 @@
 #
 # This class file is not called directly
 class nginx::package(
-  $package_name   = 'nginx',
-  $package_source = 'nginx',
-  $package_ensure = 'present',
-  $manage_repo    = true,
+  $package_name     = 'nginx',
+  $package_source   = 'nginx',
+  $package_ensure   = 'present',
+  $package_mainline = false,
+  $manage_repo      = true,
 ) {
+  $mainline = $package_mainline ? { true => "mainline/", false => "" }
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
@@ -29,6 +31,7 @@ class nginx::package(
         manage_repo    => $manage_repo,
         package_ensure => $package_ensure,
         package_name   => $package_name,
+        mainline       => $mainline,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
       }
@@ -38,6 +41,7 @@ class nginx::package(
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
+        mainline       => $mainline,
         manage_repo    => $manage_repo,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
