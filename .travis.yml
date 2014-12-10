@@ -3,6 +3,7 @@ branches:
   except:
   - refactor
   - gh-pages
+sudo: false
 language: ruby
 script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
 bundler_args: --without rake
