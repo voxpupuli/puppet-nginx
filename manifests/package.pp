@@ -17,7 +17,7 @@ class nginx::package(
   $package_name   = $::nginx::params::package_name,
   $package_source = 'nginx',
   $package_ensure = 'present',
-  $manage_repo    = true,
+  $manage_repo    = $::nginx::params::manage_repo,
 ) inherits ::nginx::params {
 
   anchor { 'nginx::package::begin': }

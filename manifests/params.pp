@@ -9,6 +9,7 @@ class nginx::params {
     'log_dir'     => '/var/log/nginx',
     'run_dir'     => '/var/nginx',
     'package_name' => 'nginx',
+    'manage_repo'  => false,
   }
   case $::osfamily {
     'ArchLinux': {
@@ -18,8 +19,16 @@ class nginx::params {
       }
     }
     'Debian': {
-      $_module_os_overrides = {
-        'daemon_user' => 'www-data',
+      if ($::operatingsystem == 'ubuntu' and $::lsbdistcodename in ['lucid', 'precise', 'trusty'])
+      or ($::operatingsystem == 'debian' and $::operatingsystemmajrelease in ['6', '7']) {
+        $_module_os_overrides = {
+          'manage_repo' => true,
+          'daemon_user' => 'www-data',
+        }
+      } else {
+        $_module_os_overrides = {
+          'daemon_user' => 'www-data',
+        }
       }
     }
     'FreeBSD': {
@@ -32,6 +41,13 @@ class nginx::params {
     'Gentoo': {
       $_module_os_overrides = {
         'package_name' => 'www-servers/nginx',
+      }
+    }
+    'RedHat': {
+      if ($::operatingsystem in ['RedHat', 'CentOS'] and $::operatingsystemmajrelease in ['5', '6', '7']) {
+        $_module_os_overrides = {
+          'manage_repo' => true,
+        }
       }
     }
     'Solaris': {
@@ -78,6 +94,7 @@ class nginx::params {
   $global_group          = $_module_parameters['root_group']
   $global_mode           = '0644'
   $http_access_log       = "${log_dir}/access.log"
+  $manage_repo           = $_module_parameters['manage_repo']
   $nginx_error_log       = "${log_dir}/error.log"
   $root_group            = $_module_parameters['root_group']
   $package_name          = $_module_parameters['package_name']
