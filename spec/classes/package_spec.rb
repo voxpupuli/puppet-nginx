@@ -18,6 +18,13 @@ describe 'nginx::package' do
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
 
+    context "package_source => nginx-mainline" do
+      let(:params) {{ :package_source => 'nginx-mainline' }}
+      it { is_expected.to contain_yumrepo('nginx-release').with(
+        'baseurl'  => "http://nginx.org/packages/mainline/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/",
+      )}
+    end
+
     context "manage_repo => false" do
       let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '7' }}
       let(:params) {{ :manage_repo => false }}
@@ -65,6 +72,13 @@ describe 'nginx::package' do
       )}
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::debian]') }
+    end
+
+    context "package_source => nginx-mainline" do
+      let(:params) {{ :package_source => 'nginx-mainline' }}
+      it { is_expected.to contain_apt__source('nginx').with(
+        'location'   => "http://nginx.org/packages/mainline/#{operatingsystem.downcase}",
+      )}
     end
 
     context "package_source => 'passenger'" do

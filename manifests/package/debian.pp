@@ -32,9 +32,17 @@ class nginx::package::debian(
     Exec['apt_update'] -> Package['nginx']
 
     case $package_source {
-      'nginx': {
+      'nginx', 'nginx-stable': {
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/${distro}",
+          repos      => 'nginx',
+          key        => '7BD9BF62',
+          key_source => 'http://nginx.org/keys/nginx_signing.key',
+        }
+      }
+      'nginx-mainline': {
+        apt::source { 'nginx':
+          location   => "http://nginx.org/packages/mainline/${distro}",
           repos      => 'nginx',
           key        => '7BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
@@ -54,7 +62,9 @@ class nginx::package::debian(
           require => Exec['apt_update'],
         }
       }
-      default: {}
+      default: {
+        fail("\$package_source must be 'nginx-stable', 'nginx-mainline' or 'passenger'. It was set to '${package_source}'")
+      }
     }
   }
 }

@@ -17,6 +17,7 @@ class nginx::package::redhat (
   $manage_repo    = true,
   $package_ensure = 'present',
   $package_name   = 'nginx',
+  $package_source = 'nginx-stable',
 ) {
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
@@ -28,7 +29,9 @@ class nginx::package::redhat (
     $_os = 'rhel'
   }
 
-      if $manage_repo {
+  if $manage_repo {
+    case $package_source {
+      'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
           baseurl  => "http://nginx.org/packages/${_os}/${::operatingsystemmajrelease}/\$basearch/",
           descr    => 'nginx repo',
@@ -39,6 +42,22 @@ class nginx::package::redhat (
           before   => Package[$package_name],
         }
       }
+      'nginx-mainline': {
+        yumrepo { 'nginx-release':
+          baseurl  => "http://nginx.org/packages/mainline/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          descr    => 'nginx repo',
+          enabled  => '1',
+          gpgcheck => '1',
+          priority => '1',
+          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          before   => Package[$package_name],
+        }
+      }
+      default: {
+        fail("\$package_source must be 'nginx-stable' or 'nginx-mainline'. It was set to '${package_source}'")
+      }
+    }
+  }
 
   package { 'nginx':
     ensure => $package_ensure,
