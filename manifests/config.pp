@@ -174,6 +174,7 @@ class nginx::config(
     File["${conf_dir}/conf.d"] {
       purge   => true,
       recurse => true,
+      notify  => Class['::nginx::service'],
     }
   }
 
