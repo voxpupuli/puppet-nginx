@@ -11,12 +11,6 @@
 <% if @try_files -%>
     try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
-<%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
-
-    <%- @rewrite_rules.each do |rewrite_rule| -%>
-    rewrite <%= rewrite_rule %>;
-    <%- end -%>
-<% end -%>
 <% if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
 
     <%- if @auth_basic -%>
