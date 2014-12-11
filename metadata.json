@@ -12,5 +12,36 @@
     {"name":"puppetlabs/stdlib","version_requirement":">= 3.0.0 <5.0.0"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.0.0 <2.0.0"},
     {"name":"puppetlabs/concat","version_requirement":">= 1.1.1 <2.0.0"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease":[
+        "5.0",
+        "6.0"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease":[
+        "5.0",
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "SLES"
+    },
+    {
+      "operatingsystem": "Solaris"
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "12.04",
+        "10.04"
+      ]
+    }
   ]
 }
