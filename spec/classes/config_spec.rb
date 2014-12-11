@@ -239,6 +239,15 @@ describe 'nginx::config' do
           ],
         },
         {
+          :title => 'should contain duplicate appended directives from array values',
+          :attr  => 'http_cfg_append',
+          :value => { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
+          :match => [
+            '  test1 test value 1;',
+            '  test1 test value 2;',
+          ],
+        },
+        {
             :title => 'should set pid',
             :attr  => 'pid',
             :value => '/path/to/pid',
