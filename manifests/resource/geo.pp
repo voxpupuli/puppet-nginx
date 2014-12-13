@@ -1,94 +1,28 @@
 # define: nginx::resource::geo
 #
-# This definition creates a new geo mapping entry for NGINX
+# This is a legacy resource that will be deprecated in v1.0.0
 #
-# Parameters:
-#   [*networks*]        - Hash of geo lookup keys and resultant values
-#   [*default*]         - Sets the resulting value if the source value fails to
-#                         match any of the variants.
-#   [*ensure*]          - Enables or disables the specified location
-#   [*ranges*]          - Indicates that lookup keys (network addresses) are
-#                         specified as ranges.
-#   [*address*]         - Nginx defaults to using $remote_addr for testing.
-#                         This allows you to override that with another variable
-#                         name (automatically prefixed with $)
-#   [*delete*]          - deletes the specified network (see: geo module docs)
-#   [*proxy_recursive*] - Changes the behavior of address acquisition when
-#                         specifying trusted proxies via 'proxies' directive
-#   [*proxies*]         - Hash of network->value mappings.
-
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-#  nginx::resource::geo { 'client_network':
-#    ensure          => present,
-#    ranges          => false,
-#    default         => extra,
-#    proxy_recursive => false,
-#    proxies         => [ '192.168.99.99' ],
-#    networks        => {
-#      '10.0.0.0/8'     => 'intra',
-#      '172.16.0.0/12'  => 'intra',
-#      '192.168.0.0/16' => 'intra',
-#    }
-#  }
-#
-# Sample Hiera usage:
-#
-#  nginx::geos:
-#    client_network:
-#      ensure: present
-#      ranges: false
-#      default: 'extra'
-#      proxy_recursive: false
-#      proxies:
-#         - 192.168.99.99
-#      networks:
-#        '10.0.0.0/8': 'intra'
-#        '172.16.0.0/12': 'intra'
-#        '192.168.0.0/16': 'intra'
-
-
+# Please add any additions to nginx::geo
 define nginx::resource::geo (
-  $networks,
+  $networks        = undef,
   $default         = undef,
-  $ensure          = 'present',
-  $ranges          = false,
+  $ensure          = undef,
+  $ranges          = undef,
   $address         = undef,
   $delete          = undef,
   $proxies         = undef,
   $proxy_recursive = undef
 ) {
+  nginx::notice::resources { $name: }
 
-  validate_hash($networks)
-  validate_bool($ranges)
-  validate_re($ensure, '^(present|absent)$',
-    "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
-  if ($default != undef) { validate_string($default) }
-  if ($address != undef) { validate_string($address) }
-  if ($delete != undef) { validate_string($delete) }
-  if ($proxies != undef) { validate_array($proxies) }
-  if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
-
-  $root_group = $::nginx::config::root_group
-
-  $ensure_real = $ensure ? {
-    'absent' => 'absent',
-    default  => 'file',
-  }
-
-  File {
-    owner => 'root',
-    group => $root_group,
-    mode  => '0644',
-  }
-
-  file { "${::nginx::config::conf_dir}/conf.d/${name}-geo.conf":
-    ensure  => $ensure_real,
-    content => template('nginx/conf.d/geo.erb'),
-    notify  => Class['::nginx::service'],
+  nginx::geo { $name:
+    networks        => $networks,
+    default         => $default,
+    ensure          => $ensure,
+    ranges          => $ranges,
+    address         => $address,
+    delete          => $delete,
+    proxies         => $proxies,
+    proxy_recursive => $proxy_recursive,
   }
 }

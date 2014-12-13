@@ -291,12 +291,12 @@ class nginx (
     service_restart   => $service_restart,
   }
 
-  create_resources('::nginx::resource::upstream', $nginx_upstreams)
-  create_resources('::nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
-  create_resources('::nginx::resource::location', $nginx_locations)
-  create_resources('::nginx::resource::mailhost', $nginx_mailhosts)
-  create_resources('::nginx::resource::map', $string_mappings)
-  create_resources('::nginx::resource::geo', $geo_mappings)
+  create_resources('::nginx::upstream', $nginx_upstreams)
+  create_resources('::nginx::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
+  create_resources('::nginx::location', $nginx_locations)
+  create_resources('::nginx::mailhost', $nginx_mailhosts)
+  create_resources('::nginx::map', $string_mappings)
+  create_resources('::nginx::geo', $geo_mappings)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'digest/md5'
 
-describe 'nginx::resource::location' do
+describe 'nginx::location' do
   let :title do
     'rspec-test'
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::upstream' do
+describe 'nginx::upstream' do
   let :title do
     'upstream-test'
   end

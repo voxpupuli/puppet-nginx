@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::vhost' do
+describe 'nginx::vhost' do
   let :title do
     'www.rspec.example.com'
   end
