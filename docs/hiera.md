@@ -46,6 +46,6 @@ class { 'nginx::config':
 
 # Why again are you doing this?
 
-Well, the fact of the matter, the old Package/Config/Service pattern has served us well, but times are a-changin. Many users are starting to manage their packages and service seperately outside of the traditional pattern (Docker, anyone?). This means that in order to stay true to the goals of Configuration Management, it is becoming necessary to make less assumptions about how an organizations graph is composed, and allow the end-user additional flexibility. This is requring a re-think about hov to best consume this module.
+Well, the fact of the matter, the old Package/Config/Service pattern has served us well, but times are a-changin. Many users are starting to manage their packages and service seperately outside of the traditional pattern (Docker, anyone?). This means that in order to stay true to the goals of Configuration Management, it is becoming necessary to make less assumptions about how an organizations graph is composed, and allow the end-user additional flexibility. This is requring a re-think about how to best consume this module.
 
 
