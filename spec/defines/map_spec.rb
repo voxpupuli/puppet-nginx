@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::map' do
+describe 'nginx::map' do
   let :title do
     'backend_pool'
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::geo' do
+describe 'nginx::geo' do
   let :title do
     'client_network'
   end
