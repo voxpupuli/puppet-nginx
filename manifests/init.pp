@@ -100,9 +100,9 @@ class nginx (
 
   ### START Package Configuration ###
   $package_ensure                 = present,
-  $package_name                   = 'nginx',
+  $package_name                   = $::nginx::params::package_name,
   $package_source                 = 'nginx',
-  $manage_repo                    = true,
+  $manage_repo                    = $::nginx::params::manage_repo,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
@@ -120,7 +120,7 @@ class nginx (
   $nginx_vhosts                   = {},
   $nginx_vhosts_defaults          = {},
   ### END Hiera Lookups ###
-) {
+) inherits ::nginx::params {
 
   ### DEPRECATION WARNING ###
   ###

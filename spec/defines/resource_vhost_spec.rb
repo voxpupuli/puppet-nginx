@@ -12,8 +12,6 @@ describe 'nginx::resource::vhost' do
   end
   let :facts do
     {
-      :osfamily        => 'Debian',
-      :operatingsystem => 'debian',
       :ipaddress6      => '::',
     }
   end

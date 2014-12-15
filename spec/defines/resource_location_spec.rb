@@ -5,12 +5,6 @@ describe 'nginx::resource::location' do
   let :title do
     'rspec-test'
   end
-  let :facts do
-    {
-      :osfamily        => 'Debian',
-      :operatingsystem => 'Debian',
-    }
-  end
   let :pre_condition do
     [
       'include ::nginx::config',

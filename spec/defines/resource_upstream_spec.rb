@@ -17,14 +17,6 @@ describe 'nginx::resource::upstream' do
       ]
   end
 
-  let :default_facts do
-    {
-      :osfamily        => 'RedHat',
-      :operatingsystem => 'CentOS',
-      :concat_basedir  => '/var/lib/puppet/concat'
-    }
-  end
-
   let :pre_condition do
     [
       'include ::nginx::config',
@@ -32,8 +24,6 @@ describe 'nginx::resource::upstream' do
   end
 
   describe 'os-independent items' do
-    let :facts do default_facts end
-
     describe 'basic assumptions' do
       let :params do default_params end
 
@@ -67,7 +57,6 @@ describe 'nginx::resource::upstream' do
     end
 
     describe "upstream.conf template content" do
-      let :facts do default_facts end
       [
         {
           :title    => 'should contain ordered prepended directives',

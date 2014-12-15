@@ -17,13 +17,6 @@ describe 'nginx::resource::geo' do
     }
   end
 
-  let :facts do
-    {
-      :osfamily        => 'RedHat',
-      :operatingsystem => 'CentOS',
-    }
-  end
-
   let :pre_condition do
     [
       'include ::nginx::config',
