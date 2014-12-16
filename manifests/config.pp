@@ -106,7 +106,9 @@ class nginx::config(
   }
   validate_string($multi_accept)
   validate_array($proxy_set_header)
-  validate_string($proxy_http_version)
+  if ($proxy_http_version != false) {
+    validate_string($proxy_http_version)
+  }
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
   if ($proxy_cache_path != false) {
