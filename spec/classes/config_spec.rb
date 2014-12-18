@@ -232,6 +232,12 @@ describe 'nginx::config' do
           :match => 'proxy_http_version      1.1;',
         },
         {
+          :title    => 'should not set proxy_http_version',
+          :attr     => 'proxy_http_version',
+          :value    => nil,
+          :notmatch => 'proxy_http_version',
+        },
+        {
           :title => 'should contain ordered appended directives',
           :attr  => 'proxy_set_header',
           :value => ['header1','header2'],
