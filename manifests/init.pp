@@ -109,6 +109,7 @@ class nginx (
   $configtest_enable              = false,
   $service_ensure                 = running,
   $service_restart                = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
+  $service_name                   = undef,
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
@@ -289,6 +290,7 @@ class nginx (
     configtest_enable => $configtest_enable,
     service_ensure    => $service_ensure,
     service_restart   => $service_restart,
+    service_name      => $service_name,
   }
 
   create_resources('::nginx::resource::upstream', $nginx_upstreams)
