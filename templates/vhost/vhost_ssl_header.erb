@@ -19,6 +19,9 @@ server {
   <%- end -%>
   server_name  www.<%= @server_name[0].gsub(/^www\./, '') %>;
   return       301 https://<%= @server_name[0].gsub(/^www\./, '') %>$request_uri;
+
+<%= scope.function_template(["nginx/vhost/vhost_ssl_settings.erb"]) %>
+
 }
 
 <% end -%>
@@ -42,43 +45,13 @@ server {
   <%- end -%>
   server_name  <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
 
-  ssl on;
+<%= scope.function_template(["nginx/vhost/vhost_ssl_settings.erb"]) %>
 
-  ssl_certificate           <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
-  ssl_certificate_key       <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
-<% if defined? @ssl_client_cert -%>
-  ssl_client_certificate    <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.client.crt;
-  ssl_verify_client on;
-<% end -%>
-<% if defined? @ssl_dhparam -%>
-  ssl_dhparam               <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.dh.pem;
-<% end -%>
-  ssl_session_cache         <%= @ssl_cache %>;
-  ssl_session_timeout       <%= @ssl_session_timeout %>;
-  ssl_protocols             <%= @ssl_protocols %>;
-  ssl_ciphers               <%= @ssl_ciphers %>;
-  ssl_prefer_server_ciphers on;
-<%- if instance_variables.any? { |iv| iv.to_s.include? 'ssl_' } -%>
-  <%- if @ssl_stapling -%>
-  ssl_stapling              on;
-  <%- end -%>
-  <%- if defined? @ssl_stapling_file -%>
-  ssl_stapling_file         <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.ocsp.resp;
-  <%- end -%>
-  <%- if defined? @ssl_stapling_responder -%>
-  ssl_stapling_responder    <%= @ssl_stapling_responder %>;
-  <%- end -%>
-  <%- if @ssl_stapling_verify -%>
-  ssl_stapling_verify       on;
-  <%- end -%>
-  <%- if defined? @ssl_trusted_cert -%>
-  ssl_trusted_certificate   <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.trusted.crt;
-  <%- end -%>
-
-<% end -%>
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
+
+
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
