@@ -18,6 +18,7 @@ class nginx::service(
   $service_restart   = $::nginx::service_restart,
   $service_ensure    = $::nginx::service_ensure,
   $service_name      = 'nginx',
+  $service_flags     = undef,
 ) {
 
   $service_enable = $service_ensure ? {
@@ -38,6 +39,7 @@ class nginx::service(
     ensure     => $service_ensure_real,
     name       => $service_name,
     enable     => $service_enable,
+    flags      => $service_flags,
     hasstatus  => true,
     hasrestart => true,
   }

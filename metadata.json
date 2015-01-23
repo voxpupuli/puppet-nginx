@@ -22,6 +22,9 @@
       ]
     },
     {
+      "operatingsystem": "OpenBSD"
+    },
+    {
       "operatingsystem": "RedHat",
       "operatingsystemrelease":[
         "5.0",
