@@ -633,7 +633,7 @@ define nginx::resource::vhost (
     path    => "${vhost_enable_dir}/${name_sanitized}.conf",
     target  => $config_file,
     require => Concat[$config_file],
-    notify  => Service['nginx'],
+    notify  => Class['::nginx::service'],
   }
 
   create_resources('::nginx::resource::map', $string_mappings)
