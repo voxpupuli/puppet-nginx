@@ -848,7 +848,7 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
       end
 
-      context 'when add_hedar is set' do
+      context 'when add_header is set' do
         let :params do default_params.merge({
           :add_header => { 'header3' => 'test value 3', 'header2' => 'test value 2', 'header1' => 'test value 1' }
         }) end
