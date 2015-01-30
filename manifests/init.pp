@@ -281,10 +281,9 @@ class nginx (
       sites_available_owner          => $sites_available_owner,
       sites_available_group          => $sites_available_group,
       sites_available_mode           => $sites_available_mode,
-      require                        => Class['::nginx::package'],
-      notify                         => Class['::nginx::service'],
     }
   }
+  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   class { '::nginx::service':
     configtest_enable => $configtest_enable,
