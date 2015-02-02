@@ -115,6 +115,7 @@ nginx::nginx_locations:
   'static':
     location: '~ "^/static/[0-9a-fA-F]{8}\/(.*)$"'
     vhost: www.puppetlabs.com
+    www_root: /var/www/html
   'userContent':
     location: /userContent
     vhost: www.puppetlabs.com
