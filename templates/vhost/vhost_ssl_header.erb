@@ -3,6 +3,12 @@ server {
   listen       <%= @listen_ip %>:<%= @ssl_port %> ssl;
   server_name  www.<%= @server_name[0].gsub(/^www\./, '') %>;
   return       301 https://<%= @server_name[0].gsub(/^www\./, '') %>$uri;
+  
+  ssl on;
+
+  ssl_certificate           <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
+  ssl_certificate_key       <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
+  
 }
 
 <% end -%>
