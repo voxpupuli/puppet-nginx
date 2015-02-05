@@ -53,7 +53,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:80;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+http://rspec\.example\.com\$uri;
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -64,7 +64,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:80;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+http://rspec\.example\.com\$uri;
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -276,7 +276,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -341,7 +341,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -352,7 +352,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -597,7 +597,7 @@ describe 'nginx::resource::vhost' do
             ^
             \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {

@@ -2,7 +2,7 @@
 server {
   listen       <%= @listen_ip %>:<%= @listen_port %>;
   server_name  www.<%= @server_name[0].gsub(/^www\./, '') %>;
-  return       301 http://<%= @server_name[0].gsub(/^www\./, '') %>$uri;
+  return       301 http://<%= @server_name[0].gsub(/^www\./, '') %>$request_uri;
 }
 
 <% end -%>
