@@ -102,12 +102,14 @@ class nginx (
   $package_ensure                 = present,
   $package_name                   = $::nginx::params::package_name,
   $package_source                 = 'nginx',
+  $package_flavor                 = undef,
   $manage_repo                    = $::nginx::params::manage_repo,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
   $configtest_enable              = false,
   $service_ensure                 = running,
+  $service_flags                  = undef,
   $service_restart                = '/etc/init.d/nginx configtest && /etc/init.d/nginx restart',
   $service_name                   = undef,
   ### END Service Configuration ###
@@ -210,6 +212,7 @@ class nginx (
     package_name   => $package_name,
     package_source => $package_source,
     package_ensure => $package_ensure,
+    package_flavor => $package_flavor,
     notify         => Class['::nginx::service'],
     manage_repo    => $manage_repo,
   }
@@ -290,6 +293,7 @@ class nginx (
     service_ensure    => $service_ensure,
     service_restart   => $service_restart,
     service_name      => $service_name,
+    service_flags     => $service_flags,
   }
 
   create_resources('::nginx::resource::upstream', $nginx_upstreams)

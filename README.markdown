@@ -131,13 +131,28 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-Currently this works only for Debian family.
+Currently this works only for Debian family and OpenBSD.
 
+On Debian it might look like:
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',
   http_cfg_append => {
     'passenger_root' => '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini',
+  }
+}
+```
+
+Here the example for OpenBSD:
+
+```puppet
+class { 'nginx':
+  package_flavor => 'passenger',
+  service_flags  => '-u'
+  http_cfg_append => {
+    passenger_root          => '/usr/local/lib/ruby/gems/2.1/gems/passenger-4.0.44',
+    passenger_ruby          =>  '/usr/local/bin/ruby21',
+    passenger_max_pool_size => '15',
   }
 }
 ```

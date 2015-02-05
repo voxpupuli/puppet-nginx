@@ -17,6 +17,7 @@ class nginx::package(
   $package_name   = $::nginx::params::package_name,
   $package_source = 'nginx',
   $package_ensure = 'present',
+  $package_flavor = undef,
   $manage_repo    = $::nginx::params::manage_repo,
 ) inherits ::nginx::params {
 
@@ -55,6 +56,12 @@ class nginx::package(
         ensure => $package_ensure,
         name   => $package_name,
         source => $package_source,
+      }
+    }
+    'OpenBSD': {
+      package { $package_name:
+        ensure => $package_ensure,
+        flavor => $package_flavor,
       }
     }
     default: {
