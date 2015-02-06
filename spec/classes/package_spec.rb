@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'nginx::package' do
 
   shared_examples 'redhat' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '6' }}
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbmajdistrelease => '6' }}
     context "using defaults" do
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
@@ -26,14 +26,14 @@ describe 'nginx::package' do
     end
 
     context "manage_repo => false" do
-      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '7' }}
+      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbmajdistrelease => '7' }}
       let(:params) {{ :manage_repo => false }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.not_to contain_yumrepo('nginx-release') }
     end
 
-    context "operatingsystemmajrelease = 5" do
-      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '5' }}
+    context "lsbmajdistrelease = 5" do
+      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbmajdistrelease => '5' }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
         'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/5/$basearch/"
@@ -41,7 +41,7 @@ describe 'nginx::package' do
     end
 
     describe 'installs the requested package version' do
-      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat', :operatingsystemmajrelease => '7'}}
+      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat', :lsbmajdistrelease => '7'}}
       let(:params) {{ :package_ensure => '3.0.0' }}
 
       it 'installs 3.0.0 exactly' do
