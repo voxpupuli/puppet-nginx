@@ -52,10 +52,10 @@ describe 'nginx::package' do
     end
   end
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename, lsbdistid, lsbmajdistrelease|
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename, lsbdistid, operatingsystemmajrelease|
     let(:facts) {{
       :operatingsystem => operatingsystem,
-      :lsbmajdistrelease => lsbmajdistrelease,
+      :operatingsystemmajrelease => operatingsystemmajrelease,
       :osfamily        => 'Debian',
       :lsbdistcodename => lsbdistcodename,
       :lsbdistid       => lsbdistid
