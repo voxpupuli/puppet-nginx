@@ -41,7 +41,7 @@ class nginx::service(
         ensure     => $service_ensure_real,
         name       => $service_name,
         enable     => $service_enable,
-        flags      => '',
+        flags      => $service_flags,
         hasstatus  => true,
         hasrestart => true,
       }
