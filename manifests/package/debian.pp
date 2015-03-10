@@ -50,7 +50,7 @@ class nginx::package::debian(
       }
       'passenger': {
         apt::source { 'nginx':
-          location          => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          location          => 'https://oss-binaries.phusionpassenger.com/apt/passenger/4',
           repos             => 'main',
           key               => '561F9B9CAC40B2F7',
           key_source        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
