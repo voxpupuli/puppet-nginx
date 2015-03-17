@@ -102,6 +102,14 @@ server {
   add_header              <%= key %> <%= @add_header[key] %>;
   <%- end -%>
 <% end -%>
+<% if @maintenance -%>
+  set $maintenance "on";
+<% else -%>
+  set $maintenance "off";
+<% end -%>
+  if ($maintenance = "on") {
+      return 503;
+  }
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
        return 301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;

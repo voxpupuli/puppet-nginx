@@ -231,6 +231,7 @@ define nginx::resource::vhost (
   $owner                        = $::nginx::config::global_owner,
   $group                        = $::nginx::config::global_group,
   $mode                         = $::nginx::config::global_mode,
+  $maintenance                  = false,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
