@@ -36,7 +36,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/${distro}",
           repos      => 'nginx',
-          key        => '7BD9BF62',
+          key        => 'ABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
@@ -44,7 +44,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/mainline/${distro}",
           repos      => 'nginx',
-          key        => '7BD9BF62',
+          key        => 'ABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
@@ -61,7 +61,7 @@ class nginx::package::debian(
           ensure  => 'present',
           require => Exec['apt_update'],
         }
-        
+
         if $package_name != 'nginx-extras' {
           warning('You must set $package_name to "nginx-extras" to enable Passenger')
         }

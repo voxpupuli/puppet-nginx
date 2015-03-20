@@ -67,7 +67,7 @@ describe 'nginx::package' do
       it { is_expected.to contain_apt__source('nginx').with(
         'location'   => "http://nginx.org/packages/#{operatingsystem.downcase}",
         'repos'      => 'nginx',
-        'key'        => '7BD9BF62',
+        'key'        => 'ABF5BD827BD9BF62',
         'key_source' => 'http://nginx.org/keys/nginx_signing.key'
       )}
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
