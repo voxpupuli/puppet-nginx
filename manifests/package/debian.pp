@@ -36,7 +36,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/${distro}",
           repos      => 'nginx',
-          key        => 'ABF5BD827BD9BF62',
+          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
@@ -44,7 +44,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/mainline/${distro}",
           repos      => 'nginx',
-          key        => 'ABF5BD827BD9BF62',
+          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
