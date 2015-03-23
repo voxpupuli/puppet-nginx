@@ -812,6 +812,24 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
 
+      context 'when ssl_client_cert is set' do
+        let :params do default_params.merge({
+          :ssl                => true,
+          :listen_port        => 80,
+          :ssl_port           => 80,
+          :ssl_key            => 'dummy.key',
+          :ssl_cert           => 'dummy.cert',
+          :ssl_client_cert    => 'client.cert',
+        }) end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client on;}) }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.client.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
+      end
       context 'when passenger_cgi_param is set' do
         let :params do default_params.merge({
           :passenger_cgi_param => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
