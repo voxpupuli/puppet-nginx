@@ -46,6 +46,10 @@ server {
 
   ssl_certificate           <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.crt;
   ssl_certificate_key       <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.key;
+<% if defined? @ssl_client_cert -%>
+  ssl_client_certificate    <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.client.crt;
+  ssl_verify_client on;
+<% end -%>
 <% if defined? @ssl_dhparam -%>
   ssl_dhparam               <%= scope.lookupvar('nginx::config::conf_dir') %>/<%= @name.gsub(' ', '_') %>.dh.pem;
 <% end -%>
