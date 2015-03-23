@@ -266,7 +266,7 @@ define nginx::resource::vhost (
     validate_string($ssl_cert)
   }
   if ($ssl_client_cert != undef) {
-    validate_string($ssl_cert)
+    validate_string($ssl_client_cert)
   }
   validate_bool($ssl_listen_option)
   if ($ssl_dhparam != undef) {
