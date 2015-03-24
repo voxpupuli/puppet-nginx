@@ -108,7 +108,7 @@ server {
   set $maintenance "off";
 <% end -%>
   if ($maintenance = "on") {
-      return 503;
+      <%= @maintenance_value %>;
   }
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
