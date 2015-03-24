@@ -88,7 +88,7 @@ describe 'nginx::package' do
       it { is_expected.to contain_apt__source('nginx').with(
         'location'   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
         'repos'      => "main",
-        'key'        => '561F9B9CAC40B2F7',
+        'key'        => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
         'key_source' => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt'
       )}
     end
