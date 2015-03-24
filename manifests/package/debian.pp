@@ -36,7 +36,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/${distro}",
           repos      => 'nginx',
-          key        => 'ABF5BD827BD9BF62',
+          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
@@ -44,7 +44,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location   => "http://nginx.org/packages/mainline/${distro}",
           repos      => 'nginx',
-          key        => 'ABF5BD827BD9BF62',
+          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
           key_source => 'http://nginx.org/keys/nginx_signing.key',
         }
       }
@@ -52,7 +52,7 @@ class nginx::package::debian(
         apt::source { 'nginx':
           location          => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
           repos             => 'main',
-          key               => '561F9B9CAC40B2F7',
+          key               => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
           key_source        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
           required_packages => 'apt-transport-https ca-certificates',
         }
