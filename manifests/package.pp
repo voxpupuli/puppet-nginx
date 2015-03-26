@@ -65,7 +65,7 @@ class nginx::package(
       }
     }
     default: {
-      package { 'nginx':
+      package { $package_name:
         ensure => $package_ensure,
       }
     }
