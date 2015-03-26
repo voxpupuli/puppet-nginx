@@ -82,7 +82,7 @@ server {
   set $maintenance "off";
 <% end -%>
   if ($maintenance = "on") {
-      return 503;
+      <%= @maintenance_value %>;
   }
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;

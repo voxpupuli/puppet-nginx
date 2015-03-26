@@ -137,6 +137,9 @@
 #   [*owner*]                   - Defines owner of the .conf file
 #   [*group*]                   - Defines group of the .conf file
 #   [*mode*]                    - Defines mode of the .conf file
+#   [*maintenance*]             - A boolean value to set a vhost in maintenance
+#   [*maintenance_value*]       - Value to return when maintenance is on.
+#                                 Default to return 503
 # Actions:
 #
 # Requires:
@@ -235,6 +238,7 @@ define nginx::resource::vhost (
   $group                        = $::nginx::config::global_group,
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
+  $maintenance_value            = 'return 503'
 ) {
 
   validate_re($ensure, '^(present|absent)$',
