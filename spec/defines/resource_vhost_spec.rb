@@ -52,7 +52,7 @@ describe 'nginx::resource::vhost' do
           :notmatch => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+http://rspec\.example\.com\$uri;
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -62,7 +62,7 @@ describe 'nginx::resource::vhost' do
           :match => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+http://rspec\.example\.com\$uri;
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -273,7 +273,7 @@ describe 'nginx::resource::vhost' do
           :notmatch => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -337,7 +337,7 @@ describe 'nginx::resource::vhost' do
           :notmatch => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -347,7 +347,7 @@ describe 'nginx::resource::vhost' do
           :match => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -591,7 +591,7 @@ describe 'nginx::resource::vhost' do
           :notmatch => %r|
             ^
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -812,6 +812,24 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
 
+      context 'when ssl_client_cert is set' do
+        let :params do default_params.merge({
+          :ssl                => true,
+          :listen_port        => 80,
+          :ssl_port           => 80,
+          :ssl_key            => 'dummy.key',
+          :ssl_cert           => 'dummy.cert',
+          :ssl_client_cert    => 'client.cert',
+        }) end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client on;}) }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.client.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
+      end
       context 'when passenger_cgi_param is set' do
         let :params do default_params.merge({
           :passenger_cgi_param => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
@@ -840,6 +858,21 @@ describe 'nginx::resource::vhost' do
         let :params do default_params end
 
         it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+      end
+
+      context 'when add_header is set' do
+        let :params do default_params.merge({
+          :add_header => { 'header3' => 'test value 3', 'header2' => 'test value 2', 'header1' => 'test value 1' }
+        }) end
+
+        it 'should have correctly ordered entries in the config' do
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/
+            %r|
+            \s+add_header\s+header1 test value 1;\n
+            \s+add_header\s+header2 test value 2;\n
+            \s+add_header\s+header3 test value 3;\n
+            |/)
+        end
       end
     end
   end

@@ -11,6 +11,15 @@ pid        <%= @pid %>;
 <% end -%>
 error_log  <%= @nginx_error_log %>;
 
+<% if @nginx_cfg_prepend -%>
+<%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+<%- @nginx_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
+<%- Array(value).each do |asubvalue| -%>
+<%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
+<%- end -%>
+<%- end -%>
+<% end -%>
+
 events {
   worker_connections <%= @worker_connections -%>;
   <%- if @multi_accept == 'on' -%>
