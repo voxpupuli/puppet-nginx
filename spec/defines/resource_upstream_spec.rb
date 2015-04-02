@@ -99,7 +99,7 @@ describe 'nginx::resource::upstream' do
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-upstream.conf").with_mode('0644') }
           it { is_expected.to contain_concat__fragment("#{title}_upstream_#{param[:fragment]}") }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "#{title}_upstream_#{param[:fragment]}").send(:parameters)[:content].split("\n")
+            lines = catalogue.resource('concat::fragment', "#{title}_upstream_#{param[:fragment]}").send(:parameters)[:content].split("\n")
             expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_concat__fragment("#{title}_upstream_#{param[:fragment]}").without_content(item)
