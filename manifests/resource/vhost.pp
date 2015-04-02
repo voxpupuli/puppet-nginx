@@ -239,6 +239,8 @@ define nginx::resource::vhost (
   $vhost_cfg_ssl_prepend        = undef,
   $vhost_cfg_ssl_append         = undef,
   $include_files                = undef,
+  $include_files_bottom         = true,
+  $include_files_top            = false,
   $access_log                   = undef,
   $error_log                    = undef,
   $format_log                   = 'combined',
