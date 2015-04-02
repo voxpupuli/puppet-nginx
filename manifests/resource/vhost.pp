@@ -127,6 +127,9 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #     rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*include_files_top*]       - Adds include files to vhost at the top
+#   [*include_files_bottom*]    - Adds include files to vhost at the bottom
+#     this is the default behavior
 #   [*access_log*]              - Where to write access log. May add additional
 #     options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
