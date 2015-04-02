@@ -77,6 +77,12 @@ describe 'nginx::config' do
           :match => 'worker_processes 4;',
         },
         {
+          :title => 'should set worker_processes',
+          :attr  => 'worker_processes',
+          :value => 'auto',
+          :match => 'worker_processes auto;',
+        },
+        {
           :title => 'should set worker_rlimit_nofile',
           :attr  => 'worker_rlimit_nofile',
           :value => '10000',

@@ -94,7 +94,7 @@ class nginx::config(
 ) inherits ::nginx::params {
 
   ### Validations ###
-  if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
+  if ($worker_processes != 'auto') and (!is_integer($worker_processes)) {
     fail('$worker_processes must be an integer or have value "auto".')
   }
   if (!is_integer($worker_connections)) {
