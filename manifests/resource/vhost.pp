@@ -431,6 +431,8 @@ define nginx::resource::vhost (
   }
   if ($include_files != undef) {
     validate_array($include_files)
+    validate_bool($include_files_bottom)
+    validate_bool($include_files_top)
   }
   if ($access_log != undef) {
     validate_string($access_log)
