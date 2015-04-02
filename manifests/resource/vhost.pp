@@ -433,6 +433,9 @@ define nginx::resource::vhost (
     validate_array($include_files)
     validate_bool($include_files_bottom)
     validate_bool($include_files_top)
+    if ($include_files_bottom == $include_files_top) {
+      fail('$include_files_bottom can not be the same as $include_files_top')
+    }
   }
   if ($access_log != undef) {
     validate_string($access_log)
