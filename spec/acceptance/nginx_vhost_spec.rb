@@ -1,4 +1,4 @@
-require 'spec_helper_system'
+require 'spec_helper_acceptance'
 
 describe "nginx::resource::vhost define:" do
   context 'new vhost on port 80' do
@@ -15,12 +15,7 @@ describe "nginx::resource::vhost define:" do
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
 
-      puppet_apply(pp) do |r|
-        [0,2].should include r.exit_code
-        r.refresh
-        r.stderr.should be_empty
-        r.exit_code.should be_zero
-      end
+      apply_manifest(pp, :catch_failures => true)
     end
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
@@ -61,12 +56,7 @@ describe "nginx::resource::vhost define:" do
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
 
-      puppet_apply(pp) do |r|
-        [0,2].should include r.exit_code
-        r.refresh
-        r.stderr.should be_empty
-        r.exit_code.should be_zero
-      end
+      apply_manifest(pp, :catch_failures => true)
     end
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
