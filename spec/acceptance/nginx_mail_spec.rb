@@ -21,8 +21,8 @@ describe "nginx::resource::mailhost define:" do
   end
 
   describe file('/etc/nginx/conf.mail.d/domain1.example.conf') do
-   it { should be_file }
-   it { should contain "auth_http             localhost/cgi-bin/auth;" }
+   it { is_expected.to be_file }
+   it { is_expected.to contain "auth_http             localhost/cgi-bin/auth;" }
   end
 
 end

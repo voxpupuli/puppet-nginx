@@ -19,22 +19,22 @@ describe "nginx::resource::vhost define:" do
     end
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
-      it { should be_file }
-      it { should contain "www.puppetlabs.com" }
+      it { is_expected.to be_file }
+      it { is_expected.to contain "www.puppetlabs.com" }
     end
 
     describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
-      it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
+      it { is_expected.to be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
     end
 
     describe service('nginx') do
-      it { should be_running }
+      it { is_expected.to be_running }
     end
 
     it 'should answer to www.puppetlabs.com' do
       shell("/usr/bin/curl http://www.puppetlabs.com:80") do |r|
-        r.stdout.should == "Hello from www\n"
-        r.exit_code.should be_zero
+        expect(r.stdout).to eq("Hello from www\n")
+        expect(r.exit_code).to be_zero
       end
     end
   end
@@ -60,30 +60,30 @@ describe "nginx::resource::vhost define:" do
     end
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
-      it { should be_file }
-      it { should contain "ssl on;" }
+      it { is_expected.to be_file }
+      it { is_expected.to contain "ssl on;" }
     end
 
     describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
-      it { should be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
+      it { is_expected.to be_linked_to '/etc/nginx/sites-available/www.puppetlabs.com.conf' }
     end
 
     describe service('nginx') do
-      it { should be_running }
+      it { is_expected.to be_running }
     end
 
     it 'should answer to http://www.puppetlabs.com' do
       shell("/usr/bin/curl http://www.puppetlabs.com:80") do |r|
-        r.stdout.should == "Hello from www\n"
-        r.exit_code.should == 0
+        expect(r.stdout).to eq("Hello from www\n")
+        expect(r.exit_code).to eq(0)
       end
     end
 
     it 'should answer to https://www.puppetlabs.com' do
       # use --insecure because it's a self-signed cert
       shell("/usr/bin/curl --insecure https://www.puppetlabs.com:443") do |r|
-        r.stdout.should == "Hello from www\n"
-        r.exit_code.should == 0
+        expect(r.stdout).to eq("Hello from www\n")
+        expect(r.exit_code).to eq(0)
       end
     end
   end

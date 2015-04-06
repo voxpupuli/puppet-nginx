@@ -23,16 +23,16 @@ describe "nginx::resource::upstream define:" do
   end
 
   describe file('/etc/nginx/conf.d/puppet_rack_app-upstream.conf') do
-   it { should be_file }
-   it { should contain "server     localhost:3000" }
-   it { should contain "server     localhost:3001" }
-   it { should contain "server     localhost:3002" }
-   it { should_not contain "server     localhost:3003" }
+   it { is_expected.to be_file }
+   it { is_expected.to contain "server     localhost:3000" }
+   it { is_expected.to contain "server     localhost:3001" }
+   it { is_expected.to contain "server     localhost:3002" }
+   it { is_expected.not_to contain "server     localhost:3003" }
   end
 
   describe file('/etc/nginx/sites-available/rack.puppetlabs.com.conf') do
-    it { should be_file }
-    it { should contain "proxy_pass            http://puppet_rack_app;" }
+    it { is_expected.to be_file }
+    it { is_expected.to contain "proxy_pass            http://puppet_rack_app;" }
   end
 
 end
