@@ -35,7 +35,7 @@ class nginx::service(
     $service_ensure_real = $service_ensure
   }
 
-  case $::osfamilly {
+  case $::osfamily {
     'OpenBSD': {
       service { 'nginx':
         ensure     => $service_ensure_real,
