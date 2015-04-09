@@ -30,6 +30,10 @@ describe "nginx::resource::vhost define:" do
     describe service('nginx') do
       it { is_expected.to be_running }
     end
+    
+    describe port(80) do
+      it { is_expected.to be_listening }
+    end
 
     it 'should answer to www.puppetlabs.com' do
       shell("/usr/bin/curl http://www.puppetlabs.com:80") do |r|
@@ -70,6 +74,10 @@ describe "nginx::resource::vhost define:" do
 
     describe service('nginx') do
       it { is_expected.to be_running }
+    end
+
+    describe port(443) do
+      it { is_expected.to be_listening }
     end
 
     it 'should answer to http://www.puppetlabs.com' do
