@@ -7,18 +7,28 @@
   "source": "https://github.com/jfryman/puppet-nginx.git",
   "project_page": "http://github.com/jfryman/puppet-nginx",
   "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
-  "description": "This module can be used for basic NGINX Management",
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.2.0 <5.0.0"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.0.0 <2.0.0"},
     {"name":"puppetlabs/concat","version_requirement":">= 1.1.1 <2.0.0"}
   ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease":[
-        "5.0",
-        "6.0"
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -27,9 +37,9 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease":[
-        "5.0",
-        "6.0",
-        "7.0"
+        "5",
+        "6",
+        "7"
       ]
     },
     {
