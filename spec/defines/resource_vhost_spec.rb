@@ -411,6 +411,12 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+listen\s+\[::\]:443 ssl spdy default;',
         },
         {
+          :title => 'should set add_header option',
+          :attr  => 'add_header',
+          :value => {'CUSTOM_PARAM' => 'value'},
+          :match => /add_header\s+CUSTOM_PARAM\s+value;/,
+        },
+        {
           :title => 'should set servername(s)',
           :attr  => 'server_name',
           :value => ['www.foo.com','foo.com'],

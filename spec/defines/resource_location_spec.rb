@@ -89,6 +89,12 @@ describe 'nginx::resource::location' do
           ],
         },
         {
+          :title => 'should set add_header option',
+          :attr  => 'add_header',
+          :value => {'CUSTOM_PARAM' => 'value'},
+          :match => /add_header\s+CUSTOM_PARAM\s+value;/,
+        },
+        {
           :title => 'should contain ordered prepended directives',
           :attr  => 'location_cfg_prepend',
           :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'],

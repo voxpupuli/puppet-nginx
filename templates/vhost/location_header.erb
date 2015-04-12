@@ -19,6 +19,11 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @add_header -%>
+  <%- @add_header.each do |key,value| -%>
+  add_header              <%= key %> <%= value %>;
+  <%- end -%>
+<% end -%>
 <% if @location_custom_cfg_prepend -%>
   <%- @location_custom_cfg_prepend.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
