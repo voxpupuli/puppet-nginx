@@ -77,13 +77,8 @@ server {
 
 <% end -%>
 <% if @maintenance -%>
-  set $maintenance "on";
-<% else -%>
-  set $maintenance "off";
+  <%= @maintenance_value %>;
 <% end -%>
-  if ($maintenance = "on") {
-      <%= @maintenance_value %>;
-  }
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
