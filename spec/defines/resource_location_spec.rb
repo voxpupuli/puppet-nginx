@@ -148,6 +148,18 @@ describe 'nginx::resource::location' do
           :value    => [],
           :notmatch => /rewrite/
         },
+        {
+          :title => 'should set auth_basic',
+          :attr  => 'auth_basic',
+          :value => 'value',
+          :match => '    auth_basic           "value";',
+        },
+        {
+          :title => 'should set auth_basic_user_file',
+          :attr  => 'auth_basic_user_file',
+          :value => 'value',
+          :match => '    auth_basic_user_file value;',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
@@ -317,18 +329,6 @@ describe 'nginx::resource::location' do
           :attr  => 'index_files',
           :value => ['name1','name2'],
           :match => '    index     name1 name2;',
-        },
-        {
-          :title => 'should set auth_basic',
-          :attr  => 'auth_basic',
-          :value => 'value',
-          :match => '    auth_basic           "value";',
-        },
-        {
-          :title => 'should set auth_basic_user_file',
-          :attr  => 'auth_basic_user_file',
-          :value => 'value',
-          :match => '    auth_basic_user_file value;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
