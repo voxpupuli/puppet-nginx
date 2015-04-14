@@ -103,13 +103,8 @@ server {
   <%- end -%>
 <% end -%>
 <% if @maintenance -%>
-  set $maintenance "on";
-<% else -%>
-  set $maintenance "off";
+  <%= @maintenance_value %>;
 <% end -%>
-  if ($maintenance = "on") {
-      <%= @maintenance_value %>;
-  }
 <% if @rewrite_to_https -%>
   if ($ssl_protocol = "") {
        return 301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;
