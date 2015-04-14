@@ -435,6 +435,12 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+ssl_client_certificate\s+/tmp/client_certificate;',
         },
         {
+          :title => 'should set the SSL CRL file',
+          :attr  => 'ssl_crl',
+          :value => '/tmp/crl',
+          :match => %r'\s+ssl_crl\s+/tmp/crl;',
+        },
+        {
           :title => 'should set the SSL DH parameters file',
           :attr  => 'ssl_dhparam',
           :value => '/tmp/dhparam',

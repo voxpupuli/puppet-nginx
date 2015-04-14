@@ -14,6 +14,9 @@
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
+<% if @ssl_crl -%>
+  ssl_crl                   <%= @ssl_crl %>;
+<% end -%>
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'ssl_' } -%>
   <%- if @ssl_stapling -%>
   ssl_stapling              on;
