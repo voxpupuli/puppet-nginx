@@ -11,12 +11,3 @@
 <% if @try_files -%>
     try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
-<% if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
-
-    <%- if @auth_basic -%>
-    auth_basic           "<%= @auth_basic %>";
-    <%- end -%>
-    <%- if defined? @auth_basic_user_file -%>
-    auth_basic_user_file <%= @auth_basic_user_file %>;
-    <%- end -%>
-<% end -%>

@@ -19,6 +19,12 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @auth_basic -%>
+    auth_basic           "<%= @auth_basic %>";
+<%- end %>
+<%- if @auth_basic_user_file -%>
+    auth_basic_user_file <%= @auth_basic_user_file %>;
+<% end -%>
 <% if @location_custom_cfg_prepend -%>
   <%- @location_custom_cfg_prepend.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
