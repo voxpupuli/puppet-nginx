@@ -668,7 +668,7 @@ describe 'nginx::resource::location' do
       context 'when auth_basic_user_file => true' do
         let :params do { :auth_basic_user_file => '/path/to/file', :vhost => 'vhost1', :www_root => '/', } end
 
-        it { is_expected.to contain_file("/etc/nginx/rspec-test_htpasswd") }
+        it { is_expected.to contain_file("/etc/nginx/vhost1-rspec-test_htpasswd") }
       end
 
       context 'when ensure => absent' do
@@ -680,7 +680,7 @@ describe 'nginx::resource::location' do
           :auth_basic_user_file => '/path/to/file',
         } end
 
-        it { is_expected.to contain_file("/etc/nginx/rspec-test_htpasswd").with_ensure('absent') }
+        it { is_expected.to contain_file("/etc/nginx/vhost1-rspec-test_htpasswd").with_ensure('absent') }
       end
 
       context "vhost missing" do

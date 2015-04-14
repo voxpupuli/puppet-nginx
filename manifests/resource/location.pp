@@ -378,7 +378,7 @@ define nginx::resource::location (
 
   if ($auth_basic_user_file != undef) {
     #Generate htpasswd with provided file-locations
-    file { "${::nginx::config::conf_dir}/${location_sanitized}_htpasswd":
+    file { "${::nginx::config::conf_dir}/${vhost_sanitized}-${location_sanitized}_htpasswd":
       ensure => $ensure_real,
       mode   => '0644',
       source => $auth_basic_user_file,
