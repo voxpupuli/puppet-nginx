@@ -429,6 +429,30 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+server_name\s+www.rspec.example.com;',
         },
         {
+          :title => 'should set the SSL client certificate file',
+          :attr  => 'ssl_client_cert',
+          :value => '/tmp/client_certificate',
+          :match => %r'\s+ssl_client_certificate\s+/tmp/client_certificate;',
+        },
+        {
+          :title => 'should set the SSL DH parameters file',
+          :attr  => 'ssl_dhparam',
+          :value => '/tmp/dhparam',
+          :match => %r'\s+ssl_dhparam\s+/tmp/dhparam;',
+        },
+        {
+          :title => 'should set the SSL stapling file',
+          :attr  => 'ssl_stapling_file',
+          :value => '/tmp/stapling_file',
+          :match => %r'\s+ssl_stapling_file\s+/tmp/stapling_file;',
+        },
+        {
+          :title => 'should set the SSL trusted certificate file',
+          :attr  => 'ssl_trusted_cert',
+          :value => '/tmp/trusted_certificate',
+          :match => %r'\s+ssl_trusted_certificate\s+/tmp/trusted_certificate;',
+        },
+        {
           :title => 'should set the SSL cache',
           :attr  => 'ssl_cache',
           :value => 'shared:SSL:1m',
@@ -816,9 +840,9 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate\s+dummy.cert;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate_key\s+dummy.key;}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
-        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
-        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
 
       context 'when ssl_client_cert is set' do
@@ -835,9 +859,6 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client on;}) }
-        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
-        it { is_expected.to contain_file("/etc/nginx/#{title}.client.crt") }
-        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
       context 'when passenger_cgi_param is set' do
         let :params do default_params.merge({
