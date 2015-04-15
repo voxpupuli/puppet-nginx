@@ -516,7 +516,7 @@ define nginx::resource::vhost (
       try_files             => $try_files,
       www_root              => $www_root,
       autoindex             => $autoindex,
-      index_files           => [],
+      index_files           => $index_files,
       location_custom_cfg   => $location_custom_cfg,
       notify                => Class['::nginx::service'],
       rewrite_rules         => $rewrite_rules,
