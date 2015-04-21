@@ -1,30 +1,31 @@
-require 'rspec-system/spec_helper'
-require 'rspec-system-puppet/helpers'
-require 'rspec-system-serverspec/helpers'
-include RSpecSystemPuppet::Helpers
+require 'beaker-rspec'
+
+hosts.each do |host|
+  # Install Puppet
+  on host, install_puppet
+end
 
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-  # Enable colour
-  c.tty = true
+  c.formatter = :documentation
 
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
-    # Install puppet
-    puppet_install
+    hosts.each do |host|
+      # Install module
+      copy_module_to(host, :source => proj_root, :module_name => 'nginx')
+      if fact('osfamily') == 'Debian'
+        on host, puppet('module','install','puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
+      end
+      on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module','install','puppetlabs-concat'), { :acceptable_exit_codes => [0,1] }
 
-    # Install modules and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'nginx')
-    shell('puppet module install puppetlabs-apt')
-    shell('puppet module install puppetlabs-stdlib')
-    shell('puppet module install puppetlabs-concat')
-
-    # Fake keys.
-    # Valid self-signed SSL key with 10 year expiry.
-    # Required for nginx to start when SSL enabled
-    shell('echo "-----BEGIN PRIVATE KEY-----
+      # Fake keys.
+      # Valid self-signed SSL key with 10 year expiry.
+      # Required for nginx to start when SSL enabled
+      on host, shell('echo "-----BEGIN PRIVATE KEY-----
 MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOPchwRZRF4KmU6E
 g7C6Pq9zhdLiQt9owdcLZNiZS+UVRQjeDHSy3titzh5YwSoQonlnSqd0g/PJ6kNA
 O3CNOMVuzAddnAaHzW1J4Rt6sZwOuidtJC4t/hFCgz5NqOMgYOOfratQx00A7ZXK
@@ -40,7 +41,7 @@ J9lmX7GV9nUCM7lKVD2ckFOQNlMwCURs8ukJh7H/MfQ8Dt5xoQAMjQJBAOWpK6k6
 b0fTREZFZRGZBJcSu959YyMzhpSFA+lXkLNTWX8j1/D88H731oMSImoQNWcYx2dH
 sCwOCDqu1nZ2LJ8=
 -----END PRIVATE KEY-----" > /tmp/blah.key')
-    shell('echo "-----BEGIN CERTIFICATE-----
+      on host, shell('echo "-----BEGIN CERTIFICATE-----
 MIIDRjCCAq+gAwIBAgIJAL9m0V4sHW2tMA0GCSqGSIb3DQEBBQUAMIG7MQswCQYD
 VQQGEwItLTESMBAGA1UECAwJU29tZVN0YXRlMREwDwYDVQQHDAhTb21lQ2l0eTEZ
 MBcGA1UECgwQU29tZU9yZ2FuaXphdGlvbjEfMB0GA1UECwwWU29tZU9yZ2FuaXph
@@ -60,5 +61,6 @@ HaHIWGMBuXApE7t4PNdYWZ5Y56tI+HT59yVoDjc1YSnuzkKlWUPibVYoLpX/ROKr
 aIZ8kxsBjLvpi9KQTHi7Wl6Sw3ecoYdKy+2P8S5xOIpWjs8XVmOWf7Tq1+9KPv3z
 HLw/FDCzntkdq3G4em15CdFlO9BTY4HXiHU=
 -----END CERTIFICATE-----" > /tmp/blah.cert')
+    end
   end
 end
