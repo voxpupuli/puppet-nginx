@@ -298,12 +298,6 @@ define nginx::resource::location (
     default  => file,
   }
 
-  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
-
-  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
-  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
-
   ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
@@ -319,6 +313,12 @@ define nginx::resource::location (
   if ($fastcgi_script != undef) {
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
+
+  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
+  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+
+  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
