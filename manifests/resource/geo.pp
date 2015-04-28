@@ -38,7 +38,7 @@
 #
 # Sample Hiera usage:
 #
-#  nginx::geos:
+#  nginx::geo_mappings:
 #    client_network:
 #      ensure: present
 #      ranges: false
