@@ -876,6 +876,29 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_header  test3 test value 3;/ ) }
       end
 
+      context 'when passenger_env_var is set' do
+        let :params do default_params.merge({
+          :passenger_env_var => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_env_var  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_env_var  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_env_var  test3 test value 3;/ ) }
+      end
+
+      context 'when passenger_env_var is set and ssl => true' do
+        let :params do default_params.merge({
+          :passenger_env_var   => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' },
+          :ssl                 => true,
+          :ssl_key             => 'dummy.key',
+          :ssl_cert            => 'dummy.cert',
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_env_var  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_env_var  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_env_var  test3 test value 3;/ ) }
+      end
+
       context 'when vhost name is sanitized' do
         let :title do 'www rspec-vhost com' end
         let :params do default_params end

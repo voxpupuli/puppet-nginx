@@ -129,6 +129,8 @@
 #     variables to pass to the backend application
 #   [*passenger_header*]        - Allows one to set headers to pass to the
 #     backend application (Passenger 5.0+)
+#   [*passenger_env_var*]       - Allows one to set environemnt variables to pass
+#     to the backend application (Passenger 5.0+)
 #   [*log_by_lua*]              - Run the Lua source code inlined as the
 #     <lua-script-str> at the log request processing phase.
 #     This does not replace the current access logs, but runs after.
@@ -230,6 +232,7 @@ define nginx::resource::vhost (
   $format_log                   = 'combined',
   $passenger_cgi_param          = undef,
   $passenger_header             = undef,
+  $passenger_env_var            = undef,
   $log_by_lua                   = undef,
   $log_by_lua_file              = undef,
   $use_default_location         = true,
@@ -413,6 +416,9 @@ define nginx::resource::vhost (
   }
   if ($passenger_header != undef) {
     validate_hash($passenger_header)
+  }
+  if ($passenger_env_var != undef) {
+    validate_hash($passenger_env_var)
   }
   if ($log_by_lua != undef) {
     validate_string($log_by_lua)
