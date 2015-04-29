@@ -94,6 +94,11 @@ server {
   passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
   <%- end -%>
 <% end -%>
+<% if @passenger_header -%>
+  <%- @passenger_header.keys.sort.each do |key| -%>
+  passenger_set_header  <%= key %> <%= @passenger_header[key] %>;
+  <%- end -%>
+<% end -%>
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>

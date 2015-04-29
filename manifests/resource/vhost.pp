@@ -127,6 +127,8 @@
 #     options like error level to the end.
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #     variables to pass to the backend application
+#   [*passenger_header*]        - Allows one to set headers to pass to the
+#     backend application (Passenger 5.0+)
 #   [*log_by_lua*]              - Run the Lua source code inlined as the
 #     <lua-script-str> at the log request processing phase.
 #     This does not replace the current access logs, but runs after.
@@ -227,6 +229,7 @@ define nginx::resource::vhost (
   $error_log                    = undef,
   $format_log                   = 'combined',
   $passenger_cgi_param          = undef,
+  $passenger_header             = undef,
   $log_by_lua                   = undef,
   $log_by_lua_file              = undef,
   $use_default_location         = true,
@@ -407,6 +410,9 @@ define nginx::resource::vhost (
   }
   if ($passenger_cgi_param != undef) {
     validate_hash($passenger_cgi_param)
+  }
+  if ($passenger_header != undef) {
+    validate_hash($passenger_header)
   }
   if ($log_by_lua != undef) {
     validate_string($log_by_lua)
