@@ -127,7 +127,7 @@
 #     options like error level to the end.
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #     variables to pass to the backend application
-#   [*passenger_header*]        - Allows one to set headers to pass to the
+#   [*passenger_set_header*]        - Allows one to set headers to pass to the
 #     backend application (Passenger 5.0+)
 #   [*passenger_env_var*]       - Allows one to set environemnt variables to pass
 #     to the backend application (Passenger 5.0+)
@@ -231,7 +231,7 @@ define nginx::resource::vhost (
   $error_log                    = undef,
   $format_log                   = 'combined',
   $passenger_cgi_param          = undef,
-  $passenger_header             = undef,
+  $passenger_set_header         = undef,
   $passenger_env_var            = undef,
   $log_by_lua                   = undef,
   $log_by_lua_file              = undef,
@@ -414,8 +414,8 @@ define nginx::resource::vhost (
   if ($passenger_cgi_param != undef) {
     validate_hash($passenger_cgi_param)
   }
-  if ($passenger_header != undef) {
-    validate_hash($passenger_header)
+  if ($passenger_set_header != undef) {
+    validate_hash($passenger_set_header)
   }
   if ($passenger_env_var != undef) {
     validate_hash($passenger_env_var)
