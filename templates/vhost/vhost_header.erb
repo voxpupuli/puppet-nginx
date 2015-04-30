@@ -94,6 +94,16 @@ server {
   passenger_set_cgi_param  <%= key %> <%= @passenger_cgi_param[key] %>;
   <%- end -%>
 <% end -%>
+<% if @passenger_set_header -%>
+  <%- @passenger_set_header.keys.sort.each do |key| -%>
+  passenger_set_header  <%= key %> <%= @passenger_set_header[key] %>;
+  <%- end -%>
+<% end -%>
+<% if @passenger_env_var -%>
+  <%- @passenger_env_var.keys.sort.each do |key| -%>
+  passenger_env_var  <%= key %> <%= @passenger_env_var[key] %>;
+  <%- end -%>
+<% end -%>
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
