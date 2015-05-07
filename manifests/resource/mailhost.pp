@@ -133,7 +133,6 @@ define nginx::resource::mailhost (
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name}-header":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
       order   => '001',
@@ -143,7 +142,6 @@ define nginx::resource::mailhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
     concat::fragment { "${name}-ssl":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
       order   => '700',

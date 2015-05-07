@@ -348,7 +348,6 @@ define nginx::resource::location (
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { $tmpFile:
-      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -365,7 +364,6 @@ define nginx::resource::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment { $sslTmpFile:
-      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
