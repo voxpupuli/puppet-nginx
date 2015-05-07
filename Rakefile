@@ -10,7 +10,7 @@ require 'puppet_blacksmith/rake_tasks'
 
 task :default => [:clean, :spec]
 
-PuppetLint.configuration.fail_on_warnings
+PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('relative')
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
