@@ -519,6 +519,65 @@ describe 'nginx::resource::location' do
       end
     end
 
+    describe "vhost_location_uwsgi template content" do
+      let :default_params do
+        {
+          :location => 'location',
+          :uwsgi  => 'unix:/home/project/uwsgi.socket',
+          :vhost    => 'vhost1'
+        }
+      end
+
+      [
+        {
+          :title => 'should set www_root',
+          :attr  => 'www_root',
+          :value => '/',
+          :match => %r'\s+root\s+/;'
+        },
+        {
+          :title => 'should set try_file(s)',
+          :attr  => 'try_files',
+          :value => ['name1','name2'],
+          :match => %r'\s+try_files\s+name1 name2;',
+        },
+        {
+          :title => 'should set uwsgi_params',
+          :attr  => 'uwsgi_params',
+          :value => 'value',
+          :match => %r'\s+include\s+value;'
+        },
+        {
+          :title => 'should set uwsgi_pass',
+          :attr  => 'uwsgi',
+          :value => 'value',
+          :match => %r'\s+uwsgi_pass\s+value;'
+        },
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+
+          it { is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
+          it param[:title] do
+            fragment = Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
+            else
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              expect(lines & matches).to eq(matches)
+            end
+
+            Array(param[:notmatch]).each do |item|
+              is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
+            end
+          end
+        end
+      end
+    end
+
+
     describe "vhost_location_proxy template content" do
       [
         {
@@ -642,6 +701,13 @@ describe 'nginx::resource::location' do
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
+      context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
+        let :params do { :uwsgi => 'uwsgi_upstream', :vhost => 'vhost1' } end
+
+        it { should contain_file('/etc/nginx/uwsgi_params') }
+      end
+
+
       context 'when ssl_only => true' do
         let :params do { :ssl_only => true, :vhost => 'vhost1', :www_root => '/', } end
         it { is_expected.not_to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-rspec-test")) }
@@ -678,7 +744,7 @@ describe 'nginx::resource::location' do
           :vhost => 'vhost1',
         } end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, internal, or location_custom_cfg defined/) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined/) }
       end
 
       context "www_root and proxy are set" do
