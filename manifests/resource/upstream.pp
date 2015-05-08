@@ -57,6 +57,11 @@ define nginx::resource::upstream (
   include nginx::params
   $root_group = $nginx::params::root_group
 
+  $ensure_real = $ensure ? {
+    'absent' => absent,
+    default  => present,
+  }
+
   Concat {
     owner => 'root',
     group => $root_group,
@@ -64,18 +69,14 @@ define nginx::resource::upstream (
   }
 
   concat { "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
-    ensure  => $ensure ? {
-      'absent' => absent,
-      'file'   => present,
-      default  => present,
-    },
-    notify  => Class['nginx::service'],
+    ensure => $ensure_real,
+    notify => Class['nginx::service'],
   }
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
     target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-    order   => 10,
+    order   => '10',
     content => template('nginx/conf.d/upstream_header.erb'),
   }
 
@@ -83,7 +84,7 @@ define nginx::resource::upstream (
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
       target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-      order   => 50,
+      order   => '50',
       content => template('nginx/conf.d/upstream_members.erb'),
     }
   } else {
@@ -93,7 +94,7 @@ define nginx::resource::upstream (
 
   concat::fragment { "${name}_upstream_footer":
     target  => "${nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
-    order   => 90,
+    order   => '90',
     content => "}\n",
   }
 }

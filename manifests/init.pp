@@ -96,12 +96,12 @@ class nginx (
   $worker_connections             = $nginx::params::nx_worker_connections,
   $worker_processes               = $nginx::params::nx_worker_processes,
   $worker_rlimit_nofile           = $nginx::params::nx_worker_rlimit_nofile,
-  $global_owner                   = $nginx::params::nx_global_owner,
-  $global_group                   = $nginx::params::nx_global_group,
-  $global_mode                    = $nginx::params::nx_global_mode,
-  $sites_available_owner          = $nginx::params::nx_sites_available_owner,
-  $sites_available_group          = $nginx::params::nx_sites_available_group,
-  $sites_available_mode           = $nginx::params::nx_sites_available_mode,
+  $global_owner                   = $nginx::params::global_owner,
+  $global_group                   = $nginx::params::global_group,
+  $global_mode                    = $nginx::params::global_mode,
+  $sites_available_owner          = $nginx::params::sites_available_owner,
+  $sites_available_group          = $nginx::params::sites_available_group,
+  $sites_available_mode           = $nginx::params::sites_available_mode,
   $geo_mappings                   = {},
   $string_mappings                = {},
 ) inherits nginx::params {
@@ -131,9 +131,7 @@ class nginx (
   if ($proxy_cache_path != false) {
     validate_string($proxy_cache_path)
   }
-  if (!is_integer($proxy_cache_levels)) {
-    fail('$proxy_cache_levels must be an integer.')
-  }
+  validate_re($proxy_cache_levels, '^[12](:[12])*$')
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
   validate_string($proxy_cache_inactive)
@@ -141,9 +139,7 @@ class nginx (
   if ($fastcgi_cache_path != false) {
         validate_string($fastcgi_cache_path)
   }
-  if (!is_integer($fastcgi_cache_levels)) {
-    fail('$fastcgi_cache_levels must be an integer.')
-  }
+  validate_re($fastcgi_cache_levels, '^[12](:[12])*$')
   validate_string($fastcgi_cache_keys_zone)
   validate_string($fastcgi_cache_max_size)
   validate_string($fastcgi_cache_inactive)

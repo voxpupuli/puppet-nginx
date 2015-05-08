@@ -1,3 +1,7 @@
 fixtures:
   symlinks:
     nginx: "#{source_dir}"
+  forge_modules:
+    apt: "puppetlabs/apt"
+    concat: "puppetlabs/concat"
+    stdlib: "puppetlabs/stdlib"

@@ -31,6 +31,7 @@
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*fastcgi*]              - location of fastcgi (host:port)
+#   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
@@ -81,6 +82,10 @@
 #   [*priority*]              - Location priority. Default: 500. User priority
 #     401-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
+#   [*mp4*]             - Indicates whether or not this loation can be
+#     used for mp4 streaming. Default: false
+#   [*flv*]             - Indicates whether or not this loation can be
+#     used for flv streaming. Default: false
 #
 #
 # Actions:
@@ -109,6 +114,17 @@
 #    vhost               => 'test2.local',
 #    location_cfg_append => $my_config,
 #  }
+#
+#  Add Custom fastcgi_params
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    vhost    => 'test2.local',
+#    fastcgi_param => {
+#       'APP_ENV' => 'local',
+#    }
+#  }
 
 define nginx::resource::location (
   $ensure               = present,
@@ -127,6 +143,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $nginx::config::proxy_set_header,
   $fastcgi              = undef,
+  $fastcgi_param        = undef,
   $fastcgi_params       = "${nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
@@ -154,7 +171,9 @@ define nginx::resource::location (
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
   $rewrite_rules        = [],
-  $priority             = 500
+  $priority             = 500,
+  $mp4             = false,
+  $flv             = false,
 ) {
 
   include nginx::params
@@ -189,6 +208,9 @@ define nginx::resource::location (
   validate_array($proxy_set_header)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
+  }
+  if ($fastcgi_param != undef) {
+    validate_hash($fastcgi_param)
   }
   validate_string($fastcgi_params)
   if ($fastcgi_script != undef) {
@@ -283,7 +305,7 @@ define nginx::resource::location (
   $config_file = "${nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
-  $location_sanitized = regsubst($location_sanitized_tmp, "\\\\", '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
   ## Check for various error conditions
   if ($vhost == undef) {
@@ -297,6 +319,10 @@ define nginx::resource::location (
   }
 
   # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
+  # fastcgi_script is deprecated
+  if ($fastcgi_script != undef) {
+    warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
+  }
   if ($proxy != undef) {
     $content_real = template('nginx/vhost/locations/proxy.erb')
   } elsif ($location_alias != undef) {
@@ -334,7 +360,7 @@ define nginx::resource::location (
   if ($ssl_only != true) {
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
-    concat::fragment { "${tmpFile}":
+    concat::fragment { $tmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -342,7 +368,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${priority}",
+      order   => "${priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
     }
   }
 
@@ -351,7 +377,7 @@ define nginx::resource::location (
     $ssl_priority = $priority + 300
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
-    concat::fragment {"${sslTmpFile}":
+    concat::fragment { $sslTmpFile:
       ensure  => present,
       target  => $config_file,
       content => join([
@@ -359,7 +385,7 @@ define nginx::resource::location (
         $content_real,
         template('nginx/vhost/location_footer.erb')
       ], ''),
-      order   => "${ssl_priority}",
+      order   => "${ssl_priority}", #lint:ignore:only_variable_string waiting on https://github.com/puppetlabs/puppetlabs-concat/commit/f70881fbfd01c404616e9e4139d98dad78d5a918
     }
   }
 

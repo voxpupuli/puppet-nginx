@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
 
-James Fryman <james@frymanet.com>
+* James Fryman <james@frymanet.com>
+* Matthew Haughton <matt@3flex.com.au>
 
 This module manages NGINX configuration.
 
@@ -235,6 +236,19 @@ define web::nginx_ssl_with_redirect (
       }
     }
   }
+}
+```
+
+## Add custom fastcgi_params
+
+```puppet
+nginx::resource::location { "some_root":
+  ensure         => present,
+  location       => '/some/url',
+  fastcgi        => "127.0.0.1:9000",
+  fastcgi_param  => {
+    'APP_ENV' => 'local',
+  },
 }
 ```
 
