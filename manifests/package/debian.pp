@@ -34,23 +34,23 @@ class nginx::package::debian(
     case $package_source {
       'nginx', 'nginx-stable': {
         apt::source { 'nginx':
-          location   => "http://nginx.org/packages/${distro}",
-          repos      => 'nginx',
-          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
+          location => "http://nginx.org/packages/${distro}",
+          repos    => 'nginx',
+          key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
         }
       }
       'nginx-mainline': {
         apt::source { 'nginx':
-          location   => "http://nginx.org/packages/mainline/${distro}",
-          repos      => 'nginx',
-          key        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
+          location => "http://nginx.org/packages/mainline/${distro}",
+          repos    => 'nginx',
+          key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
         }
       }
       'passenger': {
         apt::source { 'nginx':
-          location          => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos             => 'main',
-          key               => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
+          location => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          repos    => 'main',
+          key      => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
         }
 
         package { ['apt-transport-https', 'ca-certificates']:
