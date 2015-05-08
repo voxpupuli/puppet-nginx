@@ -743,9 +743,7 @@ describe 'nginx::resource::location' do
           :vhost => 'vhost1',
         } end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, or location_custom_cfg defined/) }
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, internal, or location_custom_cfg defined/) }
->>>>>>> 7c4473857369fdf09aa24a97e3ccc180ef3b4c73
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined/) }
       end
 
       context "www_root and proxy are set" do
