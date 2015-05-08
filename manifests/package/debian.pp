@@ -22,51 +22,54 @@ class nginx::package::debian(
 
   $distro = downcase($::operatingsystem)
 
-  package { $package_name:
-    ensure  => $package_ensure,
-    require => Anchor['nginx::apt_repo'],
+  package { 'nginx':
+    ensure => $package_ensure,
+    name   => $package_name,
   }
-
-  anchor { 'nginx::apt_repo' : }
 
   if $manage_repo {
     include '::apt'
+    Exec['apt_update'] -> Package['nginx']
 
     case $package_source {
-      'nginx': {
+      'nginx', 'nginx-stable': {
         apt::source { 'nginx':
-          location   => "http://nginx.org/packages/${distro}",
-          repos      => 'nginx',
-          key        => '7BD9BF62',
-          key_source => 'http://nginx.org/keys/nginx_signing.key',
-          notify     => Exec['apt_get_update_for_nginx'],
+          location => "http://nginx.org/packages/${distro}",
+          repos    => 'nginx',
+          key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
+        }
+      }
+      'nginx-mainline': {
+        apt::source { 'nginx':
+          location => "http://nginx.org/packages/mainline/${distro}",
+          repos    => 'nginx',
+          key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
         }
       }
       'passenger': {
-        ensure_resource('package', 'apt-transport-https', {'ensure' => 'present' })
-
         apt::source { 'nginx':
-          location   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-          repos      => 'main',
-          key        => '561F9B9CAC40B2F7',
-          key_source => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
-          notify     => Exec['apt_get_update_for_nginx'],
+          location => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          repos    => 'main',
+          key      => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
+        }
+
+        package { ['apt-transport-https', 'ca-certificates']:
+          ensure => 'present',
+          before => Apt::Source['nginx'],
         }
 
         package { 'passenger':
           ensure  => 'present',
-          require => Anchor['nginx::apt_repo'],
+          require => Exec['apt_update'],
+        }
+
+        if $package_name != 'nginx-extras' {
+          warning('You must set $package_name to "nginx-extras" to enable Passenger')
         }
       }
-      default: {}
-    }
-
-    exec { 'apt_get_update_for_nginx':
-      command     => '/usr/bin/apt-get update',
-      timeout     => 240,
-      returns     => [ 0, 100 ],
-      refreshonly => true,
-      before      => Anchor['nginx::apt_repo'],
+      default: {
+        fail("\$package_source must be 'nginx-stable', 'nginx-mainline' or 'passenger'. It was set to '${package_source}'")
+      }
     }
   }
 }

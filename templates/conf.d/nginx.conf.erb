@@ -2,34 +2,50 @@
 user <%= @daemon_user %>;
 <% end -%>
 worker_processes <%= @worker_processes %>;
-<% if @worker_rlimit_nofile %>worker_rlimit_nofile <%= @worker_rlimit_nofile %>;<% end -%>
+<% if @worker_rlimit_nofile -%>
+worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
+<% end -%>
 
-error_log  <%= @nginx_error_log %>;
 <% if @pid -%>
 pid        <%= @pid %>;
+<% end -%>
+error_log  <%= @nginx_error_log %>;
+
+<% if @nginx_cfg_prepend -%>
+<%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+<%- @nginx_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
+<%- Array(value).each do |asubvalue| -%>
+<%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
+<%- end -%>
+<%- end -%>
 <% end -%>
 
 events {
   worker_connections <%= @worker_connections -%>;
-  <% if @multi_accept == 'on' -%>
+  <%- if @multi_accept == 'on' -%>
     multi_accept on;
-  <% end -%>
-  <% if @events_use -%>
+  <%- end -%>
+  <%- if @events_use -%>
     use <%= @events_use %>;
-  <% end -%>
+  <%- end -%>
 }
 
 http {
   include       <%= @conf_dir %>/mime.types;
   default_type  application/octet-stream;
+<% if @log_format -%>
+<% @log_format.sort_by{|k,v| k}.each do |key,value| -%>
+  log_format <%= key %> '<%= value %>';
+<% end -%>
+<% end -%>
 
   access_log  <%= @http_access_log %>;
 
 <% if @sendfile == 'on' -%>
   sendfile    on;
-<% if @http_tcp_nopush == 'on' -%>
+  <%- if @http_tcp_nopush == 'on' -%>
   tcp_nopush on;
-<% end -%>
+  <%- end -%>
 <% end -%>
 
   server_tokens <%= @server_tokens %>;
@@ -46,30 +62,33 @@ http {
 <% if @gzip == 'on' -%>
   gzip         on;
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-<% end -%>
 
+<% end -%>
 <% if @proxy_cache_path -%>
-  proxy_cache_path    <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
-<% end -%>
+  proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
 
+<% end -%>
 <% if @fastcgi_cache_path -%>
   fastcgi_cache_path    	<%= @fastcgi_cache_path %> levels=<%= @fastcgi_cache_levels %> keys_zone=<%= @fastcgi_cache_keys_zone %> max_size=<%= @fastcgi_cache_max_size %> inactive=<%= @fastcgi_cache_inactive %>;
 <% end -%>
 <% if @fastcgi_cache_key -%>
-  fastcgi_cache_key		<%= @fastcgi_cache_key %>;
+  fastcgi_cache_key		    <%= @fastcgi_cache_key %>;
 <% end -%>
 <% if @fastcgi_cache_use_stale -%>
-  fastcgi_cache_use_stale 	<%= @fastcgi_cache_use_stale %>;
+  fastcgi_cache_use_stale <%= @fastcgi_cache_use_stale %>;
 <% end -%>
+<% if @http_cfg_append -%>
 
-<% if @http_cfg_append -%><% @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
-  <%= key %> <%= value %>;
-<% end -%>
+  <%- field_width = @http_cfg_append.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+  <%- @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
+  <%- Array(value).each do |asubvalue| -%>
+  <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
+  <%- end -%>
+  <%- end -%>
 <% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
   include <%= @conf_dir %>/sites-enabled/*;
-
 }
 <% if @mail -%>
 mail {

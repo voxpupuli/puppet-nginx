@@ -61,8 +61,7 @@ define nginx::resource::mailhost (
   $server_name         = [$name]
 ) {
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  $root_group = $::nginx::config::root_group
 
   File {
     owner => 'root',
@@ -75,12 +74,16 @@ define nginx::resource::mailhost (
   }
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-  validate_string($listen_ip)
+  if !(is_array($listen_ip) or is_string($listen_ip)) {
+    fail('$listen_ip must be a string or array.')
+  }
   if ($listen_options != undef) {
     validate_string($listen_options)
   }
   validate_bool($ipv6_enable)
-  validate_string($ipv6_listen_ip)
+  if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
+    fail('$ipv6_listen_ip must be a string or array.')
+  }
   if !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
@@ -106,7 +109,7 @@ define nginx::resource::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_file = "${nginx::config::conf_dir}/conf.mail.d/${name}.conf"
+  $config_file = "${::nginx::config::conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
@@ -125,12 +128,11 @@ define nginx::resource::mailhost (
     owner  => 'root',
     group  => $root_group,
     mode   => '0644',
-    notify => Class['nginx::service'],
+    notify => Class['::nginx::service'],
   }
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name}-header":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
       order   => '001',
@@ -140,7 +142,6 @@ define nginx::resource::mailhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
     concat::fragment { "${name}-ssl":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
       order   => '700',

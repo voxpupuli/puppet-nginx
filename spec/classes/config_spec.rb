@@ -1,33 +1,7 @@
 require 'spec_helper'
 describe 'nginx::config' do
 
-  describe 'with defaults' do
-    [
-      { :osfamily => 'debian', :operatingsystem => 'debian', },
-      { :osfamily => 'debian', :operatingsystem => 'ubuntu', },
-      { :osfamily => 'redhat', :operatingsystem => 'fedora', },
-      { :osfamily => 'redhat', :operatingsystem => 'rhel', },
-      { :osfamily => 'redhat', :operatingsystem => 'redhat', },
-      { :osfamily => 'redhat', :operatingsystem => 'centos', },
-      { :osfamily => 'redhat', :operatingsystem => 'scientific', },
-      { :osfamily => 'redhat', :operatingsystem => 'amazon', },
-      { :osfamily => 'suse',   :operatingsystem => 'suse', },
-      { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
-
-        it { is_expected.to contain_class("nginx::params") }
-
+  context 'with defaults' do
         it { is_expected.to contain_file("/etc/nginx").only_with(
           :path   => "/etc/nginx",
           :ensure => 'directory',
@@ -90,68 +64,9 @@ describe 'nginx::config' do
           :purge => true,
           :recurse => true
         )}
-      end
-    end
-  end
-
-  describe 'with defaults' do
-    [
-      { :osfamily => 'debian', :operatingsystem => 'debian', },
-      { :osfamily => 'debian', :operatingsystem => 'ubuntu', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
-        it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
-        it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'www-data')}
-        it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user www-data;}}
-      end
-    end
-  end
-
-  describe 'with defaults' do
-    [
-      { :osfamily => 'redhat', :operatingsystem => 'fedora', },
-      { :osfamily => 'redhat', :operatingsystem => 'rhel', },
-      { :osfamily => 'redhat', :operatingsystem => 'redhat', },
-      { :osfamily => 'redhat', :operatingsystem => 'centos', },
-      { :osfamily => 'redhat', :operatingsystem => 'scientific', },
-      { :osfamily => 'redhat', :operatingsystem => 'amazon', },
-      { :osfamily => 'suse',   :operatingsystem => 'suse', },
-      { :osfamily => 'suse',   :operatingsystem => 'opensuse', },
-      { :osfamily => 'gentoo', :operatingsystem => 'gentoo', },
-      { :osfamily => 'linux',  :operatingsystem => 'gentoo', },
-    ].each do |facts|
-
-      context "when osfamily/operatingsystem is #{facts[:osfamily]}/#{facts[:operatingsystem]}" do
-
-        let :facts do
-          {
-            :osfamily        => facts[:osfamily],
-            :operatingsystem => facts[:operatingsystem],
-          }
-        end
         it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user nginx;}}
-      end
-    end
-  end
-
-  describe 'os-independent items' do
-
-    let :facts do
-      {
-        :osfamily        => 'debian',
-        :operatingsystem => 'debian',
-      }
-    end
 
     describe "nginx.conf template content" do
       [
@@ -160,6 +75,12 @@ describe 'nginx::config' do
           :attr  => 'worker_processes',
           :value => '4',
           :match => 'worker_processes 4;',
+        },
+        {
+          :title => 'should set worker_processes',
+          :attr  => 'worker_processes',
+          :value => 'auto',
+          :match => 'worker_processes auto;',
         },
         {
           :title => 'should set worker_rlimit_nofile',
@@ -180,6 +101,24 @@ describe 'nginx::config' do
           :match => '  worker_connections 100;',
         },
         {
+          :title => 'should set log formats',
+          :attr  => 'log_format',
+          :value => {
+            'format1' => 'FORMAT1',
+            'format2' => 'FORMAT2',
+          },
+          :match => [
+            '  log_format format1 \'FORMAT1\';',
+            '  log_format format2 \'FORMAT2\';',
+          ],
+        },
+        {
+          :title    => 'should not set log formats',
+          :attr     => 'log_format',
+          :value    => {},
+          :notmatch => /log_format/,
+        },
+        {
           :title => 'should set access_log',
           :attr  => 'http_access_log',
           :value => '/path/to/access.log',
@@ -195,13 +134,13 @@ describe 'nginx::config' do
           :title => 'should set proxy_cache_path',
           :attr  => 'proxy_cache_path',
           :value => '/path/to/proxy.cache',
-          :match => '  proxy_cache_path    /path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :match => %r'\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
         },
         {
           :title    => 'should not set proxy_cache_path',
           :attr     => 'proxy_cache_path',
           :value    => false,
-          :notmatch => /  proxy_cache_path    \/path\/to\/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;/,
+          :notmatch => %r'\s+proxy_cache_path\s+/path/to/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
         },
         {
           :title => 'should contain ordered appended directives from hash',
@@ -220,6 +159,44 @@ describe 'nginx::config' do
           :match => [
             '  allow test value 1;',
             '  allow test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from array values',
+          :attr  => 'http_cfg_append',
+          :value => { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
+          :match => [
+            '  test1 test value 1;',
+            '  test1 test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain ordered appended directives from hash',
+          :attr  => 'nginx_cfg_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :match => [
+            'allow test value 3;',
+            'test1 test value 1;',
+            'test2 test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from list of hashes',
+          :attr  => 'nginx_cfg_prepend',
+          :value => [[ 'allow', 'test value 1'], ['allow', 'test value 2' ]],
+          :match => [
+            'allow test value 1;',
+            'allow test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from array values',
+          :attr  => 'nginx_cfg_prepend',
+          :value => { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
+          :match => [
+            'test1 test value 1;',
+            'test1 test value 2;',
+            'test1 test value 3;',
           ],
         },
         {
@@ -252,7 +229,15 @@ describe 'nginx::config' do
 
           it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/nginx.conf", Array(param[:match]))
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(item) }
+            else
+              lines = catalogue.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            end
+
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/nginx.conf").without_content(item)
             end
@@ -282,6 +267,12 @@ describe 'nginx::config' do
           :match => 'proxy_http_version      1.1;',
         },
         {
+          :title    => 'should not set proxy_http_version',
+          :attr     => 'proxy_http_version',
+          :value    => nil,
+          :notmatch => 'proxy_http_version',
+        },
+        {
           :title => 'should contain ordered appended directives',
           :attr  => 'proxy_set_header',
           :value => ['header1','header2'],
@@ -308,7 +299,15 @@ describe 'nginx::config' do
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/conf.d/proxy.conf", Array(param[:match]))
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_file('/etc/nginx/conf.d/proxy.conf').with_content(item) }
+            else
+              lines = catalogue.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
+              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            end
+
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").without_content(item)
             end
@@ -358,6 +357,17 @@ describe 'nginx::config' do
         'purge',
         'recurse'
       ])}
+    end
+
+    context "when daemon_user = www-data" do
+      let :params do
+        {
+          :daemon_user => 'www-data',
+        }
+      end
+      it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'www-data')}
+      it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'www-data')}
+      it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user www-data;}}
     end
   end
 end

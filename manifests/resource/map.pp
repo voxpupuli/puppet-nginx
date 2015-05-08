@@ -57,8 +57,7 @@ define nginx::resource::map (
     "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
   if ($default != undef) { validate_string($default) }
 
-  include nginx::params
-  $root_group = $nginx::params::root_group
+  $root_group = $::nginx::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -71,9 +70,9 @@ define nginx::resource::map (
     mode  => '0644',
   }
 
-  file { "${nginx::config::conf_dir}/conf.d/${name}-map.conf":
+  file { "${::nginx::config::conf_dir}/conf.d/${name}-map.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
-    notify  => Class['nginx::service'],
+    notify  => Class['::nginx::service'],
   }
 }

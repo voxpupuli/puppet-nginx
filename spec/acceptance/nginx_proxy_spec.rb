@@ -1,4 +1,4 @@
-require 'spec_helper_system'
+require 'spec_helper_acceptance'
 
 describe "nginx::resource::upstream define:" do
   it 'should run successfully' do
@@ -19,25 +19,20 @@ describe "nginx::resource::upstream define:" do
     }
     "
 
-    puppet_apply(pp) do |r|
-      [0,2].should include r.exit_code
-      r.refresh
-      r.stderr.should be_empty
-      r.exit_code.should be_zero
-    end
+    apply_manifest(pp, :catch_failures => true)
   end
 
   describe file('/etc/nginx/conf.d/puppet_rack_app-upstream.conf') do
-   it { should be_file }
-   it { should contain "server     localhost:3000" }
-   it { should contain "server     localhost:3001" }
-   it { should contain "server     localhost:3002" }
-   it { should_not contain "server     localhost:3003" }
+   it { is_expected.to be_file }
+   it { is_expected.to contain "server     localhost:3000" }
+   it { is_expected.to contain "server     localhost:3001" }
+   it { is_expected.to contain "server     localhost:3002" }
+   it { is_expected.not_to contain "server     localhost:3003" }
   end
 
   describe file('/etc/nginx/sites-available/rack.puppetlabs.com.conf') do
-    it { should be_file }
-    it { should contain "proxy_pass          http://puppet_rack_app;" }
+    it { is_expected.to be_file }
+    it { is_expected.to contain "proxy_pass            http://puppet_rack_app;" }
   end
 
 end

@@ -1,3 +1,4 @@
+
   location <%= @location %> {
 <% if @internal -%>
     internal;
@@ -18,10 +19,16 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @auth_basic -%>
+    auth_basic           "<%= @auth_basic %>";
+<%- end %>
+<%- if @auth_basic_user_file -%>
+    auth_basic_user_file <%= @auth_basic_user_file %>;
+<% end -%>
 <% if @location_custom_cfg_prepend -%>
   <%- @location_custom_cfg_prepend.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
-      <%- value.each do |subkey,subvalue| -%>
+      <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>
     <%= key %> <%= subkey %> <%= asubvalue %>
         <%- end -%>
@@ -36,7 +43,7 @@
 <% if @location_cfg_prepend -%>
   <%- @location_cfg_prepend.sort_by {|k,v| k}.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
-      <%- value.each do |subkey,subvalue| -%>
+      <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>
     <%= key %> <%= subkey %> <%= asubvalue %>;
         <%- end -%>
@@ -48,8 +55,14 @@
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @raw_prepend && Array(@raw_prepend).size > 0 %>
+<% if @raw_prepend && Array(@raw_prepend).size > 0 -%>
     <%- Array(@raw_prepend).each do |line| -%>
     <%= line %>
     <%- end -%>
-<% end %>
+<% end -%>
+<%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
+
+    <%- @rewrite_rules.each do |rewrite_rule| -%>
+    rewrite <%= rewrite_rule %>;
+    <%- end -%>
+<% end -%>

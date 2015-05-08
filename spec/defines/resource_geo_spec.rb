@@ -17,16 +17,8 @@ describe 'nginx::resource::geo' do
     }
   end
 
-  let :facts do
-    {
-      :osfamily        => 'RedHat',
-      :operatingsystem => 'CentOS',
-    }
-  end
-
   let :pre_condition do
     [
-      'include ::nginx::params',
       'include ::nginx::config',
     ]
   end
@@ -75,8 +67,8 @@ describe 'nginx::resource::geo' do
             '10.0.0.0/8'     => 'intra',
           },
           :match => [
-            '  10.0.0.0/8 intra;',
-            '  172.16.0.0/12 intra;',
+            '  10.0.0.0/8     intra;',
+            '  172.16.0.0/12  intra;',
             '  192.168.0.0/16 intra;',
           ],
         },
@@ -99,7 +91,7 @@ describe 'nginx::resource::geo' do
           :title => 'should set delete',
           :attr  => 'delete',
           :value => '192.168.0.0/16',
-          :match => '  delete 192.168.0.0/16;'
+          :match => '  delete  192.168.0.0/16;'
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -107,7 +99,7 @@ describe 'nginx::resource::geo' do
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/conf.d/#{title}-geo.conf", Array(param[:match]))
+            verify_contents(catalogue, "/etc/nginx/conf.d/#{title}-geo.conf", Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").without_content(item)
             end

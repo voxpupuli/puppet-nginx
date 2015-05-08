@@ -12,14 +12,11 @@ describe 'nginx::resource::vhost' do
   end
   let :facts do
     {
-      :osfamily        => 'Debian',
-      :operatingsystem => 'debian',
       :ipaddress6      => '::',
     }
   end
   let :pre_condition do
     [
-      'include ::nginx::params',
       'include ::nginx::config',
     ]
   end
@@ -28,15 +25,14 @@ describe 'nginx::resource::vhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { is_expected.to contain_class("nginx::params") }
       it { is_expected.to contain_class("nginx::config") }
       it { is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
         'mode'  => '0644',
       })}
-      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.access\.log}) }
-      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log[ ]+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
+      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log\s+/var/log/nginx/www\.rspec\.example\.com\.access\.log combined;}) }
+      it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log\s+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
       it { is_expected.to contain_concat__fragment("#{title}-footer") }
       it { is_expected.to contain_nginx__resource__location("#{title}-default") }
       it { is_expected.not_to contain_file("/etc/nginx/fastcgi_params") }
@@ -55,116 +51,115 @@ describe 'nginx::resource::vhost' do
           :value    => false,
           :notmatch => %r|
             ^
-            \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
           |x,
         },
         {
           :title => 'should contain www to non-www rewrite',
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
-          :match => [
-            '  listen       *:80;',
-            '  server_name  www.rspec.example.com;',
-            '  return       301 http://rspec.example.com$uri;',
-          ],
+          :match => %r|
+            ^
+            \s+server_name\s+www\.rspec\.example\.com;\n
+            \s+return\s+301\s+http://rspec\.example\.com\$request_uri;
+          |x,
         },
         {
           :title => 'should set the IPv4 listen IP',
           :attr  => 'listen_ip',
           :value => '127.0.0.1',
-          :match => '  listen                127.0.0.1:80;',
+          :match => %r'\s+listen\s+127.0.0.1:80;',
         },
         {
           :title => 'should set the IPv4 listen port',
           :attr  => 'listen_port',
           :value => 45,
-          :match => '  listen                *:45;',
+          :match => %r'\s+listen\s+\*:45;',
         },
         {
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'spdy default',
-          :match => '  listen                *:80 spdy default;',
+          :match => %r'\s+listen\s+\*:80 spdy default;',
         },
         {
           :title => 'should enable IPv6',
           :attr  => 'ipv6_enable',
           :value => true,
-          :match => '  listen [::]:80 default ipv6only=on;',
+          :match => %r'\s+listen\s+\[::\]:80 default ipv6only=on;',
         },
         {
           :title    => 'should not enable IPv6',
           :attr     => 'ipv6_enable',
           :value    => false,
-          :notmatch => /  listen \[::\]:80 default ipv6only=on;/,
+          :notmatch => %r'\slisten \[::\]:80 default ipv6only=on;',
         },
         {
           :title => 'should set the IPv6 listen IP',
           :attr  => 'ipv6_listen_ip',
           :value => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-          :match => '  listen [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:80 default ipv6only=on;',
+          :match => %r'\s+listen\s+\[2001:0db8:85a3:0000:0000:8a2e:0370:7334\]:80 default ipv6only=on;',
         },
         {
           :title => 'should set the IPv6 listen port',
           :attr  => 'ipv6_listen_port',
           :value => 45,
-          :match => '  listen [::]:45 default ipv6only=on;',
+          :match => %r'\s+listen\s+\[::\]:45 default ipv6only=on;',
         },
         {
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy',
-          :match => '  listen [::]:80 spdy;',
+          :match => %r'\s+listen\s+\[::\]:80 spdy;',
         },
         {
           :title => 'should set servername(s)',
           :attr  => 'server_name',
           :value => ['www.foo.com','foo.com'],
-          :match => '  server_name           www.foo.com foo.com;',
+          :match => %r'\s+server_name\s+www.foo.com foo.com;',
         },
         {
           :title => 'should rewrite www servername to non-www',
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
-          :match => '  server_name           rspec.example.com;',
+          :match => %r'\s+server_name\s+rspec.example.com;',
         },
         {
           :title => 'should not rewrite www servername to non-www',
           :attr  => 'rewrite_www_to_non_www',
           :value => false,
-          :match => '  server_name           www.rspec.example.com;',
+          :match => %r'\s+server_name\s+www.rspec.example.com;',
         },
         {
           :title => 'should set auth_basic',
           :attr  => 'auth_basic',
           :value => 'value',
-          :match => '  auth_basic           "value";',
+          :match => %r'\s+auth_basic\s+"value";',
         },
         {
           :title => 'should set auth_basic_user_file',
           :attr  => 'auth_basic_user_file',
           :value => 'value',
-          :match => '  auth_basic_user_file value;',
+          :match => %r'\s+auth_basic_user_file\s+value;',
         },
         {
           :title => 'should set the client_body_timeout',
           :attr  => 'client_body_timeout',
           :value => 'value',
-          :match => /^[ ]+client_body_timeout\s+value;/
+          :match => /^\s+client_body_timeout\s+value;/
         },
         {
           :title => 'should set the client_header_timeout',
           :attr  => 'client_header_timeout',
           :value => 'value',
-          :match => /^[ ]+client_header_timeout\s+value;/
+          :match => /^\s+client_header_timeout\s+value;/
         },
         {
           :title => 'should set the gzip_types',
           :attr  => 'gzip_types',
           :value => 'value',
-          :match => /^[ ]+gzip_types\s+value;/
+          :match => /^\s+gzip_types\s+value;/
         },
         {
           :title => 'should contain raw_prepend directives',
@@ -200,15 +195,6 @@ describe 'nginx::resource::vhost' do
           :notmatch => /  root \/;/,
         },
         {
-          :title => 'should set proxy_set_header',
-          :attr  => 'proxy_set_header',
-          :value => ['header1','header2'],
-          :match => [
-            '  proxy_set_header        header1;',
-            '  proxy_set_header        header2;',
-          ],
-        },
-        {
           :title => 'should rewrite to HTTPS',
           :attr  => 'rewrite_to_https',
           :value => true,
@@ -222,15 +208,33 @@ describe 'nginx::resource::vhost' do
           :attr     => 'rewrite_to_https',
           :value    => false,
           :notmatch => [
-            /if \(\$ssl_protocol = ""\) \{/,
-            /       return 301 https:\/\/\$host\$request_uri;/,
+            %r'if \(\$ssl_protocol = ""\) \{',
+            %r'\s+return 301 https://\$host\$request_uri;',
           ],
         },
         {
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
+        },
+        {
+          :title => 'should set access_log off',
+          :attr  => 'access_log',
+          :value => 'off',
+          :match => '  access_log            off;',
+        },
+        {
+          :title => 'should set access_log to syslog',
+          :attr  => 'access_log',
+          :value => 'syslog:server=localhost',
+          :match => '  access_log            syslog:server=localhost combined;',
+        },
+        {
+          :title => 'should set format_log custom_format',
+          :attr  => 'format_log',
+          :value => 'custom',
+          :match => '  access_log            /var/log/nginx/www.rspec.example.com.access.log custom;',
         },
         {
           :title => 'should set error_log',
@@ -249,7 +253,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -268,9 +272,8 @@ describe 'nginx::resource::vhost' do
           :value    => false,
           :notmatch => %r|
             ^
-            \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -278,8 +281,8 @@ describe 'nginx::resource::vhost' do
           :attr  => 'include_files',
           :value => [ '/file1', '/file2' ],
           :match => [
-            %r'^[ ]+include\s+/file1;',
-            %r'^[ ]+include\s+/file2;',
+            %r'^\s+include\s+/file1;',
+            %r'^\s+include\s+/file2;',
           ],
         },
         {
@@ -314,7 +317,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
             else
-              lines  = subject.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
+              lines  = catalogue.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -333,56 +336,55 @@ describe 'nginx::resource::vhost' do
           :value    => false,
           :notmatch => %r|
             ^
-            \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
           :title => 'should contain www to non-www rewrite',
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
-          :match => [
-            '  listen       *:443 ssl;',
-            '  server_name  www.rspec.example.com;',
-            '  return       301 https://rspec.example.com$uri;',
-          ],
+          :match => %r|
+            ^
+            \s+server_name\s+www\.rspec\.example\.com;\n
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
+          |x,
         },
         {
           :title => 'should set the IPv4 listen IP',
           :attr  => 'listen_ip',
           :value => '127.0.0.1',
-          :match => '  listen       127.0.0.1:443 ssl;',
+          :match => %r'\s+listen\s+127.0.0.1:443 ssl;',
         },
         {
           :title => 'should set the IPv4 SSL listen port',
           :attr  => 'ssl_port',
           :value => 45,
-          :match => '  listen       *:45 ssl;',
+          :match => %r'\s+listen\s+\*:45 ssl;',
         },
         {
           :title => 'should set SPDY',
           :attr  => 'spdy',
           :value => 'on',
-          :match => '  listen       *:443 ssl spdy;',
+          :match => %r'\s+listen\s+\*:443 ssl spdy;',
         },
         {
           :title => 'should not set SPDY',
           :attr  => 'spdy',
           :value => 'off',
-          :match => '  listen       *:443 ssl;',
+          :match => %r'\s+listen\s+\*:443 ssl;',
         },
         {
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'default',
-          :match => '  listen       *:443 ssl default;',
+          :match => %r'\s+listen\s+\*:443 ssl default;',
         },
         {
           :title => 'should enable IPv6',
           :attr  => 'ipv6_enable',
           :value => true,
-          :match => '  listen [::]:443 ssl default ipv6only=on;',
+          :match => %r'\s+listen\s+\[::\]:443 ssl default ipv6only=on;',
         },
         {
           :title    => 'should disable IPv6',
@@ -394,91 +396,115 @@ describe 'nginx::resource::vhost' do
           :title => 'should set the IPv6 listen IP',
           :attr  => 'ipv6_listen_ip',
           :value => '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-          :match => '  listen [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:443 ssl default ipv6only=on;',
+          :match => %r'\s+listen\s+\[2001:0db8:85a3:0000:0000:8a2e:0370:7334\]:443 ssl default ipv6only=on;',
         },
         {
           :title => 'should set the IPv6 listen port',
           :attr  => 'ssl_port',
           :value => 45,
-          :match => '  listen [::]:45 ssl default ipv6only=on;',
+          :match => %r'\s+listen\s+\[::\]:45 ssl default ipv6only=on;',
         },
         {
           :title => 'should set the IPv6 listen options',
           :attr  => 'ipv6_listen_options',
           :value => 'spdy default',
-          :match => '  listen [::]:443 ssl spdy default;',
+          :match => %r'\s+listen\s+\[::\]:443 ssl spdy default;',
         },
         {
           :title => 'should set servername(s)',
           :attr  => 'server_name',
           :value => ['www.foo.com','foo.com'],
-          :match => '  server_name  www.foo.com foo.com;',
+          :match => %r'\s+server_name\s+www.foo.com foo.com;',
         },
         {
           :title => 'should rewrite www servername to non-www',
           :attr  => 'rewrite_www_to_non_www',
           :value => true,
-          :match => '  server_name  rspec.example.com;',
+          :match => %r'\s+server_name\s+rspec.example.com;',
         },
         {
           :title => 'should not rewrite www servername to non-www',
           :attr  => 'rewrite_www_to_non_www',
           :value => false,
-          :match => '  server_name  www.rspec.example.com;',
+          :match => %r'\s+server_name\s+www.rspec.example.com;',
         },
         {
           :title => 'should set the SSL cache',
           :attr  => 'ssl_cache',
           :value => 'shared:SSL:1m',
-          :match => '  ssl_session_cache         shared:SSL:1m;',
+          :match => %r'\s+ssl_session_cache\s+shared:SSL:1m;',
+        },
+        {
+          :title => 'should set the SSL timeout',
+          :attr  => 'ssl_session_timeout',
+          :value => '30m',
+          :match => '  ssl_session_timeout       30m;',
         },
         {
           :title => 'should set the SSL protocols',
           :attr  => 'ssl_protocols',
-          :value => 'SSLv3',
-          :match => '  ssl_protocols             SSLv3;',
+          :value => 'TLSv1',
+          :match => %r'\s+ssl_protocols\s+TLSv1;',
         },
         {
           :title => 'should set the SSL ciphers',
           :attr  => 'ssl_ciphers',
           :value => 'HIGH',
-          :match => '  ssl_ciphers               HIGH;',
+          :match => %r'\s+ssl_ciphers\s+HIGH;',
         },
         {
           :title => 'should set auth_basic',
           :attr  => 'auth_basic',
           :value => 'value',
-          :match => '  auth_basic                "value";',
+          :match => %r'\s+auth_basic\s+"value";',
         },
         {
           :title => 'should set auth_basic_user_file',
           :attr  => 'auth_basic_user_file',
           :value => 'value',
-          :match => '  auth_basic_user_file      "value";',
+          :match => %r'\s+auth_basic_user_file\s+"value";',
         },
         {
           :title => 'should set the client_body_timeout',
           :attr  => 'client_body_timeout',
           :value => 'value',
-          :match => /^[ ]+client_body_timeout\s+value;/
+          :match => /^\s+client_body_timeout\s+value;/
         },
         {
           :title => 'should set the client_header_timeout',
           :attr  => 'client_header_timeout',
           :value => 'value',
-          :match => /^[ ]+client_header_timeout\s+value;/
+          :match => /^\s+client_header_timeout\s+value;/
         },
         {
           :title => 'should set the gzip_types',
           :attr  => 'gzip_types',
           :value => 'value',
-          :match => /^[ ]+gzip_types\s+value;/
+          :match => /^\s+gzip_types\s+value;/
         },
         {
           :title => 'should set access_log',
           :attr  => 'access_log',
           :value => '/path/to/access.log',
-          :match => '  access_log            /path/to/access.log;',
+          :match => '  access_log            /path/to/access.log combined;',
+        },
+        {
+          :title => 'should set access_log off',
+          :attr  => 'access_log',
+          :value => 'off',
+          :match => '  access_log            off;',
+        },
+        {
+          :title => 'should set access_log to syslog',
+          :attr  => 'access_log',
+          :value => 'syslog:server=localhost',
+          :match => '  access_log            syslog:server=localhost combined;',
+        },
+        {
+          :title => 'should set format_log custom_format',
+          :attr  => 'format_log',
+          :value => 'custom',
+          :match => '  access_log            /var/log/nginx/ssl-www.rspec.example.com.access.log custom;',
         },
         {
           :title => 'should set error_log',
@@ -545,7 +571,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -564,9 +590,8 @@ describe 'nginx::resource::vhost' do
           :value    => false,
           :notmatch => %r|
             ^
-            \s+listen\s+\*:443\s+ssl;\n
             \s+server_name\s+www\.rspec\.example\.com;\n
-            \s+return\s+301\s+https://rspec\.example\.com\$uri;
+            \s+return\s+301\s+https://rspec\.example\.com\$request_uri;
           |x,
         },
         {
@@ -574,8 +599,8 @@ describe 'nginx::resource::vhost' do
           :attr  => 'include_files',
           :value => [ '/file1', '/file2' ],
           :match => [
-            %r'^[ ]+include\s+/file1;',
-            %r'^[ ]+include\s+/file2;',
+            %r'^\s+include\s+/file1;',
+            %r'^\s+include\s+/file2;',
           ],
         },
         {
@@ -625,7 +650,7 @@ describe 'nginx::resource::vhost' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
             else
-              lines = subject.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
             Array(param[:notmatch]).each do |item|
@@ -651,7 +676,7 @@ describe 'nginx::resource::vhost' do
         end
 
         it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^[ ]+server_name\s+foo.com;/)
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^\s+server_name\s+foo.com;/)
         end
       end
 
@@ -666,7 +691,7 @@ describe 'nginx::resource::vhost' do
         end
 
         it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^[ ]+server_name\s+foo.com;/)
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^\s+server_name\s+foo.com;/)
         end
       end
 
@@ -789,13 +814,31 @@ describe 'nginx::resource::vhost' do
         }) end
 
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
-        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log}) }
-        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log[ ]+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
         it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
         it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
       end
 
+      context 'when ssl_client_cert is set' do
+        let :params do default_params.merge({
+          :ssl                => true,
+          :listen_port        => 80,
+          :ssl_port           => 80,
+          :ssl_key            => 'dummy.key',
+          :ssl_cert           => 'dummy.cert',
+          :ssl_client_cert    => 'client.cert',
+        }) end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client on;}) }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.client.crt") }
+        it { is_expected.to contain_file("/etc/nginx/#{title}.key") }
+      end
       context 'when passenger_cgi_param is set' do
         let :params do default_params.merge({
           :passenger_cgi_param => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
@@ -819,11 +862,72 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_cgi_param  test3 test value 3;/ ) }
       end
 
+      context 'when passenger_set_header is set' do
+        let :params do default_params.merge({
+          :passenger_set_header => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_header  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_header  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_set_header  test3 test value 3;/ ) }
+      end
+
+      context 'when passenger_set_header is set and ssl => true' do
+        let :params do default_params.merge({
+          :passenger_set_header => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' },
+          :ssl                  => true,
+          :ssl_key              => 'dummy.key',
+          :ssl_cert             => 'dummy.cert',
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_header  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_header  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_set_header  test3 test value 3;/ ) }
+      end
+
+      context 'when passenger_env_var is set' do
+        let :params do default_params.merge({
+          :passenger_env_var => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' }
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_env_var  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_env_var  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content( /passenger_env_var  test3 test value 3;/ ) }
+      end
+
+      context 'when passenger_env_var is set and ssl => true' do
+        let :params do default_params.merge({
+          :passenger_env_var   => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' },
+          :ssl                 => true,
+          :ssl_key             => 'dummy.key',
+          :ssl_cert            => 'dummy.cert',
+        }) end
+
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_env_var  test1 test value 1;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_env_var  test2 test value 2;/ ) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content( /passenger_env_var  test3 test value 3;/ ) }
+      end
+
       context 'when vhost name is sanitized' do
         let :title do 'www rspec-vhost com' end
         let :params do default_params end
 
         it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+      end
+
+      context 'when add_header is set' do
+        let :params do default_params.merge({
+          :add_header => { 'header3' => 'test value 3', 'header2' => 'test value 2', 'header1' => 'test value 1' }
+        }) end
+
+        it 'should have correctly ordered entries in the config' do
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/
+            %r|
+            \s+add_header\s+header1 test value 1;\n
+            \s+add_header\s+header2 test value 2;\n
+            \s+add_header\s+header3 test value 3;\n
+            |/)
+        end
       end
     end
   end

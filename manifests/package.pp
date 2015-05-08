@@ -14,19 +14,21 @@
 #
 # This class file is not called directly
 class nginx::package(
-  $package_name   = 'nginx',
+  $package_name   = $::nginx::params::package_name,
   $package_source = 'nginx',
   $package_ensure = 'present',
-  $manage_repo    = true,
-) {
+  $package_flavor = undef,
+  $manage_repo    = $::nginx::params::manage_repo,
+) inherits ::nginx::params {
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
   case $::osfamily {
     'redhat': {
-      class { 'nginx::package::redhat':
+      class { '::nginx::package::redhat':
         manage_repo    => $manage_repo,
+        package_source => $package_source,
         package_ensure => $package_ensure,
         package_name   => $package_name,
         require        => Anchor['nginx::package::begin'],
@@ -34,7 +36,7 @@ class nginx::package(
       }
     }
     'debian': {
-      class { 'nginx::package::debian':
+      class { '::nginx::package::debian':
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
@@ -43,51 +45,28 @@ class nginx::package(
         before         => Anchor['nginx::package::end'],
       }
     }
-    'suse': {
-      class { 'nginx::package::suse':
-        package_name => $package_name,
-        require      => Anchor['nginx::package::begin'],
-        before       => Anchor['nginx::package::end'],
-      }
-    }
-    'archlinux': {
-      class { 'nginx::package::archlinux':
-        require => Anchor['nginx::package::begin'],
-        before  => Anchor['nginx::package::end'],
-      }
-    }
     'Solaris': {
-      class { 'nginx::package::solaris':
-        package_name   => $package_name,
-        package_source => $package_source,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
+      # $package_name needs to be specified. SFEnginx,CSWnginx depending on
+      # where you get it.
+      if $package_name == undef {
+        fail('You must supply a value for $package_name on Solaris')
+      }
+
+      package { 'nginx':
+        ensure => $package_ensure,
+        name   => $package_name,
+        source => $package_source,
       }
     }
-    'FreeBSD': {
-      class { 'nginx::package::freebsd':
-        package_name   => $package_name,
-        package_ensure => $package_ensure,
-        require        => Anchor['nginx::package::begin'],
-        before         => Anchor['nginx::package::end'],
+    'OpenBSD': {
+      package { $package_name:
+        ensure => $package_ensure,
+        flavor => $package_flavor,
       }
     }
     default: {
-      case $::operatingsystem {
-        'amazon': {
-          # Amazon was added to osfamily RedHat in 1.7.2
-          # https://github.com/puppetlabs/facter/commit/c12d3b6c557df695a7b2b009da099f6a93c7bd31#lib/facter/osfamily.rb
-          warning("Module ${module_name} support for ${::operatingsystem} with facter < 1.7.2 is deprecated")
-          warning("Please upgrade from facter ${::facterversion} to >= 1.7.2")
-          class { 'nginx::package::redhat':
-            require => Anchor['nginx::package::begin'],
-            before  => Anchor['nginx::package::end'],
-          }
-        }
-        default: {
-          fail("Module ${module_name} is not supported on ${::operatingsystem}")
-        }
+      package { $package_name:
+        ensure => $package_ensure,
       }
     }
   }

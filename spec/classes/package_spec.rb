@@ -3,41 +3,45 @@ require 'spec_helper'
 describe 'nginx::package' do
 
   shared_examples 'redhat' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat' }}
-
+    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '6' }}
     context "using defaults" do
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/6/$basearch/',
+        'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/",
         'descr'    => 'nginx repo',
         'enabled'  => '1',
         'gpgcheck' => '1',
         'priority' => '1',
         'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
       )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
 
+    context "package_source => nginx-mainline" do
+      let(:params) {{ :package_source => 'nginx-mainline' }}
+      it { is_expected.to contain_yumrepo('nginx-release').with(
+        'baseurl'  => "http://nginx.org/packages/mainline/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/",
+      )}
+    end
+
     context "manage_repo => false" do
+      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '7' }}
       let(:params) {{ :manage_repo => false }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.not_to contain_yumrepo('nginx-release') }
-      it { is_expected.not_to contain_file('/etc/yum.repos.d/nginx-release.repo') }
     end
 
-    context "lsbmajdistrelease = 5" do
-      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :lsbmajdistrelease => 5 }}
+    context "operatingsystemmajrelease = 5" do
+      let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '5' }}
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/5/$basearch/'
+        'baseurl'  => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/5/$basearch/"
       )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
     end
 
     describe 'installs the requested package version' do
-      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat' }}
+      let(:facts) {{ :operatingsystem => 'redhat', :osfamily => 'redhat', :operatingsystemmajrelease => '7'}}
       let(:params) {{ :package_ensure => '3.0.0' }}
 
       it 'installs 3.0.0 exactly' do
@@ -48,9 +52,10 @@ describe 'nginx::package' do
     end
   end
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename, lsbdistid|
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename, lsbdistid, operatingsystemmajrelease|
     let(:facts) {{
       :operatingsystem => operatingsystem,
+      :operatingsystemmajrelease => operatingsystemmajrelease,
       :osfamily        => 'Debian',
       :lsbdistcodename => lsbdistcodename,
       :lsbdistid       => lsbdistid
@@ -60,13 +65,19 @@ describe 'nginx::package' do
       it { is_expected.to contain_package('nginx') }
       it { is_expected.not_to contain_package('passenger') }
       it { is_expected.to contain_apt__source('nginx').with(
-        'location'   => "http://nginx.org/packages/#{operatingsystem}",
+        'location'   => "http://nginx.org/packages/#{operatingsystem.downcase}",
         'repos'      => 'nginx',
-        'key'        => '7BD9BF62',
-        'key_source' => 'http://nginx.org/keys/nginx_signing.key'
+        'key'        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
       )}
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::debian]') }
+    end
+
+    context "package_source => nginx-mainline" do
+      let(:params) {{ :package_source => 'nginx-mainline' }}
+      it { is_expected.to contain_apt__source('nginx').with(
+        'location'   => "http://nginx.org/packages/mainline/#{operatingsystem.downcase}",
+      )}
     end
 
     context "package_source => 'passenger'" do
@@ -76,8 +87,7 @@ describe 'nginx::package' do
       it { is_expected.to contain_apt__source('nginx').with(
         'location'   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
         'repos'      => "main",
-        'key'        => '561F9B9CAC40B2F7',
-        'key_source' => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt'
+        'key'        => '16378A33A6EF16762922526E561F9B9CAC40B2F7',
       )}
     end
 
@@ -89,63 +99,18 @@ describe 'nginx::package' do
     end
   end
 
-  shared_examples 'suse' do |operatingsystem|
-    let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'Suse'}}
-    [
-      'nginx',
-    ].each do |package|
-      it { is_expected.to contain_package("#{package}") }
-    end
-    it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::suse]') }
-    it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::suse]') }
-  end
-
-
   context 'redhat' do
-    it_behaves_like 'redhat', 'centos'
-    it_behaves_like 'redhat', 'rhel'
-    it_behaves_like 'redhat', 'redhat'
-    it_behaves_like 'redhat', 'scientific'
-    it_behaves_like 'redhat', 'amazon'
+    it_behaves_like 'redhat', 'CentOS'
+    it_behaves_like 'redhat', 'RedHat'
   end
 
   context 'debian' do
-    it_behaves_like 'debian', 'debian', 'wheezy', 'debian'
-    it_behaves_like 'debian', 'ubuntu', 'precise', 'ubuntu'
-  end
-
-  context 'suse' do
-    it_behaves_like 'suse', 'opensuse'
-    it_behaves_like 'suse', 'suse'
-  end
-
-  context 'amazon with facter < 1.7.2' do
-    let(:facts) {{ :operatingsystem => 'Amazon', :osfamily => 'Linux' }}
-      it { is_expected.to contain_package('nginx') }
-      it { is_expected.to contain_yumrepo('nginx-release').with(
-        'baseurl'  => 'http://nginx.org/packages/rhel/6/$basearch/',
-        'descr'    => 'nginx repo',
-        'enabled'  => '1',
-        'gpgcheck' => '1',
-        'priority' => '1',
-        'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
-      )}
-      it { is_expected.to contain_file('/etc/yum.repos.d/nginx-release.repo') }
-      it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
-      it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
-  end
-
-  context 'fedora' do
-    # fedora is identical to the rest of osfamily RedHat except for not
-    # including nginx-release
-    let(:facts) {{ :operatingsystem => 'Fedora', :osfamily => 'RedHat', :lsbmajdistrelease => 6 }}
-    it { is_expected.to contain_package('nginx') }
-    it { is_expected.not_to contain_yumrepo('nginx-release') }
-    it { is_expected.not_to contain_file('/etc/yum.repos.d/nginx-release.repo') }
+    it_behaves_like 'debian', 'Debian', 'wheezy', 'Debian', '6'
+    it_behaves_like 'debian', 'Ubuntu', 'precise', 'Ubuntu', '12.04'
   end
 
   context 'other' do
     let(:facts) {{ :operatingsystem => 'xxx', :osfamily => 'linux' }}
-    it { expect { subject }.to raise_error(Puppet::Error, /Module nginx is not supported on xxx/) }
+    it { is_expected.to contain_package('nginx') }
   end
 end
