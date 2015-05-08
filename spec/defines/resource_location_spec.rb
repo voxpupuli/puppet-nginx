@@ -523,7 +523,7 @@ describe 'nginx::resource::location' do
       let :default_params do
         {
           :location => 'location',
-          :uwsgi    => 'uwsgi_upstream',
+          :uwsgi  => 'unix:/home/project/uwsgi.socket',
           :vhost    => 'vhost1'
         }
       end
@@ -533,49 +533,50 @@ describe 'nginx::resource::location' do
           :title => 'should set www_root',
           :attr  => 'www_root',
           :value => '/',
-          :match => '    root  /;'
+          :match => %r'\s+root\s+/;'
         },
         {
           :title => 'should set try_file(s)',
           :attr  => 'try_files',
           :value => ['name1','name2'],
-          :match => '    try_files name1 name2;',
+          :match => %r'\s+try_files\s+name1 name2;',
         },
         {
           :title => 'should set uwsgi_params',
           :attr  => 'uwsgi_params',
           :value => 'value',
-          :match => /^[ ]+include\s+value;/
+          :match => %r'\s+include\s+value;'
         },
         {
           :title => 'should set uwsgi_pass',
           :attr  => 'uwsgi',
           :value => 'value',
-          :match => '    uwsgi_pass value;'
+          :match => %r'\s+uwsgi_pass\s+value;'
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
+          it { is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")) }
           it param[:title] do
             fragment = Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| should contain_concat__fragment(fragment).with_content(item) }
+              matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
             else
-              lines = subject.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
-              (lines & matches).should == matches
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              expect(lines & matches).to eq(matches)
             end
 
             Array(param[:notmatch]).each do |item|
-              should contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
+              is_expected.to contain_concat__fragment(Digest::MD5.hexdigest("vhost1-500-#{params[:location]}")).without_content(item)
             end
           end
         end
       end
     end
+
 
     describe "vhost_location_proxy template content" do
       [
@@ -700,10 +701,10 @@ describe 'nginx::resource::location' do
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
-      context 'when uwsgi => "uwsgi_upstream"' do
-        let :params do { :fastcgi => 'uwsgi_upstream', :vhost => 'vhost1' } end
+      context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
+        let :params do { :uwsgi => 'uwsgi_upstream', :vhost => 'vhost1' } end
 
-        it { should contain_file('/etc/nginx/uwsgi_params').with_mode('0770') }
+        it { should contain_file('/etc/nginx/uwsgi_params') }
       end
 
 
