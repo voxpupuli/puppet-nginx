@@ -20,7 +20,7 @@ class nginx::params {
     }
     'Debian': {
       if ($::operatingsystem == 'ubuntu' and $::lsbdistcodename in ['lucid', 'precise', 'trusty'])
-      or ($::operatingsystem == 'debian' and $::operatingsystemmajrelease in ['6', '7']) {
+      or ($::operatingsystem == 'debian' and $::operatingsystemmajrelease in ['6', '7', '8']) {
         $_module_os_overrides = {
           'manage_repo' => true,
           'daemon_user' => 'www-data',

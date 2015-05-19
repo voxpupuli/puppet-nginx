@@ -74,12 +74,16 @@ define nginx::resource::mailhost (
   }
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-  validate_string($listen_ip)
+  if !(is_array($listen_ip) or is_string($listen_ip)) {
+    fail('$listen_ip must be a string or array.')
+  }
   if ($listen_options != undef) {
     validate_string($listen_options)
   }
   validate_bool($ipv6_enable)
-  validate_string($ipv6_listen_ip)
+  if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
+    fail('$ipv6_listen_ip must be a string or array.')
+  }
   if !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
@@ -129,7 +133,6 @@ define nginx::resource::mailhost (
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name}-header":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),
       order   => '001',
@@ -139,7 +142,6 @@ define nginx::resource::mailhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl) {
     concat::fragment { "${name}-ssl":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/mailhost/mailhost_ssl.erb'),
       order   => '700',

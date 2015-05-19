@@ -62,6 +62,7 @@ class nginx::config(
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
   $names_hash_max_size            = '512',
+  $nginx_cfg_prepend              = false,
   $proxy_buffers                  = '32 4k',
   $proxy_buffer_size              = '8k',
   $proxy_cache_inactive           = '20m',
@@ -93,7 +94,7 @@ class nginx::config(
 ) inherits ::nginx::params {
 
   ### Validations ###
-  if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
+  if ($worker_processes != 'auto') and (!is_integer($worker_processes)) {
     fail('$worker_processes must be an integer or have value "auto".')
   }
   if (!is_integer($worker_connections)) {
@@ -148,6 +149,12 @@ class nginx::config(
   if ($http_cfg_append != false) {
     if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
       fail('$http_cfg_append must be either a hash or array')
+    }
+  }
+
+  if ($nginx_cfg_prepend != false) {
+    if !(is_hash($nginx_cfg_prepend) or is_array($nginx_cfg_prepend)) {
+      fail('$nginx_cfg_prepend must be either a hash or array')
     }
   }
 

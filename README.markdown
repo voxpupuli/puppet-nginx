@@ -5,6 +5,8 @@
 maintenance. Please take a look at [https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md](https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
 
+[![Puppet
+Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.puppetlabs.com/jfryman/nginx)
 [![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
 
 
@@ -115,6 +117,7 @@ nginx::nginx_locations:
   'static':
     location: '~ "^/static/[0-9a-fA-F]{8}\/(.*)$"'
     vhost: www.puppetlabs.com
+    www_root: /var/www/html
   'userContent':
     location: /userContent
     vhost: www.puppetlabs.com
@@ -130,13 +133,28 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-Currently this works only for Debian family.
+Currently this works only for Debian family and OpenBSD.
 
+On Debian it might look like:
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',
   http_cfg_append => {
     'passenger_root' => '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini',
+  }
+}
+```
+
+Here the example for OpenBSD:
+
+```puppet
+class { 'nginx':
+  package_flavor => 'passenger',
+  service_flags  => '-u'
+  http_cfg_append => {
+    passenger_root          => '/usr/local/lib/ruby/gems/2.1/gems/passenger-4.0.44',
+    passenger_ruby          =>  '/usr/local/bin/ruby21',
+    passenger_max_pool_size => '15',
   }
 }
 ```

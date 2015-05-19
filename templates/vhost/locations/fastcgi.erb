@@ -16,7 +16,7 @@
 <% end -%>
 <% if defined? @fastcgi_param -%>
     <%- field_width = @fastcgi_param.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
-	<%- @fastcgi_param.each do |key, val| -%>
+	<%- @fastcgi_param.sort_by {|k,v| k}.each do |key, val| -%>
     fastcgi_param <%= sprintf("%-*s", field_width, key) %> <%= val %>;
 	<%- end -%>
 <% end -%>

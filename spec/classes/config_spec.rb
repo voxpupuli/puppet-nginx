@@ -71,10 +71,28 @@ describe 'nginx::config' do
     describe "nginx.conf template content" do
       [
         {
+          :title    => 'should not set user',
+          :attr     => 'super_user',
+          :value    => false,
+          :notmatch => /user/,
+        },
+        {
+          :title => 'should set user',
+          :attr  => 'daemon_user',
+          :value => 'test-user',
+          :match => 'user test-user;',
+        },
+        {
           :title => 'should set worker_processes',
           :attr  => 'worker_processes',
           :value => '4',
           :match => 'worker_processes 4;',
+        },
+        {
+          :title => 'should set worker_processes',
+          :attr  => 'worker_processes',
+          :value => 'auto',
+          :match => 'worker_processes auto;',
         },
         {
           :title => 'should set worker_rlimit_nofile',
@@ -87,6 +105,18 @@ describe 'nginx::config' do
           :attr  => 'nginx_error_log',
           :value => '/path/to/error.log',
           :match => 'error_log  /path/to/error.log;',
+        },
+        {
+            :title => 'should set pid',
+            :attr  => 'pid',
+            :value => '/path/to/pid',
+            :match => 'pid        /path/to/pid;',
+        },
+        {
+          :title => 'should not set pid',
+          :attr  => 'pid',
+          :value => false,
+          :notmatch => /pid/,
         },
         {
           :title => 'should set worker_connections',
@@ -113,16 +143,106 @@ describe 'nginx::config' do
           :notmatch => /log_format/,
         },
         {
+          :title => 'should set multi_accept',
+          :attr  => 'multi_accept',
+          :value => 'on',
+          :match => /\s*multi_accept\s+on;/,
+        },
+        {
+          :title => 'should not set multi_accept',
+          :attr  => 'multi_accept',
+          :value => 'off',
+          :notmatch => /multi_accept/,
+        },
+        {
+          :title => 'should set events_use',
+          :attr  => 'events_use',
+          :value => 'eventport',
+          :match => /\s*use\s+eventport;/,
+        },
+        {
+          :title => 'should not set events_use',
+          :attr  => 'events_use',
+          :value => false,
+          :notmatch => /use /,
+        },
+        {
           :title => 'should set access_log',
           :attr  => 'http_access_log',
           :value => '/path/to/access.log',
           :match => '  access_log  /path/to/access.log;',
         },
         {
+          :title => 'should set sendfile',
+          :attr  => 'sendfile',
+          :value => 'on',
+          :match => '  sendfile    on;',
+        },
+        {
+          :title => 'should not set sendfile',
+          :attr  => 'sendfile',
+          :value => false,
+          :notmatch => /sendfile/,
+        },
+        {
           :title => 'should set server_tokens',
           :attr  => 'server_tokens',
           :value => 'on',
           :match => '  server_tokens on;',
+        },
+        {
+          :title => 'should set types_hash_max_size',
+          :attr  => 'types_hash_max_size',
+          :value => 10,
+          :match => '  types_hash_max_size 10;',
+        },
+        {
+          :title => 'should set types_hash_bucket_size',
+          :attr  => 'types_hash_bucket_size',
+          :value => 10,
+          :match => '  types_hash_bucket_size 10;',
+        },
+        {
+          :title => 'should set server_names_hash_bucket_size',
+          :attr  => 'names_hash_bucket_size',
+          :value => 10,
+          :match => '  server_names_hash_bucket_size 10;',
+        },
+        {
+          :title => 'should set server_names_hash_max_size',
+          :attr  => 'names_hash_max_size',
+          :value => 10,
+          :match => '  server_names_hash_max_size 10;',
+        },
+        {
+          :title => 'should set keepalive_timeout',
+          :attr  => 'keepalive_timeout',
+          :value => '123',
+          :match => '  keepalive_timeout  123;',
+        },
+        {
+          :title => 'should set tcp_nodelay',
+          :attr  => 'http_tcp_nodelay',
+          :value => 'on',
+          :match => '  tcp_nodelay        on;',
+        },
+        {
+          :title => 'should set tcp_nopush',
+          :attr  => 'http_tcp_nopush',
+          :value => 'on',
+          :match => '  tcp_nopush on;',
+        },
+        {
+          :title => 'should set gzip',
+          :attr  => 'gzip',
+          :value => 'on',
+          :match => '  gzip         on;',
+        },
+        {
+          :title => 'should not set gzip',
+          :attr  => 'gzip',
+          :value => 'off',
+          :notmatch => /gzip/,
         },
         {
           :title => 'should set proxy_cache_path',
@@ -134,7 +254,31 @@ describe 'nginx::config' do
           :title    => 'should not set proxy_cache_path',
           :attr     => 'proxy_cache_path',
           :value    => false,
-          :notmatch => %r'\s+proxy_cache_path\s+/path/to/proxy\.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;',
+          :notmatch => /proxy_cache_path/,
+        },
+        {
+          :title => 'should set fastcgi_cache_path',
+          :attr  => 'fastcgi_cache_path',
+          :value => '/path/to/proxy.cache',
+          :match => %r'\s*fastcgi_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d3:100m max_size=500m inactive=20m;',
+        },
+        {
+          :title    => 'should not set fastcgi_cache_path',
+          :attr     => 'fastcgi_cache_path',
+          :value    => false,
+          :notmatch => /fastcgi_cache_path/,
+        },
+        {
+          :title => 'should set fastcgi_cache_use_stale',
+          :attr  => 'fastcgi_cache_use_stale',
+          :value => 'invalid_header',
+          :match => '  fastcgi_cache_use_stale invalid_header;',
+        },
+        {
+          :title    => 'should not set fastcgi_cache_use_stale',
+          :attr     => 'fastcgi_cache_use_stale',
+          :value    => false,
+          :notmatch => /fastcgi_cache_use_stale/,
         },
         {
           :title => 'should contain ordered appended directives from hash',
@@ -165,6 +309,35 @@ describe 'nginx::config' do
           ],
         },
         {
+          :title => 'should contain ordered appended directives from hash',
+          :attr  => 'nginx_cfg_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          :match => [
+            'allow test value 3;',
+            'test1 test value 1;',
+            'test2 test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from list of hashes',
+          :attr  => 'nginx_cfg_prepend',
+          :value => [[ 'allow', 'test value 1'], ['allow', 'test value 2' ]],
+          :match => [
+            'allow test value 1;',
+            'allow test value 2;',
+          ],
+        },
+        {
+          :title => 'should contain duplicate appended directives from array values',
+          :attr  => 'nginx_cfg_prepend',
+          :value => { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
+          :match => [
+            'test1 test value 1;',
+            'test1 test value 2;',
+            'test1 test value 3;',
+          ],
+        },
+        {
             :title => 'should set pid',
             :attr  => 'pid',
             :value => '/path/to/pid',
@@ -188,6 +361,18 @@ describe 'nginx::config' do
             :value => '123',
             :match => '  keepalive_timeout  123;',
         },
+        {
+          :title => 'should set mail',
+          :attr  => 'mail',
+          :value => true,
+          :match => 'mail {',
+        },
+        {
+          :title => 'should not set mail',
+          :attr  => 'mail',
+          :value => false,
+          :notmatch => /mail/,
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do { param[:attr].to_sym => param[:value] } end
@@ -199,7 +384,7 @@ describe 'nginx::config' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(item) }
             else
-              lines = subject.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('file', '/etc/nginx/nginx.conf').send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
 
@@ -269,7 +454,7 @@ describe 'nginx::config' do
             if matches.all? { |m| m.is_a? Regexp }
               matches.each { |item| is_expected.to contain_file('/etc/nginx/conf.d/proxy.conf').with_content(item) }
             else
-              lines = subject.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
+              lines = catalogue.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
               expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             end
 
@@ -279,6 +464,13 @@ describe 'nginx::config' do
           end
         end
       end
+    end
+
+    context "when conf_dir is /path/to/nginx" do
+      let(:params) {{:conf_dir => '/path/to/nginx'}}
+      it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       /path/to/nginx/mime\.types;}) }
+      it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/conf\.d/\*\.conf;}) }
+      it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/sites-enabled/\*;}) }
     end
 
     context "when confd_purge true" do
