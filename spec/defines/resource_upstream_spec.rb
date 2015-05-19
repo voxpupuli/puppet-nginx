@@ -27,8 +27,7 @@ describe 'nginx::resource::upstream' do
     describe 'basic assumptions' do
       let :params do default_params end
 
-      it { is_expected.to contain_class('concat::setup') }
-      it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-upstream.conf") }
+      it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf") }
       it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(/upstream #{title}/) }
 
       it {
@@ -96,7 +95,7 @@ describe 'nginx::resource::upstream' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
-          it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-upstream.conf").with_mode('0644') }
+          it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf").with_mode('0644') }
           it { is_expected.to contain_concat__fragment("#{title}_upstream_#{param[:fragment]}") }
           it param[:title] do
             lines = catalogue.resource('concat::fragment', "#{title}_upstream_#{param[:fragment]}").send(:parameters)[:content].split("\n")
@@ -115,7 +114,7 @@ describe 'nginx::resource::upstream' do
           }
         ) end
 
-        it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-upstream.conf").with_ensure('absent') }
+        it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf").with_ensure('absent') }
       end
     end
   end
