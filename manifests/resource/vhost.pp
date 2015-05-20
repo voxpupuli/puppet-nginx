@@ -517,61 +517,44 @@ define nginx::resource::vhost (
   if $use_default_location == true {
     # Create the default location reference for the vHost
     ::nginx::resource::location {"${name_sanitized}-default":
-      ensure                => $ensure,
-      vhost                 => $name_sanitized,
-      ssl                   => $ssl,
-      ssl_only              => $ssl_only,
-      location              => '/',
-      location_allow        => $location_allow,
-      location_deny         => $location_deny,
-      proxy                 => $proxy,
-      proxy_redirect        => $proxy_redirect,
-      proxy_read_timeout    => $proxy_read_timeout,
-      proxy_connect_timeout => $proxy_connect_timeout,
-      proxy_cache           => $proxy_cache,
-      proxy_cache_valid     => $proxy_cache_valid,
-      proxy_method          => $proxy_method,
-      proxy_set_header      => $proxy_set_header,
-      proxy_set_body        => $proxy_set_body,
-      fastcgi               => $fastcgi,
-      fastcgi_params        => $fastcgi_params,
-      fastcgi_script        => $fastcgi_script,
-      uwsgi                 => $uwsgi,
-      uwsgi_params          => $uwsgi_params,
-      try_files             => $try_files,
-      www_root              => $www_root,
-      autoindex             => $autoindex,
-      index_files           => $index_files,
-      location_custom_cfg   => $location_custom_cfg,
-      notify                => Class['::nginx::service'],
-      rewrite_rules         => $rewrite_rules,
-      raw_prepend           => $location_raw_prepend,
-      raw_append            => $location_raw_append
+      ensure                      => $ensure,
+      vhost                       => $name_sanitized,
+      ssl                         => $ssl,
+      ssl_only                    => $ssl_only,
+      location                    => '/',
+      location_allow              => $location_allow,
+      location_deny               => $location_deny,
+      proxy                       => $proxy,
+      proxy_redirect              => $proxy_redirect,
+      proxy_read_timeout          => $proxy_read_timeout,
+      proxy_connect_timeout       => $proxy_connect_timeout,
+      proxy_cache                 => $proxy_cache,
+      proxy_cache_valid           => $proxy_cache_valid,
+      proxy_method                => $proxy_method,
+      proxy_set_header            => $proxy_set_header,
+      proxy_set_body              => $proxy_set_body,
+      fastcgi                     => $fastcgi,
+      fastcgi_params              => $fastcgi_params,
+      fastcgi_script              => $fastcgi_script,
+      uwsgi                       => $uwsgi,
+      uwsgi_params                => $uwsgi_params,
+      try_files                   => $try_files,
+      www_root                    => $www_root,
+      autoindex                   => $autoindex,
+      index_files                 => $index_files,
+      location_custom_cfg         => $location_custom_cfg,
+      location_cfg_prepend        => $location_cfg_prepend,
+      location_cfg_append         => $location_cfg_append,
+      location_custom_cfg_prepend => $location_custom_cfg_prepend,
+      location_custom_cfg_append  => $location_custom_cfg_append,
+      rewrite_rules               => $rewrite_rules,
+      raw_prepend                 => $location_raw_prepend,
+      raw_append                  => $location_raw_append,
+      notify                      => Class['nginx::service'],
     }
     $root = undef
   } else {
     $root = $www_root
-  }
-
-  # Support location_cfg_prepend and location_cfg_append on default location created by vhost
-  if $location_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_cfg_prepend => $location_cfg_prepend }
-  }
-
-  if $location_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_cfg_append => $location_cfg_append }
-  }
-
-  if $location_custom_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_custom_cfg_prepend => $location_custom_cfg_prepend }
-  }
-
-  if $location_custom_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_custom_cfg_append => $location_custom_cfg_append }
   }
 
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
