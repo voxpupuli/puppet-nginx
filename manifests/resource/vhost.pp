@@ -506,10 +506,11 @@ define nginx::resource::vhost (
   }
 
   concat { $config_file:
-    owner  => $owner,
-    group  => $group,
-    mode   => $mode,
-    notify => Class['::nginx::service'],
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
+    notify  => Class['::nginx::service'],
+    require => File[$vhost_dir]
   }
 
   $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
