@@ -329,7 +329,7 @@ define nginx::resource::vhost (
     validate_string($proxy_cache)
   }
   validate_string($proxy_cache_key)
-  validate_string($proxy_cache_use_stale) 
+  validate_string($proxy_cache_use_stale)
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
   }
