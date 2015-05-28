@@ -66,10 +66,12 @@ class nginx::config(
   $proxy_buffers                  = '32 4k',
   $proxy_buffer_size              = '8k',
   $proxy_cache_inactive           = '20m',
-  $proxy_cache_keys_zone          = 'd2:100m',
+  $proxy_cache_key                = '$scheme$proxy_host$request_uri',
+  $proxy_cache_keys_zone          = undef,
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
   $proxy_cache_path               = false,
+  $proxy_cache_use_stale          = 'off',
   $proxy_connect_timeout          = '90',
   $proxy_headers_hash_bucket_size = '64',
   $proxy_http_version             = undef,
@@ -114,7 +116,7 @@ class nginx::config(
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
   if ($proxy_cache_path != false) {
-    validate_string($proxy_cache_path)
+    validate_array($proxy_cache_path)
   }
   validate_re($proxy_cache_levels, '^[12](:[12])*$')
   validate_string($proxy_cache_keys_zone)

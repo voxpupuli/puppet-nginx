@@ -22,6 +22,10 @@
 #   [*proxy*]                - Proxy server(s) for a location to connect to.
 #     Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_redirect*]       - sets the text, which must be changed in
 #     response-header "Location" and "Refresh" in the response of the proxied
 #     server.
@@ -138,6 +142,8 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
+  $proxy_cache_key      = $::nginx::config::proxy_cache_key,
+  $proxy_cache_use_stale  = $::nginx::config::proxy_cache_use_stale,
   $proxy_redirect       = $::nginx::config::proxy_redirect,
   $proxy_read_timeout   = $::nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $::nginx::config::proxy_connect_timeout,
@@ -205,6 +211,8 @@ define nginx::resource::location (
   if ($proxy_redirect != undef) {
     validate_string($proxy_redirect)
   }
+  validate_string($proxy_cache_key)
+  validate_string($proxy_cache_use_stale)
   validate_string($proxy_read_timeout)
   validate_string($proxy_connect_timeout)
   validate_array($proxy_set_header)

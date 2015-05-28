@@ -32,6 +32,10 @@
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
 #   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
@@ -193,6 +197,8 @@ define nginx::resource::vhost (
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header             = [],
   $proxy_cache                  = false,
+  $proxy_cache_key              = $::nginx::config::proxy_cache_key,
+  $proxy_cache_use_stale        = $::nginx::config::proxy_cache_use_stale,
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
@@ -322,6 +328,8 @@ define nginx::resource::vhost (
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
+  validate_string($proxy_cache_key)
+  validate_string($proxy_cache_use_stale)
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
   }
@@ -530,6 +538,8 @@ define nginx::resource::vhost (
       proxy_read_timeout          => $proxy_read_timeout,
       proxy_connect_timeout       => $proxy_connect_timeout,
       proxy_cache                 => $proxy_cache,
+      proxy_cache_key             => $proxy_cache_key,
+      proxy_cache_use_stale       => $proxy_cache_use_stale,
       proxy_cache_valid           => $proxy_cache_valid,
       proxy_method                => $proxy_method,
       proxy_set_header            => $proxy_set_header,
