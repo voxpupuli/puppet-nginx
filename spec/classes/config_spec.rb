@@ -68,6 +68,12 @@ describe 'nginx::config' do
         it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user nginx;}}
 
+        it { is_expected.to contain_file("/var/log/nginx").with(
+          :ensure => 'directory',
+          :group => 'root',
+          :mode => '0644'
+        )}
+
     describe "nginx.conf template content" do
       [
         {
@@ -510,6 +516,11 @@ describe 'nginx::config' do
         'recurse'
       ])}
       it { is_expected.to contain_file('/etc/nginx/sites-enabled').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+      it { is_expected.to contain_file('/var/log/nginx').without([
         'ignore',
         'purge',
         'recurse'
