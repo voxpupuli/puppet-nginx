@@ -85,6 +85,10 @@
 #     checked as an array. Cannot be used in conjuction with $proxy.
 #   [*proxy_cache*]             - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_cache_valid*]       - This directive sets the time for caching
 #     different replies.
 #   [*proxy_method*]            - If defined, overrides the HTTP method of the
@@ -193,6 +197,8 @@ define nginx::resource::vhost (
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header             = [],
   $proxy_cache                  = false,
+  $proxy_cache_key              = undef,
+  $proxy_cache_use_stale        = undef,
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
@@ -321,6 +327,12 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
+  }
+  if ($proxy_cache_key != undef) {
+    validate_string($proxy_cache_key)
+  }
+  if ($proxy_cache_use_stale != undef) {
+    validate_string($proxy_cache_use_stale)
   }
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
@@ -530,6 +542,8 @@ define nginx::resource::vhost (
       proxy_read_timeout          => $proxy_read_timeout,
       proxy_connect_timeout       => $proxy_connect_timeout,
       proxy_cache                 => $proxy_cache,
+      proxy_cache_key             => $proxy_cache_key,
+      proxy_cache_use_stale       => $proxy_cache_use_stale,
       proxy_cache_valid           => $proxy_cache_valid,
       proxy_method                => $proxy_method,
       proxy_set_header            => $proxy_set_header,
