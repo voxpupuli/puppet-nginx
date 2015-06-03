@@ -69,7 +69,6 @@ class nginx::config(
   $proxy_cache_keys_zone          = 'd2:100m',
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
-  $proxy_cache_path_hash          = 'string',
   $proxy_cache_path               = false,
   $proxy_connect_timeout          = '90',
   $proxy_headers_hash_bucket_size = '64',
@@ -114,11 +113,11 @@ class nginx::config(
   }
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
-  if ($proxy_cache_path_hash != 'string') {
-    validate_hash($proxy_cache_path)
-  }
-  elsif ($proxy_cache_path != false) {
-    validate_string($proxy_cache_path)
+  if ( $proxy_cache_path != false) {
+    if ( is_string($proxy_cache_path) or is_hash($proxy_cache_path)) {}
+    else {
+      fail('proxy_cache_path must be a string or a hash')
+    }
   }
   validate_re($proxy_cache_levels, '^[12](:[12])*$')
   validate_string($proxy_cache_keys_zone)

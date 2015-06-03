@@ -64,7 +64,7 @@ http {
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
 
 <% end -%>
-<% if @proxy_cache_path_hash != 'string' -%>
+<% if @proxy_cache_path.is_a?(Hash) -%>
 <% @proxy_cache_path.sort_by{|k,v| k}.each do |key,value| -%>
   proxy_cache_path        <%= key %> keys_zone=<%= value %> levels=<%= @proxy_cache_levels %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
 <% end -%>
