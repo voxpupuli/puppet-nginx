@@ -209,6 +209,10 @@ class nginx::config(
     ensure => directory,
   }
 
+  file { $log_dir:
+    ensure => directory,
+  }
+
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
