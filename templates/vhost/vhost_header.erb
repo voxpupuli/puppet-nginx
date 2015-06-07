@@ -86,8 +86,8 @@ server {
 <% Array(@raw_prepend).each do |line| -%>
   <%= line %>
 <% end %>
-<% if @root -%>
-  root <%= @root %>;
+<% if @www_root -%>
+  root <%= @www_root %>;
 <% end -%>
 <% if @passenger_cgi_param -%>
   <%- @passenger_cgi_param.keys.sort.each do |key| -%>
