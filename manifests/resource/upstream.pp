@@ -68,9 +68,8 @@ define nginx::resource::upstream (
   }
 
   concat { "${::nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
-    ensure  => $ensure_real,
-    notify  => Class['::nginx::service'],
-    require => File["${::nginx::config::conf_dir}/conf.d"]
+    ensure => $ensure_real,
+    notify => Class['::nginx::service'],
   }
 
   # Uses: $name, $upstream_cfg_prepend
