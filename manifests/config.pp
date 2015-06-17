@@ -19,6 +19,8 @@ class nginx::config(
   $confd_purge                    = false,
   $conf_dir                       = $::nginx::params::conf_dir,
   $daemon_user                    = $::nginx::params::daemon_user,
+  $daemon_group                   = $::nginx::params::daemon_group,
+  $set_daemon_group               = $::nginx::params::set_daemon_group,
   $global_owner                   = $::nginx::params::global_owner,
   $global_group                   = $::nginx::params::global_group,
   $global_mode                    = $::nginx::params::global_mode,
@@ -216,11 +218,13 @@ class nginx::config(
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
+    group  => $daemon_group,
   }
 
   file {$proxy_temp_path:
     ensure => directory,
     owner  => $daemon_user,
+    group  => $daemon_group,
   }
 
   file { "${conf_dir}/sites-available":

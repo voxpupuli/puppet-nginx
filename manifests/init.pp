@@ -75,6 +75,8 @@ class nginx (
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $daemon_user                    = undef,
+  $daemon_group                   = undef,
+  $set_daemon_group               = undef,
   $global_owner                   = undef,
   $global_group                   = undef,
   $global_mode                    = undef,
@@ -147,6 +149,8 @@ class nginx (
         $conf_dir or
         $conf_template or
         $daemon_user or
+        $daemon_group or
+        $set_daemon_group or
         $events_use or
         $fastcgi_cache_inactive or
         $fastcgi_cache_key or
@@ -228,6 +232,8 @@ class nginx (
       conf_dir                       => $conf_dir,
       conf_template                  => $conf_template,
       daemon_user                    => $daemon_user,
+      daemon_group                   => $daemon_group,
+      set_daemon_group               => $set_daemon_group,
       events_use                     => $events_use,
       fastcgi_cache_inactive         => $fastcgi_cache_inactive,
       fastcgi_cache_key              => $fastcgi_cache_key,

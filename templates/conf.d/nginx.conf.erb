@@ -1,5 +1,9 @@
 <% if @super_user -%>
+<%- if @set_daemon_group -%>
+user <%= @daemon_user %> <%= @daemon_group %>;
+<%- else -%>
 user <%= @daemon_user %>;
+<%- end -%>
 <% end -%>
 worker_processes <%= @worker_processes %>;
 <% if @worker_rlimit_nofile -%>
