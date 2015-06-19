@@ -41,6 +41,11 @@ server {
   <%- end -%>
 <%- end -%>
   server_name           <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
+
+<% if defined? @www_root -%>
+  root  <%= @www_root %>;
+<% end -%>
+
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
   <%- if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
