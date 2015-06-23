@@ -218,13 +218,11 @@ class nginx::config(
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
-    group  => $daemon_group,
   }
 
   file {$proxy_temp_path:
     ensure => directory,
     owner  => $daemon_user,
-    group  => $daemon_group,
   }
 
   file { "${conf_dir}/sites-available":
