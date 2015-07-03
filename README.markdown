@@ -237,8 +237,8 @@ define web::nginx_ssl_with_redirect (
     location_cfg_append   => $location_cfg_append,
     index_files           => [ 'index.php' ],
     ssl                   => true,
-    ssl_cert              => 'puppet:///modules/sslkey/wildcard_mydomain.crt',
-    ssl_key               => 'puppet:///modules/sslkey/wildcard_mydomain.key',
+    ssl_cert              => '/path/to/wildcard_mydomain.crt',
+    ssl_key               => '/path/to/wildcard_mydomain.key',
   }
 
 
