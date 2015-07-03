@@ -213,7 +213,6 @@ class nginx (
     package_source => $package_source,
     package_ensure => $package_ensure,
     package_flavor => $package_flavor,
-    notify         => Class['::nginx::service'],
     manage_repo    => $manage_repo,
   }
 
