@@ -72,7 +72,7 @@ describe 'nginx::resource::map' do
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_mode('0644') }
           it param[:title] do
-            verify_contents(subject, "/etc/nginx/conf.d/#{title}-map.conf", Array(param[:match]))
+            verify_contents(catalogue, "/etc/nginx/conf.d/#{title}-map.conf", Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").without_content(item)
             end

@@ -64,6 +64,45 @@ http {
   gzip_disable "MSIE [1-6]\.(?!.*SV1)";
 
 <% end -%>
+<% if @client_body_temp_path -%>
+  client_body_temp_path   <%= @client_body_temp_path %>;
+<% end -%>
+<% if @client_max_body_size -%>
+  client_max_body_size    <%= @client_max_body_size %>;
+<% end -%>
+<% if @client_body_buffer_size -%>
+  client_body_buffer_size <%= @client_body_buffer_size %>;
+<% end -%>
+<% if @proxy_redirect -%>
+  proxy_redirect          <%= @proxy_redirect %>;
+<% end -%>
+<% if @proxy_temp_path -%>
+  proxy_temp_path         <%= @proxy_temp_path %>;
+<% end -%>
+<% if @proxy_connect_timeout -%>
+  proxy_connect_timeout   <%= @proxy_connect_timeout %>;
+<% end -%>
+<% if @proxy_send_timeout -%>
+  proxy_send_timeout      <%= @proxy_send_timeout %>;
+<% end -%>
+<% if @proxy_read_timeout -%>
+  proxy_read_timeout      <%= @proxy_read_timeout %>;
+<% end -%>
+<% if @proxy_buffers -%>
+  proxy_buffers           <%= @proxy_buffers %>;
+<% end -%>
+<% if @proxy_buffer_size -%>
+  proxy_buffer_size       <%= @proxy_buffer_size %>;
+<% end -%>
+<% if @proxy_http_version -%>
+  proxy_http_version      <%= @proxy_http_version %>;
+<% end -%>
+<% @proxy_set_header.each do |header| -%>
+  proxy_set_header        <%= header %>;
+<% end -%>
+<% if @proxy_headers_hash_bucket_size -%>
+  proxy_headers_hash_bucket_size <%= @proxy_headers_hash_bucket_size %>;
+<% end -%>
 <% if @proxy_cache_path -%>
   proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
 

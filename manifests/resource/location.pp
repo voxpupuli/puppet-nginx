@@ -36,6 +36,8 @@
 #   [*fastcgi_script*]       - optional SCRIPT_FILE parameter
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
 #     that you can split the script_name and path_info via regex
+#   [*uwsgi*]              - location of uwsgi (host:port)
+#   [*uwsgi_params*]       - optional alternative uwsgi_params file to use
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for
 #     this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the
@@ -68,6 +70,10 @@
 #   [*option*]               - Reserved for future use
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
 #     different replies.
 #   [*proxy_method*]         - If defined, overrides the HTTP method of the
@@ -145,6 +151,8 @@ define nginx::resource::location (
   $fastcgi_params       = "${::nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
+  $uwsgi                = undef,
+  $uwsgi_params         = "${nginx::config::conf_dir}/uwsgi_params",
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
@@ -162,6 +170,8 @@ define nginx::resource::location (
   $include              = undef,
   $try_files            = undef,
   $proxy_cache          = false,
+  $proxy_cache_key      = undef,
+  $proxy_cache_use_stale = undef,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
   $proxy_set_body       = undef,
@@ -217,6 +227,10 @@ define nginx::resource::location (
   if ($fastcgi_split_path != undef) {
     validate_string($fastcgi_split_path)
   }
+  if ($uwsgi != undef) {
+    validate_string($uwsgi)
+  }
+  validate_string($uwsgi_params)
 
   validate_bool($internal)
 
@@ -269,6 +283,12 @@ define nginx::resource::location (
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
+  if ($proxy_cache_key != undef) {
+    validate_string($proxy_cache_key)
+  }
+  if ($proxy_cache_use_stale != undef) {
+    validate_string($proxy_cache_use_stale)
+  }
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
   }
@@ -298,27 +318,28 @@ define nginx::resource::location (
     default  => file,
   }
 
-  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
-
-  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
-  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
-
   ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($location_custom_cfg == undef) and ($internal == false)) {
-    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, stub_status, internal, or location_custom_cfg defined')
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($uwsgi == undef) and ($location_custom_cfg == undef) and ($internal == false)) {
+    fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
     fail('Cannot define both directory and proxy in a virtual host')
   }
 
+  # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
   # fastcgi_script is deprecated
   if ($fastcgi_script != undef) {
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
+
+  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
+  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+
+  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
+  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
@@ -329,6 +350,8 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/stub_status.erb')
   } elsif ($fastcgi != undef) {
     $content_real = template('nginx/vhost/locations/fastcgi.erb')
+  } elsif ($uwsgi != undef) {
+    $content_real = template('nginx/vhost/locations/uwsgi.erb')
   } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/locations/directory.erb')
   } else {
@@ -343,12 +366,20 @@ define nginx::resource::location (
     }
   }
 
+  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
+    file { $uwsgi_params:
+      ensure  => present,
+      mode    => '0770',
+      content => template('nginx/vhost/uwsgi_params.erb'),
+    }
+  }
+
+
   ## Create stubs for vHost File Fragment Pattern
   if ($ssl_only != true) {
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { $tmpFile:
-      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -365,7 +396,6 @@ define nginx::resource::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment { $sslTmpFile:
-      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -373,15 +403,6 @@ define nginx::resource::location (
         template('nginx/vhost/location_footer.erb')
       ], ''),
       order   => $ssl_priority,
-    }
-  }
-
-  if ($auth_basic_user_file != undef) {
-    #Generate htpasswd with provided file-locations
-    file { "${::nginx::config::conf_dir}/${location_sanitized}_htpasswd":
-      ensure => $ensure_real,
-      mode   => '0644',
-      source => $auth_basic_user_file,
     }
   }
 }

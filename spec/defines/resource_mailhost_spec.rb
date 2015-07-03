@@ -139,7 +139,7 @@ describe 'nginx::resource::mailhost' do
 
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
             expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
@@ -193,7 +193,7 @@ describe 'nginx::resource::mailhost' do
 
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
             expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
@@ -291,7 +291,7 @@ describe 'nginx::resource::mailhost' do
 
           it { is_expected.to contain_concat__fragment("#{title}-ssl") }
           it param[:title] do
-            lines = subject.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
+            lines = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
             expect(lines & Array(param[:match])).to eq(Array(param[:match]))
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_concat__fragment("#{title}-ssl").without_content(item)

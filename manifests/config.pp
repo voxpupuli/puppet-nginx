@@ -94,7 +94,7 @@ class nginx::config(
 ) inherits ::nginx::params {
 
   ### Validations ###
-  if (!is_string($worker_processes)) and (!is_integer($worker_processes)) {
+  if ($worker_processes != 'auto') and (!is_integer($worker_processes)) {
     fail('$worker_processes must be an integer or have value "auto".')
   }
   if (!is_integer($worker_connections)) {
@@ -209,6 +209,10 @@ class nginx::config(
     ensure => directory,
   }
 
+  file { $log_dir:
+    ensure => directory,
+  }
+
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
@@ -254,8 +258,7 @@ class nginx::config(
   }
 
   file { "${conf_dir}/conf.d/proxy.conf":
-    ensure  => file,
-    content => template($proxy_conf_template),
+    ensure  => absent,
   }
 
   file { "${conf_dir}/conf.d/default.conf":

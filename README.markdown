@@ -5,6 +5,8 @@
 maintenance. Please take a look at [https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md](https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
 
+[![Puppet
+Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.puppetlabs.com/jfryman/nginx)
 [![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
 
 
@@ -235,8 +237,8 @@ define web::nginx_ssl_with_redirect (
     location_cfg_append   => $location_cfg_append,
     index_files           => [ 'index.php' ],
     ssl                   => true,
-    ssl_cert              => 'puppet:///modules/sslkey/wildcard_mydomain.crt',
-    ssl_key               => 'puppet:///modules/sslkey/wildcard_mydomain.key',
+    ssl_cert              => '/path/to/wildcard_mydomain.crt',
+    ssl_key               => '/path/to/wildcard_mydomain.key',
   }
 
 
