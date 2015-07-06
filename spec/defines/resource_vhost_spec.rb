@@ -956,6 +956,24 @@ describe 'nginx::resource::vhost' do
             |/)
         end
       end
+
+      context 'when add_header is set and ssl => true' do
+        let :params do default_params.merge({
+          :add_header => { 'header3' => 'test value 3', 'header2' => 'test value 2', 'header1' => 'test value 1' },
+          :ssl        => true,
+          :ssl_key    => 'dummy.key',
+          :ssl_cert   => 'dummy.cert',
+        }) end
+
+        it 'should have correctly ordered entries in the config' do
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/
+            %r|
+            \s+add_header\s+header1 test value 1;\n
+            \s+add_header\s+header2 test value 2;\n
+            \s+add_header\s+header3 test value 3;\n
+            |/)
+        end
+      end
     end
   end
 end
