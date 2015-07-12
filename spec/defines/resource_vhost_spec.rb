@@ -429,6 +429,12 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+server_name\s+www.rspec.example.com;',
         },
         {
+          :title => 'should set the SSL buffer size',
+          :attr  => 'ssl_buffer_size',
+          :value => '4k',
+          :match => '  ssl_buffer_size           4k;',
+        },
+        {
           :title => 'should set the SSL client certificate file',
           :attr  => 'ssl_client_cert',
           :value => '/tmp/client_certificate',
