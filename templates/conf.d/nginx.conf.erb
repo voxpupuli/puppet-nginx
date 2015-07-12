@@ -60,10 +60,23 @@ http {
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
 <% if @gzip == 'on' -%>
-  gzip         on;
-  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
-
+  gzip              on;
+<% if @gzip_buffers -%>
+  gzip_buffers      <%= @gzip_buffers %>;
 <% end -%>
+  gzip_comp_level   <%= @gzip_comp_level %>;
+<% if @gzip_disable -%>
+  gzip_disable      <%= @gzip_disable %>;
+<% end -%>
+  gzip_min_length   <%= @gzip_min_length %>;
+  gzip_http_version <%= @gzip_http_version %>;
+<% if @gzip_proxied -%>
+  gzip_proxied      <%= @gzip_proxied %>;
+<% end -%>
+  gzip_types        <%= @gzip_types.kind_of?(Array) ? @gzip_types.join(' ') : @gzip_types %>;
+  gzip_vary         <%= @gzip_vary %>;
+<% end -%>
+
 <% if @client_body_temp_path -%>
   client_body_temp_path   <%= @client_body_temp_path %>;
 <% end -%>
