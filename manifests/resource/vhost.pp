@@ -530,7 +530,7 @@ define nginx::resource::vhost (
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    ::nginx::resource::location {"${name_sanitized}-default":
+    nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
       vhost                       => $name_sanitized,
       ssl                         => $ssl,
