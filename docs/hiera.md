@@ -27,7 +27,7 @@ Magically, it's all done! Work through these until the deprecation notices go aw
 
 Maybe for some reason, Hiera isn't being used in your organization. Or, you like to keep a certain amount of composibilty in you modules. Or, hidden option #3! Regardless, the recommended path is to instantiate your own copy of Class[nginx::config] and move on with life. Let's do another example.
 
-Assume the same code block as before:
+Assume you have the following code block:
 
 ```ruby
 class { 'nginx' :
@@ -37,7 +37,7 @@ class { 'nginx' :
 }
 ```
 
-Should become...
+This should become...
 
 ```ruby
 Anchor['nginx::begin']
