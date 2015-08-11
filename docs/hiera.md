@@ -30,19 +30,29 @@ Maybe for some reason, Hiera isn't being used in your organization. Or, you like
 Assume the same code block as before:
 
 ```ruby
-class { 'nginx':
-  gzip => false,
+class { 'nginx' :
+  manage_repo   => false,
+  confd_purge   => true,
+  vhost_purge   => true,
 }
 ```
 
 Should become...
 
 ```ruby
-include nginx
-class { 'nginx::config':
-  gzip => false,
+Anchor['nginx::begin']
+->
+class { 'nginx::config' :
+  confd_purge   => true,
+  vhost_purge   => true,
+}
+
+class { 'nginx' :
+  manage_repo   => false,
 }
 ```
+
+The order in which this commands are parsed is important, since nginx looks for nginx::config via a defined(nginx::config) statement, which as of puppet 3.x is still parse-order dependent.
 
 # Why again are you doing this?
 
