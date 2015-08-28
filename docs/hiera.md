@@ -27,22 +27,32 @@ Magically, it's all done! Work through these until the deprecation notices go aw
 
 Maybe for some reason, Hiera isn't being used in your organization. Or, you like to keep a certain amount of composibilty in you modules. Or, hidden option #3! Regardless, the recommended path is to instantiate your own copy of Class[nginx::config] and move on with life. Let's do another example.
 
-Assume the same code block as before:
+Assume you have the following code block:
 
 ```ruby
-class { 'nginx':
-  gzip => false,
+class { 'nginx' :
+  manage_repo   => false,
+  confd_purge   => true,
+  vhost_purge   => true,
 }
 ```
 
-Should become...
+This should become...
 
 ```ruby
-include nginx
-class { 'nginx::config':
-  gzip => false,
+Anchor['nginx::begin']
+->
+class { 'nginx::config' :
+  confd_purge   => true,
+  vhost_purge   => true,
+}
+
+class { 'nginx' :
+  manage_repo   => false,
 }
 ```
+
+The order in which this commands are parsed is important, since nginx looks for nginx::config via a defined(nginx::config) statement, which as of puppet 3.x is still parse-order dependent.
 
 # Why again are you doing this?
 
