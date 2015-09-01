@@ -8,6 +8,7 @@
 #   [*ensure*]                - Enables or disables the specified location (present|absent)
 #   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
 #   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
+#   [*upstream_max_fails*]    - Set the max_fails for the upstream. Default is to use nginx default value which is 1.
 #
 # Actions:
 #
@@ -43,6 +44,7 @@ define nginx::resource::upstream (
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
   $upstream_fail_timeout = '10s',
+  $upstream_max_fails = undef,
 ) {
 
   if $members != undef {
