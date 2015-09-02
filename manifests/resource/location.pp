@@ -358,7 +358,7 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
-  if $ensure_real == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
+  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
@@ -366,7 +366,7 @@ define nginx::resource::location (
     }
   }
 
-  if $ensure_real == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
+  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0770',
