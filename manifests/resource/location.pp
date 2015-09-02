@@ -358,7 +358,7 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
-  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
+  if $ensure_real == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
@@ -366,7 +366,7 @@ define nginx::resource::location (
     }
   }
 
-  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
+  if $ensure_real == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0770',
@@ -380,6 +380,7 @@ define nginx::resource::location (
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { $tmpFile:
+      ensure  => $ensure_real,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -396,6 +397,7 @@ define nginx::resource::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment { $sslTmpFile:
+      ensure  => $ensure_real,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
