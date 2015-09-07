@@ -53,6 +53,14 @@ class nginx::config(
   $fastcgi_cache_path             = false,
   $fastcgi_cache_use_stale        = false,
   $gzip                           = 'on',
+  $gzip_buffers                   = undef,
+  $gzip_comp_level                = 1,
+  $gzip_disable                   = 'msie6',
+  $gzip_min_length                = 20,
+  $gzip_http_version              = 1.1,
+  $gzip_proxied                   = 'off',
+  $gzip_types                     = 'text/html',
+  $gzip_vary                      = 'off',
   $http_cfg_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
@@ -209,6 +217,10 @@ class nginx::config(
     ensure => directory,
   }
 
+  file { $log_dir:
+    ensure => directory,
+  }
+
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
@@ -254,8 +266,7 @@ class nginx::config(
   }
 
   file { "${conf_dir}/conf.d/proxy.conf":
-    ensure  => file,
-    content => template($proxy_conf_template),
+    ensure  => absent,
   }
 
   file { "${conf_dir}/conf.d/default.conf":

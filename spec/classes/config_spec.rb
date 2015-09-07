@@ -48,12 +48,6 @@ describe 'nginx::config' do
           :group => 'root',
           :mode => '0644'
         )}
-        it { is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").with(
-          :ensure => 'file',
-          :owner => 'root',
-          :group => 'root',
-          :mode => '0644'
-        )}
         it { is_expected.to contain_file("/tmp/nginx.d").with(
           :ensure => 'absent',
           :purge => true,
@@ -67,6 +61,12 @@ describe 'nginx::config' do
         it { is_expected.to contain_file("/var/nginx/client_body_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/var/nginx/proxy_temp").with(:owner => 'nginx')}
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with_content %r{^user nginx;}}
+
+        it { is_expected.to contain_file("/var/log/nginx").with(
+          :ensure => 'directory',
+          :group => 'root',
+          :mode => '0644'
+        )}
 
     describe "nginx.conf template content" do
       [
@@ -236,13 +236,67 @@ describe 'nginx::config' do
           :title => 'should set gzip',
           :attr  => 'gzip',
           :value => 'on',
-          :match => '  gzip         on;',
+          :match => '  gzip              on;',
         },
         {
           :title => 'should not set gzip',
           :attr  => 'gzip',
           :value => 'off',
           :notmatch => /gzip/,
+        },
+        {
+            :title  => 'should set gzip_buffers',
+            :attr   => 'gzip_buffers',
+            :value  => '32 4k',
+            :match  => '  gzip_buffers      32 4k;',
+        },
+        {
+            :title  => 'should set gzip_comp_level',
+            :attr   => 'gzip_comp_level',
+            :value  => 5,
+            :match  => '  gzip_comp_level   5;',
+        },
+        {
+            :title  => 'should set gzip_disable',
+            :attr   => 'gzip_disable',
+            :value  => 'MSIE [1-6]\.(?!.*SV1)',
+            :match  => '  gzip_disable      MSIE [1-6]\.(?!.*SV1);',
+        },
+        {
+            :title  => 'should set gzip_min_length',
+            :attr   => 'gzip_min_length',
+            :value  => '10',
+            :match  => '  gzip_min_length   10;',
+        },
+        {
+            :title  => 'should set gzip_http_version',
+            :attr   => 'gzip_http_version',
+            :value  => '1.0',
+            :match  => '  gzip_http_version 1.0;',
+        },
+        {
+            :title  => 'should set gzip_proxied',
+            :attr   => 'gzip_proxied',
+            :value  => 'any',
+            :match  => '  gzip_proxied      any;',
+        },
+        {
+            :title  => 'should set gzip_types (array)',
+            :attr   => 'gzip_types',
+            :value  => ['text/plain','text/html'],
+            :match  => '  gzip_types        text/plain text/html;',
+        },
+        {
+            :title  => 'should set gzip_types (string)',
+            :attr   => 'gzip_types',
+            :value  => ['text/plain'],
+            :match  => '  gzip_types        text/plain;',
+        },
+        {
+            :title  => 'should set gzip_vary',
+            :attr   => 'gzip_vary',
+            :value  => 'on',
+            :match  => '  gzip_vary         on;',
         },
         {
           :title => 'should set proxy_cache_path',
@@ -373,6 +427,51 @@ describe 'nginx::config' do
           :value => false,
           :notmatch => /mail/,
         },
+        {
+          :title => 'should set proxy_buffers',
+          :attr  => 'proxy_buffers',
+          :value => '50 5k',
+          :match => '  proxy_buffers           50 5k;',
+        },
+        {
+          :title => 'should set proxy_buffer_size',
+          :attr  => 'proxy_buffer_size',
+          :value => '2k',
+          :match => '  proxy_buffer_size       2k;',
+        },
+        {
+          :title => 'should set proxy_http_version',
+          :attr  => 'proxy_http_version',
+          :value => '1.1',
+          :match => '  proxy_http_version      1.1;',
+        },
+        {
+          :title    => 'should not set proxy_http_version',
+          :attr     => 'proxy_http_version',
+          :value    => nil,
+          :notmatch => 'proxy_http_version',
+        },
+        {
+          :title => 'should contain ordered appended directives',
+          :attr  => 'proxy_set_header',
+          :value => ['header1','header2'],
+          :match => [
+            '  proxy_set_header        header1;',
+            '  proxy_set_header        header2;',
+          ],
+        },
+        {
+            :title    => 'should set client_body_temp_path',
+            :attr     => 'client_body_temp_path',
+            :value    => '/path/to/body_temp',
+            :match => '  client_body_temp_path   /path/to/body_temp;',
+        },
+        {
+            :title    => 'should set proxy_temp_path',
+            :attr     => 'proxy_temp_path',
+            :value    => '/path/to/proxy_temp',
+            :match => '  proxy_temp_path         /path/to/proxy_temp;',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :params do { param[:attr].to_sym => param[:value] } end
@@ -390,76 +489,6 @@ describe 'nginx::config' do
 
             Array(param[:notmatch]).each do |item|
               is_expected.to contain_file("/etc/nginx/nginx.conf").without_content(item)
-            end
-          end
-        end
-      end
-    end
-
-    describe "proxy.conf template content" do
-      [
-        {
-          :title => 'should set proxy_buffers',
-          :attr  => 'proxy_buffers',
-          :value => '50 5k',
-          :match => 'proxy_buffers           50 5k;',
-        },
-        {
-          :title => 'should set proxy_buffer_size',
-          :attr  => 'proxy_buffer_size',
-          :value => '2k',
-          :match => 'proxy_buffer_size       2k;',
-        },
-        {
-          :title => 'should set proxy_http_version',
-          :attr  => 'proxy_http_version',
-          :value => '1.1',
-          :match => 'proxy_http_version      1.1;',
-        },
-        {
-          :title    => 'should not set proxy_http_version',
-          :attr     => 'proxy_http_version',
-          :value    => nil,
-          :notmatch => 'proxy_http_version',
-        },
-        {
-          :title => 'should contain ordered appended directives',
-          :attr  => 'proxy_set_header',
-          :value => ['header1','header2'],
-          :match => [
-            'proxy_set_header        header1;',
-            'proxy_set_header        header2;',
-          ],
-        },
-        {
-            :title    => 'should set client_body_temp_path',
-            :attr     => 'client_body_temp_path',
-            :value    => '/path/to/body_temp',
-            :match => 'client_body_temp_path   /path/to/body_temp;',
-        },
-        {
-            :title    => 'should set proxy_temp_path',
-            :attr     => 'proxy_temp_path',
-            :value    => '/path/to/proxy_temp',
-            :match => 'proxy_temp_path         /path/to/proxy_temp;',
-        },
-      ].each do |param|
-        context "when #{param[:attr]} is #{param[:value]}" do
-          let :params do { param[:attr].to_sym => param[:value] } end
-
-          it { is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").with_mode('0644') }
-          it param[:title] do
-            matches  = Array(param[:match])
-
-            if matches.all? { |m| m.is_a? Regexp }
-              matches.each { |item| is_expected.to contain_file('/etc/nginx/conf.d/proxy.conf').with_content(item) }
-            else
-              lines = catalogue.resource('file', '/etc/nginx/conf.d/proxy.conf').send(:parameters)[:content].split("\n")
-              expect(lines & Array(param[:match])).to eq(Array(param[:match]))
-            end
-
-            Array(param[:notmatch]).each do |item|
-              is_expected.to contain_file("/etc/nginx/conf.d/proxy.conf").without_content(item)
             end
           end
         end
@@ -510,6 +539,11 @@ describe 'nginx::config' do
         'recurse'
       ])}
       it { is_expected.to contain_file('/etc/nginx/sites-enabled').without([
+        'ignore',
+        'purge',
+        'recurse'
+      ])}
+      it { is_expected.to contain_file('/var/log/nginx').without([
         'ignore',
         'purge',
         'recurse'

@@ -56,8 +56,9 @@
 #     vHost on. Defaults to TCP 443
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'TLSv1 TLSv1.1
 #     TLSv1.2'.
+#   [*ssl_buffer_size*]     - Sets the size of the buffer used for sending data.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
-#     'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'.
+#     'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'.
 #   [*ssl_stapling*]        - Bool: Enables or disables stapling of OCSP
 #     responses by the server. Defaults to false.
 #   [*ssl_stapling_file*]   - String: When set, the stapled OCSP response
@@ -85,6 +86,10 @@
 #     checked as an array. Cannot be used in conjuction with $proxy.
 #   [*proxy_cache*]             - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_cache_valid*]       - This directive sets the time for caching
 #     different replies.
 #   [*proxy_method*]            - If defined, overrides the HTTP method of the
@@ -177,7 +182,8 @@ define nginx::resource::vhost (
   $ssl_key                      = undef,
   $ssl_port                     = '443',
   $ssl_protocols                = 'TLSv1 TLSv1.1 TLSv1.2',
-  $ssl_ciphers                  = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA',
+  $ssl_buffer_size              = undef,
+  $ssl_ciphers                  = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA',
   $ssl_cache                    = 'shared:SSL:10m',
   $ssl_crl                      = undef,
   $ssl_stapling                 = false,
@@ -193,6 +199,8 @@ define nginx::resource::vhost (
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header             = [],
   $proxy_cache                  = false,
+  $proxy_cache_key              = undef,
+  $proxy_cache_use_stale        = undef,
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
@@ -321,6 +329,12 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
+  }
+  if ($proxy_cache_key != undef) {
+    validate_string($proxy_cache_key)
+  }
+  if ($proxy_cache_use_stale != undef) {
+    validate_string($proxy_cache_use_stale)
   }
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
@@ -516,62 +530,47 @@ define nginx::resource::vhost (
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    ::nginx::resource::location {"${name_sanitized}-default":
-      ensure                => $ensure,
-      vhost                 => $name_sanitized,
-      ssl                   => $ssl,
-      ssl_only              => $ssl_only,
-      location              => '/',
-      location_allow        => $location_allow,
-      location_deny         => $location_deny,
-      proxy                 => $proxy,
-      proxy_redirect        => $proxy_redirect,
-      proxy_read_timeout    => $proxy_read_timeout,
-      proxy_connect_timeout => $proxy_connect_timeout,
-      proxy_cache           => $proxy_cache,
-      proxy_cache_valid     => $proxy_cache_valid,
-      proxy_method          => $proxy_method,
-      proxy_set_header      => $proxy_set_header,
-      proxy_set_body        => $proxy_set_body,
-      fastcgi               => $fastcgi,
-      fastcgi_params        => $fastcgi_params,
-      fastcgi_script        => $fastcgi_script,
-      uwsgi                 => $uwsgi,
-      uwsgi_params          => $uwsgi_params,
-      try_files             => $try_files,
-      www_root              => $www_root,
-      autoindex             => $autoindex,
-      index_files           => $index_files,
-      location_custom_cfg   => $location_custom_cfg,
-      notify                => Class['::nginx::service'],
-      rewrite_rules         => $rewrite_rules,
-      raw_prepend           => $location_raw_prepend,
-      raw_append            => $location_raw_append
+    nginx::resource::location {"${name_sanitized}-default":
+      ensure                      => $ensure,
+      vhost                       => $name_sanitized,
+      ssl                         => $ssl,
+      ssl_only                    => $ssl_only,
+      location                    => '/',
+      location_allow              => $location_allow,
+      location_deny               => $location_deny,
+      proxy                       => $proxy,
+      proxy_redirect              => $proxy_redirect,
+      proxy_read_timeout          => $proxy_read_timeout,
+      proxy_connect_timeout       => $proxy_connect_timeout,
+      proxy_cache                 => $proxy_cache,
+      proxy_cache_key             => $proxy_cache_key,
+      proxy_cache_use_stale       => $proxy_cache_use_stale,
+      proxy_cache_valid           => $proxy_cache_valid,
+      proxy_method                => $proxy_method,
+      proxy_set_header            => $proxy_set_header,
+      proxy_set_body              => $proxy_set_body,
+      fastcgi                     => $fastcgi,
+      fastcgi_params              => $fastcgi_params,
+      fastcgi_script              => $fastcgi_script,
+      uwsgi                       => $uwsgi,
+      uwsgi_params                => $uwsgi_params,
+      try_files                   => $try_files,
+      www_root                    => $www_root,
+      autoindex                   => $autoindex,
+      index_files                 => $index_files,
+      location_custom_cfg         => $location_custom_cfg,
+      location_cfg_prepend        => $location_cfg_prepend,
+      location_cfg_append         => $location_cfg_append,
+      location_custom_cfg_prepend => $location_custom_cfg_prepend,
+      location_custom_cfg_append  => $location_custom_cfg_append,
+      rewrite_rules               => $rewrite_rules,
+      raw_prepend                 => $location_raw_prepend,
+      raw_append                  => $location_raw_append,
+      notify                      => Class['nginx::service'],
     }
     $root = undef
   } else {
     $root = $www_root
-  }
-
-  # Support location_cfg_prepend and location_cfg_append on default location created by vhost
-  if $location_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_cfg_prepend => $location_cfg_prepend }
-  }
-
-  if $location_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_cfg_append => $location_cfg_append }
-  }
-
-  if $location_custom_cfg_prepend {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_custom_cfg_prepend => $location_custom_cfg_prepend }
-  }
-
-  if $location_custom_cfg_append {
-    Nginx::Resource::Location["${name_sanitized}-default"] {
-      location_custom_cfg_append => $location_custom_cfg_append }
   }
 
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
