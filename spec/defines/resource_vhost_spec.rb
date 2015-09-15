@@ -711,8 +711,8 @@ describe 'nginx::resource::vhost' do
           }
         end
 
-        it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^\s+server_name\s+foo.com;/)
+        it "should set the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;/)
         end
       end
 
@@ -726,8 +726,8 @@ describe 'nginx::resource::vhost' do
           }
         end
 
-        it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^\s+server_name\s+foo.com;/)
+        it "should set the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;/)
         end
       end
 
