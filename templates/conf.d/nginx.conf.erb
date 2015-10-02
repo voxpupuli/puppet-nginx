@@ -147,3 +147,8 @@ mail {
   include <%= @conf_dir %>/conf.mail.d/*.conf;
 }
 <% end -%>
+<% if @stream -%>
+stream {
+  include <%= @conf_dir %>/conf.stream.d/*.conf;
+}
+<% end -%>
