@@ -44,6 +44,9 @@ class nginx::config(
   ### START Nginx Configuration ###
   $client_body_buffer_size        = '128k',
   $client_max_body_size           = '10m',
+  $client_body_timeout            = '60',
+  $send_timeout                   = '60',
+  $lingering_timeout              = '5',
   $events_use                     = false,
   $fastcgi_cache_inactive         = '20m',
   $fastcgi_cache_key              = false,
@@ -65,6 +68,7 @@ class nginx::config(
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
+  $keepalive_requests             = '100',
   $log_format                     = {},
   $mail                           = false,
   $multi_accept                   = 'off',
