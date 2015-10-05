@@ -46,6 +46,10 @@ http {
 
   access_log  <%= @http_access_log %>;
 
+  client_body_timeout   <%= @client_body_timeout %>;
+  send_timeout   <%= @send_timeout %>;
+  lingering_timeout   <%= @lingering_timeout %>;
+
 <% if @sendfile == 'on' -%>
   sendfile    on;
   <%- if @http_tcp_nopush == 'on' -%>
@@ -62,7 +66,8 @@ http {
   server_names_hash_max_size <%= @names_hash_max_size %>;
 
   keepalive_timeout  <%= @keepalive_timeout %>;
-  keepalive_requests  <%= @keepalive_requests %>;
+  keepalive_requests <%= @keepalive_requests %>;
+
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
 <% if @gzip == 'on' -%>
