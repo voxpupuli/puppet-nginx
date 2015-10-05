@@ -150,6 +150,8 @@
 #   [*maintenance*]             - A boolean value to set a vhost in maintenance
 #   [*maintenance_value*]       - Value to return when maintenance is on.
 #                                 Default to return 503
+#   [*error_pages*]             - Hash: setup errors pages, hash key is the http
+#                                 code and hash value the page
 # Actions:
 #
 # Requires:
@@ -256,7 +258,8 @@ define nginx::resource::vhost (
   $group                        = $::nginx::config::global_group,
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
-  $maintenance_value            = 'return 503'
+  $maintenance_value            = 'return 503',
+  $error_pages                  = {},
 ) {
 
   validate_re($ensure, '^(present|absent)$',
