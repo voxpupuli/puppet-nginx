@@ -151,3 +151,9 @@ server {
 
   access_log            <%= @access_log_real %>;
   error_log             <%= @error_log_real %>;
+
+<% if @error_pages -%>
+  <%- @error_pages.keys.sort.each do |key| -%>
+  error_page  <%= key %> <%= @error_pages[key] %>;
+  <%- end -%>
+<% end -%>
