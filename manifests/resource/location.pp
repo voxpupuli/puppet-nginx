@@ -78,6 +78,7 @@
 #     different replies.
 #   [*proxy_method*]         - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
+#   [*proxy_http_version*]      - Sets the proxy http version
 #   [*proxy_set_body*]       - If defined, sets the body passed to the backend.
 #   [*auth_basic*]            - This directive includes testing name and password
 #     with HTTP Basic Authentication.
@@ -174,6 +175,7 @@ define nginx::resource::location (
   $proxy_cache_use_stale = undef,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
+  $proxy_http_version   = undef,
   $proxy_set_body       = undef,
   $auth_basic           = undef,
   $auth_basic_user_file = undef,
@@ -294,6 +296,9 @@ define nginx::resource::location (
   }
   if ($proxy_method != undef) {
     validate_string($proxy_method)
+  }
+  if ($proxy_http_version != undef) {
+    validate_string($proxy_http_version)
   }
   if ($proxy_set_body != undef) {
     validate_string($proxy_set_body)
