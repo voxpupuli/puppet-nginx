@@ -53,7 +53,7 @@ describe 'nginx::resource::map' do
           match: ['  default pool_a;']
         },
         {
-          title: 'should contain ordered mappings',
+          title: 'should contain ordered mappings when supplied as a hash',
           attr: 'mappings',
           value: {
             'foo' => 'pool_b',
@@ -61,9 +61,23 @@ describe 'nginx::resource::map' do
             'baz' => 'pool_d'
           },
           match: [
+            '  foo pool_b;',
             '  bar pool_c;',
-            '  baz pool_d;',
-            '  foo pool_b;'
+            '  baz pool_d;'
+          ]
+        },
+        {
+          title: 'should contain mappings in input order when supplied as an array of hashes',
+          attr:  'mappings',
+          value: [
+            { 'key' => 'foo', 'value' => 'pool_b' },
+            { 'key' => 'bar', 'value' => 'pool_c' },
+            { 'key' => 'baz', 'value' => 'pool_d' }
+          ],
+          match: [
+            '  foo pool_b;',
+            '  bar pool_c;',
+            '  baz pool_d;'
           ]
         }
       ].each do |param|
@@ -88,6 +102,16 @@ describe 'nginx::resource::map' do
         end
 
         it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_ensure('absent') }
+      end
+
+      context 'when mappings is a string' do
+        let :params do
+          default_params.merge(
+            mappings: 'foo pool_b'
+          )
+        end
+
+        it { is_expected.to raise_error(Puppet::Error, %r[mappings must be a hash of the form { 'foo' => 'pool_b' }]) }
       end
     end
   end
