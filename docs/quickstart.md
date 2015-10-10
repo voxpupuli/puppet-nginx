@@ -1,21 +1,4 @@
-# A QuickStart Guide to the NGINX Module
-
-The goal of this module is to simplify the deployment and management of 
-
-## Why NGINX?
-
-Before going too far, make sure that the [NGINX][] web server is appropriate for your needs. NGINX 
-was designed to be a scalable web and proxy server with the abiilty to handle 
-thousands of concurrent connections, but it is not designed to manage dynamic content.  For dynamic 
-web applications, NGINX must be configured to _proxy_ connections to a different process.  For 
-example, a PHP application in the common "LAMP Stack" configuration with Apache and PHP only requires a 
-few dynamic modules and configuration changes.  Running the same application with an NGINX infrastructure
- requires the configuration of a NGINX proxy layer and a secondary runtime such as [PHP-FPM][phpfpm]. This
- can add complexity to setting up the infrastructure, but it does allow you to scale application layers
- independently.  For a good comparison of how NGINX differs from Apache, [DigitalOcean][] published 
- a [good article][nginxvsapache] detailing some of the differences between the two.
- 
-**NOTE**:  At this point, the module only supports Debian or RedHat based linux distributions.
+# A QuickStart Guide to the NGINX Puppet Module
 
 ## Basic NGINX Installation and Configuration
 
