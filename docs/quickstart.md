@@ -89,14 +89,20 @@ Combining our configurations above into a single manifest, our code block looks 
   }
 ```  
 
-This puppet code block will:
+In summary, this puppet code block will:
 * Install the latest version of nginx from the 'mainline' nginx distributino.
 * Define a virtual host `www.myhost.com` for our website.
 * Define an *upstream* service that consists of a single external IP address.
 * Define a URL that will proxy to the upstream resource.  In this case,  `http://www.myhost.com/blog` will proxy to an external resource hosted at `http://192.168.99.1`.
 
+## References
+There are a number of resources available for learning how to use NGINX effectively.  Here are a few that you may find useful:
+[nginx.org][nginx]:  The NGNIX homepage.
+[NGINX Documentation][ngixdocs]: Open Source NGINX Documentation
+[NGINX vs. Apache][nginxvsapache]: A good article from [DigitalOcean][] describing the key differences between the use and architecture of NGINX vs. the Apache HTTPD server.  This is a good article if you are new to NGINX or want a simple overview of the NGINX event driven architecture.
+
+[nginx]: http://ngnix.org
 [phpfpm]: http://php-fpm.org
-[nginxpackages]: http://nginx.org/packages/mainline
 [nginxdocs]: http://nginx.org/en/docs/
 [puppetlabsapache]: https://forge.puppetlabs.com/puppetlabs/apache
 [digitalocean]: https://www.digitalocean.com
