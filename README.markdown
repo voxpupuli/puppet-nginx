@@ -23,7 +23,8 @@ This module manages NGINX configuration.
 
 ### Additional Documentation
 
-* [A Quickstart Guide to the NGINX Puppet Module][https://github.com/jfryman/puppet-nginx/blob/master/docs/quickstart.md]
+* [A Quickstart Guide to the NGINX Puppet Module][quickstart]
+[quickstart]: https://github.com/jfryman/puppet-nginx/blob/master/docs/quickstart.md
 
 
 ### Install and bootstrap an NGINX instance
