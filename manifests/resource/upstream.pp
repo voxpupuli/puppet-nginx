@@ -45,6 +45,7 @@ define nginx::resource::upstream (
   $upstream_cfg_prepend = undef,
   $upstream_fail_timeout = '10s',
   $upstream_max_fails = undef,
+  $upstream_context = 'http',
 ) {
 
   if $members != undef {
@@ -52,6 +53,8 @@ define nginx::resource::upstream (
   }
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
+  validate_re($upstream_context, '^(http|stream)$',
+      "${upstream_context} is not supported for upstream_context. Allowed values are 'http' and 'stream'.")
   if ($upstream_cfg_prepend != undef) {
     validate_hash($upstream_cfg_prepend)
   }
@@ -63,20 +66,25 @@ define nginx::resource::upstream (
     default  => present,
   }
 
+  $conf_dir_real = $upstream_context ? {
+    'stream' => 'conf.stream.d',
+    default  => 'conf.d',
+  }
+
   Concat {
     owner => 'root',
     group => $root_group,
     mode  => '0644',
   }
 
-  concat { "${::nginx::config::conf_dir}/conf.d/${name}-upstream.conf":
+  concat { "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
     ensure => $ensure_real,
     notify => Class['::nginx::service'],
   }
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
-    target  => "${::nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
+    target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '10',
     content => template('nginx/conf.d/upstream_header.erb'),
   }
@@ -84,7 +92,7 @@ define nginx::resource::upstream (
   if $members != undef {
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
-      target  => "${::nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
+      target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
       order   => '50',
       content => template('nginx/conf.d/upstream_members.erb'),
     }
@@ -94,7 +102,7 @@ define nginx::resource::upstream (
   }
 
   concat::fragment { "${name}_upstream_footer":
-    target  => "${::nginx::config::conf_dir}/conf.d/${name}-upstream.conf",
+    target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '90',
     content => "}\n",
   }
