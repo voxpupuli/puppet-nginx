@@ -28,7 +28,7 @@ describe 'nginx::resource::upstream' do
       let :params do default_params end
 
       it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf") }
-      it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(/upstream #{title}/) }
+      it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(/upstream #{params[:upstream_name]}/) }
 
       it {
         is_expected.to contain_concat__fragment("#{title}_upstream_header").with(
