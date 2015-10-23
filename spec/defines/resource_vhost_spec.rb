@@ -375,6 +375,18 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+listen\s+\*:443 ssl;',
         },
         {
+          :title => 'should set HTTP2',
+          :attr  => 'http2',
+          :value => 'on',
+          :match => %r'\s+listen\s+\*:443 ssl http2;',
+        },
+        {
+          :title => 'should not set HTTP2',
+          :attr  => 'http2',
+          :value => 'off',
+          :match => %r'\s+listen\s+\*:443 ssl;',
+        },
+        {
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'default',

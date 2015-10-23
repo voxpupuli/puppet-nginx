@@ -93,6 +93,7 @@ class nginx::config(
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
+  $http2                          = 'off',
   $ssl_stapling                   = 'off',
   $types_hash_bucket_size         = '512',
   $types_hash_max_size            = '1024',
