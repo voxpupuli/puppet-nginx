@@ -15,13 +15,17 @@ Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.pup
 
 This module manages NGINX configuration.
 
-## Quick Start
-
 ### Requirements
 
 * Puppet-2.7.0 or later
 * Facter 1.7.0 or later
 * Ruby-1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV).
+
+### Additional Documentation
+
+* [A Quickstart Guide to the NGINX Puppet Module][quickstart]
+[quickstart]: https://github.com/jfryman/puppet-nginx/blob/master/docs/quickstart.md
+
 
 ### Install and bootstrap an NGINX instance
 
@@ -29,7 +33,7 @@ This module manages NGINX configuration.
 class { 'nginx': }
 ```
 
-### Setup a new virtual host
+### Creating a new virtual host
 
 ```puppet
 nginx::resource::vhost { 'www.puppetlabs.com':
@@ -52,6 +56,9 @@ nginx::resource::vhost { 'rack.puppetlabs.com':
   proxy => 'http://puppet_rack_app',
 }
 ```
+
+
+
 
 ### Add a smtp proxy
 

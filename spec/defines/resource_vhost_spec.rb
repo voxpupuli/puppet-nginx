@@ -375,6 +375,18 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+listen\s+\*:443 ssl;',
         },
         {
+          :title => 'should set HTTP2',
+          :attr  => 'http2',
+          :value => 'on',
+          :match => %r'\s+listen\s+\*:443 ssl http2;',
+        },
+        {
+          :title => 'should not set HTTP2',
+          :attr  => 'http2',
+          :value => 'off',
+          :match => %r'\s+listen\s+\*:443 ssl;',
+        },
+        {
           :title => 'should set the IPv4 listen options',
           :attr  => 'listen_options',
           :value => 'default',
@@ -711,8 +723,8 @@ describe 'nginx::resource::vhost' do
           }
         end
 
-        it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^\s+server_name\s+foo.com;/)
+        it "should set the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(/^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;/)
         end
       end
 
@@ -726,8 +738,8 @@ describe 'nginx::resource::vhost' do
           }
         end
 
-        it "should set the server_name of the rewrite server stanza to the first server_name with 'www.' stripped" do
-          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^\s+server_name\s+foo.com;/)
+        it "should set the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(/^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;/)
         end
       end
 
