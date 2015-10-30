@@ -11,6 +11,12 @@
 #     vHost on. Defaults to TCP 80
 #   [*listen_options*]      - Extra options for listen directive like
 #     'default' to catchall. Undef by default.
+#   [*listen_unix_socket_enable*] - BOOL value to enable/disable UNIX socket
+#     listening support (false|true).
+#   [*listen_unix_socket*]  - Default unix socket for NGINX to listen with this
+#     vHost on. Defaults to UNIX /var/run/nginx.sock
+#   [*listen_unix_socket_options*] - Extra options for listen directive like
+#     'default' to catchall. Undef by default.
 #   [*location_allow*]      - Array: Locations to allow connections from.
 #   [*location_deny*]       - Array: Locations to deny connections from.
 #   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support
@@ -168,6 +174,9 @@ define nginx::resource::vhost (
   $listen_ip                    = '*',
   $listen_port                  = '80',
   $listen_options               = undef,
+  $listen_unix_socket_enable    = false,
+  $listen_unix_socket           = '/var/run/nginx.sock',
+  $listen_unix_socket_options   = undef,
   $location_allow               = [],
   $location_deny                = [],
   $ipv6_enable                  = false,
@@ -271,6 +280,13 @@ define nginx::resource::vhost (
   }
   if ($listen_options != undef) {
     validate_string($listen_options)
+  }
+  validate_bool($listen_unix_socket_enable)
+  if !(is_array($listen_unix_socket) or is_string($listen_unix_socket)) {
+    fail('$listen_unix_socket must be a string or array.')
+  }
+  if ($listen_unix_socket_options != undef) {
+    validate_string($listen_unix_socket_options)
   }
   validate_array($location_allow)
   validate_array($location_deny)
