@@ -25,6 +25,7 @@ class nginx::config(
   $log_dir                        = $::nginx::params::log_dir,
   $http_access_log                = $::nginx::params::http_access_log,
   $nginx_error_log                = $::nginx::params::nginx_error_log,
+  $nginx_error_log_severity       = 'error',
   $pid                            = $::nginx::params::pid,
   $proxy_temp_path                = $::nginx::params::proxy_temp_path,
   $root_group                     = $::nginx::params::root_group,
@@ -169,6 +170,7 @@ class nginx::config(
   }
 
   validate_string($nginx_error_log)
+  validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
   validate_string($http_access_log)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)

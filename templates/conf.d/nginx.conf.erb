@@ -9,7 +9,7 @@ worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% if @pid -%>
 pid        <%= @pid %>;
 <% end -%>
-error_log  <%= @nginx_error_log %>;
+error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
 
 <% if @nginx_cfg_prepend -%>
 <%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
