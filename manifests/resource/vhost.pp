@@ -208,7 +208,7 @@ define nginx::resource::vhost (
   $proxy_redirect               = undef,
   $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
-  $proxy_set_header             = [],
+  $proxy_set_header             = $::nginx::config::proxy_set_header,
   $proxy_cache                  = false,
   $proxy_cache_key              = undef,
   $proxy_cache_use_stale        = undef,
