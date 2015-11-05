@@ -39,7 +39,7 @@ class nginx::config(
 
   # Primary Templates
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb',
-  $proxy_conf_template            = 'nginx/conf.d/proxy.conf.erb',
+  $proxy_conf_template            = undef,
   ### END Module/App Configuration ###
 
   ### START Nginx Configuration ###
@@ -121,6 +121,9 @@ class nginx::config(
   validate_array($proxy_set_header)
   if ($proxy_http_version != undef) {
     validate_string($proxy_http_version)
+  }
+  if ($proxy_conf_template != undef) {
+    warn('The $proxy_conf_template parameter is deprecated and has no effect.')
   }
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
