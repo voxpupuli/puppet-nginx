@@ -9,7 +9,7 @@ worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% if @pid -%>
 pid        <%= @pid %>;
 <% end -%>
-error_log  <%= @nginx_error_log %>;
+error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
 
 <% if @nginx_cfg_prepend -%>
 <%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
@@ -60,9 +60,61 @@ http {
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
 <% if @gzip == 'on' -%>
-  gzip         on;
-  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+  gzip              on;
+<% if @gzip_buffers -%>
+  gzip_buffers      <%= @gzip_buffers %>;
+<% end -%>
+  gzip_comp_level   <%= @gzip_comp_level %>;
+<% if @gzip_disable -%>
+  gzip_disable      <%= @gzip_disable %>;
+<% end -%>
+  gzip_min_length   <%= @gzip_min_length %>;
+  gzip_http_version <%= @gzip_http_version %>;
+<% if @gzip_proxied -%>
+  gzip_proxied      <%= @gzip_proxied %>;
+<% end -%>
+  gzip_types        <%= @gzip_types.kind_of?(Array) ? @gzip_types.join(' ') : @gzip_types %>;
+  gzip_vary         <%= @gzip_vary %>;
+<% end -%>
 
+<% if @client_body_temp_path -%>
+  client_body_temp_path   <%= @client_body_temp_path %>;
+<% end -%>
+<% if @client_max_body_size -%>
+  client_max_body_size    <%= @client_max_body_size %>;
+<% end -%>
+<% if @client_body_buffer_size -%>
+  client_body_buffer_size <%= @client_body_buffer_size %>;
+<% end -%>
+<% if @proxy_redirect -%>
+  proxy_redirect          <%= @proxy_redirect %>;
+<% end -%>
+<% if @proxy_temp_path -%>
+  proxy_temp_path         <%= @proxy_temp_path %>;
+<% end -%>
+<% if @proxy_connect_timeout -%>
+  proxy_connect_timeout   <%= @proxy_connect_timeout %>;
+<% end -%>
+<% if @proxy_send_timeout -%>
+  proxy_send_timeout      <%= @proxy_send_timeout %>;
+<% end -%>
+<% if @proxy_read_timeout -%>
+  proxy_read_timeout      <%= @proxy_read_timeout %>;
+<% end -%>
+<% if @proxy_buffers -%>
+  proxy_buffers           <%= @proxy_buffers %>;
+<% end -%>
+<% if @proxy_buffer_size -%>
+  proxy_buffer_size       <%= @proxy_buffer_size %>;
+<% end -%>
+<% if @proxy_http_version -%>
+  proxy_http_version      <%= @proxy_http_version %>;
+<% end -%>
+<% @proxy_set_header.each do |header| -%>
+  proxy_set_header        <%= header %>;
+<% end -%>
+<% if @proxy_headers_hash_bucket_size -%>
+  proxy_headers_hash_bucket_size <%= @proxy_headers_hash_bucket_size %>;
 <% end -%>
 <% if @proxy_cache_path -%>
   proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
@@ -93,5 +145,10 @@ http {
 <% if @mail -%>
 mail {
   include <%= @conf_dir %>/conf.mail.d/*.conf;
+}
+<% end -%>
+<% if @stream -%>
+stream {
+  include <%= @conf_dir %>/conf.stream.d/*.conf;
 }
 <% end -%>

@@ -11,6 +11,12 @@
 #     vHost on. Defaults to TCP 80
 #   [*listen_options*]      - Extra options for listen directive like
 #     'default' to catchall. Undef by default.
+#   [*listen_unix_socket_enable*] - BOOL value to enable/disable UNIX socket
+#     listening support (false|true).
+#   [*listen_unix_socket*]  - Default unix socket for NGINX to listen with this
+#     vHost on. Defaults to UNIX /var/run/nginx.sock
+#   [*listen_unix_socket_options*] - Extra options for listen directive like
+#     'default' to catchall. Undef by default.
 #   [*location_allow*]      - Array: Locations to allow connections from.
 #   [*location_deny*]       - Array: Locations to deny connections from.
 #   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support
@@ -56,8 +62,9 @@
 #     vHost on. Defaults to TCP 443
 #   [*ssl_protocols*]       - SSL protocols enabled. Defaults to 'TLSv1 TLSv1.1
 #     TLSv1.2'.
+#   [*ssl_buffer_size*]     - Sets the size of the buffer used for sending data.
 #   [*ssl_ciphers*]         - SSL ciphers enabled. Defaults to
-#     'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'.
+#     'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'.
 #   [*ssl_stapling*]        - Bool: Enables or disables stapling of OCSP
 #     responses by the server. Defaults to false.
 #   [*ssl_stapling_file*]   - String: When set, the stapled OCSP response
@@ -74,6 +81,7 @@
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
 #   [*spdy*]                - Toggles SPDY protocol.
+#   [*http2*]               - Toggles HTTP/2 protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
 #   [*www_root*]            - Specifies the location on disk for files to be
@@ -85,6 +93,10 @@
 #     checked as an array. Cannot be used in conjuction with $proxy.
 #   [*proxy_cache*]             - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_cache_valid*]       - This directive sets the time for caching
 #     different replies.
 #   [*proxy_method*]            - If defined, overrides the HTTP method of the
@@ -162,6 +174,9 @@ define nginx::resource::vhost (
   $listen_ip                    = '*',
   $listen_port                  = '80',
   $listen_options               = undef,
+  $listen_unix_socket_enable    = false,
+  $listen_unix_socket           = '/var/run/nginx.sock',
+  $listen_unix_socket_options   = undef,
   $location_allow               = [],
   $location_deny                = [],
   $ipv6_enable                  = false,
@@ -177,7 +192,8 @@ define nginx::resource::vhost (
   $ssl_key                      = undef,
   $ssl_port                     = '443',
   $ssl_protocols                = 'TLSv1 TLSv1.1 TLSv1.2',
-  $ssl_ciphers                  = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA',
+  $ssl_buffer_size              = undef,
+  $ssl_ciphers                  = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA',
   $ssl_cache                    = 'shared:SSL:10m',
   $ssl_crl                      = undef,
   $ssl_stapling                 = false,
@@ -187,12 +203,15 @@ define nginx::resource::vhost (
   $ssl_session_timeout          = '5m',
   $ssl_trusted_cert             = undef,
   $spdy                         = $::nginx::config::spdy,
+  $http2                        = $::nginx::config::http2,
   $proxy                        = undef,
   $proxy_redirect               = undef,
   $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
-  $proxy_set_header             = [],
+  $proxy_set_header             = $::nginx::config::proxy_set_header,
   $proxy_cache                  = false,
+  $proxy_cache_key              = undef,
+  $proxy_cache_use_stale        = undef,
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
@@ -262,6 +281,13 @@ define nginx::resource::vhost (
   if ($listen_options != undef) {
     validate_string($listen_options)
   }
+  validate_bool($listen_unix_socket_enable)
+  if !(is_array($listen_unix_socket) or is_string($listen_unix_socket)) {
+    fail('$listen_unix_socket must be a string or array.')
+  }
+  if ($listen_unix_socket_options != undef) {
+    validate_string($listen_unix_socket_options)
+  }
   validate_array($location_allow)
   validate_array($location_deny)
   validate_bool($ipv6_enable)
@@ -321,6 +347,12 @@ define nginx::resource::vhost (
   validate_array($proxy_set_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
+  }
+  if ($proxy_cache_key != undef) {
+    validate_string($proxy_cache_key)
+  }
+  if ($proxy_cache_use_stale != undef) {
+    validate_string($proxy_cache_use_stale)
   }
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
@@ -516,7 +548,7 @@ define nginx::resource::vhost (
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    ::nginx::resource::location {"${name_sanitized}-default":
+    nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
       vhost                       => $name_sanitized,
       ssl                         => $ssl,
@@ -529,6 +561,8 @@ define nginx::resource::vhost (
       proxy_read_timeout          => $proxy_read_timeout,
       proxy_connect_timeout       => $proxy_connect_timeout,
       proxy_cache                 => $proxy_cache,
+      proxy_cache_key             => $proxy_cache_key,
+      proxy_cache_use_stale       => $proxy_cache_use_stale,
       proxy_cache_valid           => $proxy_cache_valid,
       proxy_method                => $proxy_method,
       proxy_set_header            => $proxy_set_header,

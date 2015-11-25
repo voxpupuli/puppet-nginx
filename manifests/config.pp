@@ -25,6 +25,7 @@ class nginx::config(
   $log_dir                        = $::nginx::params::log_dir,
   $http_access_log                = $::nginx::params::http_access_log,
   $nginx_error_log                = $::nginx::params::nginx_error_log,
+  $nginx_error_log_severity       = 'error',
   $pid                            = $::nginx::params::pid,
   $proxy_temp_path                = $::nginx::params::proxy_temp_path,
   $root_group                     = $::nginx::params::root_group,
@@ -38,7 +39,7 @@ class nginx::config(
 
   # Primary Templates
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb',
-  $proxy_conf_template            = 'nginx/conf.d/proxy.conf.erb',
+  $proxy_conf_template            = undef,
   ### END Module/App Configuration ###
 
   ### START Nginx Configuration ###
@@ -53,12 +54,21 @@ class nginx::config(
   $fastcgi_cache_path             = false,
   $fastcgi_cache_use_stale        = false,
   $gzip                           = 'on',
+  $gzip_buffers                   = undef,
+  $gzip_comp_level                = 1,
+  $gzip_disable                   = 'msie6',
+  $gzip_min_length                = 20,
+  $gzip_http_version              = 1.1,
+  $gzip_proxied                   = 'off',
+  $gzip_types                     = 'text/html',
+  $gzip_vary                      = 'off',
   $http_cfg_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
   $log_format                     = {},
   $mail                           = false,
+  $stream                         = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
   $names_hash_max_size            = '512',
@@ -84,6 +94,7 @@ class nginx::config(
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
+  $http2                          = 'off',
   $ssl_stapling                   = 'off',
   $types_hash_bucket_size         = '512',
   $types_hash_max_size            = '1024',
@@ -110,6 +121,9 @@ class nginx::config(
   validate_array($proxy_set_header)
   if ($proxy_http_version != undef) {
     validate_string($proxy_http_version)
+  }
+  if ($proxy_conf_template != undef) {
+    warn('The $proxy_conf_template parameter is deprecated and has no effect.')
   }
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
@@ -159,6 +173,7 @@ class nginx::config(
   }
 
   validate_string($nginx_error_log)
+  validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
   validate_string($http_access_log)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
@@ -174,6 +189,16 @@ class nginx::config(
 
   file { $conf_dir:
     ensure => directory,
+  }
+
+  file { "${conf_dir}/conf.stream.d":
+    ensure => directory,
+  }
+  if $confd_purge == true {
+    File["${conf_dir}/conf.stream.d"] {
+      purge   => true,
+      recurse => true,
+    }
   }
 
   file { "${conf_dir}/conf.d":
@@ -206,6 +231,10 @@ class nginx::config(
   }
 
   file {$run_dir:
+    ensure => directory,
+  }
+
+  file { $log_dir:
     ensure => directory,
   }
 
@@ -254,8 +283,7 @@ class nginx::config(
   }
 
   file { "${conf_dir}/conf.d/proxy.conf":
-    ensure  => file,
-    content => template($proxy_conf_template),
+    ensure  => absent,
   }
 
   file { "${conf_dir}/conf.d/default.conf":

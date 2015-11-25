@@ -1,4 +1,5 @@
 <% if @rewrite_www_to_non_www -%>
+<%- @server_name.each do |s| -%>
 server {
   <%- if @listen_ip.is_a?(Array) then -%>
     <%- @listen_ip.each do |ip| -%>
@@ -6,6 +7,15 @@ server {
     <%- end -%>
   <%- else -%>
   listen       <%= @listen_ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+  <%- end -%>
+  <%- if @listen_unix_socket_enable -%>
+    <%- if @listen_unix_socket.is_a?(Array) then -%>
+      <%- @listen_unix_socket.each do |unix_socket| -%>
+  listen unix:<%= unix_socket %><% if @listen_unix_socket_options %> <%= @listen_unix_socket_options %><% end %>;
+      <%- end -%>
+    <%- else -%>
+  listen unix:<%= @listen_unix_socket %><% if @listen_unix_socket_options %> <%= @listen_unix_socket_options %><% end %>;
+    <%- end -%>
   <%- end -%>
 <%# check to see if ipv6 support exists in the kernel before applying -%>
   <%- if @ipv6_enable && (defined? @ipaddress6) -%>
@@ -17,10 +27,11 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
     <%- end -%>
   <%- end -%>
-  server_name  www.<%= @server_name[0].gsub(/^www\./, '') %>;
-  return       301 http://<%= @server_name[0].gsub(/^www\./, '') %>$request_uri;
+  server_name  www.<%= s.gsub(/^www\./, '') %>;
+  return       301 http://<%= s.gsub(/^www\./, '') %>$request_uri;
 }
 
+<% end -%>
 <% end -%>
 server {
 <%- if @listen_ip.is_a?(Array) then -%>
@@ -29,6 +40,15 @@ server {
   <%- end -%>
 <%- else -%>
   listen <%= @listen_ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+<%- end -%>
+<%- if @listen_unix_socket_enable -%>
+  <%- if @listen_unix_socket.is_a?(Array) then -%>
+    <%- @listen_unix_socket.each do |unix_socket| -%>
+  listen unix:<%= unix_socket %><% if @listen_unix_socket_options %> <%= @listen_unix_socket_options %><% end %>;
+    <%- end -%>
+  <%- else -%>
+  listen unix:<%= @listen_unix_socket %><% if @listen_unix_socket_options %> <%= @listen_unix_socket_options %><% end %>;
+  <%- end -%>
 <%- end -%>
 <%# check to see if ipv6 support exists in the kernel before applying -%>
 <%- if @ipv6_enable && (defined? @ipaddress6) -%>
@@ -40,7 +60,7 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
-  server_name           <%= @rewrite_www_to_non_www ? @server_name[0].gsub(/^www\./, '') : @server_name.join(" ") %>;
+  server_name           <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
   <%- if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";

@@ -70,6 +70,10 @@
 #   [*option*]               - Reserved for future use
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
 #     The same zone can be used in multiple places.
+#   [*proxy_cache_key*]     - Override the default proxy_cache_key of
+#     $scheme$proxy_host$request_uri
+#   [*proxy_cache_use_stale*] - Override the default proxy_cache_use_stale value
+#     of off.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
 #     different replies.
 #   [*proxy_method*]         - If defined, overrides the HTTP method of the
@@ -166,6 +170,8 @@ define nginx::resource::location (
   $include              = undef,
   $try_files            = undef,
   $proxy_cache          = false,
+  $proxy_cache_key      = undef,
+  $proxy_cache_use_stale = undef,
   $proxy_cache_valid    = false,
   $proxy_method         = undef,
   $proxy_set_body       = undef,
@@ -277,6 +283,12 @@ define nginx::resource::location (
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
+  if ($proxy_cache_key != undef) {
+    validate_string($proxy_cache_key)
+  }
+  if ($proxy_cache_use_stale != undef) {
+    validate_string($proxy_cache_use_stale)
+  }
   if ($proxy_cache_valid != false) {
     validate_string($proxy_cache_valid)
   }
@@ -296,7 +308,7 @@ define nginx::resource::location (
     fail('$priority must be an integer.')
   }
   validate_array($rewrite_rules)
-  if ($priority < 401) or ($priority > 899) {
+  if (($priority + 0) < 401) or (($priority + 0) > 899) {
     fail('$priority must be in the range 401-899.')
   }
 
@@ -368,6 +380,7 @@ define nginx::resource::location (
     $tmpFile=md5("${vhost_sanitized}-${priority}-${location_sanitized}")
 
     concat::fragment { $tmpFile:
+      ensure  => $ensure_real,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -384,6 +397,7 @@ define nginx::resource::location (
 
     $sslTmpFile=md5("${vhost_sanitized}-${ssl_priority}-${location_sanitized}-ssl")
     concat::fragment { $sslTmpFile:
+      ensure  => $ensure_real,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),

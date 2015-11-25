@@ -11,6 +11,9 @@
 <% end -%>
   ssl_session_cache         <%= @ssl_cache %>;
   ssl_session_timeout       <%= @ssl_session_timeout %>;
+<% if @ssl_buffer_size -%>
+  ssl_buffer_size           <%= @ssl_buffer_size %>;
+<% end -%>
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
