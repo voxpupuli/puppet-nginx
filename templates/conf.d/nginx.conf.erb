@@ -116,9 +116,12 @@ http {
 <% if @proxy_headers_hash_bucket_size -%>
   proxy_headers_hash_bucket_size <%= @proxy_headers_hash_bucket_size %>;
 <% end -%>
-<% if @proxy_cache_path -%>
+<% if @proxy_cache_path.is_a?(Hash) -%>
+<% @proxy_cache_path.sort_by{|k,v| k}.each do |key,value| -%>
+  proxy_cache_path        <%= key %> keys_zone=<%= value %> levels=<%= @proxy_cache_levels %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
+<% end -%>
+<% elsif @proxy_cache_path -%>
   proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
-
 <% end -%>
 <% if @fastcgi_cache_path -%>
   fastcgi_cache_path    	<%= @fastcgi_cache_path %> levels=<%= @fastcgi_cache_levels %> keys_zone=<%= @fastcgi_cache_keys_zone %> max_size=<%= @fastcgi_cache_max_size %> inactive=<%= @fastcgi_cache_inactive %>;
