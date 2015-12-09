@@ -101,6 +101,7 @@
 #     different replies.
 #   [*proxy_method*]            - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
+#   [*proxy_http_version*]      - Sets the proxy http version
 #   [*proxy_set_body*]          - If defined, sets the body passed to the backend.
 #   [*auth_basic*]              - This directive includes testing name and
 #      password with HTTP Basic Authentication.
@@ -157,6 +158,8 @@
 #   [*maintenance*]             - A boolean value to set a vhost in maintenance
 #   [*maintenance_value*]       - Value to return when maintenance is on.
 #                                 Default to return 503
+#   [*error_pages*]             - Hash: setup errors pages, hash key is the http
+#                                 code and hash value the page
 # Actions:
 #
 # Requires:
@@ -214,6 +217,7 @@ define nginx::resource::vhost (
   $proxy_cache_use_stale        = undef,
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
+  $proxy_http_version           = undef,
   $proxy_set_body               = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
@@ -267,7 +271,8 @@ define nginx::resource::vhost (
   $group                        = $::nginx::config::global_group,
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
-  $maintenance_value            = 'return 503'
+  $maintenance_value            = 'return 503',
+  $error_pages                  = {},
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -359,6 +364,9 @@ define nginx::resource::vhost (
   }
   if ($proxy_method != undef) {
     validate_string($proxy_method)
+  }
+  if ($proxy_http_version != undef) {
+    validate_string($proxy_http_version)
   }
   if ($proxy_set_body != undef) {
     validate_string($proxy_set_body)
@@ -565,6 +573,7 @@ define nginx::resource::vhost (
       proxy_cache_use_stale       => $proxy_cache_use_stale,
       proxy_cache_valid           => $proxy_cache_valid,
       proxy_method                => $proxy_method,
+      proxy_http_version          => $proxy_http_version,
       proxy_set_header            => $proxy_set_header,
       proxy_set_body              => $proxy_set_body,
       fastcgi                     => $fastcgi,
