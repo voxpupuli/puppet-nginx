@@ -63,6 +63,7 @@ class nginx::config(
   $gzip_types                     = 'text/html',
   $gzip_vary                      = 'off',
   $http_cfg_append                = false,
+  $http_raw_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
@@ -166,6 +167,12 @@ class nginx::config(
   if ($http_cfg_append != false) {
     if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
       fail('$http_cfg_append must be either a hash or array')
+    }
+  }
+
+  if ($http_raw_append != false) {
+    if !(is_array($http_raw_append)) {
+      fail('$http_raw_append must be an array')
     }
   }
 
