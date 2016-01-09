@@ -2,13 +2,13 @@
     root          <%= @www_root %>;
 <% end -%>
     include       <%= @fastcgi_params %>;
-<% if @try_files -%>
-    try_files    <% @try_files.each do |try| -%> <%= try %><% end -%>;
-<% end -%>
 
     fastcgi_pass  <%= @fastcgi %>;
 <% if @fastcgi_split_path -%>
     fastcgi_split_path_info <%= @fastcgi_split_path %>;
+<% end -%>
+<% if @try_files -%>
+    try_files    <% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
 <% if defined? @fastcgi_script -%>
     <%-# this setting can be overridden by setting it in the fastcgi_param hash too %>
