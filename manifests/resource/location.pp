@@ -312,12 +312,6 @@ define nginx::resource::location (
     fail('$priority must be in the range 401-899.')
   }
 
-  # # Shared Variables
-  $ensure_real = $ensure ? {
-    'absent' => absent,
-    default  => file,
-  }
-
   ## Check for various error conditions
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
@@ -379,7 +373,7 @@ define nginx::resource::location (
   $location_md5 = md5($location)
   if ($ssl_only != true) {
     concat::fragment { "${vhost_sanitized}-${priority}-${location_md5}":
-      ensure  => $ensure_real,
+      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),
@@ -395,7 +389,7 @@ define nginx::resource::location (
     $ssl_priority = $priority + 300
 
     concat::fragment { "${vhost_sanitized}-${ssl_priority}-${location_md5}-ssl":
-      ensure  => $ensure_real,
+      ensure  => $ensure,
       target  => $config_file,
       content => join([
         template('nginx/vhost/location_header.erb'),

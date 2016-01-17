@@ -281,7 +281,7 @@ class nginx::config(
   }
 
   file { "${conf_dir}/nginx.conf":
-    ensure  => file,
+    ensure  => present,
     content => template($conf_template),
   }
 

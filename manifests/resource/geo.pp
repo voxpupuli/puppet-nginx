@@ -75,11 +75,6 @@ define nginx::resource::geo (
 
   $root_group = $::nginx::config::root_group
 
-  $ensure_real = $ensure ? {
-    'absent' => 'absent',
-    default  => 'file',
-  }
-
   File {
     owner => 'root',
     group => $root_group,
@@ -87,7 +82,7 @@ define nginx::resource::geo (
   }
 
   file { "${::nginx::config::conf_dir}/conf.d/${name}-geo.conf":
-    ensure  => $ensure_real,
+    ensure  => $ensure,
     content => template('nginx/conf.d/geo.erb'),
     notify  => Class['::nginx::service'],
   }
