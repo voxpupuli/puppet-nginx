@@ -157,6 +157,7 @@
 #   [*maintenance*]             - A boolean value to set a vhost in maintenance
 #   [*maintenance_value*]       - Value to return when maintenance is on.
 #                                 Default to return 503
+#   [*locations*]               - Hash of vhosts ressources used by this vhost
 # Actions:
 #
 # Requires:
@@ -267,7 +268,8 @@ define nginx::resource::vhost (
   $group                        = $::nginx::config::global_group,
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
-  $maintenance_value            = 'return 503'
+  $maintenance_value            = 'return 503',
+  $locations                    = {}
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -482,6 +484,7 @@ define nginx::resource::vhost (
   validate_array($rewrite_rules)
   validate_hash($string_mappings)
   validate_hash($geo_mappings)
+  validate_hash($locations)
 
   validate_string($owner)
   validate_string($group)
@@ -664,4 +667,11 @@ define nginx::resource::vhost (
 
   create_resources('::nginx::resource::map', $string_mappings)
   create_resources('::nginx::resource::geo', $geo_mappings)
+  create_resources('::nginx::resource::location', $locations, {
+    ensure   => $ensure,
+    vhost    => $name_sanitized,
+    ssl      => $ssl,
+    ssl_only => $ssl_only,
+    www_root => $www_root,
+  })
 }
