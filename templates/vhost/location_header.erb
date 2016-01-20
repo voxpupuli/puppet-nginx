@@ -61,7 +61,6 @@
     <%- end -%>
 <% end -%>
 <%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
-
     <%- @rewrite_rules.each do |rewrite_rule| -%>
     rewrite <%= rewrite_rule %>;
     <%- end -%>
