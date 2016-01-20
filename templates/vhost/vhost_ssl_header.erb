@@ -48,12 +48,9 @@ server {
   server_name  <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
 
 <%= scope.function_template(["nginx/vhost/vhost_ssl_settings.erb"]) %>
-
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
-
-
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
@@ -66,7 +63,6 @@ server {
   <% end -%>
 <%- end -%>
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'client_' } -%>
-
   <%- if defined? @client_body_timeout -%>
   client_body_timeout <%= @client_body_timeout %>;
   <%- end -%>
@@ -76,7 +72,6 @@ server {
   <%- if defined? @client_max_body_size -%>
   client_max_body_size <%= @client_max_body_size %>;
   <%- end -%>
-
 <% end -%>
 <% if defined? @gzip_types -%>
   gzip_types <%= @gzip_types %>;

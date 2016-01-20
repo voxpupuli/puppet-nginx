@@ -9,11 +9,9 @@
     proxy_set_body        <%= @proxy_set_body %>;
 <% end -%>
 <% unless @proxy_set_header.nil? -%>
-
     <%- @proxy_set_header.each do |header| -%>
     proxy_set_header      <%= header %>;
     <%- end -%>
-
 <% end -%>
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
