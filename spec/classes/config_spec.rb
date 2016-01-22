@@ -43,7 +43,7 @@ describe 'nginx::config' do
         )}
         it { is_expected.to contain_file('/etc/nginx/sites-enabled/default').with_ensure('absent') }
         it { is_expected.to contain_file("/etc/nginx/nginx.conf").with(
-          :ensure => 'file',
+          :ensure => 'present',
           :owner => 'root',
           :group => 'root',
           :mode => '0644'

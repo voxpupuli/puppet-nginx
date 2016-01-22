@@ -32,7 +32,7 @@ describe 'nginx::resource::geo' do
           'owner'   => 'root',
           'group'   => 'root',
           'mode'    => '0644',
-          'ensure'  => 'file',
+          'ensure'  => 'present',
           'content' => /geo \$#{title}/,
         }
       )}
