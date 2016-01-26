@@ -125,6 +125,24 @@ describe 'nginx::config' do
           :notmatch => /pid/,
         },
         {
+          :title => 'should set accept_mutex on',
+          :attr  => 'accept_mutex',
+          :value => 'on',
+          :match => '  accept_mutex on;',
+        },
+        {
+          :title => 'should set accept_mutex off',
+          :attr  => 'accept_mutex',
+          :value => 'off',
+          :match => '  accept_mutex off;',
+        },
+        {
+          :title => 'should set accept_mutex_delay',
+          :attr  => 'accept_mutex_delay',
+          :value => '500s',
+          :match => '  accept_mutex_delay 500s;',
+        },
+        {
           :title => 'should set worker_connections',
           :attr  => 'worker_connections',
           :value => '100',
