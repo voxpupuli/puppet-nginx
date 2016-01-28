@@ -33,7 +33,16 @@ This module manages NGINX configuration.
 class { 'nginx': }
 ```
 
-### Creating a new virtual host
+### A simple reverse proxy
+
+```puppet
+nginx::resource::vhost { 'kibana.myhost.com':
+  listen_port => 80,
+  proxy       => 'http://localhost:5601',
+}
+```
+
+### A virtual host with static content
 
 ```puppet
 nginx::resource::vhost { 'www.puppetlabs.com':
@@ -41,7 +50,7 @@ nginx::resource::vhost { 'www.puppetlabs.com':
 }
 ```
 
-### Add a Proxy Server
+### A more complex proxy example
 
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
@@ -56,9 +65,6 @@ nginx::resource::vhost { 'rack.puppetlabs.com':
   proxy => 'http://puppet_rack_app',
 }
 ```
-
-
-
 
 ### Add a smtp proxy
 
