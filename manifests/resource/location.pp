@@ -61,7 +61,7 @@
 #     to put before anything else inside location (used with all other types
 #     except custom_cfg). Used for logical structures such as if.
 #   [*location_custom_cfg_append*]    - Expects a array with extra directives
-#     to put before anything else inside location (used with all other types
+#     to put after anything else inside location (used with all other types
 #     except custom_cfg). Used for logical structures such as if.
 #   [*location_cfg_append*]  - Expects a hash with extra directives to put
 #     after everything else inside location (used with all other types except
