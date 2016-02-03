@@ -1,3 +1,4 @@
+# MANAGED BY PUPPET
 upstream <%= @name %> {
 <% if @upstream_cfg_prepend -%><% @upstream_cfg_prepend.sort_by{|k,v| k}.each do |key,value| %>
 <% if value.is_a?(Hash) -%><% value.each do |subkey,subvalue| -%>
