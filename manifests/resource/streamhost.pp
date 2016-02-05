@@ -11,8 +11,6 @@
 #     streamhost on. Defaults to TCP 80
 #   [*listen_options*]      - Extra options for listen directive like
 #     'default' to catchall. Undef by default.
-#   [*location_allow*]      - Array: Locations to allow connections from.
-#   [*location_deny*]       - Array: Locations to deny connections from.
 #   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support
 #     (false|true). Module will check to see if IPv6 support exists on your
 #     system before enabling.
@@ -23,18 +21,11 @@
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
-#   [*add_header*]          - Hash: Adds headers to the HTTP response when
-#     response code is equal to 200, 204, 301, 302 or 304.
-#   [*index_files*]         - Default index files for NGINX to read when
-#     traversing a directory
-#   [*autoindex*]           - Set it on 'on' or 'off 'to activate/deactivate
-#                             autoindex directory listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
 #     nginx::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
-#   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
 #   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*server_name*]         - List of streamhost names for which this streamhost will
