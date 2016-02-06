@@ -1,6 +1,6 @@
 {
   "name": "jfryman-nginx",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "author": "James Fryman",
   "summary": "Puppet NGINX management module",
   "license": "MIT",
