@@ -60,7 +60,7 @@ class nginx::config(
   $gzip_min_length                = 20,
   $gzip_http_version              = 1.1,
   $gzip_proxied                   = 'off',
-  $gzip_types                     = 'text/html',
+  $gzip_types                     = undef,
   $gzip_vary                      = 'off',
   $http_cfg_append                = false,
   $http_tcp_nodelay               = 'on',
