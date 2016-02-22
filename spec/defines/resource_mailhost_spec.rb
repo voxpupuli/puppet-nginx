@@ -110,22 +110,22 @@ describe 'nginx::resource::mailhost' do
           :match => '  auth_http             test-auth_http;',
         },
         {
-          :title => 'should set starttls',
+          :title => 'should set starttls to on',
           :attr  => 'starttls',
           :value => 'on',
-          :match => '  starttls              on;',
+          :match => '  starttls  on;',
         },
         {
-          :title => 'should set starttls',
+          :title => 'should set starttls to only',
           :attr  => 'starttls',
           :value => 'only',
-          :match => '  starttls              only;',
+          :match => '  starttls  only;',
         },
         {
           :title    => 'should not enable SSL',
           :attr     => 'starttls',
           :value    => 'off',
-          :notmatch => /  ssl_session_timeout  5m;/,
+          :notmatch => /  ssl_session_timeout   5m;/,
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -155,31 +155,31 @@ describe 'nginx::resource::mailhost' do
           :title => 'should enable SSL',
           :attr  => 'starttls',
           :value => 'on',
-          :match => '  ssl_session_timeout  5m;',
+          :match => '  ssl_session_timeout        5m;',
         },
         {
           :title => 'should enable SSL',
           :attr  => 'starttls',
           :value => 'only',
-          :match => '  ssl_session_timeout  5m;',
+          :match => '  ssl_session_timeout        5m;',
         },
         {
           :title    => 'should not enable SSL',
           :attr     => 'starttls',
           :value    => 'off',
-          :notmatch => /  ssl_session_timeout  5m;/,
+          :notmatch => '  ssl_session_timeout       5m;',
         },
         {
           :title => 'should set ssl_certificate',
           :attr  => 'ssl_cert',
           :value => 'test-ssl-cert',
-          :match => '  ssl_certificate      test-ssl-cert;',
+          :match => '  ssl_certificate            test-ssl-cert;',
         },
         {
           :title => 'should set ssl_certificate_key',
           :attr  => 'ssl_key',
           :value => 'test-ssl-cert-key',
-          :match => '  ssl_certificate_key  test-ssl-cert-key;',
+          :match => '  ssl_certificate_key        test-ssl-cert-key;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -269,13 +269,13 @@ describe 'nginx::resource::mailhost' do
           :title => 'should set ssl_certificate',
           :attr  => 'ssl_cert',
           :value => 'test-ssl-cert',
-          :match => '  ssl_certificate      test-ssl-cert;',
+          :match => '  ssl_certificate            test-ssl-cert;',
         },
         {
           :title => 'should set ssl_certificate_key',
           :attr  => 'ssl_key',
           :value => 'test-ssl-cert-key',
-          :match => '  ssl_certificate_key  test-ssl-cert-key;',
+          :match => '  ssl_certificate_key        test-ssl-cert-key;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do

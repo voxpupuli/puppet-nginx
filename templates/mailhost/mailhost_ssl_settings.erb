@@ -1,0 +1,38 @@
+
+  ssl_certificate            <%= @ssl_cert %>;
+  ssl_certificate_key        <%= @ssl_key %>;
+  ssl_ciphers                <%= @ssl_ciphers %>;
+<% if defined? @ssl_client_cert -%>
+  ssl_client_certificate     <%= @ssl_client_cert %>;
+  ssl_verify_client          on;
+<% end -%>
+<%- if defined? @ssl_verify_depth -%>
+  ssl_verify_depth           <%= @ssl_verify_depth %>;
+<%- end -%>
+<% if @ssl_crl -%>
+  ssl_crl                    <%= @ssl_crl %>;
+<% end -%>
+<% if defined? @ssl_dhparam -%>
+  ssl_dhparam                <%= @ssl_dhparam %>;
+<% end -%>
+<%- if defined? @ssl_ecdh_curve -%>
+  ssl_ecdh_curve             <%= @ssl_ecdh_curve %>;
+<%- end -%>
+<%- if defined? @ssl_password_file -%>
+  ssl_password_file          <%= @ssl_password_file %>;
+<%- end -%>
+  ssl_prefer_server_ciphers  on;
+  ssl_protocols              <%= @ssl_protocols %>;
+<% if defined? @ssl_session_cache -%>
+  ssl_session_cache          <%= @ssl_session_cache %>;
+<% end -%>
+<%- if defined? @ssl_session_ticket_key -%>
+  ssl_session_ticket_key     <%= @ssl_session_ticket_key %>;
+<%- end -%>
+<%- if defined? @ssl_session_tickets -%>
+  ssl_session_tickets        <%= @ssl_session_tickets %>;
+<%- end -%>
+  ssl_session_timeout        <%= @ssl_session_timeout %>;
+<%- if defined? @ssl_trusted_cert -%>
+  ssl_trusted_certificate    <%= @ssl_trusted_cert %>;
+<%- end -%>
