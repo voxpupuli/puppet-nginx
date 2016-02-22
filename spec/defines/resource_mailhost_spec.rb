@@ -122,10 +122,16 @@ describe 'nginx::resource::mailhost' do
           :match => '  starttls  only;',
         },
         {
+          :title => 'should set starttls to only and ssl_protocols to defaul',
+          :attr  => 'starttls',
+          :value => 'only',
+          :match => '  ssl_protocols              TLSv1 TLSv1.1 TLSv1.2;',
+        },
+        {
           :title    => 'should not enable SSL',
           :attr     => 'starttls',
           :value    => 'off',
-          :notmatch => /  ssl_session_timeout   5m;/,
+          :notmatch => '  ssl_session_timeout   5m;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -134,6 +140,117 @@ describe 'nginx::resource::mailhost' do
             :ipv6_enable => true,
             :ssl_cert    => 'dummy.crt',
             :ssl_key     => 'dummy.key',
+          } end
+          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+
+          it { is_expected.to contain_concat__fragment("#{title}-header") }
+          it param[:title] do
+            lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            Array(param[:notmatch]).each do |item|
+              is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+            end
+          end
+        end
+      end
+    end
+
+    describe "mailhost template content for imap" do
+      [
+        {
+          :title => 'should set imap_auth',
+          :attr  => 'imap_auth',
+          :value => 'login',
+          :match => '  imap_auth           login;',
+        },
+        {
+          :title => 'should set imap_capabilities',
+          :attr  => 'imap_capabilities',
+          :value => ['"SIZE 52428800"', 'IMAP4rev1', 'UIDPLUS'],
+          :match => '  imap_capabilities   "SIZE 52428800" IMAP4rev1 UIDPLUS;',
+        },
+        {
+          :title => 'should set imap_client_buffer',
+          :attr  => 'imap_client_buffer',
+          :value => '8k',
+          :match => '  imap_client_buffer  8k;',
+        },
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let :default_params do {
+            :listen_port => 25,
+            :ipv6_enable => true,
+            :protocol    => 'imap',
+          } end
+          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+
+          it { is_expected.to contain_concat__fragment("#{title}-header") }
+          it param[:title] do
+            lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            Array(param[:notmatch]).each do |item|
+              is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+            end
+          end
+        end
+      end
+    end
+
+    describe "mailhost template content for pop3" do
+      [
+        {
+          :title => 'should set pop3_auth',
+          :attr  => 'pop3_auth',
+          :value => 'login',
+          :match => '  pop3_auth          login;',
+        },
+        {
+          :title => 'should set pop3_capabilities',
+          :attr  => 'pop3_capabilities',
+          :value => ['TOP', 'USER', 'UIDL'],
+          :match => '  pop3_capabilities  TOP USER UIDL;',
+        },
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let :default_params do {
+            :listen_port => 25,
+            :ipv6_enable => true,
+            :protocol    => 'pop3',
+          } end
+          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+
+          it { is_expected.to contain_concat__fragment("#{title}-header") }
+          it param[:title] do
+            lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+            expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+            Array(param[:notmatch]).each do |item|
+              is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+            end
+          end
+        end
+      end
+    end
+
+    describe "mailhost template content for smtp" do
+      [
+        {
+          :title => 'should set smtp_auth',
+          :attr  => 'smtp_auth',
+          :value => 'login',
+          :match => '  smtp_auth          login;',
+        },
+        {
+          :title => 'should set smtp_capabilities',
+          :attr  => 'smtp_capabilities',
+          :value => ['8BITMIME', 'PIPELINING', 'HELP'],
+          :match => '  smtp_capabilities  8BITMIME PIPELINING HELP;',
+        },
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let :default_params do {
+            :listen_port => 25,
+            :ipv6_enable => true,
+            :protocol    => 'smtp',
           } end
           let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
 
@@ -180,6 +297,90 @@ describe 'nginx::resource::mailhost' do
           :attr  => 'ssl_key',
           :value => 'test-ssl-cert-key',
           :match => '  ssl_certificate_key        test-ssl-cert-key;',
+        },
+        {
+          :title => 'should set ssl_ciphers',
+          :attr  => 'ssl_ciphers',
+          :value => 'ECDHE-ECDSA-CHACHA20-POLY1305',
+          :match => '  ssl_ciphers                ECDHE-ECDSA-CHACHA20-POLY1305;',
+        },
+        {
+          :title => 'should set ssl_client_certificate',
+          :attr  => 'ssl_client_cert',
+          :value => 'client-cert',
+          :match => '  ssl_client_certificate     client-cert;',
+        },
+        {
+          :title => 'should set ssl_crl',
+          :attr  => 'ssl_crl',
+          :value => 'crl-file',
+          :match => '  ssl_crl                    crl-file;',
+        },
+        {
+          :title => 'should set ssl_dhparam',
+          :attr  => 'ssl_dhparam',
+          :value => 'dhparam-file',
+          :match => '  ssl_dhparam                dhparam-file;',
+        },
+        {
+          :title => 'should set ssl_ecdh_curve',
+          :attr  => 'ssl_ecdh_curve',
+          :value => 'secp521r1',
+          :match => '  ssl_ecdh_curve             secp521r1;',
+        },
+        {
+          :title => 'should set ssl_client_certificate',
+          :attr  => 'ssl_client_cert',
+          :value => 'client-cert',
+          :match => '  ssl_client_certificate     client-cert;',
+        },
+        {
+          :title => 'should set ssl_password_file',
+          :attr  => 'ssl_password_file',
+          :value => 'password-file',
+          :match => '  ssl_password_file          password-file;',
+        },
+        {
+          :title => 'should set ssl_protocols',
+          :attr  => 'ssl_protocols',
+          :value => 'TLSv1.2',
+          :match => '  ssl_protocols              TLSv1.2;',
+        },
+        {
+          :title => 'should set ssl_session_cache',
+          :attr  => 'ssl_session_cache',
+          :value => 'none',
+          :match => '  ssl_session_cache          none;',
+        },
+        {
+          :title => 'should set ssl_session_ticket_key',
+          :attr  => 'ssl_session_ticket_key',
+          :value => 'key-file',
+          :match => '  ssl_session_ticket_key     key-file;',
+        },
+        {
+          :title => 'should set ssl_session_tickets',
+          :attr  => 'ssl_session_tickets',
+          :value => 'on',
+          :match => '  ssl_session_tickets        on;',
+        },
+        {
+          :title => 'should set ssl_session_timeout',
+          :attr  => 'ssl_session_timeout',
+          :value => '20m',
+          :match => '  ssl_session_timeout        20m;',
+        },
+        {
+          :title => 'should set ssl_trusted_certificate',
+          :attr  => 'ssl_trusted_cert',
+          :value => 'trust-cert',
+          :match => '  ssl_trusted_certificate    trust-cert;',
+        },
+        {
+          :title => 'should set ssl_verify_depth',
+          :attr  => 'ssl_verify_depth',
+          :value => 2,
+          :match => '  ssl_verify_depth           2;',
         },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
