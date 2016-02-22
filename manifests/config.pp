@@ -123,7 +123,7 @@ class nginx::config(
     validate_string($proxy_http_version)
   }
   if ($proxy_conf_template != undef) {
-    warn('The $proxy_conf_template parameter is deprecated and has no effect.')
+    warning('The $proxy_conf_template parameter is deprecated and has no effect.')
   }
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
