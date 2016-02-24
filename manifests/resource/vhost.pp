@@ -10,7 +10,7 @@
 #   [*listen_port*]         - Default IP Port for NGINX to listen with this
 #     vHost on. Defaults to TCP 80
 #   [*listen_options*]      - Extra options for listen directive like
-#     'default' to catchall. Undef by default.
+#     'default_server' to catchall. Undef by default.
 #   [*listen_unix_socket_enable*] - BOOL value to enable/disable UNIX socket
 #     listening support (false|true).
 #   [*listen_unix_socket*]  - Default unix socket for NGINX to listen with this
