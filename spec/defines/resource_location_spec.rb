@@ -71,6 +71,12 @@ describe 'nginx::resource::location' do
           :match => '    flv;'
         },
         {
+          :title => 'should set location_satisfy',
+          :attr  => 'location_satisfy',
+          :value => 'any',
+          :match => '    satisfy any;'
+        },
+        {
           :title => 'should set location_allow',
           :attr  => 'location_allow',
           :value => %w( 127.0.0.1 10.0.0.1 ),

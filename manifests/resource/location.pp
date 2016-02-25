@@ -11,6 +11,7 @@
 #     entry to include with
 #   [*location*]             - Specifies the URI associated with this location
 #     entry
+#   [*location_satisfy*]    - Allows access if all (all) or at least one (any) of the auth modules allow access.
 #   [*location_allow*]       - Array: Locations to allow connections from.
 #   [*location_deny*]        - Array: Locations to deny connections from.
 #   [*www_root*]             - Specifies the location on disk for files to be
@@ -156,6 +157,7 @@ define nginx::resource::location (
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
+  $location_satisfy     = undef,
   $location_allow       = undef,
   $location_deny        = undef,
   $option               = undef,
@@ -238,6 +240,10 @@ define nginx::resource::location (
   validate_bool($ssl_only)
   if ($location_alias != undef) {
     validate_string($location_alias)
+  }
+  if ($location_satisfy != undef) {
+    validate_re($location_satisfy, '^(any|all)$',
+    "${$location_satisfy} is not supported for location_satisfy. Allowed values are 'any' and 'all'.")
   }
   if ($location_allow != undef) {
     validate_array($location_allow)
