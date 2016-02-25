@@ -17,6 +17,7 @@
 #     vHost on. Defaults to UNIX /var/run/nginx.sock
 #   [*listen_unix_socket_options*] - Extra options for listen directive like
 #     'default' to catchall. Undef by default.
+#   [*location_satisfy*]    - Allows access if all (all) or at least one (any) of the auth modules allow access.
 #   [*location_allow*]      - Array: Locations to allow connections from.
 #   [*location_deny*]       - Array: Locations to deny connections from.
 #   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support
@@ -178,6 +179,7 @@ define nginx::resource::vhost (
   $listen_unix_socket_enable    = false,
   $listen_unix_socket           = '/var/run/nginx.sock',
   $listen_unix_socket_options   = undef,
+  $location_satisfy             = undef,
   $location_allow               = [],
   $location_deny                = [],
   $ipv6_enable                  = false,
@@ -289,6 +291,10 @@ define nginx::resource::vhost (
   }
   if ($listen_unix_socket_options != undef) {
     validate_string($listen_unix_socket_options)
+  }
+  if ($location_satisfy != undef) {
+    validate_re($location_satisfy, '^(any|all)$',
+    "${$location_satisfy} is not supported for location_satisfy. Allowed values are 'any' and 'all'.")
   }
   validate_array($location_allow)
   validate_array($location_deny)
@@ -557,6 +563,7 @@ define nginx::resource::vhost (
       ssl                         => $ssl,
       ssl_only                    => $ssl_only,
       location                    => '/',
+      location_satisfy            => $location_satisfy,
       location_allow              => $location_allow,
       location_deny               => $location_deny,
       proxy                       => $proxy,
