@@ -62,6 +62,11 @@ server {
   <%- end -%>
 <%- end -%>
   server_name           <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
+<%- unless @vhost_rewrite_rules.nil? || @vhost_rewrite_rules.empty? -%>
+  <%- @vhost_rewrite_rules.each do |vhost_rewrite_rule| -%>
+  rewrite <%= vhost_rewrite_rule %>;
+  <%- end -%>
+<% end -%>
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
   <%- if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
