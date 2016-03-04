@@ -51,11 +51,11 @@
 define nginx::resource::streamhost (
   $ensure                       = 'present',
   $listen_ip                    = '*',
-  $listen_port                  = '80',
+  $listen_port                  = 80,
   $listen_options               = undef,
   $ipv6_enable                  = false,
   $ipv6_listen_ip               = '::',
-  $ipv6_listen_port             = '80',
+  $ipv6_listen_port             = 80,
   $ipv6_listen_options          = 'default ipv6only=on',
   $proxy                        = undef,
   $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
@@ -74,7 +74,10 @@ define nginx::resource::streamhost (
   if !(is_array($listen_ip) or is_string($listen_ip)) {
     fail('$listen_ip must be a string or array.')
   }
-  if !is_integer($listen_port) {
+  if is_string($listen_port) {
+    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }
   if ($listen_options != undef) {
@@ -84,7 +87,10 @@ define nginx::resource::streamhost (
   if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
     fail('$ipv6_listen_ip must be a string or array.')
   }
-  if !is_integer($ipv6_listen_port) {
+  if is_string($ipv6_listen_port) {
+    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
   validate_string($ipv6_listen_options)
