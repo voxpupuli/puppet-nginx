@@ -48,7 +48,7 @@ define nginx::resource::mailhost (
   $listen_options      = undef,
   $ipv6_enable         = false,
   $ipv6_listen_ip      = '::',
-  $ipv6_listen_port    = '80',
+  $ipv6_listen_port    = 80,
   $ipv6_listen_options = 'default ipv6only=on',
   $ssl                 = false,
   $ssl_cert            = undef,
@@ -69,7 +69,10 @@ define nginx::resource::mailhost (
     mode  => '0644',
   }
 
-  if !is_integer($listen_port) {
+  if is_string($listen_port) {
+    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }
   validate_re($ensure, '^(present|absent)$',
@@ -84,7 +87,10 @@ define nginx::resource::mailhost (
   if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
     fail('$ipv6_listen_ip must be a string or array.')
   }
-  if !is_integer($ipv6_listen_port) {
+  if is_string($ipv6_listen_port) {
+    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
   validate_string($ipv6_listen_options)
@@ -95,8 +101,13 @@ define nginx::resource::mailhost (
   if ($ssl_key != undef) {
     validate_string($ssl_key)
   }
-  if ($ssl_port != undef) and (!is_integer($ssl_port)) {
-    fail('$ssl_port must be an integer.')
+  if $ssl_port != undef {
+    if is_string($ssl_port) {
+      warning('DEPRECATION: String $ssl_port must be converted to an integer. Integer string support will be removed in a future release.')
+    }
+    elsif !is_integer($ssl_port) {
+      fail('$ssl_port must be an integer.')
+    }
   }
   validate_re($starttls, '^(on|only|off)$',
     "${starttls} is not supported for starttls. Allowed values are 'on', 'only' and 'off'.")
@@ -131,7 +142,7 @@ define nginx::resource::mailhost (
     notify => Class['::nginx::service'],
   }
 
-  if ($listen_port != $ssl_port) {
+  if (($ssl_port == undef) or ($listen_port + 0) != ($ssl_port + 0)) {
     concat::fragment { "${name}-header":
       target  => $config_file,
       content => template('nginx/mailhost/mailhost.erb'),

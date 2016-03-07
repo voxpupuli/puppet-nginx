@@ -174,7 +174,7 @@
 define nginx::resource::vhost (
   $ensure                       = 'present',
   $listen_ip                    = '*',
-  $listen_port                  = '80',
+  $listen_port                  = 80,
   $listen_options               = undef,
   $listen_unix_socket_enable    = false,
   $listen_unix_socket           = '/var/run/nginx.sock',
@@ -184,7 +184,7 @@ define nginx::resource::vhost (
   $location_deny                = [],
   $ipv6_enable                  = false,
   $ipv6_listen_ip               = '::',
-  $ipv6_listen_port             = '80',
+  $ipv6_listen_port             = 80,
   $ipv6_listen_options          = 'default ipv6only=on',
   $add_header                   = undef,
   $ssl                          = false,
@@ -193,7 +193,7 @@ define nginx::resource::vhost (
   $ssl_client_cert              = undef,
   $ssl_dhparam                  = undef,
   $ssl_key                      = undef,
-  $ssl_port                     = '443',
+  $ssl_port                     = 443,
   $ssl_protocols                = 'TLSv1 TLSv1.1 TLSv1.2',
   $ssl_buffer_size              = undef,
   $ssl_ciphers                  = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA',
@@ -279,7 +279,10 @@ define nginx::resource::vhost (
   if !(is_array($listen_ip) or is_string($listen_ip)) {
     fail('$listen_ip must be a string or array.')
   }
-  if !is_integer($listen_port) {
+  if is_string($listen_port) {
+    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }
   if ($listen_options != undef) {
@@ -302,7 +305,10 @@ define nginx::resource::vhost (
   if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
     fail('$ipv6_listen_ip must be a string or array.')
   }
-  if !is_integer($ipv6_listen_port) {
+  if is_string($ipv6_listen_port) {
+    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
   validate_string($ipv6_listen_options)
@@ -326,7 +332,10 @@ define nginx::resource::vhost (
   if ($ssl_key != undef) {
     validate_string($ssl_key)
   }
-  if !is_integer($ssl_port) {
+  if is_string($ssl_port) {
+    warning('DEPRECATION: String $ssl_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($ssl_port) {
     fail('$ssl_port must be an integer.')
   }
   validate_string($ssl_protocols)
@@ -553,7 +562,7 @@ define nginx::resource::vhost (
     notify => Class['::nginx::service'],
   }
 
-  $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
+  $ssl_only = ($ssl == true) and (($ssl_port + 0) == ($listen_port + 0))
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
@@ -617,7 +626,7 @@ define nginx::resource::vhost (
     }
   }
 
-  if ($listen_port != $ssl_port) {
+  if (($listen_port + 0) != ($ssl_port + 0)) {
     concat::fragment { "${name_sanitized}-header":
       target  => $config_file,
       content => template('nginx/vhost/vhost_header.erb'),
@@ -626,7 +635,7 @@ define nginx::resource::vhost (
   }
 
   # Create a proper file close stub.
-  if ($listen_port != $ssl_port) {
+  if (($listen_port + 0) != ($ssl_port + 0)) {
     concat::fragment { "${name_sanitized}-footer":
       target  => $config_file,
       content => template('nginx/vhost/vhost_footer.erb'),
