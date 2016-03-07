@@ -40,7 +40,7 @@
 #    upstream_cfg_prepend => $my_config,
 #  }
 define nginx::resource::upstream (
-  $members = undef,
+  $members = {},
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
   $upstream_fail_timeout = '10s',
@@ -49,7 +49,7 @@ define nginx::resource::upstream (
 ) {
 
   if $members != undef {
-    validate_array($members)
+    validate_hash($members)
   }
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
