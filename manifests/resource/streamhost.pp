@@ -112,6 +112,17 @@ define nginx::resource::streamhost (
     'absent' => absent,
     default  => 'link',
   }
+  
+  file {
+    default:
+      ensure  => directory,
+      mode    => '0755',
+    ; 
+    "${streamhost_dir}":
+    ;
+    "${streamhost_enable_dir}":
+    ;
+  }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
   $config_file = "${streamhost_dir}/${name_sanitized}.conf"
