@@ -113,15 +113,11 @@ define nginx::resource::streamhost (
     default  => 'link',
   }
   
-  file {
-    default:
+  file {[$streamhost_dir, $streamhost_enable_dir]:
       ensure  => directory,
-      mode    => '0755',
-    ; 
-    "${streamhost_dir}":
-    ;
-    "${streamhost_enable_dir}":
-    ;
+      owner   => $owner,
+      group   => $group,
+      mode    => $mode,
   }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
@@ -132,8 +128,8 @@ define nginx::resource::streamhost (
       'absent' => absent,
       default  => 'file',
       require  => [
-        File["${streamhost_dir}"],
-        File["${streamhost_enable_dir}"],
+        File[$streamhost_dir],
+        File[$streamhost_enable_dir],
       ],
     },
     notify => Class['::nginx::service'],
