@@ -156,5 +156,6 @@ mail {
 <% if @stream -%>
 stream {
   include <%= @conf_dir %>/conf.stream.d/*.conf;
+  include <%= @conf_dir %>/streams-enabled/*.conf;
 }
 <% end -%>
