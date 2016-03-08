@@ -131,6 +131,10 @@ define nginx::resource::streamhost (
     ensure => $ensure ? {
       'absent' => absent,
       default  => 'file',
+      require  => [
+        File["${streamhost_dir}"],
+        File["${streamhost_enable_dir}"],
+      ],
     },
     notify => Class['::nginx::service'],
     owner  => $owner,
