@@ -114,10 +114,10 @@ define nginx::resource::streamhost (
   }
   
   file {[$streamhost_dir, $streamhost_enable_dir]:
-      ensure  => directory,
-      owner   => $owner,
-      group   => $group,
-      mode    => $mode,
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
   }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
