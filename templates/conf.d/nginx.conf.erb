@@ -51,14 +51,29 @@ http {
 
   server_tokens <%= @server_tokens %>;
 
+<%- if @types_hash_max_size -%>
   types_hash_max_size <%= @types_hash_max_size %>;
+<%- end -%>
+
+<%- if @types_hash_bucket_size -%>
   types_hash_bucket_size <%= @types_hash_bucket_size %>;
+<%- end -%>
 
+<%- if @names_hash_bucket_size -%>
   server_names_hash_bucket_size <%= @names_hash_bucket_size %>;
-  server_names_hash_max_size <%= @names_hash_max_size %>;
+<%- end -%>
 
+<%- if @names_hash_max_size -%>
+  server_names_hash_max_size <%= @names_hash_max_size %>;
+<%- end -%>
+
+<%- if @keepalive_timeout -%>
   keepalive_timeout  <%= @keepalive_timeout %>;
+<%- end -%>
+
+<%- if @htttp_tcp_nodelay -%>
   tcp_nodelay        <%= @http_tcp_nodelay %>;
+<%- end -%>
 
 <% if @gzip == 'on' -%>
   gzip              on;
