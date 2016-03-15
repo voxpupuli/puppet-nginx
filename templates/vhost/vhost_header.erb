@@ -139,9 +139,13 @@ server {
        return 301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;
   }
 <% end -%>
-<% if @index_files.count > 0 -%>
-  index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+
+<% if defined? @index_files -%>
+  <%- if @index_files.count > 0 -%>
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+  <%- end -%>
 <% end -%>
+
 <% if defined? @log_by_lua -%>
   log_by_lua '<%= @log_by_lua %>';
 <% end -%>
