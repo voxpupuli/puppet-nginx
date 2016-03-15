@@ -86,11 +86,12 @@ class nginx::config(
   $proxy_read_timeout             = '90',
   $proxy_redirect                 = 'off',
   $proxy_send_timeout             = '90',
-  $proxy_set_header               = [
-    'Host $host',
-    'X-Real-IP $remote_addr',
-    'X-Forwarded-For $proxy_add_x_forwarded_for',
-  ],
+  #$proxy_set_header               = [
+  #  'Host $host',
+  #  'X-Real-IP $remote_addr',
+  #  'X-Forwarded-For $proxy_add_x_forwarded_for',
+  #],
+  $proxy_set_header                = undef,
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
