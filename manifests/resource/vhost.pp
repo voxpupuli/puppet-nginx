@@ -224,10 +224,7 @@ define nginx::resource::vhost (
   $fastcgi_script               = undef,
   $uwsgi                        = undef,
   $uwsgi_params                 = "${nginx::config::conf_dir}/uwsgi_params",
-  $index_files                  = [
-    'index.html',
-    'index.htm',
-    'index.php'],
+  $index_files                  = undef,
   $autoindex                    = undef,
   $server_name                  = [$name],
   $www_root                     = undef,
@@ -392,7 +389,11 @@ define nginx::resource::vhost (
     validate_string($uwsgi)
   }
   validate_string($uwsgi_params)
-  validate_array($index_files)
+  
+  if ($index_files != undef) {
+    validate_array($index_files)
+  }
+
   if ($autoindex != undef) {
     validate_string($autoindex)
   }
