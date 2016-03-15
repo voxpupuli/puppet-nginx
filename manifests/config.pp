@@ -91,7 +91,7 @@ class nginx::config(
   #  'X-Real-IP $remote_addr',
   #  'X-Forwarded-For $proxy_add_x_forwarded_for',
   #],
-  $proxy_set_header                = undef,
+  $proxy_set_header               = [],
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
