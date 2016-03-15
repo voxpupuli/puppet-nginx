@@ -204,7 +204,7 @@ define nginx::resource::location (
     validate_string($autoindex)
   }
   
-  if ($index_files != undef){
+  if ($index_files != undef) {
     validate_array($index_files)
   }
   
