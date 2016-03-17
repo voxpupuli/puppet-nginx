@@ -144,6 +144,11 @@ http {
   <%- end -%>
   <%- end -%>
 <% end -%>
+<% if @http_raw_append && Array(@http_raw_append).size > 0 -%>
+  <%- Array(@http_raw_append).each do |line| -%>
+  <%= line %>
+  <%- end -%>
+<% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
   include <%= @conf_dir %>/sites-enabled/*;
