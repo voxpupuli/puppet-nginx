@@ -1,5 +1,23 @@
 # MANAGED BY PUPPET
 server {
+<% if @mailhost_cfg_prepend -%>
+  <%- @mailhost_cfg_prepend.sort_by{ |k,v| k}.each do |key,value| -%>
+    <%- if value.is_a?(Hash) -%>
+      <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
+        <%- Array(subvalue).each do |asubvalue| -%>
+  <%= key %> <%= subkey %> <%= asubvalue %>;
+        <%- end -%>
+      <%- end -%>
+    <%- else -%>
+      <%- Array(value).each do |asubvalue| -%>
+  <%= key %> <%= asubvalue %>;
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% Array(@raw_prepend).each do |line| -%>
+  <%= line %>
+<% end -%>
 <%- if @listen_ip.is_a?(Array) then -%>
   <%- @listen_ip.each do |ip| -%>
   listen       <%= ip %>:<%= @ssl_port %>;
@@ -23,4 +41,22 @@ server {
   starttls  off;
 
   <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) %>
+<% if @mailhost_cfg_append -%>
+  <%- @mailhost_cfg_append.sort_by{ |k,v| k}.each do |key,value| -%>
+    <%- if value.is_a?(Hash) -%>
+      <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
+        <%- Array(subvalue).each do |asubvalue| -%>
+  <%= key %> <%= subkey %> <%= asubvalue %>;
+        <%- end -%>
+      <%- end -%>
+    <%- else -%>
+      <%- Array(value).each do |asubvalue| -%>
+  <%= key %> <%= asubvalue %>;
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
+<% Array(@raw_append).each do |line| -%>
+  <%= line %>
+<% end -%>
 }

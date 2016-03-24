@@ -48,6 +48,10 @@
 #   [*smtp_capabilities*]        - Sets the SMTP protocol extensions list that is passed to the client in response to the EHLO command.
 #   [*proxy_pass_error_message*] - Indicates whether to pass the error message obtained during the authentication on the backend to the client.
 #   [*server_name*]              - List of mailhostnames for which this mailhost will respond. Default [$name].
+#   [*raw_prepend*]              - A single string, or an array of strings to prepend to the server directive (after mailhost_cfg_prepend directive). NOTE: YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_append*]               - A single string, or an array of strings to append to the server directive (after mailhost_cfg_append directive). NOTE: YOU are responsible for a semicolon on each line that requires one.
+#   [*mailhost_cfg_append*]      - It expects a hash with custom directives to put after everything else inside vhost
+#   [*mailhost_cfg_prepend*]     - It expects a hash with custom directives to put before everything else inside vhost
 #
 # Actions:
 #
@@ -103,6 +107,10 @@ define nginx::resource::mailhost (
   $pop3_capabilities        = undef,
   $smtp_auth                = undef,
   $smtp_capabilities        = undef,
+  $raw_prepend              = undef,
+  $raw_append               = undef,
+  $mailhost_cfg_prepend     = undef,
+  $mailhost_cfg_append      = undef,
   $proxy_pass_error_message = 'off',
   $server_name              = [$name]
 ) {
@@ -206,6 +214,26 @@ define nginx::resource::mailhost (
   }
   if ($smtp_capabilities != undef) {
     validate_array($smtp_capabilities)
+  }
+  if ($raw_prepend != undef) {
+    if (is_array($raw_prepend)) {
+      validate_array($raw_prepend)
+    } else {
+      validate_string($raw_prepend)
+    }
+  }
+  if ($raw_append != undef) {
+    if (is_array($raw_append)) {
+      validate_array($raw_append)
+    } else {
+      validate_string($raw_append)
+    }
+  }
+  if ($mailhost_cfg_prepend != undef) {
+    validate_hash($mailhost_cfg_prepend)
+  }
+  if ($mailhost_cfg_append != undef) {
+    validate_hash($mailhost_cfg_append)
   }
   validate_string($proxy_pass_error_message)
   validate_array($server_name)

@@ -133,6 +133,48 @@ describe 'nginx::resource::mailhost' do
           :value    => 'off',
           :notmatch => '  ssl_session_timeout   5m;',
         },
+        {
+          :title => 'should contain raw_prepend directives',
+          :attr  => 'raw_prepend',
+          :value => [
+            'if (a) {',
+            '  b;',
+            '}'
+          ],
+          :match => /^\s+if \(a\) {\n\s++b;\n\s+\}/,
+        },
+        {
+          :title => 'should contain raw_append directives',
+          :attr  => 'raw_append',
+          :value => [
+            'if (a) {',
+            '  b;',
+            '}'
+          ],
+          :match => /^\s+if \(a\) {\n\s++b;\n\s+\}/,
+        },
+        {
+          :title => 'should contain ordered prepended directives',
+          :attr  => 'mailhost_cfg_prepend',
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'test3' => 'test value 3' },
+          :match => [
+            '  test1 test value 1;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
+            '  test3 test value 3;',
+          ],
+        },
+        {
+          :title => 'should contain ordered appended directives',
+          :attr  => 'mailhost_cfg_append',
+          :value => { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'test3' => 'test value 3' },
+          :match => [
+            '  test1 test value 1;',
+            '  test2 test value 2a;',
+            '  test2 test value 2b;',
+            '  test3 test value 3;',
+          ],
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do {
