@@ -135,6 +135,8 @@
 #     put before everything else inside vhost ssl
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #     rewrite to ssl
+#   [*rewrite_to_https_port*]   - Add https port to rewrite. Useful, when nginx
+#     SSL is behind port multiplexer. Default to 8443
 #   [*include_files*]           - Adds include files to vhost
 #   [*access_log*]              - Where to write access log. May add additional
 #     options like log format to the end.
@@ -235,6 +237,7 @@ define nginx::resource::vhost (
   $www_root                     = undef,
   $rewrite_www_to_non_www       = false,
   $rewrite_to_https             = undef,
+  $rewrite_to_https_port        = 8443,
   $location_custom_cfg          = undef,
   $location_cfg_prepend         = undef,
   $location_cfg_append          = undef,
@@ -410,6 +413,12 @@ define nginx::resource::vhost (
   validate_bool($rewrite_www_to_non_www)
   if ($rewrite_to_https != undef) {
     validate_bool($rewrite_to_https)
+  }
+  if is_string($rewrite_to_https_port) {
+    warning('DEPRECATION: String $rewrite_to_https_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($rewrite_to_https_port) {
+    fail('$rewrite_to_https_port must be an integer.')
   }
   if ($raw_prepend != undef) {
     if (is_array($raw_prepend)) {
