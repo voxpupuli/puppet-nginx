@@ -28,8 +28,6 @@
 #     of 90 seconds
 #   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
-#   [*server_name*]         - List of streamhost names for which this streamhost will
-#     respond. Default [$name].
 #   [*raw_prepend*]            - A single string, or an array of strings to
 #     prepend to the server directive (after cfg prepend directives). NOTE:
 #     YOU are responsible for a semicolon on each line that requires one.
@@ -61,7 +59,6 @@ define nginx::resource::streamhost (
   $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $resolver                     = [],
-  $server_name                  = [$name],
   $raw_prepend                  = undef,
   $raw_append                   = undef,
   $owner                        = $::nginx::config::global_owner,
@@ -98,7 +95,6 @@ define nginx::resource::streamhost (
   validate_string($proxy_read_timeout)
 
   validate_array($resolver)
-  validate_array($server_name)
 
   validate_string($owner)
   validate_string($group)

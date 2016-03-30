@@ -17,7 +17,6 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
-  server_name           <%= @server_name.join(" ") %>;
 
   <% Array(@raw_prepend).each do |line| -%>
     <%= line %>
