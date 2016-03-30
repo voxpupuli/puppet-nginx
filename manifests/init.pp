@@ -44,6 +44,7 @@ class nginx (
   $http_tcp_nopush                = undef,
   $keepalive_timeout              = undef,
   $mail                           = undef,
+  $stream                         = undef,
   $multi_accept                   = undef,
   $names_hash_bucket_size         = undef,
   $names_hash_max_size            = undef,
@@ -164,6 +165,7 @@ class nginx (
         $logdir or
         $log_format or
         $mail or
+        $stream or
         $multi_accept or
         $names_hash_bucket_size or
         $names_hash_max_size or
@@ -245,6 +247,7 @@ class nginx (
       log_dir                        => $logdir,
       log_format                     => $log_format,
       mail                           => $mail,
+      stream                         => $stream,
       multi_accept                   => $multi_accept,
       names_hash_bucket_size         => $names_hash_bucket_size,
       names_hash_max_size            => $names_hash_max_size,
