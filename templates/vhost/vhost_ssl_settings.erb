@@ -21,8 +21,10 @@
 <% if defined?(@ssl_protocols) && @ssl_protocols != '' -%>
   ssl_protocols             <%= @ssl_protocols %>;
 <% end -%>
+<% if @ssl_ciphers != '' -%>
   ssl_ciphers               <%= @ssl_ciphers %>;
   ssl_prefer_server_ciphers on;
+<% end -%>
 <% if @ssl_crl -%>
   ssl_crl                   <%= @ssl_crl %>;
 <% end -%>
