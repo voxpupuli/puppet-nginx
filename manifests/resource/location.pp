@@ -183,6 +183,8 @@ define nginx::resource::location (
   $priority             = 500,
   $mp4             = false,
   $flv             = false,
+  $auth_ldap            = undef,
+  $auth_ldap_servers    = [],
 ) {
 
   $root_group = $::nginx::config::root_group

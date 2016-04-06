@@ -296,6 +296,12 @@ class nginx (
     service_flags     => $service_flags,
   }
 
+  $module_auth_ldap = hiera_hash('nginx::module::auth_ldap', {})
+  if $module_auth_ldap {
+    validate_hash($module_auth_ldap)
+    create_resources('nginx::module::auth_ldap', $module_auth_ldap)
+  }
+
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
