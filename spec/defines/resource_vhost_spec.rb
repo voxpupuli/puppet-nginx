@@ -922,12 +922,13 @@ describe 'nginx::resource::vhost' do
           :ssl_key            => 'dummy.key',
           :ssl_cert           => 'dummy.cert',
           :ssl_client_cert    => 'client.cert',
+          :ssl_verify_client  => 'optional',
         }) end
 
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{access_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.access\.log combined;}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
-        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client on;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client\s+optional;}) }
       end
       context 'when passenger_cgi_param is set' do
         let :params do default_params.merge({
