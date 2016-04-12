@@ -296,7 +296,9 @@ define nginx::resource::location (
     validate_string($proxy_cache_use_stale)
   }
   if ($proxy_cache_valid != false) {
-    validate_slength(any2array($proxy_cache_valid),12,1)
+    if !(is_array($proxy_cache_valid) or is_string($proxy_cache_valid)) {
+      fail('$proxy_cache_valid must be a string or an array or false.')
+    }
   }
   if ($proxy_method != undef) {
     validate_string($proxy_method)
