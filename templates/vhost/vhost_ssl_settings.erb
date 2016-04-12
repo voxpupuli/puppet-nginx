@@ -4,7 +4,7 @@
   ssl_certificate_key       <%= @ssl_key %>;
 <% if defined? @ssl_client_cert -%>
   ssl_client_certificate    <%= @ssl_client_cert %>;
-  ssl_verify_client on;
+  ssl_verify_client         <%= @ssl_verify_client %>;
 <% end -%>
 <% if defined? @ssl_dhparam -%>
   ssl_dhparam               <%= @ssl_dhparam %>;
