@@ -377,7 +377,9 @@ define nginx::resource::vhost (
     validate_string($proxy_cache_use_stale)
   }
   if ($proxy_cache_valid != false) {
-    validate_string($proxy_cache_valid)
+    if !(is_array($proxy_cache_valid) or is_string($proxy_cache_valid)) {
+      fail('$proxy_cache_valid must be a string or an array or false.')
+    }
   }
   if ($proxy_method != undef) {
     validate_string($proxy_method)
