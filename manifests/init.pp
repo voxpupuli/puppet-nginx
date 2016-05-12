@@ -61,6 +61,7 @@ class nginx (
   $proxy_redirect                 = undef,
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
+  $proxy_hide_header              = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
   $spdy                           = undef,
@@ -184,6 +185,7 @@ class nginx (
         $proxy_redirect or
         $proxy_send_timeout or
         $proxy_set_header or
+        $proxy_hide_header or
         $proxy_temp_path or
         $run_dir or
         $sendfile or
@@ -265,6 +267,7 @@ class nginx (
       proxy_redirect                 => $proxy_redirect,
       proxy_send_timeout             => $proxy_send_timeout,
       proxy_set_header               => $proxy_set_header,
+      proxy_hide_header              => $proxy_hide_header,
       proxy_temp_path                => $proxy_temp_path,
       run_dir                        => $run_dir,
       sendfile                       => $sendfile,

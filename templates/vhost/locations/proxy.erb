@@ -13,6 +13,11 @@
     proxy_set_header      <%= header %>;
     <%- end -%>
 <% end -%>
+<% unless @proxy_hide_header.nil? -%>
+    <%- @proxy_hide_header.each do |header| -%>
+    proxy_hide_header      <%= header %>;
+    <%- end -%>
+<% end -%>
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>

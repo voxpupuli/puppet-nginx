@@ -120,6 +120,9 @@ http {
 <% @proxy_set_header.each do |header| -%>
   proxy_set_header        <%= header %>;
 <% end -%>
+<% @proxy_hide_header.each do |header| -%>
+  proxy_hide_header        <%= header %>;
+<% end -%>
 <% if @proxy_headers_hash_bucket_size -%>
   proxy_headers_hash_bucket_size <%= @proxy_headers_hash_bucket_size %>;
 <% end -%>
