@@ -665,6 +665,15 @@ describe 'nginx::resource::location' do
           ]
         },
         {
+          :title => 'should hide proxy headers',
+          :attr  => 'proxy_hide_header',
+          :value => [ 'X-TestHeader1 value1', 'X-TestHeader2 value2' ],
+          :match => [
+            /^\s+proxy_hide_header\s+X-TestHeader1 value1;/,
+            /^\s+proxy_hide_header\s+X-TestHeader2 value2;/,
+          ]
+        },
+        {
           :title => 'should set proxy_method',
           :attr  => 'proxy_method',
           :value => 'value',
