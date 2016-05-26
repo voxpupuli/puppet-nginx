@@ -113,12 +113,6 @@ define nginx::resource::streamhost (
     default  => 'link',
   }
   
-  file {[$streamhost_dir, $streamhost_enable_dir]:
-    ensure => directory,
-    owner  => $owner,
-    group  => $group,
-    mode   => $mode,
-  }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
   $config_file = "${streamhost_dir}/${name_sanitized}.conf"

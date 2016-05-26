@@ -205,6 +205,17 @@ class nginx::config(
   file { "${conf_dir}/conf.stream.d":
     ensure => directory,
   }
+
+  $_streamhost_avail_dir = "${conf_dir}/streams-available"
+  $_streamhost_enable_dir = "${conf_dir}/streams-enabled"
+
+  file { [$_streamhost_avail_dir, $streamhost_enable_dir]:
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode,
+  }
+  
   if $confd_purge == true {
     File["${conf_dir}/conf.stream.d"] {
       purge   => true,
