@@ -3,7 +3,7 @@
 ## Basic NGINX Installation and Configuration
 
 Installing NGINX and setting up your first web host is relatively straightforward.  To install
-NGINX with the puppet module, simply call the class in a puppet manifest:
+NGINX with the Puppet module, simply call the class in a Puppet manifest:
 ```
    class{'nginx': }
 ```
@@ -89,7 +89,7 @@ Combining our configurations above into a single manifest, our code block looks 
   }
 ```  
 
-In summary, this puppet code block will:
+In summary, this Puppet code block will:
 * Install the latest version of nginx from the 'mainline' nginx distributino.
 * Define a virtual host `www.myhost.com` for our website.
 * Define an *upstream* service that consists of a single external IP address.
@@ -98,7 +98,7 @@ In summary, this puppet code block will:
 ## References
 There are a number of resources available for learning how to use NGINX effectively.  Here are a few that you may find useful:
 [nginx.org][nginx]:  The NGNIX homepage.
-[NGINX Documentation][ngixdocs]: Open Source NGINX Documentation
+[NGINX Documentation][nginxdocs]: Open Source NGINX Documentation
 [NGINX vs. Apache][nginxvsapache]: A good article from [DigitalOcean][] describing the key differences between the use and architecture of NGINX vs. the Apache HTTPD server.  This is a good article if you are new to NGINX or want a simple overview of the NGINX event driven architecture.
 
 [nginx]: http://ngnix.org
