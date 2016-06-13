@@ -6,6 +6,7 @@ describe 'nginx::service' do
       :service_restart => '/etc/init.d/nginx reload',
       :service_ensure => 'running',
       :service_name => 'nginx',
+      :service_manage => true,
   } end
 
   context "using default parameters" do
@@ -46,5 +47,12 @@ describe 'nginx::service' do
       :service_name => 'nginx14',
     } end
     it { is_expected.to contain_service('nginx').with_name('nginx14') }
+  end
+
+  describe "when service_manage => false" do
+    let :params do {
+      :service_manage => false,
+    } end
+    it { is_expected.not_to contain_service('nginx') }
   end
 end
