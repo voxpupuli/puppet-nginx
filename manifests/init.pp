@@ -112,6 +112,7 @@ class nginx (
   $service_flags                  = undef,
   $service_restart                = '/etc/init.d/nginx reload',
   $service_name                   = undef,
+  $service_manage                 = true,
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
@@ -294,6 +295,7 @@ class nginx (
     service_restart   => $service_restart,
     service_name      => $service_name,
     service_flags     => $service_flags,
+    service_manage    => $service_manage,
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)

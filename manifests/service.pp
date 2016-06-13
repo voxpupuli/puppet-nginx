@@ -19,6 +19,7 @@ class nginx::service(
   $service_ensure    = $::nginx::service_ensure,
   $service_name      = 'nginx',
   $service_flags     = undef,
+  $service_manage    = true,
 ) {
 
   $service_enable = $service_ensure ? {
@@ -35,24 +36,26 @@ class nginx::service(
     $service_ensure_real = $service_ensure
   }
 
-  case $::osfamily {
-    'OpenBSD': {
-      service { 'nginx':
-        ensure     => $service_ensure_real,
-        name       => $service_name,
-        enable     => $service_enable,
-        flags      => $service_flags,
-        hasstatus  => true,
-        hasrestart => true,
+  if $service_manage {
+    case $::osfamily {
+      'OpenBSD': {
+        service { 'nginx':
+          ensure     => $service_ensure_real,
+          name       => $service_name,
+          enable     => $service_enable,
+          flags      => $service_flags,
+          hasstatus  => true,
+          hasrestart => true,
+        }
       }
-    }
-    default: {
-      service { 'nginx':
-        ensure     => $service_ensure_real,
-        name       => $service_name,
-        enable     => $service_enable,
-        hasstatus  => true,
-        hasrestart => true,
+      default: {
+        service { 'nginx':
+          ensure     => $service_ensure_real,
+          name       => $service_name,
+          enable     => $service_enable,
+          hasstatus  => true,
+          hasrestart => true,
+        }
       }
     }
   }
