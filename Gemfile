@@ -14,7 +14,7 @@ end
 group :rake do
   gem 'rspec-puppet', '>=2.1.0', :require => false
   gem 'rake',         '>=0.9.2.2'
-  gem 'puppet-lint',  '>=1.0.1'
+  gem 'puppet-lint',  '~> 2.0'
 end
 
 if puppetversion = ENV['PUPPET_GEM_VERSION']
