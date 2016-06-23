@@ -7,7 +7,7 @@ before upgrading or installing Version 0.1.0 or greater.
 
 [![Puppet
 Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.puppetlabs.com/jfryman/nginx)
-[![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
+[![Build Status](https://travis-ci.org/jfryman/puppet-nginx.svg?branch=master)](https://travis-ci.org/jfryman/puppet-nginx)
 
 
 * James Fryman <james@frymanet.com>
