@@ -7,7 +7,7 @@ sudo: false
 language: ruby
 cache: bundler
 script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
-bundler_args: --without rake
+bundler_args: --without system_tests
 matrix:
   fast_finish: true
   include:
