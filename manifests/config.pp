@@ -65,6 +65,7 @@ class nginx::config(
   $gzip_types                     = undef,
   $gzip_vary                      = 'off',
   $http_cfg_append                = false,
+  $http_raw_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
@@ -88,11 +89,12 @@ class nginx::config(
   $proxy_read_timeout             = '90',
   $proxy_redirect                 = 'off',
   $proxy_send_timeout             = '90',
-  $proxy_set_header               = [
-    'Host $host',
-    'X-Real-IP $remote_addr',
-    'X-Forwarded-For $proxy_add_x_forwarded_for',
-  ],
+  #$proxy_set_header               = [
+  #  'Host $host',
+  #  'X-Real-IP $remote_addr',
+  #  'X-Forwarded-For $proxy_add_x_forwarded_for',
+  #],
+  $proxy_set_header               = [],
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
@@ -171,6 +173,12 @@ class nginx::config(
     }
   }
 
+  if ($http_raw_append != false) {
+    if !(is_array($http_raw_append)) {
+      fail('$http_raw_append must be an array')
+    }
+  }
+
   if ($nginx_cfg_prepend != false) {
     if !(is_hash($nginx_cfg_prepend) or is_array($nginx_cfg_prepend)) {
       fail('$nginx_cfg_prepend must be either a hash or array')
@@ -199,6 +207,15 @@ class nginx::config(
   file { "${conf_dir}/conf.stream.d":
     ensure => directory,
   }
+
+  file { "${conf_dir}/streams-available":
+    ensure => directory,
+  }
+
+  file {"${conf_dir}/streams-enabled":
+    ensure => directory,
+  }
+
   if $confd_purge == true {
     File["${conf_dir}/conf.stream.d"] {
       purge   => true,

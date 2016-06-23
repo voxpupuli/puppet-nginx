@@ -77,8 +77,11 @@ server {
 <% if defined? @gzip_types -%>
   gzip_types <%= @gzip_types %>;
 <% end -%>
-<% if @index_files.count > 0 -%>
-  index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+
+<% if defined? @index_files -%>
+  <%- if @index_files.count > 0 -%>
+    index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
+  <%- end -%>
 <% end -%>
 
   access_log            <%= @ssl_access_log_real %>;
