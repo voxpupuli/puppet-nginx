@@ -19,7 +19,7 @@
     },
     {
       "name": "puppet",
-      "version_requirement": "3.x"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -48,6 +48,9 @@
     {
       "operatingsystem": "Solaris"
     },
+    { "operatingsystem": "AIX" },
+    { "operatingsystem": "FreeBSD" },
+    { "operatingsystem": "NetBSD" },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
