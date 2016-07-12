@@ -5,7 +5,7 @@ group :rake do
   gem 'rspec-puppet',           '~> 2.3', :require => false
   gem 'puppet-lint',            '~> 2.0', :require => false
   gem 'puppet-blacksmith',                :require => false
-  gem 'rake',                             :require => false
+  gem 'rake',                  '~> 10.5', :require => false
   gem 'metadata-json-lint',               :require => false
 end
 
