@@ -510,6 +510,14 @@ describe 'nginx::resource::location' do
                   with_content(%r|fastcgi_param\s+CUSTOM_PARAM2\s+value2;|)
         end
       end
+      
+      context "when fastcgi_param is {'HTTP_PROXY' => '""'}" do
+        let :params do default_params.merge({ :fastcgi_param => {'HTTP_PROXY' => '""'} }) end
+        it "should set fastcgi_param" do
+        should contain_concat__fragment("vhost1-500-" + Digest::MD5.hexdigest("#{params[:location]}")).
+                  with_content(%r|fastcgi_param\s+HTTP_PROXY\s+"";|)
+        end
+      end
 
       context "when fastcgi_param is not set" do
         let :params do default_params end
