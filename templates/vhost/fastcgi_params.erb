@@ -25,3 +25,8 @@ fastcgi_param  HTTPS              $https;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;
+
+# Workaround for US-CERT VU#797896. There appear to be no real reason
+# to forward the Proxy: header to FastCGI backends. We simply remove it
+# if it exists. Please see https://www.kb.cert.org/vuls/id/797896
+fastcgi_param  HTTP_PROXY         "";
