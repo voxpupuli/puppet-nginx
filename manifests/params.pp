@@ -48,6 +48,8 @@ class nginx::params {
         $_module_os_overrides = {
           'manage_repo' => true,
         }
+      } else {
+        $_module_os_overrides = {}
       }
     }
     'Solaris': {
