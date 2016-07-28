@@ -82,6 +82,7 @@ class nginx::config(
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
   $proxy_cache_path               = false,
+  $proxy_use_temp_path            = false,
   $proxy_connect_timeout          = '90',
   $proxy_headers_hash_bucket_size = '64',
   $proxy_http_version             = undef,
@@ -142,6 +143,10 @@ class nginx::config(
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
   validate_string($proxy_cache_inactive)
+
+  if ($proxy_use_temp_path != false) {
+        validate_re($proxy_use_temp_path, '^(on|off)$')
+  }
 
   if ($fastcgi_cache_path != false) {
         validate_string($fastcgi_cache_path)

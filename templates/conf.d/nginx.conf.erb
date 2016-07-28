@@ -128,10 +128,10 @@ http {
 <% end -%>
 <% if @proxy_cache_path.is_a?(Hash) -%>
 <% @proxy_cache_path.sort_by{|k,v| k}.each do |key,value| -%>
-  proxy_cache_path        <%= key %> keys_zone=<%= value %> levels=<%= @proxy_cache_levels %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
+  proxy_cache_path        <%= key %> keys_zone=<%= value %> levels=<%= @proxy_cache_levels %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %><% if @proxy_use_temp_path %> use_temp_path=<%= @proxy_use_temp_path %><% end -%>;
 <% end -%>
 <% elsif @proxy_cache_path -%>
-  proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %>;
+  proxy_cache_path        <%= @proxy_cache_path %> levels=<%= @proxy_cache_levels %> keys_zone=<%= @proxy_cache_keys_zone %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive %><% if @proxy_use_temp_path %> use_temp_path=<%= @proxy_use_temp_path %><% end %>;
 <% end -%>
 <% if @fastcgi_cache_path -%>
   fastcgi_cache_path    	<%= @fastcgi_cache_path %> levels=<%= @fastcgi_cache_levels %> keys_zone=<%= @fastcgi_cache_keys_zone %> max_size=<%= @fastcgi_cache_max_size %> inactive=<%= @fastcgi_cache_inactive %>;
