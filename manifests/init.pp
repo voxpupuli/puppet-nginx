@@ -54,6 +54,7 @@ class nginx (
   $proxy_cache_levels             = undef,
   $proxy_cache_max_size           = undef,
   $proxy_cache_path               = undef,
+  $proxy_use_temp_path            = undef,
   $proxy_connect_timeout          = undef,
   $proxy_headers_hash_bucket_size = undef,
   $proxy_http_version             = undef,
@@ -178,6 +179,7 @@ class nginx (
         $proxy_cache_levels or
         $proxy_cache_max_size or
         $proxy_cache_path or
+        $proxy_use_temp_path or
         $proxy_conf_template or
         $proxy_connect_timeout or
         $proxy_headers_hash_bucket_size or
@@ -260,6 +262,7 @@ class nginx (
       proxy_cache_levels             => $proxy_cache_levels,
       proxy_cache_max_size           => $proxy_cache_max_size,
       proxy_cache_path               => $proxy_cache_path,
+      proxy_use_temp_path            => $proxy_use_temp_path,
       proxy_conf_template            => $proxy_conf_template,
       proxy_connect_timeout          => $proxy_connect_timeout,
       proxy_headers_hash_bucket_size => $proxy_headers_hash_bucket_size,
