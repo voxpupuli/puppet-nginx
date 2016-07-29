@@ -14,6 +14,8 @@ group :system_tests do
   gem 'beaker',       :require => false
 end
 
+gem 'json_pure', '<=2.0.1', :require => false if RUBY_VERSION =~ /^1\./
+
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
