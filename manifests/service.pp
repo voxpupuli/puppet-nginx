@@ -23,11 +23,11 @@ class nginx::service(
 ) {
 
   $service_enable = $service_ensure ? {
-    running => true,
-    absent => false,
-    stopped => false,
-    'undef' => undef,
-    default => true,
+    'running' => true,
+    'absent'  => false,
+    'stopped' => false,
+    'undef'   => undef,
+    default   => true,
   }
 
   if $service_ensure == 'undef' {
