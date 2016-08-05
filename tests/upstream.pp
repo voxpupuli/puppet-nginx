@@ -1,6 +1,6 @@
-include nginx
+include ::nginx
 
-nginx::resource::upstream { 'proxypass':
+::nginx::resource::upstream { 'proxypass':
   ensure  => present,
   members => [
         'localhost:3000',
