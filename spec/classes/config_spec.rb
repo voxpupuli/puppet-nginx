@@ -75,9 +75,9 @@ describe 'nginx::config' do
         recurse: true
       )
     end
-    it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'nginx') }
-    it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'nginx') }
-    it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user nginx;} }
+    it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
+    it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+    it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
 
     it do
       is_expected.to contain_file('/var/log/nginx').with(
