@@ -29,6 +29,9 @@
 <% if @proxy_cache_use_stale -%>
     proxy_cache_use_stale   <%= @proxy_cache_use_stale %>;
 <% end -%>
+<% if @proxy_buffering -%>
+    proxy_buffering         <%= @proxy_buffering %>;
+<% end -%>
 <% if @proxy_cache_key -%>
     proxy_cache_key         <%= @proxy_cache_key %>;
 <% end -%>
