@@ -55,7 +55,7 @@ class nginx::package::debian(
 
         ensure_packages([ 'apt-transport-https', 'ca-certificates' ])
 
-        Apt::Source['nginx'] -> Package['apt-transport-https','ca-certificates']
+        Package['apt-transport-https','ca-certificates'] -> Apt::Source['nginx']
 
         package { 'passenger':
           ensure  => 'present',
