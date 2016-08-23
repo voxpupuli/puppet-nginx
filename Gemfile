@@ -7,6 +7,9 @@ group :rake do
   gem 'puppet-blacksmith',                :require => false
   gem 'rake',                             :require => false
   gem 'metadata-json-lint',               :require => false
+  gem 'rubocop-rspec',          '~> 1.6', :require => false if RUBY_VERSION >= '2.2.0'
+  gem 'rubocop-rspec',          '1.5.0',  :require => false if RUBY_VERSION < '2.2.0'
+  gem 'rubocop',                '0.41.2', :require => false if RUBY_VERSION < '2.0.0'
 end
 
 group :system_tests do
