@@ -42,6 +42,7 @@
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
 #   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
+#   [*proxy_buffering*]     - If defined, sets the proxy_buffering to the passed value.
 #   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
@@ -227,6 +228,7 @@ define nginx::resource::vhost (
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
+  $proxy_buffering              = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
   $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",
@@ -400,6 +402,9 @@ define nginx::resource::vhost (
   }
   if ($proxy_set_body != undef) {
     validate_string($proxy_set_body)
+  }
+  if ($proxy_buffering != undef) {
+    validate_re($proxy_buffering, '^(on|off)$')
   }
   validate_array($resolver)
   if ($fastcgi != undef) {
@@ -608,6 +613,7 @@ define nginx::resource::vhost (
       proxy_set_header            => $proxy_set_header,
       proxy_hide_header           => $proxy_hide_header,
       proxy_set_body              => $proxy_set_body,
+      proxy_buffering             => $proxy_buffering,
       fastcgi                     => $fastcgi,
       fastcgi_params              => $fastcgi_params,
       fastcgi_script              => $fastcgi_script,
