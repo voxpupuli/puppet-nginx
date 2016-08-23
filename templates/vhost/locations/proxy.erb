@@ -8,6 +8,9 @@
 <% if @proxy_set_body -%>
     proxy_set_body        <%= @proxy_set_body %>;
 <% end -%>
+<% if @proxy_buffering -%>
+    proxy_buffering       <%= @proxy_buffering %>;
+<% end -%>
 <% unless @proxy_set_header.nil? -%>
     <%- @proxy_set_header.each do |header| -%>
     proxy_set_header      <%= header %>;

@@ -693,6 +693,12 @@ describe 'nginx::resource::location' do
           :value => 'value',
           :match => %r'\s+proxy_set_body\s+value;',
         },
+        {
+          :title => 'should set proxy_buffering',
+          :attr  => 'proxy_buffering',
+          :value => 'on',
+          :match => %r'\s+proxy_buffering\s+on;',
+        },
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
           let :default_params do { :location => 'location', :proxy => 'proxy_value', :vhost => 'vhost1' } end
