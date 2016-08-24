@@ -165,6 +165,7 @@
 #   [*maintenance_value*]       - Value to return when maintenance is on.
 #                                 Default to return 503
 #   [*locations*]               - Hash of vhosts ressources used by this vhost
+#   [*vhost_rewrite_rules*]     - Array of rewrites for server context
 # Actions:
 #
 # Requires:
@@ -273,6 +274,7 @@ define nginx::resource::vhost (
   $log_by_lua                   = undef,
   $log_by_lua_file              = undef,
   $use_default_location         = true,
+  $vhost_rewrite_rules          = [],
   $rewrite_rules                = [],
   $string_mappings              = {},
   $geo_mappings                 = {},
@@ -522,6 +524,7 @@ define nginx::resource::vhost (
     validate_string($gzip_types)
   }
   validate_bool($use_default_location)
+  validate_array($vhost_rewrite_rules)
   validate_array($rewrite_rules)
   validate_hash($string_mappings)
   validate_hash($geo_mappings)

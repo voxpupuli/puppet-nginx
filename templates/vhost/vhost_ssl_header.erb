@@ -55,6 +55,11 @@ server {
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
+<%- unless @vhost_rewrite_rules.nil? || @vhost_rewrite_rules.empty? -%>
+  <%- @vhost_rewrite_rules.each do |vhost_rewrite_rule| -%>
+  rewrite <%= vhost_rewrite_rule %>;
+  <%- end -%>
+<% end -%>
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
   <% if defined? @auth_basic -%>
   auth_basic                "<%= @auth_basic %>";

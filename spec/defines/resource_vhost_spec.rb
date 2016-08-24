@@ -157,6 +157,20 @@ describe 'nginx::resource::vhost' do
           :match => %r'\s+server_name\s+www.rspec.example.com;',
         },
         {
+          :title => 'should contain rewrite rules for server comntext',
+          :attr  => 'vhost_rewrite_rules',
+          :value => [
+            '^(/vhostdownload/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/vhostdownload/.*)/media/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/vhostusers/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            /rewrite \^\(\/vhostdownload\/\.\*\)\/media\/\(\.\*\)\\\.\.\*\$ \$1\/mp3\/\$2\.mp3 last/,
+            /rewrite \^\(\/vhostdownload\/\.\*\)\/media\/\(\.\*\)\\\.\.\*\$ \$1\/mp3\/\$2\.ra  last/,
+            /rewrite \^\/vhostusers\/\(\.\*\)\$ \/show\?user=\$1\? last/,
+          ],
+        },
+        {
           :title => 'should set auth_basic',
           :attr  => 'auth_basic',
           :value => 'value',
@@ -524,6 +538,20 @@ describe 'nginx::resource::vhost' do
           :attr  => 'ssl_ciphers',
           :value => 'HIGH',
           :match => %r'\s+ssl_ciphers\s+HIGH;',
+        },
+        {
+          :title => 'should contain rewrite rules for server comntext',
+          :attr  => 'vhost_rewrite_rules',
+          :value => [
+            '^(/vhostdownload/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last',
+            '^(/vhostdownload/.*)/media/(.*)\..*$ $1/mp3/$2.ra  last',
+            '^/vhostusers/(.*)$ /show?user=$1? last',
+          ],
+          :match => [
+            /rewrite \^\(\/vhostdownload\/\.\*\)\/media\/\(\.\*\)\\\.\.\*\$ \$1\/mp3\/\$2\.mp3 last/,
+            /rewrite \^\(\/vhostdownload\/\.\*\)\/media\/\(\.\*\)\\\.\.\*\$ \$1\/mp3\/\$2\.ra  last/,
+            /rewrite \^\/vhostusers\/\(\.\*\)\$ \/show\?user=\$1\? last/,
+          ],
         },
         {
           :title => 'should set auth_basic',
