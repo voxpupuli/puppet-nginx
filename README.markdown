@@ -49,6 +49,14 @@ nginx::resource::vhost { 'www.puppetlabs.com':
   www_root => '/var/www/www.puppetlabs.com',
 }
 ```
+### Creating a landing page if no other vhost matches:
+
+```puppet
+nginx::resource::vhost { 'fallback-host':
+  server_name => [],
+  www_root => '/var/www/www.puppetlabs.com',
+}
+```
 
 ### A more complex proxy example
 

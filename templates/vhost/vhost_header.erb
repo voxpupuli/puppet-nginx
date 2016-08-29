@@ -61,7 +61,9 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
+<%- if @server_name.size > 0 -%>
   server_name           <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
+<%- end -%>
 <%- if instance_variables.any? { |iv| iv.to_s.include? 'auth_basic' } -%>
   <%- if defined? @auth_basic -%>
   auth_basic           "<%= @auth_basic %>";
