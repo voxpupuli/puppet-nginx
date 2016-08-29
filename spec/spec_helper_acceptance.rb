@@ -15,12 +15,12 @@ RSpec.configure do |c|
   c.before :suite do
     hosts.each do |host|
       # Install module
-      copy_module_to(host, :source => proj_root, :module_name => 'nginx')
+      copy_module_to(host, source: proj_root, module_name: 'nginx')
       if fact('osfamily') == 'Debian'
-        on host, puppet('module','install','puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
+        on host, puppet('module', 'install', 'puppetlabs-apt'), acceptable_exit_codes: [0, 1]
       end
-      on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet('module','install','puppetlabs-concat'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-stdlib'), acceptable_exit_codes: [0, 1]
+      on host, puppet('module', 'install', 'puppetlabs-concat'), acceptable_exit_codes: [0, 1]
 
       # Fake keys.
       # Valid self-signed SSL key with 10 year expiry.

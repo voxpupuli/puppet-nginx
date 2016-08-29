@@ -14,20 +14,20 @@
 #
 # This class file is not called directly
 class nginx::service(
-  $configtest_enable = $::nginx::configtest_enable,
-  $service_restart   = $::nginx::service_restart,
-  $service_ensure    = $::nginx::service_ensure,
+  $configtest_enable = false,
+  $service_restart   = '/etc/init.d/nginx reload',
+  $service_ensure    = 'running',
   $service_name      = 'nginx',
   $service_flags     = undef,
   $service_manage    = true,
 ) {
 
   $service_enable = $service_ensure ? {
-    running => true,
-    absent => false,
-    stopped => false,
-    'undef' => undef,
-    default => true,
+    'running' => true,
+    'absent'  => false,
+    'stopped' => false,
+    'undef'   => undef,
+    default   => true,
   }
 
   if $service_ensure == 'undef' {

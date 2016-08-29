@@ -1,10 +1,10 @@
 ---
 HOSTS:
-  ubuntu-server-1404-x64:
+  debian-78-x64:
     roles:
       - master
-    platform: ubuntu-14.04-amd64
-    box: puppetlabs/ubuntu-14.04-64-nocm
+    platform: debian-7-amd64
+    box: puppetlabs/debian-7.8-64-nocm
     hypervisor: vagrant
 CONFIG:
   type: foss

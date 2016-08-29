@@ -1,28 +1,52 @@
 ---
-branches:
-  except:
-  - refactor
-  - gh-pages
 sudo: false
 language: ruby
 cache: bundler
-script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
-bundler_args: --without system_tests
+bundler_args: --without system_tests development
+before_install:
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
+script:
+  - 'bundle exec rake $CHECK'
 matrix:
   fast_finish: true
   include:
-    - rvm: 1.9.3
-      env: PUPPET_GEM_VERSION="~> 3.0"
-    - rvm: 2.1.10
-      env: PUPPET_GEM_VERSION="~> 3.0"
-    - rvm: 2.1.10
-      env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
-    - rvm: 2.1.10
-      env: PUPPET_GEM_VERSION="~> 4.0"
-    - rvm: 2.1.10
-      env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 3.0" STRICT_VARIABLES="yes" CHECK=test
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 3.0" STRICT_VARIABLES="yes" FUTURE_PARSER="yes" CHECK=test
+  - rvm: 2.1
+    env: PUPPET_VERSION="~> 3.0" STRICT_VARIABLES="yes" CHECK=test
+  - rvm: 2.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.2
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.3.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=build
+  - rvm: 2.3.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
+  - rvm: 2.3.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.4.0-preview1
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
   allow_failures:
-    - rvm: 2.1.10
-      env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
+    - rvm: 2.4.0-preview1
 notifications:
   email: false
+deploy:
+  provider: puppetforge
+  deploy:
+    branch: ha-bug-puppet-forge
+  user: puppet
+  password:
+    secure: ""
+  on:
+    tags: true
+    # all_branches is required to use tags
+    all_branches: true
+    # Only publish if our main Ruby target builds
+    rvm: 2.3.1

@@ -7,68 +7,68 @@ describe 'nginx::resource::map' do
 
   let :default_params do
     {
-      :string   => '$uri',
-      :default  => 'pool_a',
-      :mappings => {
+      string: '$uri',
+      default: 'pool_a',
+      mappings: {
         'foo' => 'pool_b',
         'bar' => 'pool_c',
-        'baz' => 'pool_d',
-      },
+        'baz' => 'pool_d'
+      }
     }
   end
 
   let :pre_condition do
     [
-      'include ::nginx::config',
+      'include ::nginx::config'
     ]
   end
 
   describe 'os-independent items' do
     describe 'basic assumptions' do
-      let :params do default_params end
+      let(:params) { default_params }
 
-      it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with(
-        {
-          'owner'   => 'root',
+      it do
+        is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with(
+          'owner' => 'root',
           'group'   => 'root',
           'mode'    => '0644',
           'ensure'  => 'file',
-          'content' => /map \$uri \$#{title}/,
-        }
-      )}
+          'content' => %r{map \$uri \$#{title}}
+        )
+      end
     end
 
-    describe "map.conf template content" do
+    describe 'map.conf template content' do
       [
         {
-          :title => 'should set hostnames',
-          :attr  => 'hostnames',
-          :value => true,
-          :match => '  hostnames;'
+          title: 'should set hostnames',
+          attr: 'hostnames',
+          value: true,
+          match: '  hostnames;'
         },
         {
-          :title => 'should set default',
-          :attr  => 'default',
-          :value => 'pool_a',
-          :match => [ '  default pool_a;' ],
+          title: 'should set default',
+          attr: 'default',
+          value: 'pool_a',
+          match: ['  default pool_a;']
         },
         {
-          :title => 'should contain ordered mappings',
-          :attr  => 'mappings',
-          :value => {
+          title: 'should contain ordered mappings',
+          attr: 'mappings',
+          value: {
             'foo' => 'pool_b',
             'bar' => 'pool_c',
-            'baz' => 'pool_d',
+            'baz' => 'pool_d'
           },
-          :match => [
+          match: [
             '  bar pool_c;',
             '  baz pool_d;',
-            '  foo pool_b;',
-          ],
-        },
+            '  foo pool_b;'
+          ]
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+          let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_mode('0644') }
           it param[:title] do
@@ -81,11 +81,11 @@ describe 'nginx::resource::map' do
       end
 
       context 'when ensure => absent' do
-        let :params do default_params.merge(
-          {
-            :ensure => 'absent'
-          }
-        ) end
+        let :params do
+          default_params.merge(
+            ensure: 'absent'
+          )
+        end
 
         it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_ensure('absent') }
       end
