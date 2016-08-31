@@ -649,7 +649,7 @@ define nginx::resource::vhost (
   if $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
-      mode    => '0770',
+      mode    => '0660',
       content => template('nginx/vhost/uwsgi_params.erb'),
     }
   }
