@@ -112,7 +112,7 @@ class nginx (
   $configtest_enable              = false,
   $service_ensure                 = running,
   $service_flags                  = undef,
-  $service_restart                = '/etc/init.d/nginx reload',
+  $service_restart                = '/etc/init.d/nginx configtest && /etc/init.d/nginx reload',
   $service_name                   = undef,
   $service_manage                 = true,
   ### END Service Configuration ###
