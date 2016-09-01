@@ -1,12 +1,12 @@
 {
-  "name": "jfryman-nginx",
+  "name": "desertkun-nginx",
   "version": "0.3.0",
   "author": "James Fryman",
   "summary": "Puppet NGINX management module",
   "license": "MIT",
-  "source": "https://github.com/jfryman/puppet-nginx.git",
-  "project_page": "http://github.com/jfryman/puppet-nginx",
-  "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
+  "source": "https://github.com/desertkun/puppet-nginx.git",
+  "project_page": "http://github.com/desertkun/puppet-nginx",
+  "issues_url": "https://github.com/desertkun/puppet-nginx/issues",
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.2.0 <5.0.0"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.8.0 <3.0.0"},

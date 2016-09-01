@@ -145,6 +145,7 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
+  $proxy_buffering      = $::nginx::config::proxy_buffering,
   $proxy_redirect       = $::nginx::config::proxy_redirect,
   $proxy_read_timeout   = $::nginx::config::proxy_read_timeout,
   $proxy_connect_timeout = $::nginx::config::proxy_connect_timeout,
@@ -218,6 +219,7 @@ define nginx::resource::location (
     validate_string($proxy_redirect)
   }
   validate_string($proxy_read_timeout)
+  validate_string($proxy_buffering)
   validate_string($proxy_connect_timeout)
   validate_array($proxy_set_header)
   validate_array($proxy_hide_header)
