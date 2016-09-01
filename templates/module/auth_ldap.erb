@@ -1,0 +1,30 @@
+ldap_server <%= @server %> {
+      url "<%= @url %>";
+
+      binddn "<%= @binddn %>";
+      binddn_passwd <%= @binddn_passwd %>;
+
+      # group attribute name which contains member object
+      group_attribute <%= @group_attribute %>;
+
+      # search for full DN in member object
+      group_attribute_is_dn <%= @group_attribute_is_dn %>;
+
+      # matching algorithm (any / all)
+      satisfy <%= @satisfy %>;
+
+<%- if @require_group_dn -%>
+<% @require_group_dn.each do | group | -%>
+      require group "<%= group %>";
+<% end -%>
+<%- end -%>
+
+    <%- if @require_group_dn -%>
+      # require 'valid_user' cannot be used together with 'user' as valid user is a superset
+      # require valid_user;
+      <% @require_user_dn.each do | user | -%>
+      require user "<%= user %>";
+      <% end -%>
+    <%- end -%>
+
+}

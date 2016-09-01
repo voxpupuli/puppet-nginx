@@ -282,7 +282,9 @@ define nginx::resource::vhost (
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
   $maintenance_value            = 'return 503',
-  $locations                    = {}
+  $locations                    = {},
+  $auth_ldap                    = undef,
+  $auth_ldap_servers            = [],
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -594,6 +596,8 @@ define nginx::resource::vhost (
     # Create the default location reference for the vHost
     nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
+      auth_ldap                   => $auth_ldap,
+      auth_ldap_servers           => $auth_ldap_servers,
       vhost                       => $name_sanitized,
       ssl                         => $ssl,
       ssl_only                    => $ssl_only,

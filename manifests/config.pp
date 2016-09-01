@@ -45,6 +45,9 @@ class nginx::config(
   ### START Nginx Configuration ###
   $accept_mutex                   = 'on',
   $accept_mutex_delay             = '500ms',
+  $auth_ldap_cache_enabled         = undef,
+  $auth_ldap_cache_expiration_time = undef,
+  $auth_ldap_cache_size            = undef,
   $client_body_buffer_size        = '128k',
   $client_max_body_size           = '10m',
   $events_use                     = false,

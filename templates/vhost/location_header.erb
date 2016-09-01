@@ -22,6 +22,14 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @auth_ldap -%>
+    auth_ldap          "<%= @auth_ldap %>";
+<% end -%>
+<%- if @auth_ldap_servers -%>
+<% @auth_ldap_servers.each do | auth_ldap_server | -%>
+    auth_ldap_servers  "<%= auth_ldap_server %>";
+<% end -%>
+<%- end -%>
 <% if @auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
 <% end -%>

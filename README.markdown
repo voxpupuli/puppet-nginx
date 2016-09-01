@@ -66,6 +66,38 @@ nginx::resource::vhost { 'rack.puppetlabs.com':
 }
 ```
 
+### Use ldap authentication
+
+  * nginx must be compiled with [auth_ldap](https://github.com/kvspb/nginx-auth-ldap) module
+  * enable caching for solving [segmentfault](https://github.com/kvspb/nginx-auth-ldap/issues/8) problems
+
+```puppet
+
+nginx::config::auth_ldap_cache_enabled: 'on'
+nginx::config::auth_ldap_cache_expiration_time: '3600'
+nginx::config::auth_ldap_cache_size: '1000'
+
+# add auth_ldap support to a vhost
+# auth_ldap_servers must match the resource title from nginx::module::auth_ldap
+nginx::nginx_vhosts:
+    auth_ldap: 'Authentication Required'
+    auth_ldap_servers:
+      - 'dc01'
+
+# ldap configurations
+nginx::module::auth_ldap:
+  'dc01':
+    server: 'dc01'
+    url: 'ldap://dc01.example.com:389/OU=Users,DC=example,DC=com?sAMAccountName?sub?(objectClass=person)'
+    binddn: 'CN=bob,OU=Users,DC=example,DC=com'
+    binddn_passwd: 'strongpassword'
+    group_attribute: 'member'
+    group_attribute_is_dn: 'on'
+    satisfy: 'any'
+    require_group_dn:
+      - 'CN=it,OU=Groups,DC=example,DC=com'
+```
+
 ### Add a smtp proxy
 
 ```puppet
