@@ -141,6 +141,9 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #     rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
+#   [*include_files_top*]       - Adds include files to vhost at the top
+#   [*include_files_bottom*]    - Adds include files to vhost at the bottom
+#     this is the default behavior
 #   [*access_log*]              - Where to write access log. May add additional
 #     options like log format to the end.
 #   [*error_log*]               - Where to write error log. May add additional
@@ -264,6 +267,8 @@ define nginx::resource::vhost (
   $vhost_cfg_ssl_prepend        = undef,
   $vhost_cfg_ssl_append         = undef,
   $include_files                = undef,
+  $include_files_bottom         = true,
+  $include_files_top            = false,
   $access_log                   = undef,
   $error_log                    = undef,
   $format_log                   = 'combined',
@@ -490,6 +495,11 @@ define nginx::resource::vhost (
   }
   if ($include_files != undef) {
     validate_array($include_files)
+    validate_bool($include_files_bottom)
+    validate_bool($include_files_top)
+    if ($include_files_bottom == $include_files_top) {
+      fail('$include_files_bottom can not be the same as $include_files_top')
+    }
   }
   if ($access_log != undef) {
     validate_string($access_log)
