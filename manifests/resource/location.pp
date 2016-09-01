@@ -40,6 +40,7 @@
 #     that you can split the script_name and path_info via regex
 #   [*uwsgi*]              - location of uwsgi (host:port)
 #   [*uwsgi_params*]       - optional alternative uwsgi_params file to use
+#   [*uwsgi_read_timeout*]   - optional value for uwsgi_read_timeout
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for
 #     this location.
 #   [*ssl_only*]             - Required if the SSL and normal vHost have the
@@ -157,6 +158,7 @@ define nginx::resource::location (
   $fastcgi_split_path   = undef,
   $uwsgi                = undef,
   $uwsgi_params         = "${nginx::config::conf_dir}/uwsgi_params",
+  $uwsgi_read_timeout   = undef,
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
@@ -238,6 +240,9 @@ define nginx::resource::location (
     validate_string($uwsgi)
   }
   validate_string($uwsgi_params)
+  if ($uwsgi_read_timeout != undef) {
+    validate_string($uwsgi_read_timeout)
+  }
 
   validate_bool($internal)
 

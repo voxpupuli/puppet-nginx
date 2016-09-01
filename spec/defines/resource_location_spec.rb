@@ -567,6 +567,12 @@ describe 'nginx::resource::location' do
           attr: 'uwsgi',
           value: 'value',
           match: %r{\s+uwsgi_pass\s+value;}
+        },
+        {
+          title: 'should set uwsgi_read_timeout',
+          attr: 'uwsgi_read_timeout',
+          value: '300s',
+          match: %r{\s+uwsgi_read_timeout\s+300s;}
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
