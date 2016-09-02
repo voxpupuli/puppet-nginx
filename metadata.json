@@ -51,6 +51,7 @@
     { "operatingsystem": "AIX" },
     { "operatingsystem": "FreeBSD" },
     { "operatingsystem": "NetBSD" },
+    { "operatingsystem": "Archlinux" },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
