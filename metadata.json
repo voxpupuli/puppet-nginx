@@ -1,12 +1,12 @@
 {
-  "name": "jfryman-nginx",
-  "version": "0.3.0",
-  "author": "James Fryman",
+  "name": "puppet-nginx",
+  "version": "0.4.0",
+  "author": "Vox Pupuli",
   "summary": "Puppet NGINX management module",
   "license": "MIT",
-  "source": "https://github.com/jfryman/puppet-nginx.git",
-  "project_page": "http://github.com/jfryman/puppet-nginx",
-  "issues_url": "https://github.com/jfryman/puppet-nginx/issues",
+  "source": "https://github.com/voxpupuli/puppet-nginx.git",
+  "project_page": "http://github.com/voxpupuli/puppet-nginx",
+  "issues_url": "https://github.com/voxpupuli/puppet-nginx/issues",
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.2.0 <5.0.0"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.8.0 <3.0.0"},
@@ -51,6 +51,7 @@
     { "operatingsystem": "AIX" },
     { "operatingsystem": "FreeBSD" },
     { "operatingsystem": "NetBSD" },
+    { "operatingsystem": "Archlinux" },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
