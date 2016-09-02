@@ -1,17 +1,17 @@
 # NGINX Module
 
+This module got migrated from James Fryman <james@frymanet.com> and Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
+
+
 ## INSTALLING OR UPGRADING
 ** Please note **: This module is currently undergoing some structural
-maintenance. Please take a look at [https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md](https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md)
+maintenance. Please take a look at [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
 
 [![Puppet
-Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.puppetlabs.com/jfryman/nginx)
-[![Build Status](https://travis-ci.org/jfryman/puppet-nginx.svg?branch=master)](https://travis-ci.org/jfryman/puppet-nginx)
+Forge](http://img.shields.io/puppetforge/v/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-nginx.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-nginx)
 
-
-* James Fryman <james@frymanet.com>
-* Matthew Haughton <matt@3flex.com.au>
 
 This module manages NGINX configuration.
 
@@ -24,7 +24,7 @@ This module manages NGINX configuration.
 ### Additional Documentation
 
 * [A Quickstart Guide to the NGINX Puppet Module][quickstart]
-[quickstart]: https://github.com/jfryman/puppet-nginx/blob/master/docs/quickstart.md
+[quickstart]: https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md
 
 
 ### Install and bootstrap an NGINX instance
