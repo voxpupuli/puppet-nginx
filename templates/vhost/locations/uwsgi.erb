@@ -6,3 +6,6 @@
 <% end -%>
     include <%= @uwsgi_params %>;
     uwsgi_pass <%= @uwsgi %>;
+<% if @uwsgi_read_timeout-%>
+    uwsgi_read_timeout <%= @uwsgi_read_timeout %>;
+<% end -%>

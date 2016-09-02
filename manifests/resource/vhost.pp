@@ -48,6 +48,7 @@
 #   [*fastcgi*]             - location of fastcgi (host:port)
 #   [*fastcgi_params*]      - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]      - optional SCRIPT_FILE parameter
+#   [*uwsgi_read_timeout*]  - optional value for uwsgi_read_timeout
 #   [*ssl*]                 - Indicates whether to setup SSL bindings for this
 #     vhost.
 #   [*ssl_cert*]            - Pre-generated SSL Certificate file to reference
@@ -235,6 +236,7 @@ define nginx::resource::vhost (
   $fastcgi_script               = undef,
   $uwsgi                        = undef,
   $uwsgi_params                 = "${nginx::config::conf_dir}/uwsgi_params",
+  $uwsgi_read_timeout           = undef,
   $index_files                  = [
     'index.html',
     'index.htm',
@@ -418,6 +420,9 @@ define nginx::resource::vhost (
     validate_string($uwsgi)
   }
   validate_string($uwsgi_params)
+  if ($uwsgi_read_timeout != undef) {
+    validate_string($uwsgi_read_timeout)
+  }
   validate_array($index_files)
   if ($autoindex != undef) {
     validate_string($autoindex)
@@ -619,6 +624,7 @@ define nginx::resource::vhost (
       fastcgi_script              => $fastcgi_script,
       uwsgi                       => $uwsgi,
       uwsgi_params                => $uwsgi_params,
+      uwsgi_read_timeout          => $uwsgi_read_timeout,
       try_files                   => $try_files,
       www_root                    => $www_root,
       autoindex                   => $autoindex,
