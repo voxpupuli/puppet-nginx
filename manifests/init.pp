@@ -43,6 +43,7 @@ class nginx (
   $http_tcp_nodelay               = undef,
   $http_tcp_nopush                = undef,
   $keepalive_timeout              = undef,
+  $keepalive_requests             = undef,
   $mail                           = undef,
   $multi_accept                   = undef,
   $names_hash_bucket_size         = undef,
@@ -164,6 +165,7 @@ class nginx (
         $http_tcp_nodelay or
         $http_tcp_nopush or
         $keepalive_timeout or
+        $keepalive_requests or
         $logdir or
         $log_format or
         $mail or
@@ -247,6 +249,7 @@ class nginx (
       http_tcp_nodelay               => $http_tcp_nodelay,
       http_tcp_nopush                => $http_tcp_nopush,
       keepalive_timeout              => $keepalive_timeout,
+      keepalive_requests             => $keepalive_requests,
       log_dir                        => $logdir,
       log_format                     => $log_format,
       mail                           => $mail,

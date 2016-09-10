@@ -62,6 +62,7 @@ http {
   server_names_hash_max_size <%= @names_hash_max_size %>;
 
   keepalive_timeout  <%= @keepalive_timeout %>;
+  keepalive_requests  <%= @keepalive_requests %>;
   tcp_nodelay        <%= @http_tcp_nodelay %>;
 
 <% if @gzip == 'on' -%>
