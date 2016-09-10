@@ -264,6 +264,12 @@ describe 'nginx::config' do
           match: '  keepalive_timeout  123;'
         },
         {
+          title: 'should set keepalive_requests',
+          attr: 'keepalive_requests',
+          value: '345',
+          match: '  keepalive_requests  345;'
+        },
+        {
           title: 'should set tcp_nodelay',
           attr: 'http_tcp_nodelay',
           value: 'on',
@@ -457,6 +463,12 @@ describe 'nginx::config' do
           attr: 'keepalive_timeout',
           value: '123',
           match: '  keepalive_timeout  123;'
+        },
+        {
+          title: 'should set keepalive_requests',
+          attr: 'keepalive_requests',
+          value: '345',
+          match: '  keepalive_requests  345;'
         },
         {
           title: 'should set mail',
