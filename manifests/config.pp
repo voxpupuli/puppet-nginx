@@ -68,6 +68,7 @@ class nginx::config(
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
+  $keepalive_requests             = '100',
   $log_format                     = {},
   $mail                           = false,
   $stream                         = false,
