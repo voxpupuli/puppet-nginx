@@ -343,7 +343,7 @@ define nginx::resource::location (
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($uwsgi == undef) and ($location_custom_cfg == undef) and ($internal == false)) {
+  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($uwsgi == undef) and ($location_custom_cfg == undef) and ($internal == false) and ($try_files == undef)) {
     fail('Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined')
   }
   if (($www_root != undef) and ($proxy != undef)) {
@@ -375,6 +375,8 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/uwsgi.erb')
   } elsif ($www_root != undef) {
     $content_real = template('nginx/vhost/locations/directory.erb')
+  } elsif ($try_files != undef) {
+    $content_real = template('nginx/vhost/locations/try_files.erb')
   } else {
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
