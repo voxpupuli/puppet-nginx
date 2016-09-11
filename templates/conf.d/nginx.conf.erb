@@ -13,10 +13,16 @@ pid        <%= @pid %>;
 error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
 
 <% if @nginx_cfg_prepend -%>
+<% if @nginx_cfg_prepend.is_a?(Hash) -%>
 <%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
 <%- @nginx_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
 <%- Array(value).each do |asubvalue| -%>
 <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
+<%- end -%>
+<%- end -%>
+<%- else -%>
+<%- @nginx_cfg_prepend.each do |value| -%>
+<%= value %>
 <%- end -%>
 <%- end -%>
 <% end -%>
@@ -145,12 +151,18 @@ http {
 <% end -%>
 <% if @http_cfg_append -%>
 
+<% if @http_cfg_append.is_a?(Hash) -%>
   <%- field_width = @http_cfg_append.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
   <%- Array(value).each do |asubvalue| -%>
   <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
   <%- end -%>
   <%- end -%>
+<% else -%>
+  <%- @http_cfg_append.each do |value| -%>
+  <%= value %>
+  <%- end -%>
+<% end -%>
 <% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
