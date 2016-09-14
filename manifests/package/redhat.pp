@@ -41,6 +41,11 @@ class nginx::package::redhat (
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
+
+        yumrepo { 'passenger':
+          ensure => absent,
+        }
+
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
@@ -52,22 +57,36 @@ class nginx::package::redhat (
           gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
-      }
-      'passenger': {
+
         yumrepo { 'passenger':
-          baseurl  => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${::operatingsystemmajrelease}/\$basearch",
-          descr    => 'passenger repo',
-          enabled  => '1',
-          gpgcheck => '0',
-          repo_gpgcheck => '1',
-          priority => '1',
-          gpgkey   => 'https://packagecloud.io/gpg.key',
-          before   => Package['nginx'],
+          ensure => absent,
         }
 
-        package { 'passenger':
-          ensure  => 'present',
-          require => Yumrepo['passenger'],
+      }
+      'passenger': {
+        if ($::operatingsystem in ['RedHat', 'CentOS']) and ($::operatingsystemmajrelease in ['6', '7']) {
+          yumrepo { 'passenger':
+            baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${::operatingsystemmajrelease}/\$basearch",
+            descr         => 'passenger repo',
+            enabled       => '1',
+            gpgcheck      => '0',
+            repo_gpgcheck => '1',
+            priority      => '1',
+            gpgkey        => 'https://packagecloud.io/gpg.key',
+            before        => Package['nginx'],
+          }
+
+          yumrepo { 'nginx-release':
+            ensure => absent,
+          }
+
+          package { 'passenger':
+            ensure  => present,
+            require => Yumrepo['passenger'],
+          }
+
+        } else {
+          fail("${::operatingsystem} version ${::operatingsystemmajrelease} is unsupported with \$package_source 'passenger'")
         }
       }
       default: {
