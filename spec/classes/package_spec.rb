@@ -28,6 +28,14 @@ describe 'nginx::package' do
       end
     end
 
+    context "package_source => passenger" do
+      let(:params) {{ :package_source => 'passenger' }}
+      it { is_expected.to contain_yumrepo('passenger').with(
+        'baseurl'  => 'https://oss-binaries.phusionpassenger.com/yum/passenger/el/6/$basearch',
+      )}
+      it { is_expected.to contain_package('passenger') }
+    end
+
     context 'manage_repo => false' do
       let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '7' } }
       let(:params) { { manage_repo: false } }
