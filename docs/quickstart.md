@@ -15,7 +15,7 @@ class{'nginx':
     package_source => 'nginx-mainline'
 }
 ```
-The choices here are `nginx-stable` (the current 'production' level release) and `nginx-mainline` (where active development is occuring) - you can read a full explanation of the differences [here][nginxpackages].  
+The choices here are `nginx-stable` (the current 'production' level release), `nginx-mainline` (where active development is occuring), as well as `passenger` - you can read a full explanation of the differences [here][nginxpackages]. `passenger` will install Phusion Passenger, as well as their version of nginx built with Passenger support. Keep in mind that changing `package_source` may require some manual intervention if you change this setting after initial configuration. On CentOS 6 / RHEL 6, there is a soft dependency on EPEL (GeoIP package won't install without it).
 
 ### Creating Your First Virtual Host
 

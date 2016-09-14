@@ -146,7 +146,8 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-On Debian and CentOS it might look like:
+Example configuration for Debian and RHEL / CentOS (pulling the Nginx and
+Passenger packages from the Phusion repo)
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',
