@@ -25,7 +25,7 @@ group :test do
   gem 'metadata-json-lint',                                         :require => false
   gem 'puppet-blacksmith',                                          :require => false
   gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
-  gem 'puppet-strings',                                             :require => false, :git => 'https://github.com/puppetlabs/puppetlabs-strings.git'
+  gem 'puppet-strings', '0.4.0',                                    :require => false
   gem 'rubocop-rspec', '~> 1.6',                                    :require => false if RUBY_VERSION >= '2.3.0'
   gem 'json_pure', '<= 2.0.1',                                      :require => false if RUBY_VERSION < '2.0.0'
 end
