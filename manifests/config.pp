@@ -16,6 +16,7 @@
 class nginx::config(
   ### START Module/App Configuration ###
   $client_body_temp_path          = $::nginx::params::client_body_temp_path,
+  $confd_only                     = false,
   $confd_purge                    = false,
   $conf_dir                       = $::nginx::params::conf_dir,
   $daemon_user                    = $::nginx::params::daemon_user,
@@ -76,7 +77,6 @@ class nginx::config(
   $keepalive_requests             = '100',
   $log_format                     = {},
   $mail                           = false,
-  $stream                         = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
   $names_hash_max_size            = '512',
@@ -139,6 +139,7 @@ class nginx::config(
   if ($proxy_conf_template != undef) {
     warning('The $proxy_conf_template parameter is deprecated and has no effect.')
   }
+  validate_bool($confd_only)
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
   if ( $proxy_cache_path != false) {
@@ -227,21 +228,25 @@ class nginx::config(
   file { "${conf_dir}/conf.stream.d":
     ensure => directory,
   }
-  if $confd_purge == true {
-    File["${conf_dir}/conf.stream.d"] {
-      purge   => true,
-      recurse => true,
-    }
-  }
 
   file { "${conf_dir}/conf.d":
     ensure => directory,
   }
-  if $confd_purge == true {
-    File["${conf_dir}/conf.d"] {
-      purge   => true,
-      recurse => true,
-      notify  => Class['::nginx::service'],
+  if $confd_purge {
+    # Err on the side of caution - make sure *both* $vhost_purge and
+    # $confd_purge are set if $confd_only is set, before purging files
+    # ${conf_dir}/conf.d
+    if (($confd_only and $vhost_purge) or !$confd_only) {
+      File["${conf_dir}/conf.d"] {
+        purge   => true,
+        recurse => true,
+        notify  => Class['::nginx::service'],
+      }
+      File["${conf_dir}/conf.stream.d"] {
+        purge   => true,
+        recurse => true,
+        notify  => Class['::nginx::service'],
+      }
     }
   }
 
@@ -273,55 +278,40 @@ class nginx::config(
     owner  => $daemon_user,
   }
 
-  if $stream {
-    file { "${conf_dir}/streams-available":
+  unless $confd_only {
+    file { "${conf_dir}/sites-available":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
-
-    if $vhost_purge == true {
-      File["${conf_dir}/streams-available"] {
+    file { "${conf_dir}/sites-enabled":
+      ensure => directory,
+    }
+    if $vhost_purge {
+      File["${conf_dir}/sites-available"] {
+        purge   => true,
+        recurse => true,
+      }
+      File["${conf_dir}/sites-enabled"] {
         purge   => true,
         recurse => true,
       }
     }
-
     file { "${conf_dir}/streams-enabled":
       ensure => directory,
+      owner  => $sites_available_owner,
+      group  => $sites_available_group,
+      mode   => $sites_available_mode,
     }
-
+    file { "${conf_dir}/streams-available":
+      ensure => directory,
+    }
     if $vhost_purge == true {
       File["${conf_dir}/streams-enabled"] {
         purge   => true,
         recurse => true,
       }
-    }
-  }
-
-  file { "${conf_dir}/sites-available":
-    ensure => directory,
-    owner  => $sites_available_owner,
-    group  => $sites_available_group,
-    mode   => $sites_available_mode,
-  }
-
-  if $vhost_purge == true {
-    File["${conf_dir}/sites-available"] {
-      purge   => true,
-      recurse => true,
-    }
-  }
-
-  file { "${conf_dir}/sites-enabled":
-    ensure => directory,
-  }
-
-  if $vhost_purge == true {
-    File["${conf_dir}/sites-enabled"] {
-      purge   => true,
-      recurse => true,
     }
   }
 

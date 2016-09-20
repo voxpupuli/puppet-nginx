@@ -20,6 +20,15 @@ describe 'nginx::config' do
       )
     end
     it do
+      is_expected.to contain_file('/etc/nginx/conf.stream.d').only_with(
+        path: '/etc/nginx/conf.stream.d',
+        ensure: 'directory',
+        owner: 'root',
+        group: 'root',
+        mode: '0644'
+      )
+    end
+    it do
       is_expected.to contain_file('/etc/nginx/conf.mail.d').only_with(
         path: '/etc/nginx/conf.mail.d',
         ensure: 'directory',
@@ -632,6 +641,24 @@ describe 'nginx::config' do
       end
     end
 
+    context 'when confd_only true' do
+      let(:params) { { confd_only: true } }
+      it do
+        is_expected.to contain_file('/etc/nginx/conf.d').without(
+          %w(
+            ignore
+            purge
+            recurse
+          )
+        )
+        is_expected.not_to contain_file('/etc/nginx/sites-available')
+        is_expected.not_to contain_file('/etc/nginx/sites-enabled')
+        is_expected.to contain_file('/etc/nginx/nginx.conf').without_content(%r{include /path/to/nginx/sites-enabled/\*;})
+        is_expected.not_to contain_file('/etc/nginx/streams-available')
+        is_expected.not_to contain_file('/etc/nginx/streams-enabled')
+      end
+    end
+
     context 'when vhost_purge true' do
       let(:params) { { vhost_purge: true } }
       it do
@@ -644,6 +671,51 @@ describe 'nginx::config' do
         is_expected.to contain_file('/etc/nginx/sites-enabled').with(
           purge: true,
           recurse: true
+        )
+      end
+    end
+
+    context 'when confd_purge true, vhost_purge true, and confd_only true' do
+      let(:params) do
+        {
+          confd_purge: true,
+          confd_only: true,
+          vhost_purge: true
+        }
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/conf.d').with(
+          purge: true,
+          recurse: true
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/conf.stream.d').with(
+          purge: true,
+          recurse: true
+        )
+      end
+    end
+
+    context 'when confd_purge true, vhost_purge default (false), confd_only true' do
+      let(:params) do
+        {
+          confd_purge: true,
+          confd_only: true
+        }
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/conf.d').without(
+          %w(
+            purge
+          )
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/conf.stream.d').without(
+          %w(
+            purge
+          )
         )
       end
     end
@@ -677,12 +749,42 @@ describe 'nginx::config' do
           )
         )
       end
-    end
-
-    context 'when stream true' do
-      let(:params) { { stream: true } }
-      it { is_expected.to contain_file('/etc/nginx/streams-available') }
-      it { is_expected.to contain_file('/etc/nginx/streams-enabled') }
+      it do
+        is_expected.to contain_file('/etc/nginx/streams-available').without(
+          %w(
+            ignore
+            purge
+            recurse
+          )
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/streams-enabled').without(
+          %w(
+            ignore
+            purge
+            recurse
+          )
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/streams-available').without(
+          %w(
+            ignore
+            purge
+            recurse
+          )
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/streams-enabled').without(
+          %w(
+            ignore
+            purge
+            recurse
+          )
+        )
+      end
     end
 
     context 'when daemon_user = www-data' do

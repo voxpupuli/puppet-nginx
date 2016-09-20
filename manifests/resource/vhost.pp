@@ -558,11 +558,15 @@ define nginx::resource::vhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
-  $vhost_enable_dir = "${::nginx::config::conf_dir}/sites-enabled"
-  $vhost_symlink_ensure = $ensure ? {
-    'absent' => absent,
-    default  => 'link',
+  if $::nginx::config::confd_only {
+    $vhost_dir = "${::nginx::config::conf_dir}/conf.d"
+  } else {
+    $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
+    $vhost_enable_dir = "${::nginx::config::conf_dir}/sites-enabled"
+    $vhost_symlink_ensure = $ensure ? {
+      'absent' => absent,
+      default  => 'link',
+    }
   }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
@@ -597,7 +601,7 @@ define nginx::resource::vhost (
     group   => $group,
     mode    => $mode,
     notify  => Class['::nginx::service'],
-    require => [File[$vhost_dir], File[$vhost_enable_dir]],
+    require => File[$vhost_dir],
   }
 
   $ssl_only = ($ssl == true) and (($ssl_port + 0) == ($listen_port + 0))
@@ -701,12 +705,14 @@ define nginx::resource::vhost (
     }
   }
 
-  file{ "${name_sanitized}.conf symlink":
-    ensure  => $vhost_symlink_ensure,
-    path    => "${vhost_enable_dir}/${name_sanitized}.conf",
-    target  => $config_file,
-    require => [File[$vhost_dir], File[$vhost_enable_dir], Concat[$config_file]],
-    notify  => Class['::nginx::service'],
+  unless $::nginx::config::confd_only {
+    file{ "${name_sanitized}.conf symlink":
+      ensure  => $vhost_symlink_ensure,
+      path    => "${vhost_enable_dir}/${name_sanitized}.conf",
+      target  => $config_file,
+      require => [File[$vhost_dir], File[$vhost_enable_dir], Concat[$config_file]],
+      notify  => Class['::nginx::service'],
+    }
   }
 
   create_resources('::nginx::resource::map', $string_mappings)

@@ -76,6 +76,7 @@ class nginx (
   ### END Nginx Configuration
 
   ### START Module/App Configuration ###
+  $confd_only                     = undef,
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $daemon_user                    = undef,
@@ -234,6 +235,7 @@ class nginx (
       client_body_temp_path          => $client_body_temp_path,
       client_max_body_size           => $client_max_body_size,
       confd_purge                    => $confd_purge,
+      confd_only                     => $confd_only,
       conf_dir                       => $conf_dir,
       conf_template                  => $conf_template,
       daemon_user                    => $daemon_user,

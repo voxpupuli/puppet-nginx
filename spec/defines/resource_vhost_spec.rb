@@ -43,6 +43,19 @@ describe 'nginx::resource::vhost' do
       end
     end
 
+    describe 'with $confd_only enabled' do
+      let(:pre_condition) { 'class { "nginx": confd_only => true }' }
+      let(:params) { default_params }
+      it { is_expected.to contain_class('nginx::config') }
+      it do
+        is_expected.to contain_concat("/etc/nginx/conf.d/#{title}.conf").with('owner' => 'root',
+                                                                              'group' => 'root',
+                                                                              'mode'  => '0644')
+        is_expected.not_to contain_file('/etc/nginx/sites-enabled')
+        is_expected.not_to contain_file('/etc/nginx/sites-available')
+      end
+    end
+
     describe 'vhost_header template content' do
       [
         {
