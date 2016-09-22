@@ -688,6 +688,12 @@ describe 'nginx::resource::location' do
           ]
         },
         {
+          title: 'should set proxy_http_version',
+          attr: 'proxy_http_version',
+          value: 'value',
+          match: %r{\s+proxy_http_version\s+value;}
+        },
+        {
           title: 'should set proxy_method',
           attr: 'proxy_method',
           value: 'value',

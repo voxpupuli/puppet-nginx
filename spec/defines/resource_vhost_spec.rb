@@ -265,6 +265,12 @@ describe 'nginx::resource::vhost' do
           attr: 'error_log',
           value: '/path/to/error.log',
           match: '  error_log             /path/to/error.log;'
+        },
+        {
+          title: 'should set error_pages',
+          attr: 'error_pages',
+          value: { '503' => '/foo.html' },
+          match: '  error_page  503 /foo.html;'
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
@@ -583,6 +589,12 @@ describe 'nginx::resource::vhost' do
           attr: 'error_log',
           value: '/path/to/error.log',
           match: '  error_log             /path/to/error.log;'
+        },
+        {
+          title: 'should set error_pages',
+          attr: 'error_pages',
+          value: { '503' => '/foo.html' },
+          match: '  error_page  503 /foo.html;'
         },
         {
           title: 'should contain raw_prepend directives',
