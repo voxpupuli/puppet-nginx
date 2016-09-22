@@ -261,7 +261,7 @@ describe 'nginx::config' do
           title: 'should set keepalive_timeout',
           attr: 'keepalive_timeout',
           value: '123',
-          match: '  keepalive_timeout  123;'
+          match: '  keepalive_timeout   123;'
         },
         {
           title: 'should set keepalive_requests',
@@ -270,10 +270,28 @@ describe 'nginx::config' do
           match: '  keepalive_requests  345;'
         },
         {
+          title: 'should set client_body_timeout',
+          attr: 'client_body_timeout',
+          value: '888',
+          match: '  client_body_timeout 888;'
+        },
+        {
+          title: 'should set send_timeout',
+          attr: 'send_timeout',
+          value: '963',
+          match: '  send_timeout        963;'
+        },
+        {
+          title: 'should set lingering_timeout',
+          attr: 'lingering_timeout',
+          value: '385',
+          match: '  lingering_timeout   385;'
+        },
+        {
           title: 'should set tcp_nodelay',
           attr: 'http_tcp_nodelay',
           value: 'on',
-          match: '  tcp_nodelay        on;'
+          match: '  tcp_nodelay         on;'
         },
         {
           title: 'should set tcp_nopush',
@@ -445,30 +463,6 @@ describe 'nginx::config' do
           attr: 'pid',
           value: '/path/to/pid',
           match: 'pid        /path/to/pid;'
-        },
-        {
-          title: 'should set tcp_nodelay',
-          attr: 'http_tcp_nodelay',
-          value: 'on',
-          match: '  tcp_nodelay        on;'
-        },
-        {
-          title: 'should set tcp_nopush',
-          attr: 'http_tcp_nopush',
-          value: 'on',
-          match: '  tcp_nopush on;'
-        },
-        {
-          title: 'should set keepalive_timeout',
-          attr: 'keepalive_timeout',
-          value: '123',
-          match: '  keepalive_timeout  123;'
-        },
-        {
-          title: 'should set keepalive_requests',
-          attr: 'keepalive_requests',
-          value: '345',
-          match: '  keepalive_requests  345;'
         },
         {
           title: 'should set mail',
