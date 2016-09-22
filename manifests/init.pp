@@ -123,6 +123,7 @@ class nginx (
   $string_mappings                = {},
   $nginx_locations                = {},
   $nginx_mailhosts                = {},
+  $nginx_streamhosts              = {},
   $nginx_upstreams                = {},
   $nginx_vhosts                   = {},
   $nginx_vhosts_defaults          = {},
@@ -311,6 +312,7 @@ class nginx (
   create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
+  create_resources('nginx::resource::streamhost', $nginx_streamhosts)
   create_resources('nginx::resource::map', $string_mappings)
   create_resources('nginx::resource::geo', $geo_mappings)
 

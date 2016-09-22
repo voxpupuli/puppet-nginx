@@ -13,7 +13,8 @@ describe 'nginx' do
       nginx_vhosts: { 'test2.local' => { 'www_root' => '/' } },
       nginx_vhosts_defaults: { 'listen_options' => 'default_server' },
       nginx_locations: { 'test2.local' => { 'vhost' => 'test2.local', 'www_root' => '/' } },
-      nginx_mailhosts: { 'smtp.test2.local' => { 'auth_http' => 'server2.example/cgi-bin/auth', 'protocol' => 'smtp', 'listen_port' => 587 } }
+      nginx_mailhosts: { 'smtp.test2.local' => { 'auth_http' => 'server2.example/cgi-bin/auth', 'protocol' => 'smtp', 'listen_port' => 587 } },
+      nginx_streamhosts: { 'streamhost1' => { 'proxy' => 'streamproxy' } }
     }
   end
 
@@ -32,5 +33,6 @@ describe 'nginx' do
     it { is_expected.to contain_nginx__resource__vhost('test2.local').with_listen_options('default_server') }
     it { is_expected.to contain_nginx__resource__location('test2.local') }
     it { is_expected.to contain_nginx__resource__mailhost('smtp.test2.local') }
+    it { is_expected.to contain_nginx__resource__streamhost('streamhost1').with_proxy('streamproxy') }
   end
 end
