@@ -997,6 +997,14 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{passenger_env_var  test3 test value 3;}) }
       end
 
+      context 'when passenger_pre_start is set' do
+        let :params do
+          default_params.merge(passenger_pre_start: 'http://example.com:80/test/me')
+        end
+
+        it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:80/test/me;}) }
+      end
+
       context 'when vhost name is sanitized' do
         let(:title) { 'www rspec-vhost com' }
         let(:params) { default_params }
