@@ -679,6 +679,12 @@ describe 'nginx::config' do
       end
     end
 
+    context 'when stream true' do
+      let(:params) { { stream: true } }
+      it { is_expected.to contain_file('/etc/nginx/streams-available') }
+      it { is_expected.to contain_file('/etc/nginx/streams-enabled') }
+    end
+
     context 'when daemon_user = www-data' do
       let(:params) { { daemon_user: 'www-data' } }
       it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
