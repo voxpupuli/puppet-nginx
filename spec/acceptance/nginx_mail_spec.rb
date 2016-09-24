@@ -13,8 +13,8 @@ describe 'nginx::resource::mailhost define:' do
       listen_port => 587,
       ssl         => true,
       ssl_port    => 465,
-      ssl_cert    => '/tmp/blah.cert',
-      ssl_key     => '/tmp/blah.key',
+      ssl_cert    => '/etc/pki/tls/certs/blah.cert',
+      ssl_key     => '/etc/pki/tls/private/blah.key',
       xclient     => 'off',
     }
     "
