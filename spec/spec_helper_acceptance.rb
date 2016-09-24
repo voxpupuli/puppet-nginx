@@ -1,5 +1,4 @@
 require 'beaker-rspec'
-require 'pry'
 
 install_puppet_on(hosts)
 
