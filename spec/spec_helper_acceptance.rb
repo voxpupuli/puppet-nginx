@@ -64,6 +64,16 @@ HaHIWGMBuXApE7t4PNdYWZ5Y56tI+HT59yVoDjc1YSnuzkKlWUPibVYoLpX/ROKr
 aIZ8kxsBjLvpi9KQTHi7Wl6Sw3ecoYdKy+2P8S5xOIpWjs8XVmOWf7Tq1+9KPv3z
 HLw/FDCzntkdq3G4em15CdFlO9BTY4HXiHU=
 -----END CERTIFICATE-----" > /tmp/blah.cert'
+
+      #--- START SELINUX WORKAROUND ---
+      if fact('osfamily') == 'Debian'
+        on host, 'mkdir -p /etc/pki/tls/certs'
+        on host, 'mkdir -p /etc/pki/tls/private'
+      end
+
+      # put the keys in a directory with the correct SELinux context
+      on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/blah.cert'
+      on host, 'cp /tmp/blah.key /etc/pki/tls/private/blah.key'
     end
   end
 end
