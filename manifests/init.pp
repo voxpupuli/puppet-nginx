@@ -246,7 +246,7 @@ class nginx (
       fastcgi_cache_use_stale        => $fastcgi_cache_use_stale,
       gzip                           => $gzip,
       http_access_log                => $http_access_log,
-      http_cfg_prepend                => $http_cfg_prepend,
+      http_cfg_prepend               => $http_cfg_prepend,
       http_cfg_append                => $http_cfg_append,
       http_tcp_nodelay               => $http_tcp_nodelay,
       http_tcp_nopush                => $http_tcp_nopush,
