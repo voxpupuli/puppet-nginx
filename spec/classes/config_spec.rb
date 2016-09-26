@@ -385,6 +385,34 @@ describe 'nginx::config' do
         },
         {
           title: 'should contain ordered appended directives from hash',
+          attr: 'http_cfg_prepend',
+          value: { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
+          match: [
+            '  allow test value 3;',
+            '  test1 test value 1;',
+            '  test2 test value 2;'
+          ]
+        },
+        {
+          title: 'should contain duplicate appended directives from list of hashes',
+          attr: 'http_cfg_prepend',
+          value: [['allow', 'test value 1'], ['allow', 'test value 2']],
+          match: [
+            '  allow test value 1;',
+            '  allow test value 2;'
+          ]
+        },
+        {
+          title: 'should contain duplicate appended directives from array values',
+          attr: 'http_cfg_prepend',
+          value: { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
+          match: [
+            '  test1 test value 1;',
+            '  test1 test value 2;'
+          ]
+        },
+        {
+          title: 'should contain ordered appended directives from hash',
           attr: 'http_cfg_append',
           value: { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
           match: [
