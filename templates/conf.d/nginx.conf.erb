@@ -36,6 +36,14 @@ events {
 }
 
 http {
+<% if @http_cfg_append -%>
+  <%- field_width = @http_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+  <%- @http_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
+  <%- Array(value).each do |asubvalue| -%>
+  <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
+  <%- end -%>
+  <%- end -%>
+<% end -%>
   include       <%= @conf_dir %>/mime.types;
   default_type  application/octet-stream;
 <% if @log_format -%>
