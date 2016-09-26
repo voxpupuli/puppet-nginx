@@ -64,6 +64,7 @@ class nginx::config(
   $gzip_proxied                   = 'off',
   $gzip_types                     = undef,
   $gzip_vary                      = 'off',
+  $http_cfg_prepend               = false,
   $http_cfg_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
@@ -176,6 +177,12 @@ class nginx::config(
   }
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
+  if ($http_cfg_prepend != false) {
+    if !(is_hash($http_cfg_prepend) or is_array($http_cfg_prepend)) {
+      fail('$http_cfg_prepend must be either a hash or array')
+    }
+  }
+
   if ($http_cfg_append != false) {
     if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
       fail('$http_cfg_append must be either a hash or array')
