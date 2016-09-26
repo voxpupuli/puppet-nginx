@@ -15,6 +15,11 @@ describe 'nginx::package' do
           'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
         )
       end
+      it do
+        is_expected.to contain_yumrepo('passenger').with(
+          'ensure' => 'absent'
+        )
+      end
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
@@ -26,6 +31,29 @@ describe 'nginx::package' do
           'baseurl' => "http://nginx.org/packages/mainline/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/"
         )
       end
+      it do
+        is_expected.to contain_yumrepo('passenger').with(
+          'ensure' => 'absent'
+        )
+      end
+    end
+
+    context 'package_source => passenger' do
+      let(:params) { { package_source: 'passenger' } }
+      it do
+        is_expected.to contain_yumrepo('passenger').with(
+          'baseurl'       => 'https://oss-binaries.phusionpassenger.com/yum/passenger/el/6/$basearch',
+          'gpgcheck'      => '0',
+          'repo_gpgcheck' => '1',
+          'gpgkey'        => 'https://packagecloud.io/gpg.key'
+        )
+      end
+      it do
+        is_expected.to contain_yumrepo('nginx-release').with(
+          'ensure' => 'absent'
+        )
+      end
+      it { is_expected.to contain_package('passenger') }
     end
 
     context 'manage_repo => false' do
@@ -42,6 +70,14 @@ describe 'nginx::package' do
         is_expected.to contain_yumrepo('nginx-release').with(
           'baseurl' => "http://nginx.org/packages/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/5/$basearch/"
         )
+      end
+    end
+
+    context 'RedHat / CentOS 5 with package_source => passenger' do
+      let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '5' } }
+      let(:params) { { package_source: 'passenger' } }
+      it 'we fail' do
+        expect { catalogue }.to raise_error(Puppet::Error, %r{is unsupported with \$package_source})
       end
     end
 

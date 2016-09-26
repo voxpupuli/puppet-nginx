@@ -146,9 +146,7 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-Currently this works only for Debian family and OpenBSD.
-
-On Debian it might look like:
+Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and Passenger packages from the Phusion repo. See additional notes in [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md)
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',
