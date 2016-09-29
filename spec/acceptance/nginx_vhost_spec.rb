@@ -41,7 +41,7 @@ describe 'nginx::resource::vhost define:' do
     end
 
     it 'answers to www.puppetlabs.com without error' do
-      shell('/usr/bin/curl http://www.puppetlabs.com:80') do |r|
+      shell('/usr/bin/curl --fail http://www.puppetlabs.com:80') do |r|
         expect(r.exit_code).to be_zero
       end
     end
@@ -90,7 +90,7 @@ describe 'nginx::resource::vhost define:' do
     end
 
     it 'answers to http://www.puppetlabs.com without error' do
-      shell('/usr/bin/curl http://www.puppetlabs.com:80') do |r|
+      shell('/usr/bin/curl --fail http://www.puppetlabs.com:80') do |r|
         expect(r.exit_code).to eq(0)
       end
     end
@@ -104,7 +104,7 @@ describe 'nginx::resource::vhost define:' do
 
     it 'answers to https://www.puppetlabs.com without error' do
       # use --insecure because it's a self-signed cert
-      shell('/usr/bin/curl --insecure https://www.puppetlabs.com:443') do |r|
+      shell('/usr/bin/curl --fail --insecure https://www.puppetlabs.com:443') do |r|
         expect(r.exit_code).to eq(0)
       end
     end
