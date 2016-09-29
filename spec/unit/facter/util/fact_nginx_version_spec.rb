@@ -3,18 +3,40 @@ require 'spec_helper'
 describe Facter::Util::Fact do
   before { Facter.clear }
 
-  context 'with current version output format' do
+  context 'neither nginx or openresty in path' do
     before do
-      Facter::Util::Resolution.stubs(:which).with('nginx').returns(true)
-      Facter::Util::Resolution.stubs(:exec).with('nginx -v 2>&1').returns('nginx version: nginx/1.8.1')
+      Facter::Util::Resolution.stubs(:which).with('nginx').returns(false)
+      Facter::Util::Resolution.stubs(:which).with('openresty').returns(false)
     end
-    it { expect(Facter.fact(:nginx_version).value).to eq('1.8.1') }
+    it { expect(Facter.fact(:nginx_version).value).to eq(nil) }
   end
-  context 'with old version output format' do
-    before do
-      Facter::Util::Resolution.stubs(:which).with('nginx').returns(true)
-      Facter::Util::Resolution.stubs(:exec).with('nginx -v 2>&1').returns('nginx: nginx version: nginx/0.7.0')
+  context 'nginx' do
+    context 'with current version output format' do
+      before do
+        Facter::Util::Resolution.stubs(:which).with('nginx').returns(true)
+        Facter::Util::Resolution.stubs(:exec).with('nginx -v 2>&1').returns('nginx version: nginx/1.8.1')
+      end
+      it { expect(Facter.fact(:nginx_version).value).to eq('1.8.1') }
     end
-    it { expect(Facter.fact(:nginx_version).value).to eq('0.7.0') }
+    context 'with old version output format' do
+      before do
+        Facter::Util::Resolution.stubs(:which).with('nginx').returns(true)
+        Facter::Util::Resolution.stubs(:exec).with('nginx -v 2>&1').returns('nginx: nginx version: nginx/0.7.0')
+      end
+      it { expect(Facter.fact(:nginx_version).value).to eq('0.7.0') }
+    end
+  end
+  context 'openresty' do
+    context 'with current version output format' do
+      before do
+        Facter::Util::Resolution.stubs(:which).with('nginx').returns(false)
+        Facter::Util::Resolution.stubs(:which).with('openresty').returns(true)
+        Facter::Util::Resolution.stubs(:exec).with('openresty -v 2>&1').returns('nginx version: openresty/1.11.2.1')
+      end
+      it { expect(Facter.fact(:nginx_version).value).to eq('1.11.2.1') }
+    end
+    context 'with old version output format' do # rubocop:disable RSpec/EmptyExampleGroup
+      # Openresty never used the old format as far as I can find, no point testing
+    end
   end
 end
