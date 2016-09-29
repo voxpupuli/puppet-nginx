@@ -84,6 +84,13 @@ server {
   access_log            <%= @ssl_access_log_real %>;
   error_log             <%= @ssl_error_log_real %>;
 
+<% if @error_pages -%>
+  <%- @error_pages.keys.sort.each do |key| -%>
+  error_page  <%= key %> <%= @error_pages[key] %>;
+  <%- end -%>
+<% end -%>
+
+
 <% if @vhost_cfg_prepend -%>
   <%- @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
