@@ -11,8 +11,8 @@ worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 pid        <%= @pid %>;
 <% end -%>
 error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
-
 <% if @nginx_cfg_prepend -%>
+
 <%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
 <%- @nginx_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
 <%- Array(value).each do |asubvalue| -%>
@@ -60,7 +60,6 @@ http {
   tcp_nopush on;
   <%- end -%>
 <% end -%>
-
   server_tokens <%= @server_tokens %>;
 
   types_hash_max_size <%= @types_hash_max_size %>;
