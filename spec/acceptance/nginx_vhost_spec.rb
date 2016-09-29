@@ -54,8 +54,8 @@ describe 'nginx::resource::vhost define:' do
       nginx::resource::vhost { 'www.puppetlabs.com':
         ensure   => present,
         ssl      => true,
-        ssl_cert => '/tmp/blah.cert',
-        ssl_key  => '/tmp/blah.key',
+        ssl_cert => '/etc/pki/tls/certs/blah.cert',
+        ssl_key  => '/etc/pki/tls/private/blah.key',
         www_root => '/var/www/www.puppetlabs.com',
       }
       host { 'www.puppetlabs.com': ip => '127.0.0.1', }
