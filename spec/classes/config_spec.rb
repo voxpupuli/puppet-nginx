@@ -126,6 +126,15 @@ describe 'nginx::config' do
           match: 'error_log  /path/to/error.log error;'
         },
         {
+          title: 'should set multiple error_logs',
+          attr: 'nginx_error_log',
+          value: ['/path/to/error.log', 'syslog:server=localhost'],
+          match: [
+            'error_log  /path/to/error.log error;',
+            'error_log  syslog:server=localhost error;'
+          ]
+        },
+        {
           title: 'should set error_log severity level',
           attr: 'nginx_error_log_severity',
           value: 'warn',
@@ -214,6 +223,21 @@ describe 'nginx::config' do
           attr: 'http_access_log',
           value: '/path/to/access.log',
           match: '  access_log  /path/to/access.log;'
+        },
+        {
+          title: 'should set multiple access_logs',
+          attr: 'http_access_log',
+          value: ['/path/to/access.log', 'syslog:server=localhost'],
+          match: [
+            '  access_log  /path/to/access.log;',
+            '  access_log  syslog:server=localhost;'
+          ]
+        },
+        {
+          title: 'should set custom log format',
+          attr: 'http_format_log',
+          value: 'mycustomformat',
+          match: '  access_log  /var/log/nginx/access.log mycustomformat;'
         },
         {
           title: 'should set sendfile',

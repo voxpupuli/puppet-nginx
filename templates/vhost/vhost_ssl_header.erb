@@ -79,11 +79,32 @@ server {
 <% end -%>
 <% if @index_files.count > 0 -%>
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
-<% end -%>
 
-  access_log            <%= @ssl_access_log_real %>;
-  error_log             <%= @ssl_error_log_real %>;
+<% end -%>
+<% if @access_log.is_a?(Array) -%>
+  <%- @access_log.each do |log_item| -%>
+  access_log            <%= log_item %> <%= @format_log %>;
+  <%- end -%>
+<% elsif @access_log == 'absent' -%>
+<% elsif @access_log == 'off' -%>
+  access_log            off;
+<% elsif not @access_log -%>
+  access_log            <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log <%= @format_log %>;
+<% else -%>
+  access_log            <%= @access_log %> <%= @format_log %>;
+<% end -%>
+<% if @error_log.is_a?(Array) -%>
+  <%- @error_log.each do |log_item| -%>
+  error_log             <%= log_item %>;
+  <%- end -%>
+<% elsif @error_log == 'absent' -%>
+<% elsif not @error_log -%>
+  error_log             <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+<% else -%>
+  error_log             <%= @error_log %>;
+<% end -%>
 <% if @error_pages -%>
+
   <%- @error_pages.keys.sort.each do |key| -%>
   error_page  <%= key %> <%= @error_pages[key] %>;
   <%- end -%>
