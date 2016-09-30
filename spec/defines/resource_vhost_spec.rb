@@ -243,6 +243,15 @@ describe 'nginx::resource::vhost' do
           match: '  access_log            /path/to/access.log combined;'
         },
         {
+          title: 'should set multiple access_log directives',
+          attr: 'access_log',
+          value: ['/path/to/log/1', 'syslog:server=localhost'],
+          match: [
+            '  access_log            /path/to/log/1 combined;',
+            '  access_log            syslog:server=localhost combined;'
+          ]
+        },
+        {
           title: 'should set access_log off',
           attr: 'access_log',
           value: 'off',
@@ -261,10 +270,31 @@ describe 'nginx::resource::vhost' do
           match: '  access_log            /var/log/nginx/www.rspec.example.com.access.log custom;'
         },
         {
+          title: 'should not include access_log in vhost when set to absent',
+          attr: 'access_log',
+          value: 'absent',
+          notmatch: 'access_log'
+        },
+        {
           title: 'should set error_log',
           attr: 'error_log',
           value: '/path/to/error.log',
           match: '  error_log             /path/to/error.log;'
+        },
+        {
+          title: 'should allow multiple error_log directives',
+          attr: 'error_log',
+          value: ['/path/to/error.log', 'syslog:server=localhost'],
+          match: [
+            '  error_log             /path/to/error.log;',
+            '  error_log             syslog:server=localhost;'
+          ]
+        },
+        {
+          title: 'should not include error_log in vhost when set to absent',
+          attr: 'error_log',
+          value: 'absent',
+          notmatch: 'error_log'
         },
         {
           title: 'should set error_pages',
@@ -567,10 +597,25 @@ describe 'nginx::resource::vhost' do
           match: '  access_log            /path/to/access.log combined;'
         },
         {
+          title: 'should set multiple access_log directives',
+          attr: 'access_log',
+          value: ['/path/to/log/1', 'syslog:server=localhost'],
+          match: [
+            '  access_log            /path/to/log/1 combined;',
+            '  access_log            syslog:server=localhost combined;'
+          ]
+        },
+        {
           title: 'should set access_log off',
           attr: 'access_log',
           value: 'off',
           match: '  access_log            off;'
+        },
+        {
+          title: 'should not include access_log in vhost when set to absent',
+          attr: 'access_log',
+          value: 'absent',
+          notmatch: 'access_log'
         },
         {
           title: 'should set access_log to syslog',
@@ -589,6 +634,21 @@ describe 'nginx::resource::vhost' do
           attr: 'error_log',
           value: '/path/to/error.log',
           match: '  error_log             /path/to/error.log;'
+        },
+        {
+          title: 'should allow multiple error_log directives',
+          attr: 'error_log',
+          value: ['/path/to/error.log', 'syslog:server=localhost'],
+          match: [
+            '  error_log             /path/to/error.log;',
+            '  error_log             syslog:server=localhost;'
+          ]
+        },
+        {
+          title: 'should not include error_log in vhost when set to absent',
+          attr: 'error_log',
+          value: 'absent',
+          notmatch: 'error_log'
         },
         {
           title: 'should set error_pages',

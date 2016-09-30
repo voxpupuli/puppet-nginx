@@ -24,6 +24,7 @@ class nginx::config(
   $global_mode                    = $::nginx::params::global_mode,
   $log_dir                        = $::nginx::params::log_dir,
   $http_access_log                = $::nginx::params::http_access_log,
+  $http_format_log                = undef,
   $nginx_error_log                = $::nginx::params::nginx_error_log,
   $nginx_error_log_severity       = 'error',
   $pid                            = $::nginx::params::pid,
@@ -198,9 +199,15 @@ class nginx::config(
     }
   }
 
-  validate_string($nginx_error_log)
+  if !(is_string($http_access_log) or is_array($http_access_log)) {
+    fail('$http_access_log must be either a string or array')
+  }
+
+  if !(is_string($nginx_error_log) or is_array($nginx_error_log)) {
+    fail('$nginx_error_log must be either a string or array')
+  }
+
   validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
-  validate_string($http_access_log)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
   ### END VALIDATIONS ###
