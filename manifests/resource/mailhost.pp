@@ -57,6 +57,7 @@ define nginx::resource::mailhost (
   $starttls            = 'off',
   $protocol            = undef,
   $auth_http           = undef,
+  $auth_http_header    = undef,
   $xclient             = 'on',
   $server_name         = [$name]
 ) {
@@ -116,6 +117,9 @@ define nginx::resource::mailhost (
   }
   if ($auth_http != undef) {
     validate_string($auth_http)
+  }
+  if ($auth_http_header != undef) {
+    validate_string($auth_http_header)
   }
   validate_string($xclient)
   validate_array($server_name)
