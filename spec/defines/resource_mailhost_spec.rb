@@ -99,6 +99,12 @@ describe 'nginx::resource::mailhost' do
           match: '  auth_http             test-auth_http;'
         },
         {
+          title: 'should set auth_http_header',
+          attr: 'auth_http_header',
+          value: 'X-Auth-Key "secret_string"',
+          match: '  auth_http_header      X-Auth-Key "secret_string";'
+        },
+        {
           title: 'should set starttls',
           attr: 'starttls',
           value: 'on',
@@ -257,6 +263,12 @@ describe 'nginx::resource::mailhost' do
           attr: 'auth_http',
           value: 'test-auth_http',
           match: '  auth_http             test-auth_http;'
+        },
+        {
+          title: 'should set auth_http_header',
+          attr: 'auth_http_header',
+          value: 'X-Auth-Key "secret_string"',
+          match: '  auth_http_header      X-Auth-Key "secret_string";'
         },
         {
           title: 'should set ssl_certificate',

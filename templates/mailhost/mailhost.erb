@@ -21,6 +21,9 @@ server {
   protocol              <%= @protocol %>;
   xclient               <%= @xclient %>;
   auth_http             <%= @auth_http %>;
+  <%- if @auth_http_header -%>
+  auth_http_header      <%= @auth_http_header %>;
+  <%- end -%>
   starttls              <%= @starttls %>;
   <% if @starttls == 'on' || @starttls == 'only' %>
   ssl_certificate      <%= @ssl_cert %>;
