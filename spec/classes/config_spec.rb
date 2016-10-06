@@ -28,8 +28,6 @@ describe 'nginx::config' do
         mode: '0644'
       )
     end
-    it { is_expected.to contain_file('/etc/nginx/conf.d/vhost_autogen.conf').with_ensure('absent') }
-    it { is_expected.to contain_file('/etc/nginx/conf.mail.d/vhost_autogen.conf').with_ensure('absent') }
     it do
       is_expected.to contain_file('/var/nginx').with(
         ensure: 'directory',
@@ -52,7 +50,6 @@ describe 'nginx::config' do
         mode: '0644'
       )
     end
-    it { is_expected.to contain_file('/etc/nginx/sites-enabled/default').with_ensure('absent') }
     it do
       is_expected.to contain_file('/etc/nginx/nginx.conf').with(
         ensure: 'file',
