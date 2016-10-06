@@ -255,14 +255,6 @@ class nginx::config(
     }
   }
 
-  file { "${conf_dir}/conf.d/vhost_autogen.conf":
-    ensure => absent,
-  }
-
-  file { "${conf_dir}/conf.mail.d/vhost_autogen.conf":
-    ensure => absent,
-  }
-
   file {$run_dir:
     ensure => directory,
   }
@@ -306,25 +298,9 @@ class nginx::config(
     }
   }
 
-  file { "${conf_dir}/sites-enabled/default":
-    ensure => absent,
-  }
-
   file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
-  }
-
-  file { "${conf_dir}/conf.d/proxy.conf":
-    ensure  => absent,
-  }
-
-  file { "${conf_dir}/conf.d/default.conf":
-    ensure => absent,
-  }
-
-  file { "${conf_dir}/conf.d/example_ssl.conf":
-    ensure => absent,
   }
 
   file { "${temp_dir}/nginx.d":
