@@ -143,10 +143,15 @@
 #   [*rewrite_to_https*]        - Adds a server directive and rewrite rule to
 #     rewrite to ssl
 #   [*include_files*]           - Adds include files to vhost
-#   [*access_log*]              - Where to write access log. May add additional
-#     options like log format to the end.
+#   [*access_log*]              - Where to write access log (log format can be
+#     set with $format_log). This can be either a string or an array; in the
+#     latter case, multiple lines will be created. Additionally, unlike the
+#     earlier behavior, setting it to 'absent' in the vhost context will remove
+#     this directive entirely from the vhost stanza, rather than setting a
+#     default. Can also be disabled for this vhost with the string 'off'.
 #   [*error_log*]               - Where to write error log. May add additional
-#     options like error level to the end.
+#     options like error level to the end. May set to 'absent', in which case 
+#     it will be omitted in this vhost stanza (and default to nginx.conf setting)
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #     variables to pass to the backend application
 #   [*passenger_set_header*]        - Allows one to set headers to pass to the
@@ -292,7 +297,7 @@ define nginx::resource::vhost (
   $mode                         = $::nginx::config::global_mode,
   $maintenance                  = false,
   $maintenance_value            = 'return 503',
-  $error_pages                  = {},
+  $error_pages                  = undef,
   $locations                    = {}
 ) {
 
@@ -408,6 +413,12 @@ define nginx::resource::vhost (
       fail('$proxy_cache_valid must be a string or an array or false.')
     }
   }
+  if ($access_log != undef) and !(is_array($access_log) or is_string($access_log)) {
+    fail('$access_log must be a string or array.')
+  }
+  if ($error_log != undef) and !(is_array($error_log) or is_string($error_log)) {
+    fail('$error_log must be a string or array.')
+  }
   if ($proxy_method != undef) {
     validate_string($proxy_method)
   }
@@ -508,12 +519,6 @@ define nginx::resource::vhost (
   if ($include_files != undef) {
     validate_array($include_files)
   }
-  if ($access_log != undef) {
-    validate_string($access_log)
-  }
-  if ($error_log != undef) {
-    validate_string($error_log)
-  }
   if ($passenger_cgi_param != undef) {
     validate_hash($passenger_cgi_param)
   }
@@ -585,20 +590,6 @@ define nginx::resource::vhost (
     if ($ssl_cert == undef) or ($ssl_key == undef) {
       fail('nginx: SSL certificate/key (ssl_cert/ssl_key) and/or SSL Private must be defined and exist on the target system(s)')
     }
-  }
-
-  # This was a lot to add up in parameter list so add it down here
-  # Also opted to add more logic here and keep template cleaner which
-  # unfortunately means resorting to the $varname_real thing
-  $access_log_real = $access_log ? {
-    'off'   => 'off',
-    undef   => "${::nginx::config::log_dir}/${name_sanitized}.access.log ${format_log}",
-    default => "${access_log} ${format_log}",
-  }
-
-  $error_log_real = $error_log ? {
-    undef   => "${::nginx::config::log_dir}/${name_sanitized}.error.log",
-    default => $error_log,
   }
 
   concat { $config_file:
@@ -696,20 +687,6 @@ define nginx::resource::vhost (
   # Create SSL File Stubs if SSL is enabled
   if ($ssl == true) {
     # Access and error logs are named differently in ssl template
-
-    # This was a lot to add up in parameter list so add it down here
-    # Also opted to add more logic here and keep template cleaner which
-    # unfortunately means resorting to the $varname_real thing
-    $ssl_access_log_real = $access_log ? {
-      'off'   => 'off',
-      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.access.log ${format_log}",
-      default => "${access_log} ${format_log}",
-    }
-
-    $ssl_error_log_real = $error_log ? {
-      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.error.log",
-      default => $error_log,
-    }
 
     concat::fragment { "${name_sanitized}-ssl-header":
       target  => $config_file,
