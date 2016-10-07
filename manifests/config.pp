@@ -44,7 +44,7 @@ class nginx::config(
   ### END Module/App Configuration ###
 
   ### START Nginx Configuration ###
-  $accept_mutex                   = 'on',
+  $accept_mutex                   = 'off',
   $accept_mutex_delay             = '500ms',
   $client_body_buffer_size        = '128k',
   $client_max_body_size           = '10m',
