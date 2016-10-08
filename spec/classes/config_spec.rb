@@ -691,5 +691,21 @@ describe 'nginx::config' do
 
       it { expect { is_expected.to contain_class('nginx::config') }.to raise_error(Puppet::Error, %r{\$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg}) }
     end
+
+    context 'when log_dir is non-default' do
+      let(:params) { { log_dir: '/foo/bar' } }
+
+      it { is_expected.to contain_file('/foo/bar').with(ensure: 'directory') }
+      it do
+        is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+          %r{access_log  /foo/bar/access.log;}
+        )
+      end
+      it do
+        is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+          %r{error_log  /foo/bar/error.log error;}
+        )
+      end
+    end
   end
 end
