@@ -107,7 +107,7 @@ class nginx (
   $package_name                   = $::nginx::params::package_name,
   $package_source                 = 'nginx',
   $package_flavor                 = undef,
-  $manage_repo                    = $::nginx::params::manage_repo,
+  $manage_repo                    = false,
   ### END Package Configuration ###
 
   ### START Service Configuation ###

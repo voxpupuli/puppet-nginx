@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'nginx::package' do
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
-    context 'using defaults' do
+    context 'manage_repo => true' do
+      let(:params) { { manage_repo: true } }
       it { is_expected.to contain_package('nginx') }
       it do
         is_expected.to contain_yumrepo('nginx-release').with(
@@ -25,7 +26,7 @@ describe 'nginx::package' do
     end
 
     context 'package_source => nginx-mainline' do
-      let(:params) { { package_source: 'nginx-mainline' } }
+      let(:params) { { package_source: 'nginx-mainline', manage_repo: true } }
       it do
         is_expected.to contain_yumrepo('nginx-release').with(
           'baseurl' => "http://nginx.org/packages/mainline/#{operatingsystem == 'CentOS' ? 'centos' : 'rhel'}/6/$basearch/"
@@ -39,7 +40,7 @@ describe 'nginx::package' do
     end
 
     context 'package_source => passenger' do
-      let(:params) { { package_source: 'passenger' } }
+      let(:params) { { package_source: 'passenger', manage_repo: true } }
       it do
         is_expected.to contain_yumrepo('passenger').with(
           'baseurl'       => 'https://oss-binaries.phusionpassenger.com/yum/passenger/el/6/$basearch',
@@ -65,6 +66,7 @@ describe 'nginx::package' do
 
     context 'operatingsystemmajrelease = 5' do
       let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '5' } }
+      let(:params) { { manage_repo: true } }
       it { is_expected.to contain_package('nginx') }
       it do
         is_expected.to contain_yumrepo('nginx-release').with(
@@ -75,7 +77,7 @@ describe 'nginx::package' do
 
     context 'RedHat / CentOS 5 with package_source => passenger' do
       let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '5' } }
-      let(:params) { { package_source: 'passenger' } }
+      let(:params) { { package_source: 'passenger', manage_repo: true } }
       it 'we fail' do
         expect { catalogue }.to raise_error(Puppet::Error, %r{is unsupported with \$package_source})
       end
@@ -102,7 +104,8 @@ describe 'nginx::package' do
       }
     end
 
-    context 'using defaults' do
+    context 'manage_repo => true' do
+      let(:params) { { manage_repo: true } }
       it { is_expected.to contain_package('nginx') }
       it { is_expected.not_to contain_package('passenger') }
       it do
@@ -117,7 +120,7 @@ describe 'nginx::package' do
     end
 
     context 'package_source => nginx-mainline' do
-      let(:params) { { package_source: 'nginx-mainline' } }
+      let(:params) { { package_source: 'nginx-mainline', manage_repo: true } }
       it do
         is_expected.to contain_apt__source('nginx').with(
           'location' => "http://nginx.org/packages/mainline/#{operatingsystem.downcase}"
@@ -126,7 +129,7 @@ describe 'nginx::package' do
     end
 
     context "package_source => 'passenger'" do
-      let(:params) { { package_source: 'passenger' } }
+      let(:params) { { package_source: 'passenger', manage_repo: true } }
       it { is_expected.to contain_package('nginx') }
       it { is_expected.to contain_package('passenger') }
       it do
