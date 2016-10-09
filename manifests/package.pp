@@ -13,15 +13,14 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package(
-  $package_name   = $::nginx::params::package_name,
-  $package_source = 'nginx',
-  $package_ensure = 'present',
-  $package_flavor = undef,
-  $manage_repo    = $::nginx::params::manage_repo,
-) {
+class nginx::package { 
 
   assert_private()
+
+  $package_name   = $::nginx::package_name,
+  $package_source = $::nginx::package_source,
+  $package_ensure = $::nginx::package_ensure,
+  $package_flavor = $::nginx::package_flavor,
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }

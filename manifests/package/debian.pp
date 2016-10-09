@@ -14,7 +14,7 @@
 #
 # This class file is not called directly
 class nginx::package::debian(
-    $manage_repo    = true,
+    $manage_repo    = false,
     $package_name   = 'nginx',
     $package_source = 'nginx',
     $package_ensure = 'present'
