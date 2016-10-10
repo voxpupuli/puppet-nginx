@@ -1,7 +1,9 @@
 <% if defined? @www_root -%>
     root          <%= @www_root %>;
 <% end -%>
+<% unless @fastcgi_params.nil? or @fastcgi_params.empty? -%>
     include       <%= @fastcgi_params %>;
+<% end -%>
 <% if @try_files -%>
     try_files    <% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>

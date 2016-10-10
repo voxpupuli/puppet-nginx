@@ -387,7 +387,7 @@ define nginx::resource::location (
     $content_real = template('nginx/vhost/locations/empty.erb')
   }
 
-  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
+  if $ensure == present and $fastcgi != undef and ! empty($fastcgi_params) and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
