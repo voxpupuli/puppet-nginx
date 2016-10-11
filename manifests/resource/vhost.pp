@@ -234,6 +234,7 @@ define nginx::resource::vhost (
   $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header             = $::nginx::config::proxy_set_header,
   $proxy_hide_header            = $::nginx::config::proxy_hide_header,
+  $proxy_pass_header            = $::nginx::config::proxy_pass_header,
   $proxy_cache                  = false,
   $proxy_cache_key              = undef,
   $proxy_cache_use_stale        = undef,
@@ -399,6 +400,7 @@ define nginx::resource::vhost (
   }
   validate_array($proxy_set_header)
   validate_array($proxy_hide_header)
+  validate_array($proxy_pass_header)
   if ($proxy_cache != false) {
     validate_string($proxy_cache)
   }
@@ -625,6 +627,7 @@ define nginx::resource::vhost (
       proxy_http_version          => $proxy_http_version,
       proxy_set_header            => $proxy_set_header,
       proxy_hide_header           => $proxy_hide_header,
+      proxy_pass_header           => $proxy_pass_header,
       proxy_set_body              => $proxy_set_body,
       proxy_buffering             => $proxy_buffering,
       fastcgi                     => $fastcgi,
