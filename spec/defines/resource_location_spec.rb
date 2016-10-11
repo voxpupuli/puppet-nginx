@@ -688,6 +688,15 @@ describe 'nginx::resource::location' do
           ]
         },
         {
+          title: 'should pass proxy headers',
+          attr: 'proxy_pass_header',
+          value: ['X-TestHeader1 value1', 'X-TestHeader2 value2'],
+          match: [
+            %r{^\s+proxy_pass_header\s+X-TestHeader1 value1;},
+            %r{^\s+proxy_pass_header\s+X-TestHeader2 value2;}
+          ]
+        },
+        {
           title: 'should set proxy_http_version',
           attr: 'proxy_http_version',
           value: 'value',
