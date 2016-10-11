@@ -13,7 +13,7 @@ end
 group :test do
   gem 'puppetlabs_spec_helper', '~> 1.2.2',                         :require => false
   gem 'rspec-puppet',                                               :require => false, :git => 'https://github.com/rodjek/rspec-puppet.git'
-  gem 'rspec-puppet-facts',                                         :require => false
+  # gem 'rspec-puppet-facts',                                         :require => false
   gem 'rspec-puppet-utils',                                         :require => false
   gem 'puppet-lint-absolute_classname-check',                       :require => false
   gem 'puppet-lint-leading_zero-check',                             :require => false
@@ -28,6 +28,16 @@ group :test do
   gem 'puppet-strings', '0.4.0',                                    :require => false
   gem 'rubocop-rspec', '~> 1.6',                                    :require => false if RUBY_VERSION >= '2.3.0'
   gem 'json_pure', '<= 2.0.1',                                      :require => false if RUBY_VERSION < '2.0.0'
+  gem 'rake' , '11.2.2'
+  gem 'mime-types' , '2.99.2'
+  gem 'unicode-display_width','1.1.0'
+  gem 'parser', '2.3.1.2'
+  gem 'mocha', '1.1.0'
+  gem 'rspec-core', '3.5.3'
+  gem 'rubocop' , '0.42.0'
+  gem 'facterdb', '0.3.6'
+  gem 'http-cookie', '1.0.2'
+  gem 'rspec-puppet-facts', '1.6.1'
 end
 
 group :development do
