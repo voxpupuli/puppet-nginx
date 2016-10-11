@@ -112,10 +112,8 @@ class nginx (
   ### END Package Configuration ###
 
   ### START Service Configuation ###
-  $configtest_enable              = false,
   $service_ensure                 = running,
   $service_flags                  = undef,
-  $service_restart                = '/etc/init.d/nginx reload',
   $service_name                   = undef,
   $service_manage                 = true,
   ### END Service Configuration ###
@@ -305,12 +303,10 @@ class nginx (
   Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   class { '::nginx::service':
-    configtest_enable => $configtest_enable,
-    service_ensure    => $service_ensure,
-    service_restart   => $service_restart,
-    service_name      => $service_name,
-    service_flags     => $service_flags,
-    service_manage    => $service_manage,
+    service_ensure => $service_ensure,
+    service_name   => $service_name,
+    service_flags  => $service_flags,
+    service_manage => $service_manage,
   }
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
