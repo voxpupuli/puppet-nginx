@@ -10,7 +10,7 @@ describe Facter::Util::Fact do
     end
     it { expect(Facter.fact(:nginx_version).value).to eq(nil) }
   end
-  # rubocop:disable RSpec/MultipleExpectations 
+  # rubocop:disable RSpec/NestedGroups
   context 'nginx' do
     context 'with current version output format' do
       before do
@@ -41,4 +41,4 @@ describe Facter::Util::Fact do
     end
   end
 end
-# rubocop:enable RSpec/MultipleExpectations
+# rubocop:enable RSpec/NestedGroups
