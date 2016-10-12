@@ -568,6 +568,15 @@ describe 'nginx::config' do
           ]
         },
         {
+          title: 'should contain ordered appended proxy_pass_header directives',
+          attr: 'proxy_pass_header',
+          value: %w(header1 header2),
+          match: [
+            '  proxy_pass_header        header1;',
+            '  proxy_pass_header        header2;'
+          ]
+        },
+        {
           title: 'should set client_body_temp_path',
           attr: 'client_body_temp_path',
           value: '/path/to/body_temp',

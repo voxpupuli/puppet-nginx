@@ -102,6 +102,7 @@ class nginx::config(
     'Proxy ""',
   ],
   $proxy_hide_header              = [],
+  $proxy_pass_header              = [],
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
@@ -133,6 +134,7 @@ class nginx::config(
   validate_string($multi_accept)
   validate_array($proxy_set_header)
   validate_array($proxy_hide_header)
+  validate_array($proxy_pass_header)
   if ($proxy_http_version != undef) {
     validate_string($proxy_http_version)
   }

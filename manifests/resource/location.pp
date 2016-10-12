@@ -32,6 +32,7 @@
 #     value of 90 seconds
 #   [*proxy_set_header*]     - Array of vhost headers to set
 #   [*proxy_hide_header*]    - Array of vhost headers to hide
+#   [*proxy_pass_header*]    - Array of vhost headers to pass
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
@@ -153,6 +154,7 @@ define nginx::resource::location (
   $proxy_connect_timeout = $::nginx::config::proxy_connect_timeout,
   $proxy_set_header     = $::nginx::config::proxy_set_header,
   $proxy_hide_header    = $::nginx::config::proxy_hide_header,
+  $proxy_pass_header    = $::nginx::config::proxy_pass_header,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
   $fastcgi_params       = "${::nginx::config::conf_dir}/fastcgi_params",
@@ -226,6 +228,7 @@ define nginx::resource::location (
   validate_string($proxy_connect_timeout)
   validate_array($proxy_set_header)
   validate_array($proxy_hide_header)
+  validate_array($proxy_pass_header)
   if ($fastcgi != undef) {
     validate_string($fastcgi)
   }

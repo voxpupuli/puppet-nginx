@@ -24,6 +24,11 @@
     proxy_hide_header      <%= header %>;
     <%- end -%>
 <% end -%>
+<% unless @proxy_pass_header.nil? -%>
+    <%- @proxy_pass_header.each do |header| -%>
+    proxy_pass_header      <%= header %>;
+    <%- end -%>
+<% end -%>
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>
