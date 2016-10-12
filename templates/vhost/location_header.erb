@@ -13,7 +13,7 @@
     satisfy <%= @location_satisfy -%>;
 <% end -%>
 <% if @expires -%>
-    expires               <%= @expires %>;
+    expires <%= @expires %>;
 <% end -%>
 <% if @location_allow -%>
     <%- @location_allow.each do |allow_rule| -%>
