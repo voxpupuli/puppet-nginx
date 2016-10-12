@@ -826,7 +826,7 @@ describe 'nginx::resource::location' do
           }
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined in vhost1:rspec-test}) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in vhost1:rspec-test}) }
       end
 
       context 'www_root and proxy are set' do

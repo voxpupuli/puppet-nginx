@@ -357,10 +357,10 @@ define nginx::resource::location (
   if ($vhost == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
-  if (($www_root == undef) and ($proxy == undef) and ($location_alias == undef) and ($stub_status == undef) and ($fastcgi == undef) and ($uwsgi == undef) and ($location_custom_cfg == undef) and ($internal == false) and ($try_files == undef)) {
-    fail("Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined in ${vhost}:${title}")
+  if !($www_root or $proxy or $location_alias or $stub_status or $fastcgi or $uwsgi or $location_custom_cfg or $internal or $try_files or $location_allow or $location_deny) {
+    fail("Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in ${vhost}:${title}")
   }
-  if (($www_root != undef) and ($proxy != undef)) {
+  if ($www_root and $proxy) {
     fail("Cannot define both directory and proxy in ${vhost}:${title}")
   }
 
