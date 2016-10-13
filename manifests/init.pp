@@ -114,6 +114,7 @@ class nginx (
   ### START Service Configuation ###
   $service_ensure                 = running,
   $service_flags                  = undef,
+  $service_restart                = undef,
   $service_name                   = undef,
   $service_manage                 = true,
   ### END Service Configuration ###
@@ -300,14 +301,10 @@ class nginx (
       sites_available_mode           => $sites_available_mode,
     }
   }
-  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
-  class { '::nginx::service':
-    service_ensure => $service_ensure,
-    service_name   => $service_name,
-    service_flags  => $service_flags,
-    service_manage => $service_manage,
-  }
+  include '::nginx::service'
+
+  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
