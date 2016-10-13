@@ -820,7 +820,7 @@ describe 'nginx::resource::location' do
           }
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined}) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined in vhost1:rspec-test}) }
       end
 
       context 'www_root and proxy are set' do
@@ -832,7 +832,7 @@ describe 'nginx::resource::location' do
           }
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot define both directory and proxy in a virtual host}) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot define both directory and proxy in vhost1:rspec-test}) }
       end
 
       context 'when vhost name is sanitized' do
