@@ -14,6 +14,8 @@
 #
 # This class file is not called directly
 class nginx::service(
+  $configtest_enable = false,
+  $service_restart   = '/etc/init.d/nginx reload',
   $service_ensure    = 'running',
   $service_name      = 'nginx',
   $service_flags     = undef,
@@ -58,4 +60,9 @@ class nginx::service(
     }
   }
 
+  if $configtest_enable == true {
+    Service['nginx'] {
+      restart => $service_restart,
+    }
+  }
 }
