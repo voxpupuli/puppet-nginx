@@ -596,6 +596,36 @@ describe 'nginx::resource::location' do
           end
         end
       end
+
+      context "when uwsgi_param is {'CUSTOM_PARAM' => 'value'}" do
+        let(:params) { default_params.merge(uwsgi_param: { 'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2' }) }
+        it 'sets uwsgi_param' do
+          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            with_content(%r{uwsgi_param\s+CUSTOM_PARAM\s+value;}).
+            with_content(%r{uwsgi_param\s+CUSTOM_PARAM2\s+value2;})
+        end
+      end
+
+      context 'when uwsgi_param is {\'HTTP_PROXY\' => ""}' do
+        let(:params) { default_params.merge(uwsgi_param: { 'HTTP_PROXY' => '""' }) }
+        it 'sets uwsgi_param' do
+          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            with_content(%r{uwsgi_param\s+HTTP_PROXY\s+"";})
+        end
+      end
+
+      context 'when uwsgi_param is not set' do
+        let(:params) { default_params }
+        it 'does not set uwsgi_param' do
+          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            without_content(%r{uwsgi_param\s+CUSTOM_PARAM\s+.+?;}).
+            without_content(%r{uwsgi_param\s+CUSTOM_PARAM2\s+.+?;})
+        end
+        it 'does not add comment # Enable custom uwsgi_param' do
+          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            without_content(%r{# Enable custom uwsgi_param\s+})
+        end
+      end
     end
 
     describe 'vhost_location_proxy template content' do
