@@ -97,6 +97,7 @@
 #     used for mp4 streaming. Default: false
 #   [*flv*]             - Indicates whether or not this loation can be
 #     used for flv streaming. Default: false
+#   [*expires*]         - Setup expires time for locations content
 #
 #
 # Actions:
@@ -192,8 +193,9 @@ define nginx::resource::location (
   $auth_basic_user_file = undef,
   $rewrite_rules        = [],
   $priority             = 500,
-  $mp4             = false,
-  $flv             = false,
+  $mp4                  = false,
+  $flv                  = false,
+  $expires              = undef,
 ) {
 
   $root_group = $::nginx::config::root_group
@@ -340,6 +342,9 @@ define nginx::resource::location (
   validate_array($rewrite_rules)
   if (($priority + 0) < 401) or (($priority + 0) > 899) {
     fail('$priority must be in the range 401-899.')
+  }
+  if ($expires != undef) {
+    validate_string($expires)
   }
 
   # # Shared Variables

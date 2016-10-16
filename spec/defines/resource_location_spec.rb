@@ -78,6 +78,12 @@ describe 'nginx::resource::location' do
           match: '    satisfy any;'
         },
         {
+          title: 'should set expires',
+          attr: 'expires',
+          value: '33d',
+          match: '    expires 33d;'
+        },
+        {
           title: 'should set location_allow',
           attr: 'location_allow',
           value: %w(127.0.0.1 10.0.0.1),
