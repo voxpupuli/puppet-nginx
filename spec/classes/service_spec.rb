@@ -21,6 +21,17 @@ describe 'nginx::service' do
     it { is_expected.to contain_service('nginx').without_restart }
   end
 
+  context "when service_restart => 'a restart command'" do
+    let :params do
+      {
+        service_restart: 'a restart command',
+        service_ensure: 'running',
+        service_name: 'nginx'
+      }
+    end
+    it { is_expected.to contain_service('nginx').with_restart('a restart command') }
+  end
+
   describe "when service_name => 'nginx14" do
     let :params do
       {
