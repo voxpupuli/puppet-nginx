@@ -179,7 +179,9 @@ http {
 <% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
+<% unless @confd_only -%>
   include <%= @conf_dir %>/sites-enabled/*;
+<% end -%>
 }
 <% if @mail -%>
 mail {

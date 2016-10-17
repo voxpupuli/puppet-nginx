@@ -387,7 +387,13 @@ define nginx::resource::location (
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${::nginx::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+  if $::nginx::config::confd_only {
+    $vhost_dir = "${::nginx::config::conf_dir}/conf.d"
+  } else {
+    $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
+  }
+
+  $config_file = "${vhost_dir}/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')

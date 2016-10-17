@@ -36,6 +36,17 @@ describe 'nginx::resource::streamhost' do
       end
     end
 
+    describe 'when confd_only true' do
+      let(:pre_condition) { 'class { "nginx": confd_only => true }' }
+      let(:params) { default_params }
+      it { is_expected.to contain_class('nginx::config') }
+      it do
+        is_expected.to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
+                                                                                     'group' => 'root',
+                                                                                     'mode'  => '0644')
+      end
+    end
+
     describe 'vhost_header template content' do
       [
         {
