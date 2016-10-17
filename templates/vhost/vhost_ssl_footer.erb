@@ -3,8 +3,8 @@
   include <%= file %>;
   <%- end -%>
 <% end -%>
-<% if @vhost_cfg_append -%>
-  <%- @vhost_cfg_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+<% if @server_cfg_append -%>
+  <%- @server_cfg_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
       <%- value.sort_by{ |k, v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>
@@ -18,8 +18,8 @@
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @vhost_cfg_ssl_append -%>
-  <%- @vhost_cfg_ssl_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+<% if @server_cfg_ssl_append -%>
+  <%- @server_cfg_ssl_append.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
       <%- value.sort_by{ |k, v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>

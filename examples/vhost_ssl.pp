@@ -1,6 +1,6 @@
 include ::nginx
 
-::nginx::resource::vhost { 'test3.local test3':
+::nginx::resource::server { 'test3.local test3':
   ensure          => present,
   www_root        => '/var/www/nginx-default',
   ssl             => true,
@@ -9,7 +9,7 @@ include ::nginx
   ssl_key         => 'puppet:///modules/sslkey/whildcard_mydomain.key',
 }
 
-::nginx::resource::vhost { 'test2.local test2':
+::nginx::resource::server { 'test2.local test2':
   ensure   => present,
   www_root => '/var/www/nginx-default',
   ssl      => true,
@@ -21,12 +21,12 @@ include ::nginx
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
-  vhost    => 'test2.local test2',
+  server    => 'test2.local test2',
 }
 
 ::nginx::resource::location { 'test3.local-bob':
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
-  vhost    => 'test3.local test3',
+  server    => 'test3.local test3',
 }

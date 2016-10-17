@@ -22,7 +22,7 @@ server {
   server_name  www.<%= s.gsub(/^www\./, '') %>;
   return       301 https://<%= s.gsub(/^www\./, '') %>$request_uri;
 
-<%= scope.function_template(["nginx/vhost/vhost_ssl_settings.erb"]) %>
+<%= scope.function_template(["nginx/server/server_ssl_settings.erb"]) %>
 
 }
 
@@ -48,7 +48,7 @@ server {
   <%- end -%>
   server_name  <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
 
-<%= scope.function_template(["nginx/vhost/vhost_ssl_settings.erb"]) %>
+<%= scope.function_template(["nginx/server/server_ssl_settings.erb"]) %>
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
@@ -109,9 +109,9 @@ server {
   error_page  <%= key %> <%= @error_pages[key] %>;
   <%- end -%>
 <% end -%>
-<% if @vhost_cfg_prepend -%>
+<% if @server_cfg_prepend -%>
 
-  <%- @vhost_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%- @server_cfg_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
       <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>
@@ -125,9 +125,9 @@ server {
     <%- end -%>
   <%- end -%>
 <% end -%>
-<% if @vhost_cfg_ssl_prepend -%>
+<% if @server_cfg_ssl_prepend -%>
 
-  <%- @vhost_cfg_ssl_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
+  <%- @server_cfg_ssl_prepend.sort_by{ |k, v| k.to_s == 'allow' ? '' : k.to_s }.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>
       <%- value.sort_by {|k,v| k}.each do |subkey,subvalue| -%>
         <%- Array(subvalue).each do |asubvalue| -%>

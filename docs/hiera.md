@@ -33,7 +33,7 @@ Assume you have the following code block:
 class { 'nginx' :
   manage_repo   => false,
   confd_purge   => true,
-  vhost_purge   => true,
+  server_purge   => true,
 }
 ```
 
@@ -44,7 +44,7 @@ Anchor['nginx::begin']
 ->
 class { 'nginx::config' :
   confd_purge   => true,
-  vhost_purge   => true,
+  server_purge   => true,
 }
 
 class { 'nginx' :
