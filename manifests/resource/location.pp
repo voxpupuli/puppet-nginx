@@ -40,6 +40,7 @@
 #   [*fastcgi_split_path*]   - Allows settings of fastcgi_split_path_info so
 #     that you can split the script_name and path_info via regex
 #   [*uwsgi*]              - location of uwsgi (host:port)
+#   [*uwsgi_param*]        - Set additional custom uwsgi_params
 #   [*uwsgi_params*]       - optional alternative uwsgi_params file to use
 #   [*uwsgi_read_timeout*]   - optional value for uwsgi_read_timeout
 #   [*ssl*]                  - Indicates whether to setup SSL bindings for
@@ -137,6 +138,17 @@
 #       'APP_ENV' => 'local',
 #    }
 #  }
+#
+#  Add Custom uwsgi_params
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    vhost    => 'test2.local',
+#    uwsgi_param => {
+#       'APP_ENV' => 'local',
+#    }
+#  }
 
 define nginx::resource::location (
   $ensure               = present,
@@ -162,6 +174,7 @@ define nginx::resource::location (
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
   $uwsgi                = undef,
+  $uwsgi_param          = undef,
   $uwsgi_params         = "${nginx::config::conf_dir}/uwsgi_params",
   $uwsgi_read_timeout   = undef,
   $ssl                  = false,
@@ -246,6 +259,9 @@ define nginx::resource::location (
   }
   if ($uwsgi != undef) {
     validate_string($uwsgi)
+  }
+  if ($uwsgi_param != undef) {
+    validate_hash($uwsgi_param)
   }
   validate_string($uwsgi_params)
   if ($uwsgi_read_timeout != undef) {
