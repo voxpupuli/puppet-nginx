@@ -271,6 +271,18 @@ describe 'nginx::resource::mailhost' do
           match: '  auth_http_header      X-Auth-Key "secret_string";'
         },
         {
+          title: 'should set ssl_protocols',
+          attr: 'ssl_protocols',
+          value: 'test-ssl-protocol',
+          match: '  ssl_protocols test-ssl-protocol;'
+        },
+        {
+          title: 'should set ssl_ciphers',
+          attr: 'ssl_ciphers',
+          value: 'test-ssl-ciphers',
+          match: '  ssl_ciphers test-ssl-ciphers;'
+        },
+        {
           title: 'should set ssl_certificate',
           attr: 'ssl_cert',
           value: 'test-ssl-cert',
@@ -290,6 +302,8 @@ describe 'nginx::resource::mailhost' do
               ssl_port: 587,
               ipv6_enable: true,
               ssl: true,
+              ssl_protocols: 'default-protocols',
+              ssl_ciphers: 'default-ciphers',
               ssl_cert: 'dummy.crt',
               ssl_key: 'dummy.key'
             }
