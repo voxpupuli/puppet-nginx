@@ -11,11 +11,10 @@ This will install the NGINX package from the software repository of your Linux d
 
 ```
 class{'nginx':
-    manage_repo => true,
     package_source => 'nginx-mainline'
 }
 ```
-The choices here are `nginx-stable` (the current 'production' level release), `nginx-mainline` (where active development is occuring), as well as `passenger` - you can read a full explanation of the differences [here][nginxpackages]. `passenger` will install Phusion Passenger, as well as their version of nginx built with Passenger support. Keep in mind that changing `package_source` may require some manual intervention if you change this setting after initial configuration. On CentOS / RHEL, there is a soft dependency on EPEL for this (i.e., the module doesn't configure EPEL for you, but will fail if you don't have it).
+The 'manage_repo' feature is now removed, and the module now defaults to having package_source unset, meaning you must configure package_source if you want to have Puppet install and configure a repo. The choices here are `nginx-stable` (the current 'production' level release), `nginx-mainline` (where active development is occuring), as well as `passenger` - you can read a full explanation of the differences [here][nginxpackages]. `passenger` will install Phusion Passenger, as well as their version of nginx built with Passenger support. Keep in mind that changing `package_source` may require some manual intervention if you change this setting after initial configuration. On CentOS / RHEL, having the EPEL repo may be required when package_source is unset, or if other dependencies require it (i.e., the module doesn't configure EPEL for you, but will fail if you don't have it).
 
 ### Creating Your First Virtual Host
 

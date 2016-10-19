@@ -13,15 +13,15 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::service(
-  $service_restart = $::nginx::service_restart,
-  $service_ensure  = $::nginx::service_ensure,
-  $service_name    = $::nginx::service_name,
-  $service_flags   = $::nginx::service_flags,
-  $service_manage  = $::nginx::service_manage,
-) {
+class nginx::service {
 
   assert_private()
+
+  $service_restart = $::nginx::service_restart
+  $service_ensure  = $::nginx::service_ensure
+  $service_name    = $::nginx::service_name
+  $service_flags   = $::nginx::service_flags
+  $manage_service  = $::nginx::manage_service
 
   $service_enable = $service_ensure ? {
     'running' => true,
@@ -37,7 +37,7 @@ class nginx::service(
     $service_ensure_real = $service_ensure
   }
 
-  if $service_manage {
+  if $manage_service {
     case $::osfamily {
       'OpenBSD': {
         service { 'nginx':

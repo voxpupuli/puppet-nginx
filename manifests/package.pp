@@ -13,14 +13,14 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package { 
+class nginx::package {
 
   assert_private()
 
-  $package_name   = $::nginx::package_name,
-  $package_source = $::nginx::package_source,
-  $package_ensure = $::nginx::package_ensure,
-  $package_flavor = $::nginx::package_flavor,
+  $package_name   = $::nginx::package_name
+  $package_source = $::nginx::package_source
+  $package_ensure = $::nginx::package_ensure
+  $package_flavor = $::nginx::package_flavor
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
@@ -28,7 +28,6 @@ class nginx::package {
   case $::osfamily {
     'redhat': {
       class { '::nginx::package::redhat':
-        manage_repo    => $manage_repo,
         package_source => $package_source,
         package_ensure => $package_ensure,
         package_name   => $package_name,
@@ -41,7 +40,6 @@ class nginx::package {
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
-        manage_repo    => $manage_repo,
         require        => Anchor['nginx::package::begin'],
         before         => Anchor['nginx::package::end'],
       }
