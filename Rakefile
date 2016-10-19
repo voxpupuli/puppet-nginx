@@ -1,7 +1,7 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet_blacksmith/rake_tasks'
 require 'voxpupuli/release/rake_tasks'
-require 'puppet-strings/rake_tasks'
+require 'puppet-strings/tasks'
 
 PuppetLint.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
 PuppetLint.configuration.fail_on_warnings = true

@@ -4,3 +4,5 @@
   docker_sets:
   - set: docker/ubuntu-14.04
   - set: docker/centos-7
+spec/spec_helper.rb:
+  mock_with: ':rspec'
