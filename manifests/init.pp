@@ -291,7 +291,7 @@ class nginx (
       temp_dir                       => $temp_dir,
       types_hash_bucket_size         => $types_hash_bucket_size,
       types_hash_max_size            => $types_hash_max_size,
-      server_purge                    => $server_purge,
+      server_purge                   => $server_purge,
       worker_connections             => $worker_connections,
       worker_processes               => $worker_processes,
       worker_rlimit_nofile           => $worker_rlimit_nofile,

@@ -150,7 +150,7 @@
 #     this directive entirely from the server stanza, rather than setting a
 #     default. Can also be disabled for this server with the string 'off'.
 #   [*error_log*]               - Where to write error log. May add additional
-#     options like error level to the end. May set to 'absent', in which case 
+#     options like error level to the end. May set to 'absent', in which case
 #     it will be omitted in this server stanza (and default to nginx.conf setting)
 #   [*passenger_cgi_param*]     - Allows one to define additional CGI environment
 #     variables to pass to the backend application
@@ -612,7 +612,7 @@ define nginx::resource::server (
     # Create the default location reference for the vHost
     nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
-      server                       => $name_sanitized,
+      server                      => $name_sanitized,
       ssl                         => $ssl,
       ssl_only                    => $ssl_only,
       location                    => '/',
