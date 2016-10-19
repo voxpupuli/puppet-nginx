@@ -21,12 +21,12 @@ include ::nginx
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
-  server    => 'test2.local test2',
+  server   => 'test2.local test2',
 }
 
 ::nginx::resource::location { 'test3.local-bob':
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
-  server    => 'test3.local test3',
+  server   => 'test3.local test3',
 }
