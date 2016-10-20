@@ -168,8 +168,14 @@ http {
 <% if @fastcgi_cache_use_stale -%>
   fastcgi_cache_use_stale <%= @fastcgi_cache_use_stale %>;
 <% end -%>
-<% if @http_cfg_append -%>
 
+<% if @http_raw_append -%>
+  <% Array(@http_raw_append).each do |line| -%>
+    <%= line %>
+   <% end %>
+<% end -%>
+
+<% if @http_cfg_append -%>
   <%- field_width = @http_cfg_append.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
   <%- Array(value).each do |asubvalue| -%>

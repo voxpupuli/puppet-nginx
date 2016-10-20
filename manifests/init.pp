@@ -41,6 +41,7 @@ class nginx (
   $gzip                           = undef,
   $http_cfg_prepend               = undef,
   $http_cfg_append                = undef,
+  $http_raw_append                = undef,
   $http_tcp_nodelay               = undef,
   $http_tcp_nopush                = undef,
   $keepalive_timeout              = undef,
@@ -165,6 +166,7 @@ class nginx (
         $gzip or
         $http_access_log or
         $http_cfg_append or
+        $http_raw_append or
         $http_tcp_nodelay or
         $http_tcp_nopush or
         $keepalive_timeout or
@@ -252,6 +254,7 @@ class nginx (
       http_access_log                => $http_access_log,
       http_cfg_prepend               => $http_cfg_prepend,
       http_cfg_append                => $http_cfg_append,
+      http_raw_append                => $http_raw_append,
       http_tcp_nodelay               => $http_tcp_nodelay,
       http_tcp_nopush                => $http_tcp_nopush,
       keepalive_timeout              => $keepalive_timeout,
