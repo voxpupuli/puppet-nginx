@@ -317,6 +317,31 @@ class nginx::config(
     }
   }
 
+  file { "${conf_dir}/streams-available":
+    ensure => directory,
+    owner  => $sites_available_owner,
+    group  => $sites_available_group,
+    mode   => $sites_available_mode,
+  }
+
+  if $vhost_purge == true {
+    File["${conf_dir}/streams-available"] {
+      purge   => true,
+      recurse => true,
+    }
+  }
+
+  file { "${conf_dir}/streams-enabled":
+    ensure => directory,
+  }
+
+  if $vhost_purge == true {
+    File["${conf_dir}/streams-enabled"] {
+      purge   => true,
+      recurse => true,
+    }
+  }
+
   file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
