@@ -38,6 +38,7 @@ class nginx::config(
   $super_user                     = $::nginx::params::super_user,
   $temp_dir                       = $::nginx::params::temp_dir,
   $vhost_purge                    = false,
+  $package_name                   = $::nginx::params::package_name,
 
   # Primary Templates
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb',
