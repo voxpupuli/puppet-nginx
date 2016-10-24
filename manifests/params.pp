@@ -48,6 +48,8 @@ class nginx::params {
         $_module_os_overrides = {
           'manage_repo' => true,
         }
+      } else {
+        $_module_os_overrides = {}
       }
     }
     'Solaris': {
@@ -93,9 +95,9 @@ class nginx::params {
   $global_owner          = 'root'
   $global_group          = $_module_parameters['root_group']
   $global_mode           = '0644'
-  $http_access_log       = "${log_dir}/access.log"
+  $http_access_log_file  = 'access.log'
   $manage_repo           = $_module_parameters['manage_repo']
-  $nginx_error_log       = "${log_dir}/error.log"
+  $nginx_error_log_file  = 'error.log'
   $root_group            = $_module_parameters['root_group']
   $package_name          = $_module_parameters['package_name']
   $proxy_temp_path       = "${run_dir}/proxy_temp"

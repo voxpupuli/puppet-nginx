@@ -1,0 +1,8 @@
+---
+.travis.yml:
+  secure: "SDpX6jzritODonEQBqy9g0NbOmk2a9dBfAtZLrvHwM8BTpM2W0Y1daqzIbpzxFiqlNX+6r2GSq9SV70N0A9Ko/uPV9aG/XZx7MsBR9DNVjgqjJSl7+aF88VJfRpOv4PAyTM33JMx91nLFxM/ql61YX+2DXGXrhUkBsMZcdBgQnk="
+  docker_sets:
+  - set: docker/ubuntu-14.04
+  - set: docker/centos-7
+spec/spec_helper.rb:
+  mock_with: ':rspec'

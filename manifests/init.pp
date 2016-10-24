@@ -39,10 +39,12 @@ class nginx (
   $fastcgi_cache_path             = undef,
   $fastcgi_cache_use_stale        = undef,
   $gzip                           = undef,
+  $http_cfg_prepend               = undef,
   $http_cfg_append                = undef,
   $http_tcp_nodelay               = undef,
   $http_tcp_nopush                = undef,
   $keepalive_timeout              = undef,
+  $keepalive_requests             = undef,
   $mail                           = undef,
   $multi_accept                   = undef,
   $names_hash_bucket_size         = undef,
@@ -54,6 +56,7 @@ class nginx (
   $proxy_cache_levels             = undef,
   $proxy_cache_max_size           = undef,
   $proxy_cache_path               = undef,
+  $proxy_use_temp_path            = undef,
   $proxy_connect_timeout          = undef,
   $proxy_headers_hash_bucket_size = undef,
   $proxy_http_version             = undef,
@@ -61,6 +64,8 @@ class nginx (
   $proxy_redirect                 = undef,
   $proxy_send_timeout             = undef,
   $proxy_set_header               = undef,
+  $proxy_hide_header              = undef,
+  $proxy_pass_header              = undef,
   $sendfile                       = undef,
   $server_tokens                  = undef,
   $spdy                           = undef,
@@ -72,6 +77,7 @@ class nginx (
   ### END Nginx Configuration
 
   ### START Module/App Configuration ###
+  $confd_only                     = undef,
   $confd_purge                    = undef,
   $conf_dir                       = undef,
   $daemon_user                    = undef,
@@ -107,11 +113,11 @@ class nginx (
   ### END Package Configuration ###
 
   ### START Service Configuation ###
-  $configtest_enable              = false,
   $service_ensure                 = running,
   $service_flags                  = undef,
-  $service_restart                = '/etc/init.d/nginx reload',
+  $service_restart                = undef,
   $service_name                   = undef,
+  $service_manage                 = true,
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
@@ -119,6 +125,7 @@ class nginx (
   $string_mappings                = {},
   $nginx_locations                = {},
   $nginx_mailhosts                = {},
+  $nginx_streamhosts              = {},
   $nginx_upstreams                = {},
   $nginx_vhosts                   = {},
   $nginx_vhosts_defaults          = {},
@@ -161,6 +168,7 @@ class nginx (
         $http_tcp_nodelay or
         $http_tcp_nopush or
         $keepalive_timeout or
+        $keepalive_requests or
         $logdir or
         $log_format or
         $mail or
@@ -176,6 +184,7 @@ class nginx (
         $proxy_cache_levels or
         $proxy_cache_max_size or
         $proxy_cache_path or
+        $proxy_use_temp_path or
         $proxy_conf_template or
         $proxy_connect_timeout or
         $proxy_headers_hash_bucket_size or
@@ -184,6 +193,8 @@ class nginx (
         $proxy_redirect or
         $proxy_send_timeout or
         $proxy_set_header or
+        $proxy_hide_header or
+        $proxy_pass_header or
         $proxy_temp_path or
         $run_dir or
         $sendfile or
@@ -225,6 +236,7 @@ class nginx (
       client_body_temp_path          => $client_body_temp_path,
       client_max_body_size           => $client_max_body_size,
       confd_purge                    => $confd_purge,
+      confd_only                     => $confd_only,
       conf_dir                       => $conf_dir,
       conf_template                  => $conf_template,
       daemon_user                    => $daemon_user,
@@ -238,10 +250,12 @@ class nginx (
       fastcgi_cache_use_stale        => $fastcgi_cache_use_stale,
       gzip                           => $gzip,
       http_access_log                => $http_access_log,
+      http_cfg_prepend               => $http_cfg_prepend,
       http_cfg_append                => $http_cfg_append,
       http_tcp_nodelay               => $http_tcp_nodelay,
       http_tcp_nopush                => $http_tcp_nopush,
       keepalive_timeout              => $keepalive_timeout,
+      keepalive_requests             => $keepalive_requests,
       log_dir                        => $logdir,
       log_format                     => $log_format,
       mail                           => $mail,
@@ -257,6 +271,7 @@ class nginx (
       proxy_cache_levels             => $proxy_cache_levels,
       proxy_cache_max_size           => $proxy_cache_max_size,
       proxy_cache_path               => $proxy_cache_path,
+      proxy_use_temp_path            => $proxy_use_temp_path,
       proxy_conf_template            => $proxy_conf_template,
       proxy_connect_timeout          => $proxy_connect_timeout,
       proxy_headers_hash_bucket_size => $proxy_headers_hash_bucket_size,
@@ -265,6 +280,8 @@ class nginx (
       proxy_redirect                 => $proxy_redirect,
       proxy_send_timeout             => $proxy_send_timeout,
       proxy_set_header               => $proxy_set_header,
+      proxy_hide_header              => $proxy_hide_header,
+      proxy_pass_header              => $proxy_pass_header,
       proxy_temp_path                => $proxy_temp_path,
       run_dir                        => $run_dir,
       sendfile                       => $sendfile,
@@ -286,20 +303,16 @@ class nginx (
       sites_available_mode           => $sites_available_mode,
     }
   }
-  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
-  class { '::nginx::service':
-    configtest_enable => $configtest_enable,
-    service_ensure    => $service_ensure,
-    service_restart   => $service_restart,
-    service_name      => $service_name,
-    service_flags     => $service_flags,
-  }
+  include '::nginx::service'
+
+  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
+  create_resources('nginx::resource::streamhost', $nginx_streamhosts)
   create_resources('nginx::resource::map', $string_mappings)
   create_resources('nginx::resource::geo', $geo_mappings)
 

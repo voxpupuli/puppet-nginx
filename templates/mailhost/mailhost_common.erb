@@ -1,10 +1,15 @@
 
   server_name           <%= @server_name.join(" ") %>;
+<% if defined? @protocol -%>
   protocol              <%= @protocol %>;
+<% end -%>
   xclient               <%= @xclient %>;
 <% if defined? @auth_http -%>
   auth_http             <%= @auth_http %>;
 <% end -%>
+<%- if @auth_http_header -%>
+  auth_http_header      <%= @auth_http_header %>;
+<%- end -%>
 
   proxy_pass_error_message  <%= @proxy_pass_error_message %>;
 

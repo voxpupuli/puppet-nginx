@@ -23,22 +23,22 @@ server {
   listen       <%= ip %>:<%= @ssl_port %>;
   <%- end -%>
 <%- else -%>
-  listen       <%= @listen_ip %>:<%= @ssl_port %>;
+  listen                <%= @listen_ip %>:<%= @ssl_port %>;
 <%- end -%>
 <%# check to see if ipv6 support exists in the kernel before applying -%>
 <%- if @ipv6_enable && (defined? @ipaddress6) -%>
   <%- if @ipv6_listen_ip.is_a?(Array) then -%>
     <%- @ipv6_listen_ip.each do |ipv6| -%>
-  listen [<%= ipv6 %>]:<%= @ssl_port %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
+  listen                [<%= ipv6 %>]:<%= @ssl_port %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
     <%- end -%>
   <%- else -%>
-  listen [<%= @ipv6_listen_ip %>]:<%= @ssl_port %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
+  listen                [<%= @ipv6_listen_ip %>]:<%= @ssl_port %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
   <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) %>
 
-  ssl       on;
-  starttls  off;
+  ssl                   on;
+  starttls              off;
 
   <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) %>
 <% if @mailhost_cfg_append -%>

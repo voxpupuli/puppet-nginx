@@ -1,30 +1,30 @@
 # NGINX Module
 
+This module got migrated from James Fryman <james@frymanet.com> and Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
+
+
 ## INSTALLING OR UPGRADING
 ** Please note **: This module is currently undergoing some structural
-maintenance. Please take a look at [https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md](https://github.com/jfryman/puppet-nginx/blob/master/docs/hiera.md)
+maintenance. Please take a look at [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
 
 [![Puppet
-Forge](http://img.shields.io/puppetforge/v/jfryman/nginx.svg)](https://forge.puppetlabs.com/jfryman/nginx)
-[![Build Status](https://travis-ci.org/jfryman/puppet-nginx.png)](https://travis-ci.org/jfryman/puppet-nginx)
+Forge](http://img.shields.io/puppetforge/v/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-nginx.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-nginx)
 
-
-* James Fryman <james@frymanet.com>
-* Matthew Haughton <matt@3flex.com.au>
 
 This module manages NGINX configuration.
 
 ### Requirements
 
-* Puppet-2.7.0 or later
+* Puppet 3.0.0 or later
 * Facter 1.7.0 or later
-* Ruby-1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV).
+* Ruby 1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV).
 
 ### Additional Documentation
 
 * [A Quickstart Guide to the NGINX Puppet Module][quickstart]
-[quickstart]: https://github.com/jfryman/puppet-nginx/blob/master/docs/quickstart.md
+[quickstart]: https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md
 
 
 ### Install and bootstrap an NGINX instance
@@ -146,9 +146,7 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-Currently this works only for Debian family and OpenBSD.
-
-On Debian it might look like:
+Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and Passenger packages from the Phusion repo. See additional notes in [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md)
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',

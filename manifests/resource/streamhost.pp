@@ -51,11 +51,11 @@
 define nginx::resource::streamhost (
   $ensure                       = 'present',
   $listen_ip                    = '*',
-  $listen_port                  = '80',
+  $listen_port                  = 80,
   $listen_options               = undef,
   $ipv6_enable                  = false,
   $ipv6_listen_ip               = '::',
-  $ipv6_listen_port             = '80',
+  $ipv6_listen_port             = 80,
   $ipv6_listen_options          = 'default ipv6only=on',
   $proxy                        = undef,
   $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
@@ -74,7 +74,10 @@ define nginx::resource::streamhost (
   if !(is_array($listen_ip) or is_string($listen_ip)) {
     fail('$listen_ip must be a string or array.')
   }
-  if !is_integer($listen_port) {
+  if is_string($listen_port) {
+    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($listen_port) {
     fail('$listen_port must be an integer.')
   }
   if ($listen_options != undef) {
@@ -84,7 +87,10 @@ define nginx::resource::streamhost (
   if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
     fail('$ipv6_listen_ip must be a string or array.')
   }
-  if !is_integer($ipv6_listen_port) {
+  if is_string($ipv6_listen_port) {
+    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
+  }
+  elsif !is_integer($ipv6_listen_port) {
     fail('$ipv6_listen_port must be an integer.')
   }
   validate_string($ipv6_listen_options)
@@ -100,11 +106,15 @@ define nginx::resource::streamhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  $streamhost_dir = "${::nginx::config::conf_dir}/streams-available"
-  $streamhost_enable_dir = "${::nginx::config::conf_dir}/streams-enabled"
-  $streamhost_symlink_ensure = $ensure ? {
-    'absent' => absent,
-    default  => 'link',
+  if $::nginx::config::confd_only {
+    $streamhost_dir = "${::nginx::config::conf_dir}/conf.stream.d"
+  } else {
+    $streamhost_dir = "${::nginx::config::conf_dir}/streams-available"
+    $streamhost_enable_dir = "${::nginx::config::conf_dir}/streams-enabled"
+    $streamhost_symlink_ensure = $ensure ? {
+      'absent' => absent,
+      default  => 'link',
+    }
   }
 
   $name_sanitized = regsubst($name, ' ', '_', 'G')
@@ -128,10 +138,11 @@ define nginx::resource::streamhost (
   }
 
   concat { $config_file:
-    owner  => $owner,
-    group  => $group,
-    mode   => $mode,
-    notify => Class['::nginx::service'],
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
+    notify  => Class['::nginx::service'],
+    require => File[$streamhost_dir],
   }
 
   concat::fragment { "${name_sanitized}-header":
@@ -140,12 +151,13 @@ define nginx::resource::streamhost (
     order   => '001',
   }
 
-  file{ "${name_sanitized}.conf symlink":
-    ensure  => $streamhost_symlink_ensure,
-    path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
-    target  => $config_file,
-    require => Concat[$config_file],
-    notify  => Class['::nginx::service'],
+  unless $::nginx::config::confd_only {
+    file{ "${name_sanitized}.conf symlink":
+      ensure  => $streamhost_symlink_ensure,
+      path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
+      target  => $config_file,
+      require => [Concat[$config_file], File[$streamhost_enable_dir]],
+      notify  => Class['::nginx::service'],
+    }
   }
-
 }

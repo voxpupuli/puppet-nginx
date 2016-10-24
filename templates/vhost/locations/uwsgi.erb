@@ -6,3 +6,12 @@
 <% end -%>
     include <%= @uwsgi_params %>;
     uwsgi_pass <%= @uwsgi %>;
+<% if @uwsgi_param -%>
+    <%- field_width = @uwsgi_param.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+	<%- @uwsgi_param.sort_by {|k,v| k}.each do |key, val| -%>
+    uwsgi_param <%= sprintf("%-*s", field_width, key) %> <%= val %>;
+	<%- end -%>
+<% end -%>
+<% if @uwsgi_read_timeout-%>
+    uwsgi_read_timeout <%= @uwsgi_read_timeout %>;
+<% end -%>

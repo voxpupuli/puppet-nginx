@@ -29,20 +29,20 @@ server {
 <%- if @ipv6_enable && (defined? @ipaddress6) -%>
   <%- if @ipv6_listen_ip.is_a?(Array) then -%>
     <%- @ipv6_listen_ip.each do |ipv6| -%>
-  listen [<%= ipv6 %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
+  listen                [<%= ipv6 %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
     <%- end -%>
   <%- else -%>
-  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
+  listen                [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
   <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) %>
 
-  ssl       off;
-  starttls  <%= @starttls %>;
+  ssl                   off;
+  starttls              <%= @starttls %>;
 
-  <% if @starttls == 'on' || @starttls == 'only' %>
+<% if @starttls == 'on' || @starttls == 'only' %>
   <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) %>
-  <%- end -%>
+<%- end -%>
 <% if @mailhost_cfg_append -%>
   <%- @mailhost_cfg_append.sort_by{ |k,v| k}.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>

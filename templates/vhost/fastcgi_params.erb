@@ -25,3 +25,6 @@ fastcgi_param  HTTPS              $https;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;
+
+# Mitigate httpoxy, see https://httpoxy.org/#fix-now
+fastcgi_param  HTTP_PROXY          "";

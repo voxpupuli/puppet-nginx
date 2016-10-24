@@ -16,6 +16,7 @@
 class nginx::config(
   ### START Module/App Configuration ###
   $client_body_temp_path          = $::nginx::params::client_body_temp_path,
+  $confd_only                     = false,
   $confd_purge                    = false,
   $conf_dir                       = $::nginx::params::conf_dir,
   $daemon_user                    = $::nginx::params::daemon_user,
@@ -23,8 +24,9 @@ class nginx::config(
   $global_group                   = $::nginx::params::global_group,
   $global_mode                    = $::nginx::params::global_mode,
   $log_dir                        = $::nginx::params::log_dir,
-  $http_access_log                = $::nginx::params::http_access_log,
-  $nginx_error_log                = $::nginx::params::nginx_error_log,
+  $http_access_log                = "${log_dir}/${::nginx::params::http_access_log_file}",
+  $http_format_log                = undef,
+  $nginx_error_log                = "${log_dir}/${::nginx::params::nginx_error_log_file}",
   $nginx_error_log_severity       = 'error',
   $pid                            = $::nginx::params::pid,
   $proxy_temp_path                = $::nginx::params::proxy_temp_path,
@@ -43,8 +45,13 @@ class nginx::config(
   ### END Module/App Configuration ###
 
   ### START Nginx Configuration ###
+  $accept_mutex                   = 'on',
+  $accept_mutex_delay             = '500ms',
   $client_body_buffer_size        = '128k',
   $client_max_body_size           = '10m',
+  $client_body_timeout            = '60',
+  $send_timeout                   = '60',
+  $lingering_timeout              = '5',
   $events_use                     = false,
   $fastcgi_cache_inactive         = '20m',
   $fastcgi_cache_key              = false,
@@ -62,13 +69,14 @@ class nginx::config(
   $gzip_proxied                   = 'off',
   $gzip_types                     = undef,
   $gzip_vary                      = 'off',
+  $http_cfg_prepend               = false,
   $http_cfg_append                = false,
   $http_tcp_nodelay               = 'on',
   $http_tcp_nopush                = 'off',
   $keepalive_timeout              = '65',
+  $keepalive_requests             = '100',
   $log_format                     = {},
   $mail                           = false,
-  $stream                         = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
   $names_hash_max_size            = '512',
@@ -80,6 +88,7 @@ class nginx::config(
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
   $proxy_cache_path               = false,
+  $proxy_use_temp_path            = false,
   $proxy_connect_timeout          = '90',
   $proxy_headers_hash_bucket_size = '64',
   $proxy_http_version             = undef,
@@ -90,7 +99,10 @@ class nginx::config(
     'Host $host',
     'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
+    'Proxy ""',
   ],
+  $proxy_hide_header              = [],
+  $proxy_pass_header              = [],
   $sendfile                       = 'on',
   $server_tokens                  = 'on',
   $spdy                           = 'off',
@@ -101,6 +113,8 @@ class nginx::config(
   $worker_connections             = '1024',
   $worker_processes               = '1',
   $worker_rlimit_nofile           = '1024',
+  $ssl_protocols                  = 'TLSv1 TLSv1.1 TLSv1.2',
+  $ssl_ciphers                    = 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS',
   ### END Nginx Configuration ###
 ) inherits ::nginx::params {
 
@@ -119,12 +133,15 @@ class nginx::config(
   }
   validate_string($multi_accept)
   validate_array($proxy_set_header)
+  validate_array($proxy_hide_header)
+  validate_array($proxy_pass_header)
   if ($proxy_http_version != undef) {
     validate_string($proxy_http_version)
   }
   if ($proxy_conf_template != undef) {
-    warn('The $proxy_conf_template parameter is deprecated and has no effect.')
+    warning('The $proxy_conf_template parameter is deprecated and has no effect.')
   }
+  validate_bool($confd_only)
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
   if ( $proxy_cache_path != false) {
@@ -137,6 +154,10 @@ class nginx::config(
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
   validate_string($proxy_cache_inactive)
+
+  if ($proxy_use_temp_path != false) {
+        validate_re($proxy_use_temp_path, '^(on|off)$')
+  }
 
   if ($fastcgi_cache_path != false) {
         validate_string($fastcgi_cache_path)
@@ -163,6 +184,12 @@ class nginx::config(
   }
   validate_string($proxy_buffers)
   validate_string($proxy_buffer_size)
+  if ($http_cfg_prepend != false) {
+    if !(is_hash($http_cfg_prepend) or is_array($http_cfg_prepend)) {
+      fail('$http_cfg_prepend must be either a hash or array')
+    }
+  }
+
   if ($http_cfg_append != false) {
     if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
       fail('$http_cfg_append must be either a hash or array')
@@ -175,9 +202,15 @@ class nginx::config(
     }
   }
 
-  validate_string($nginx_error_log)
+  if !(is_string($http_access_log) or is_array($http_access_log)) {
+    fail('$http_access_log must be either a string or array')
+  }
+
+  if !(is_string($nginx_error_log) or is_array($nginx_error_log)) {
+    fail('$nginx_error_log must be either a string or array')
+  }
+
   validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
-  validate_string($http_access_log)
   validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
   ### END VALIDATIONS ###
@@ -197,21 +230,25 @@ class nginx::config(
   file { "${conf_dir}/conf.stream.d":
     ensure => directory,
   }
-  if $confd_purge == true {
-    File["${conf_dir}/conf.stream.d"] {
-      purge   => true,
-      recurse => true,
-    }
-  }
 
   file { "${conf_dir}/conf.d":
     ensure => directory,
   }
-  if $confd_purge == true {
-    File["${conf_dir}/conf.d"] {
-      purge   => true,
-      recurse => true,
-      notify  => Class['::nginx::service'],
+  if $confd_purge {
+    # Err on the side of caution - make sure *both* $vhost_purge and
+    # $confd_purge are set if $confd_only is set, before purging files
+    # ${conf_dir}/conf.d
+    if (($confd_only and $vhost_purge) or !$confd_only) {
+      File["${conf_dir}/conf.d"] {
+        purge   => true,
+        recurse => true,
+        notify  => Class['::nginx::service'],
+      }
+      File["${conf_dir}/conf.stream.d"] {
+        purge   => true,
+        recurse => true,
+        notify  => Class['::nginx::service'],
+      }
     }
   }
 
@@ -223,14 +260,6 @@ class nginx::config(
       purge   => true,
       recurse => true,
     }
-  }
-
-  file { "${conf_dir}/conf.d/vhost_autogen.conf":
-    ensure => absent,
-  }
-
-  file { "${conf_dir}/conf.mail.d/vhost_autogen.conf":
-    ensure => absent,
   }
 
   file {$run_dir:
@@ -251,50 +280,46 @@ class nginx::config(
     owner  => $daemon_user,
   }
 
-  file { "${conf_dir}/sites-available":
-    ensure => directory,
-    owner  => $sites_available_owner,
-    group  => $sites_available_group,
-    mode   => $sites_available_mode,
-  }
-
-  if $vhost_purge == true {
-    File["${conf_dir}/sites-available"] {
-      purge   => true,
-      recurse => true,
+  unless $confd_only {
+    file { "${conf_dir}/sites-available":
+      ensure => directory,
+      owner  => $sites_available_owner,
+      group  => $sites_available_group,
+      mode   => $sites_available_mode,
     }
-  }
-
-  file { "${conf_dir}/sites-enabled":
-    ensure => directory,
-  }
-
-  if $vhost_purge == true {
-    File["${conf_dir}/sites-enabled"] {
-      purge   => true,
-      recurse => true,
+    file { "${conf_dir}/sites-enabled":
+      ensure => directory,
     }
-  }
-
-  file { "${conf_dir}/sites-enabled/default":
-    ensure => absent,
+    if $vhost_purge {
+      File["${conf_dir}/sites-available"] {
+        purge   => true,
+        recurse => true,
+      }
+      File["${conf_dir}/sites-enabled"] {
+        purge   => true,
+        recurse => true,
+      }
+    }
+    file { "${conf_dir}/streams-enabled":
+      ensure => directory,
+      owner  => $sites_available_owner,
+      group  => $sites_available_group,
+      mode   => $sites_available_mode,
+    }
+    file { "${conf_dir}/streams-available":
+      ensure => directory,
+    }
+    if $vhost_purge == true {
+      File["${conf_dir}/streams-enabled"] {
+        purge   => true,
+        recurse => true,
+      }
+    }
   }
 
   file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
-  }
-
-  file { "${conf_dir}/conf.d/proxy.conf":
-    ensure  => absent,
-  }
-
-  file { "${conf_dir}/conf.d/default.conf":
-    ensure => absent,
-  }
-
-  file { "${conf_dir}/conf.d/example_ssl.conf":
-    ensure => absent,
   }
 
   file { "${temp_dir}/nginx.d":
