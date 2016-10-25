@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::vhost' do
+describe 'nginx::resource::server' do
   let :title do
     'www.rspec.example.com'
   end
@@ -56,7 +56,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe 'vhost_header template content' do
+    describe 'server_header template content' do
       [
         {
           title: 'should not contain www to non-www rewrite',
@@ -210,7 +210,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           title: 'should contain ordered prepended directives',
-          attr: 'vhost_cfg_prepend',
+          attr: 'server_cfg_prepend',
           value: { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -283,7 +283,7 @@ describe 'nginx::resource::vhost' do
           match: '  access_log            /var/log/nginx/www.rspec.example.com.access.log custom;'
         },
         {
-          title: 'should not include access_log in vhost when set to absent',
+          title: 'should not include access_log in server when set to absent',
           attr: 'access_log',
           value: 'absent',
           notmatch: 'access_log'
@@ -304,7 +304,7 @@ describe 'nginx::resource::vhost' do
           ]
         },
         {
-          title: 'should not include error_log in vhost when set to absent',
+          title: 'should not include error_log in server when set to absent',
           attr: 'error_log',
           value: 'absent',
           notmatch: 'error_log'
@@ -337,7 +337,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe 'vhost_footer template content' do
+    describe 'server_footer template content' do
       [
         {
           title: 'should not contain www to non-www rewrite',
@@ -360,7 +360,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           title: 'should contain ordered appended directives',
-          attr: 'vhost_cfg_append',
+          attr: 'server_cfg_append',
           value: { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -401,7 +401,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe 'vhost_ssl_header template content' do
+    describe 'server_ssl_header template content' do
       [
         {
           title: 'should not contain www to non-www rewrite',
@@ -625,7 +625,7 @@ describe 'nginx::resource::vhost' do
           match: '  access_log            off;'
         },
         {
-          title: 'should not include access_log in vhost when set to absent',
+          title: 'should not include access_log in server when set to absent',
           attr: 'access_log',
           value: 'absent',
           notmatch: 'access_log'
@@ -658,7 +658,7 @@ describe 'nginx::resource::vhost' do
           ]
         },
         {
-          title: 'should not include error_log in vhost when set to absent',
+          title: 'should not include error_log in server when set to absent',
           attr: 'error_log',
           value: 'absent',
           notmatch: 'error_log'
@@ -681,7 +681,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           title: 'should contain ordered prepend directives',
-          attr: 'vhost_cfg_prepend',
+          attr: 'server_cfg_prepend',
           value: { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -692,7 +692,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           title: 'should contain ordered ssl prepend directives',
-          attr: 'vhost_cfg_ssl_prepend',
+          attr: 'server_cfg_ssl_prepend',
           value: { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -739,7 +739,7 @@ describe 'nginx::resource::vhost' do
       end
     end
 
-    describe 'vhost_ssl_footer template content' do
+    describe 'server_ssl_footer template content' do
       [
         {
           title: 'should not contain www to non-www rewrite',
@@ -782,7 +782,7 @@ describe 'nginx::resource::vhost' do
         },
         {
           title: 'should contain ordered ssl appended directives',
-          attr: 'vhost_cfg_ssl_append',
+          attr: 'server_cfg_ssl_append',
           value: { 'test1' => 'test value 1', 'test2' => ['test value 2a', 'test value 2b'], 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -855,13 +855,13 @@ describe 'nginx::resource::vhost' do
       context 'SSL cert missing' do
         let(:params) { { ssl: true, ssl_key: 'key' } }
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
       end
 
       context 'SSL key missing' do
         let(:params) { { ssl: true, ssl_cert: 'cert' } }
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
       end
 
       context 'when use_default_location => true' do
@@ -1099,11 +1099,11 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:3009/foo/bar;}) }
       end
 
-      context 'when vhost name is sanitized' do
-        let(:title) { 'www rspec-vhost com' }
+      context 'when server name is sanitized' do
+        let(:title) { 'www rspec-server com' }
         let(:params) { default_params }
 
-        it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { is_expected.to contain_concat('/etc/nginx/sites-available/www_rspec-server_com.conf') }
       end
 
       context 'when add_header is set' do

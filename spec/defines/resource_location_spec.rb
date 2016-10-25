@@ -16,18 +16,18 @@ describe 'nginx::resource::location' do
       let :params do
         {
           www_root: '/var/www/rspec',
-          vhost: 'vhost1'
+          server: 'server1'
         }
       end
 
       it { is_expected.to contain_class('nginx::config') }
-      it { is_expected.to contain_concat__fragment('vhost1-500-33c6aa94600c830ad2d316bb4db36724').with_content(%r{location rspec-test}) }
+      it { is_expected.to contain_concat__fragment('server1-500-33c6aa94600c830ad2d316bb4db36724').with_content(%r{location rspec-test}) }
       it { is_expected.not_to contain_file('/etc/nginx/fastcgi_params') }
-      it { is_expected.not_to contain_concat__fragment('vhost1-800-rspec-test-ssl') }
+      it { is_expected.not_to contain_concat__fragment('server1-800-rspec-test-ssl') }
       it { is_expected.not_to contain_file('/etc/nginx/rspec-test_htpasswd') }
     end
 
-    describe 'vhost/location_header template content' do
+    describe 'server/location_header template content' do
       [
         {
           title: 'should set the location',
@@ -175,13 +175,13 @@ describe 'nginx::resource::location' do
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let(:default_params) { { location: 'location', proxy: 'proxy_value', vhost: 'vhost1' } }
+          let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
 
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -192,14 +192,14 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
       end
     end
 
-    describe 'vhost/location_footer template content' do
+    describe 'server/location_footer template content' do
       [
         {
           title: 'should contain ordered appended directives',
@@ -252,13 +252,13 @@ describe 'nginx::resource::location' do
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let(:default_params) { { location: 'location', proxy: 'proxy_value', vhost: 'vhost1' } }
+          let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
 
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -269,12 +269,12 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
 
           it 'ends with a closing brace' do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             content = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content]
             expect(content.split("\n").reject { |l| l =~ %r{^(\s*#|$)} }.last.strip).to eq('}')
           end
@@ -282,45 +282,45 @@ describe 'nginx::resource::location' do
       end
     end
 
-    describe 'vhost_location_alias template content' do
+    describe 'server_location_alias template content' do
       let :default_params do
-        { location: 'location', vhost: 'vhost1', location_alias: 'value' }
+        { location: 'location', server: 'server1', location_alias: 'value' }
       end
 
       context "when location_alias is 'value'" do
         let(:params) { default_params }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')) }
         it 'sets alias' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
             with_content(%r{^[ ]+alias\s+value;})
         end
       end
 
       context "when autoindex is 'on'" do
         let(:params) { default_params.merge(autoindex: 'on') }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')) }
         it 'sets autoindex' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
             with_content(%r{^[ ]+autoindex\s+on;})
         end
       end
 
       context 'when autoindex is not set' do
         let(:params) { default_params }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')) }
         it 'does not set autoindex' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
             without_content(%r{^[ ]+autoindex[^;]+;})
         end
       end
     end
 
-    describe 'vhost_location_directory template content' do
+    describe 'server_location_directory template content' do
       let :default_params do
         {
           location: 'location',
           www_root: '/var/www/root',
-          vhost: 'vhost1'
+          server: 'server1'
         }
       end
 
@@ -347,9 +347,9 @@ describe 'nginx::resource::location' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -360,7 +360,7 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
@@ -368,24 +368,24 @@ describe 'nginx::resource::location' do
 
       context "when autoindex is 'on'" do
         let(:params) { default_params.merge(autoindex: 'on') }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')) }
         it 'sets autoindex' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
             with_content(%r{^[ ]+autoindex\s+on;})
         end
       end
 
       context 'when autoindex is not set' do
         let(:params) { default_params }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')) }
         it 'does not set autoindex' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
             without_content(%r{^[ ]+autoindex[^;]+;})
         end
       end
     end
 
-    describe 'vhost_location_empty template content' do
+    describe 'server_location_empty template content' do
       [
         {
           title: 'should contain ordered config directives',
@@ -405,12 +405,12 @@ describe 'nginx::resource::location' do
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let(:default_params) { { location: 'location', location_custom_cfg: { 'test1' => 'value1' }, vhost: 'vhost1' } }
+          let(:default_params) { { location: 'location', location_custom_cfg: { 'test1' => 'value1' }, server: 'server1' } }
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -421,19 +421,19 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
       end
     end
 
-    describe 'vhost_location_fastcgi template content' do
+    describe 'server_location_fastcgi template content' do
       let :default_params do
         {
           location: 'location',
           fastcgi: 'localhost:9000',
-          vhost: 'vhost1'
+          server: 'server1'
         }
       end
 
@@ -472,9 +472,9 @@ describe 'nginx::resource::location' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -485,7 +485,7 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
@@ -493,18 +493,18 @@ describe 'nginx::resource::location' do
 
       context "when fastcgi_script is 'value'" do
         let(:params) { default_params.merge(fastcgi_script: 'value') }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
         it 'sets fastcgi_script' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{^[ ]+fastcgi_param\s+SCRIPT_FILENAME\s+value;})
         end
       end
 
       context 'when fastcgi_script is not set' do
         let(:params) { default_params }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
         it 'does not set fastcgi_script' do
-          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{^[ ]+fastcgi_param\s+SCRIPT_FILENAME\s+.+?;})
         end
       end
@@ -512,7 +512,7 @@ describe 'nginx::resource::location' do
       context "when fastcgi_param is {'CUSTOM_PARAM' => 'value'}" do
         let(:params) { default_params.merge(fastcgi_param: { 'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2' }) }
         it 'sets fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{fastcgi_param\s+CUSTOM_PARAM\s+value;}).
             with_content(%r{fastcgi_param\s+CUSTOM_PARAM2\s+value2;})
         end
@@ -521,7 +521,7 @@ describe 'nginx::resource::location' do
       context 'when fastcgi_param is {\'HTTP_PROXY\' => ""}' do
         let(:params) { default_params.merge(fastcgi_param: { 'HTTP_PROXY' => '""' }) }
         it 'sets fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{fastcgi_param\s+HTTP_PROXY\s+"";})
         end
       end
@@ -529,23 +529,23 @@ describe 'nginx::resource::location' do
       context 'when fastcgi_param is not set' do
         let(:params) { default_params }
         it 'does not set fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{fastcgi_param\s+CUSTOM_PARAM\s+.+?;}).
             without_content(%r{fastcgi_param\s+CUSTOM_PARAM2\s+.+?;})
         end
         it 'does not add comment # Enable custom fastcgi_params' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{# Enable custom fastcgi_params\s+})
         end
       end
     end
 
-    describe 'vhost_location_uwsgi template content' do
+    describe 'server_location_uwsgi template content' do
       let :default_params do
         {
           location: 'location',
           uwsgi: 'unix:/home/project/uwsgi.socket',
-          vhost: 'vhost1'
+          server: 'server1'
         }
       end
 
@@ -584,9 +584,9 @@ describe 'nginx::resource::location' do
         context "when #{param[:attr]} is #{param[:value]}" do
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -597,7 +597,7 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
@@ -606,7 +606,7 @@ describe 'nginx::resource::location' do
       context "when uwsgi_param is {'CUSTOM_PARAM' => 'value'}" do
         let(:params) { default_params.merge(uwsgi_param: { 'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2' }) }
         it 'sets uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{uwsgi_param\s+CUSTOM_PARAM\s+value;}).
             with_content(%r{uwsgi_param\s+CUSTOM_PARAM2\s+value2;})
         end
@@ -615,7 +615,7 @@ describe 'nginx::resource::location' do
       context 'when uwsgi_param is {\'HTTP_PROXY\' => ""}' do
         let(:params) { default_params.merge(uwsgi_param: { 'HTTP_PROXY' => '""' }) }
         it 'sets uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{uwsgi_param\s+HTTP_PROXY\s+"";})
         end
       end
@@ -623,13 +623,13 @@ describe 'nginx::resource::location' do
       context 'when uwsgi_param is not set' do
         let(:params) { default_params }
         it 'does not set uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          should contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{^\s+uwsgi_param\s+})
         end
       end
     end
 
-    describe 'vhost_location_proxy template content' do
+    describe 'server_location_proxy template content' do
       [
         {
           title: 'should set proxy_cache',
@@ -753,12 +753,12 @@ describe 'nginx::resource::location' do
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let(:default_params) { { location: 'location', proxy: 'proxy_value', vhost: 'vhost1' } }
+          let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
           let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
-          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
           it param[:title] do
-            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            fragment = 'server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
             matches  = Array(param[:match])
 
             if matches.all? { |m| m.is_a? Regexp }
@@ -769,7 +769,7 @@ describe 'nginx::resource::location' do
             end
 
             Array(param[:notmatch]).each do |item|
-              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
             end
           end
         end
@@ -780,61 +780,61 @@ describe 'nginx::resource::location' do
           {
             location: 'location',
             proxy: 'proxy_value',
-            vhost: 'vhost1',
+            server: 'server1',
             proxy_cache: 'true',
             proxy_cache_valid: '10m'
           }
         end
 
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).with_content(%r{proxy_cache_valid\s+10m;}) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).with_content(%r{proxy_cache_valid\s+10m;}) }
       end
     end
 
-    describe 'vhost_location_stub_status template content' do
-      let(:params) { { location: 'location', stub_status: true, vhost: 'vhost1' } }
+    describe 'server_location_stub_status template content' do
+      let(:params) { { location: 'location', stub_status: true, server: 'server1' } }
       it do
-        is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+        is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
           with_content(%r{stub_status\s+on})
       end
     end
 
     context 'attribute resources' do
       context 'when fastcgi => "localhost:9000"' do
-        let(:params) { { fastcgi: 'localhost:9000', vhost: 'vhost1' } }
+        let(:params) { { fastcgi: 'localhost:9000', server: 'server1' } }
 
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
       context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
-        let(:params) { { uwsgi: 'uwsgi_upstream', vhost: 'vhost1' } }
+        let(:params) { { uwsgi: 'uwsgi_upstream', server: 'server1' } }
 
         it { should contain_file('/etc/nginx/uwsgi_params') }
       end
 
       context 'when ssl_only => true' do
-        let(:params) { { ssl_only: true, vhost: 'vhost1', www_root: '/' } }
-        it { is_expected.not_to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+        let(:params) { { ssl_only: true, server: 'server1', www_root: '/' } }
+        it { is_expected.not_to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
       end
 
       context 'when ssl_only => false' do
-        let(:params) { { ssl_only: false, vhost: 'vhost1', www_root: '/' } }
+        let(:params) { { ssl_only: false, server: 'server1', www_root: '/' } }
 
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+        it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
       end
 
       context 'when ssl => true' do
-        let(:params) { { ssl: true, vhost: 'vhost1', www_root: '/' } }
+        let(:params) { { ssl: true, server: 'server1', www_root: '/' } }
 
-        it { is_expected.to contain_concat__fragment('vhost1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
+        it { is_expected.to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
       end
 
       context 'when ssl => false' do
-        let(:params) { { ssl: false, vhost: 'vhost1', www_root: '/' } }
+        let(:params) { { ssl: false, server: 'server1', www_root: '/' } }
 
-        it { is_expected.not_to contain_concat__fragment('vhost1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
+        it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
       end
 
-      context 'vhost missing' do
+      context 'server missing' do
         let :params do
           {
             www_root: '/'
@@ -847,37 +847,37 @@ describe 'nginx::resource::location' do
       context 'location type missing' do
         let :params do
           {
-            vhost: 'vhost1'
+            server: 'server1'
           }
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in vhost1:rspec-test}) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in server1:rspec-test}) }
       end
 
       context 'www_root and proxy are set' do
         let :params do
           {
-            vhost: 'vhost1',
+            server: 'server1',
             www_root: '/',
             proxy: 'http://localhost:8000/uri/'
           }
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot define both directory and proxy in vhost1:rspec-test}) }
+        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot define both directory and proxy in server1:rspec-test}) }
       end
 
-      context 'when vhost name is sanitized' do
+      context 'when server name is sanitized' do
         let(:title) { 'www.rspec-location.com' }
         let :params do
           {
-            vhost: 'www rspec-vhost com',
+            server: 'www rspec-server com',
             www_root: '/',
             ssl: true
           }
         end
 
-        it { is_expected.to contain_concat__fragment('www_rspec-vhost_com-500-' + Digest::MD5.hexdigest('www.rspec-location.com')).with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
-        it { is_expected.to contain_concat__fragment('www_rspec-vhost_com-800-' + Digest::MD5.hexdigest('www.rspec-location.com') + '-ssl').with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
+        it { is_expected.to contain_concat__fragment('www_rspec-server_com-500-' + Digest::MD5.hexdigest('www.rspec-location.com')).with_target('/etc/nginx/sites-available/www_rspec-server_com.conf') }
+        it { is_expected.to contain_concat__fragment('www_rspec-server_com-800-' + Digest::MD5.hexdigest('www.rspec-location.com') + '-ssl').with_target('/etc/nginx/sites-available/www_rspec-server_com.conf') }
       end
     end
   end

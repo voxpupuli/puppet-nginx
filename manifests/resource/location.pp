@@ -7,7 +7,7 @@
 #     (present|absent)
 #   [*internal*]             - Indicates whether or not this loation can be
 #     used for internal requests only. Default: false
-#   [*vhost*]                - Defines the default vHost for this location
+#   [*server*]                - Defines the default vHost for this location
 #     entry to include with
 #   [*location*]             - Specifies the URI associated with this location
 #     entry
@@ -30,9 +30,9 @@
 #     value of 90 seconds
 #   [*proxy_connect_timeout*] - Override the default the proxy connect timeout
 #     value of 90 seconds
-#   [*proxy_set_header*]     - Array of vhost headers to set
-#   [*proxy_hide_header*]    - Array of vhost headers to hide
-#   [*proxy_pass_header*]    - Array of vhost headers to pass
+#   [*proxy_set_header*]     - Array of server headers to set
+#   [*proxy_hide_header*]    - Array of server headers to hide
+#   [*proxy_pass_header*]    - Array of server headers to pass
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
@@ -110,7 +110,7 @@
 #    ensure   => present,
 #    www_root => '/var/www/bob',
 #    location => '/bob',
-#    vhost    => 'test2.local',
+#    server    => 'test2.local',
 #  }
 #
 #  Custom config example to limit location on localhost,
@@ -124,7 +124,7 @@
 #    ensure              => present,
 #    www_root            => '/var/www/bob',
 #    location            => '/bob',
-#    vhost               => 'test2.local',
+#    server               => 'test2.local',
 #    location_cfg_append => $my_config,
 #  }
 #
@@ -133,7 +133,7 @@
 #    ensure   => present,
 #    www_root => '/var/www/bob',
 #    location => '/bob',
-#    vhost    => 'test2.local',
+#    server    => 'test2.local',
 #    fastcgi_param => {
 #       'APP_ENV' => 'local',
 #    }
@@ -144,7 +144,7 @@
 #    ensure   => present,
 #    www_root => '/var/www/bob',
 #    location => '/bob',
-#    vhost    => 'test2.local',
+#    server    => 'test2.local',
 #    uwsgi_param => {
 #       'APP_ENV' => 'local',
 #    }
@@ -154,7 +154,7 @@ define nginx::resource::location (
   $ensure               = present,
   $internal             = false,
   $location             = $name,
-  $vhost                = undef,
+  $server                = undef,
   $www_root             = undef,
   $autoindex            = undef,
   $index_files          = [
@@ -223,8 +223,8 @@ define nginx::resource::location (
   validate_re($ensure, '^(present|absent)$',
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
   validate_string($location)
-  if ($vhost != undef) {
-    validate_string($vhost)
+  if ($server != undef) {
+    validate_string($server)
   }
   if ($www_root != undef) {
     validate_string($www_root)
@@ -370,14 +370,14 @@ define nginx::resource::location (
   }
 
   ## Check for various error conditions
-  if ($vhost == undef) {
+  if ($server == undef) {
     fail('Cannot create a location reference without attaching to a virtual host')
   }
   if !($www_root or $proxy or $location_alias or $stub_status or $fastcgi or $uwsgi or $location_custom_cfg or $internal or $try_files or $location_allow or $location_deny) {
-    fail("Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in ${vhost}:${title}")
+    fail("Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in ${server}:${title}")
   }
   if ($www_root and $proxy) {
-    fail("Cannot define both directory and proxy in ${vhost}:${title}")
+    fail("Cannot define both directory and proxy in ${server}:${title}")
   }
 
   # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
@@ -386,42 +386,42 @@ define nginx::resource::location (
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
-  $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
+  $server_sanitized = regsubst($server, ' ', '_', 'G')
   if $::nginx::config::confd_only {
-    $vhost_dir = "${::nginx::config::conf_dir}/conf.d"
+    $server_dir = "${::nginx::config::conf_dir}/conf.d"
   } else {
-    $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
+    $server_dir = "${::nginx::config::conf_dir}/sites-available"
   }
 
-  $config_file = "${vhost_dir}/${vhost_sanitized}.conf"
+  $config_file = "${server_dir}/${server_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
   # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
   if ($proxy != undef) {
-    $content_real = template('nginx/vhost/locations/proxy.erb')
+    $content_real = template('nginx/server/locations/proxy.erb')
   } elsif ($location_alias != undef) {
-    $content_real = template('nginx/vhost/locations/alias.erb')
+    $content_real = template('nginx/server/locations/alias.erb')
   } elsif ($stub_status != undef) {
-    $content_real = template('nginx/vhost/locations/stub_status.erb')
+    $content_real = template('nginx/server/locations/stub_status.erb')
   } elsif ($fastcgi != undef) {
-    $content_real = template('nginx/vhost/locations/fastcgi.erb')
+    $content_real = template('nginx/server/locations/fastcgi.erb')
   } elsif ($uwsgi != undef) {
-    $content_real = template('nginx/vhost/locations/uwsgi.erb')
+    $content_real = template('nginx/server/locations/uwsgi.erb')
   } elsif ($www_root != undef) {
-    $content_real = template('nginx/vhost/locations/directory.erb')
+    $content_real = template('nginx/server/locations/directory.erb')
   } elsif ($try_files != undef) {
-    $content_real = template('nginx/vhost/locations/try_files.erb')
+    $content_real = template('nginx/server/locations/try_files.erb')
   } else {
-    $content_real = template('nginx/vhost/locations/empty.erb')
+    $content_real = template('nginx/server/locations/empty.erb')
   }
 
   if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0770',
-      content => template('nginx/vhost/fastcgi_params.erb'),
+      content => template('nginx/server/fastcgi_params.erb'),
     }
   }
 
@@ -429,7 +429,7 @@ define nginx::resource::location (
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0770',
-      content => template('nginx/vhost/uwsgi_params.erb'),
+      content => template('nginx/server/uwsgi_params.erb'),
     }
   }
 
@@ -437,12 +437,12 @@ define nginx::resource::location (
   ## Create stubs for vHost File Fragment Pattern
   $location_md5 = md5($location)
   if ($ssl_only != true) {
-    concat::fragment { "${vhost_sanitized}-${priority}-${location_md5}":
+    concat::fragment { "${server_sanitized}-${priority}-${location_md5}":
       target  => $config_file,
       content => join([
-        template('nginx/vhost/location_header.erb'),
+        template('nginx/server/location_header.erb'),
         $content_real,
-        template('nginx/vhost/location_footer.erb'),
+        template('nginx/server/location_footer.erb'),
       ], ''),
       order   => $priority,
     }
@@ -452,12 +452,12 @@ define nginx::resource::location (
   if ($ssl == true or $ssl_only == true) {
     $ssl_priority = $priority + 300
 
-    concat::fragment { "${vhost_sanitized}-${ssl_priority}-${location_md5}-ssl":
+    concat::fragment { "${server_sanitized}-${ssl_priority}-${location_md5}-ssl":
       target  => $config_file,
       content => join([
-        template('nginx/vhost/location_header.erb'),
+        template('nginx/server/location_header.erb'),
         $content_real,
-        template('nginx/vhost/location_footer.erb'),
+        template('nginx/server/location_footer.erb'),
       ], ''),
       order   => $ssl_priority,
     }

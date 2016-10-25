@@ -668,8 +668,8 @@ describe 'nginx::config' do
       end
     end
 
-    context 'when vhost_purge true' do
-      let(:params) { { vhost_purge: true } }
+    context 'when server_purge true' do
+      let(:params) { { server_purge: true } }
       it do
         is_expected.to contain_file('/etc/nginx/sites-available').with(
           purge: true,
@@ -684,12 +684,12 @@ describe 'nginx::config' do
       end
     end
 
-    context 'when confd_purge true, vhost_purge true, and confd_only true' do
+    context 'when confd_purge true, server_purge true, and confd_only true' do
       let(:params) do
         {
           confd_purge: true,
           confd_only: true,
-          vhost_purge: true
+          server_purge: true
         }
       end
       it do
@@ -706,7 +706,7 @@ describe 'nginx::config' do
       end
     end
 
-    context 'when confd_purge true, vhost_purge default (false), confd_only true' do
+    context 'when confd_purge true, server_purge default (false), confd_only true' do
       let(:params) do
         {
           confd_purge: true,
@@ -729,8 +729,8 @@ describe 'nginx::config' do
       end
     end
 
-    context 'when vhost_purge false' do
-      let(:params) { { vhost_purge: false } }
+    context 'when server_purge false' do
+      let(:params) { { server_purge: false } }
       it do
         is_expected.to contain_file('/etc/nginx/sites-available').without(
           %w(

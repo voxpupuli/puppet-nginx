@@ -330,7 +330,7 @@ describe 'nginx::resource::mailhost' do
           )
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context 'SSL key missing and ssl => true' do
@@ -339,7 +339,7 @@ describe 'nginx::resource::mailhost' do
                                ssl_cert: 'cert')
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL cert missing and starttls => 'on'" do
@@ -348,7 +348,7 @@ describe 'nginx::resource::mailhost' do
                                ssl_key: 'key')
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL key missing and starttls => 'on'" do
@@ -357,7 +357,7 @@ describe 'nginx::resource::mailhost' do
                                ssl_cert: 'cert')
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL cert missing and starttls => 'only'" do
@@ -366,7 +366,7 @@ describe 'nginx::resource::mailhost' do
                                ssl_key: 'key')
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL key missing and starttls => 'only'" do
@@ -375,7 +375,7 @@ describe 'nginx::resource::mailhost' do
                                ssl_cert: 'cert')
         end
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context 'when listen_port != ssl_port' do

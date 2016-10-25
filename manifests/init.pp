@@ -98,7 +98,7 @@ class nginx (
   $sites_available_mode           = undef,
   $super_user                     = undef,
   $temp_dir                       = undef,
-  $vhost_purge                    = undef,
+  $server_purge                    = undef,
 
   # Primary Templates
   $conf_template                  = undef,
@@ -128,8 +128,8 @@ class nginx (
   $nginx_mailhosts                = {},
   $nginx_streamhosts              = {},
   $nginx_upstreams                = {},
-  $nginx_vhosts                   = {},
-  $nginx_vhosts_defaults          = {},
+  $nginx_servers                   = {},
+  $nginx_servers_defaults          = {},
   ### END Hiera Lookups ###
 ) inherits ::nginx::params {
 
@@ -206,7 +206,7 @@ class nginx (
         $temp_dir or
         $types_hash_bucket_size or
         $types_hash_max_size or
-        $vhost_purge or
+        $server_purge or
         $worker_connections or
         $worker_processes or
         $worker_rlimit_nofile or
@@ -294,7 +294,7 @@ class nginx (
       temp_dir                       => $temp_dir,
       types_hash_bucket_size         => $types_hash_bucket_size,
       types_hash_max_size            => $types_hash_max_size,
-      vhost_purge                    => $vhost_purge,
+      server_purge                   => $server_purge,
       worker_connections             => $worker_connections,
       worker_processes               => $worker_processes,
       worker_rlimit_nofile           => $worker_rlimit_nofile,
@@ -312,7 +312,7 @@ class nginx (
   Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
-  create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
+  create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts)
   create_resources('nginx::resource::streamhost', $nginx_streamhosts)
