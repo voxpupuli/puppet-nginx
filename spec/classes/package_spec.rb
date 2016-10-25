@@ -20,6 +20,8 @@ describe 'nginx::package' do
           'ensure' => 'absent'
         )
       end
+      it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
+      it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
       it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
       it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
     end
@@ -36,6 +38,8 @@ describe 'nginx::package' do
           'ensure' => 'absent'
         )
       end
+      it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
+      it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
     end
 
     context 'package_source => passenger' do
@@ -53,6 +57,8 @@ describe 'nginx::package' do
           'ensure' => 'absent'
         )
       end
+      it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
+      it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
       it { is_expected.to contain_package('passenger') }
     end
 
