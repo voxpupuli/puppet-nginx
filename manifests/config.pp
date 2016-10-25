@@ -77,6 +77,7 @@ class nginx::config(
   $keepalive_requests             = '100',
   $log_format                     = {},
   $mail                           = false,
+  $stream                         = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = '64',
   $names_hash_max_size            = '512',
@@ -174,6 +175,7 @@ class nginx::config(
   }
 
   validate_bool($mail)
+  validate_bool($stream)
   validate_string($server_tokens)
   validate_string($client_max_body_size)
   if (!is_integer($names_hash_bucket_size)) {
@@ -300,6 +302,7 @@ class nginx::config(
         recurse => true,
       }
     }
+    # No real reason not to make these even if $stream is not enabled.
     file { "${conf_dir}/streams-enabled":
       ensure => directory,
       owner  => $sites_available_owner,
@@ -309,7 +312,7 @@ class nginx::config(
     file { "${conf_dir}/streams-available":
       ensure => directory,
     }
-    if $vhost_purge == true {
+    if $vhost_purge {
       File["${conf_dir}/streams-enabled"] {
         purge   => true,
         recurse => true,
