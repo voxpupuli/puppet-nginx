@@ -1,30 +1,37 @@
-# Class: nginx
+# @param package_ensure [String] The 'ensure' value for the nginx package
+# @param package_name [String] The package name (defaults to nginx on most platforms)
+# @param package_source [String] The source for the package. Possible values
+#   are undef (default), meaning the package will be installed from the
+#   vendor's packaging system using configured repos. On supported platforms,
+#   this can also be set to: 'nginx-stable' (current production release from
+#   official repository), 'nginx-mainline' (current development release from
+#   official repository), or 'passenger' (Phusion Passenger repos)
+# @param package_flavor [String] Allows setting "flavor" in OpenBSD package provider
+# @param service_ensure [String] The 'ensure' value for the Service type (stopped / running).
+# @param service_flags [String] Allows setting additional flags on OpenBSD
+# @param service_restart
+# @param service_name
+# @param service_manage
+# @param geo_mappings
+# @param string_mappings
+# @param nginx_locations
+# @param nginx_mailhosts
+# @param nginx_streamhosts
+# @param nginx_upstreams
+# @param nginx_vhosts
+# @param nginx_vhosts_defaults
 #
-# This module manages NGINX.
+# @example Install and bootstrap and Nginx instance
+#     include nginx
 #
-# Parameters:
+# @example Nginx with pre-compiled Passenger (supported platforms only)
+#    class { 'nginx':
+#      package_source  => 'passenger',
+#      http_cfg_append => {
+#        'passenger_root' => '/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini',
+#      }
+#    }
 #
-# Actions:
-#
-# Requires:
-#  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
-#
-#  Packaged NGINX
-#    - RHEL: EPEL or custom package
-#    - Debian/Ubuntu: Default Install or custom package
-#    - SuSE: Default Install or custom package
-#
-#  stdlib
-#    - puppetlabs-stdlib module >= 0.1.6
-#    - plugin sync enabled to obtain the anchor type
-#
-# Sample Usage:
-#
-# The module works with sensible defaults:
-#
-# node default {
-#   include nginx
-# }
 class nginx (
   ### START Nginx Configuration ###
   $client_body_buffer_size        = undef,
