@@ -14,7 +14,7 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo    = true,
+  $manage_repo    = false,
   $package_ensure = 'present',
   $package_name   = 'nginx',
   $package_source = 'nginx-stable',
