@@ -25,6 +25,8 @@
   <%= line %>
 <% end -%>
 }
-<% if @passenger_pre_start -%>
-passenger_pre_start <%= @passenger_pre_start %>;
+<% if @passenger_pre_start.is_a?(Array) or @passenger_pre_start.is_a?(String) -%>
+  <%- Array(@passenger_pre_start).each do |url| -%>
+passenger_pre_start <%= url %>;
+  <%- end -%>
 <% end -%>

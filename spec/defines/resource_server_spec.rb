@@ -762,7 +762,7 @@ describe 'nginx::resource::server' do
         },
         {
           title: 'should contain ordered appended directives',
-          attr: 'server_cfg_append',
+          attr: 'vhost_cfg_append',
           value: { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
           match: [
             '  allow test value 3;',
@@ -1082,12 +1082,21 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{passenger_env_var  test3 test value 3;}) }
       end
 
-      context 'when passenger_pre_start is set' do
+      context 'when passenger_pre_start is a string' do
         let :params do
           default_params.merge(passenger_pre_start: 'http://example.com:80/test/me')
         end
 
         it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:80/test/me;}) }
+      end
+
+      context 'when passenger_pre_start is an array' do
+        let :params do
+          default_params.merge(passenger_pre_start: ['http://example.com:80/test/me', 'http://example.com:3009/foo/bar'])
+        end
+
+        it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:80/test/me;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:3009/foo/bar;}) }
       end
 
       context 'when server name is sanitized' do

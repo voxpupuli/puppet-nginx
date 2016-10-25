@@ -160,7 +160,7 @@
 #     to the backend application (Passenger 5.0+)
 #   [*passenger_pre_start*]     - Allows setting a URL to pre-warm the host. Per
 #     Passenger docs, the "domain part of the URL" must match a value of
-#     server_name
+#     server_name. If this is an array, multiple URLs can be specified.
 #   [*log_by_lua*]              - Run the Lua source code inlined as the
 #     <lua-script-str> at the log request processing phase.
 #     This does not replace the current access logs, but runs after.
@@ -531,7 +531,11 @@ define nginx::resource::server (
     validate_hash($passenger_env_var)
   }
   if ($passenger_pre_start != undef) {
-    validate_string($passenger_pre_start)
+    if (is_array($passenger_pre_start)) {
+      validate_array($passenger_pre_start)
+    } else {
+      validate_string($passenger_pre_start)
+    }
   }
   if ($log_by_lua != undef) {
     validate_string($log_by_lua)

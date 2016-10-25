@@ -190,6 +190,10 @@ mail {
 <% end -%>
 <% if @stream -%>
 stream {
+  <%-# conf.stream.d gets included either way if $stream is enabled -%>
   include <%= @conf_dir %>/conf.stream.d/*.conf;
+<% unless @confd_only -%>
+  include <%= @conf_dir %>/streams-enabled/*;
+<% end -%>
 }
 <% end -%>

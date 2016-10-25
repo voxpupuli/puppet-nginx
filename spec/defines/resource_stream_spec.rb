@@ -98,12 +98,6 @@ describe 'nginx::resource::streamhost' do
           match: %r{\s+listen\s+\[::\]:80 spdy;}
         },
         {
-          title: 'should set servername(s)',
-          attr: 'server_name',
-          value: ['www.foo.com', 'foo.com'],
-          match: %r{\s+server_name\s+www.foo.com foo.com;}
-        },
-        {
           title: 'should contain raw_prepend directives',
           attr: 'raw_prepend',
           value: [

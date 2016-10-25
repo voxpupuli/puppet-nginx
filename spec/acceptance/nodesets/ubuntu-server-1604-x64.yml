@@ -3,11 +3,11 @@
 # https://github.com/voxpupuli/modulesync
 # https://github.com/voxpupuli/modulesync_config
 HOSTS:
-  ubuntu-server-1404-x64:
+  ubuntu-server-1604-x64:
     roles:
       - master
-    platform: ubuntu-14.04-amd64
-    box: puppetlabs/ubuntu-14.04-64-nocm
+    platform: ubuntu-16.04-amd64
+    box: puppetlabs/ubuntu-16.04-64-nocm
     hypervisor: vagrant
 CONFIG:
   type: foss
