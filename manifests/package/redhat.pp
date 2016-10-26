@@ -44,6 +44,7 @@ class nginx::package::redhat (
 
         yumrepo { 'passenger':
           ensure => absent,
+          before => Package['nginx'],
         }
 
       }
@@ -60,6 +61,7 @@ class nginx::package::redhat (
 
         yumrepo { 'passenger':
           ensure => absent,
+          before => Package['nginx'],
         }
 
       }
@@ -78,6 +80,7 @@ class nginx::package::redhat (
 
           yumrepo { 'nginx-release':
             ensure => absent,
+            before => Package['nginx'],
           }
 
           package { 'passenger':
