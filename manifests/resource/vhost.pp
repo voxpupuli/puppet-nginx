@@ -217,9 +217,9 @@ define nginx::resource::vhost (
   $ssl_dhparam                  = undef,
   $ssl_key                      = undef,
   $ssl_port                     = 443,
-  $ssl_protocols                = $::nginx::config::ssl_protocols,
+  $ssl_protocols                = $::nginx::ssl_protocols,
   $ssl_buffer_size              = undef,
-  $ssl_ciphers                  = $::nginx::config::ssl_ciphers,
+  $ssl_ciphers                  = $::nginx::ssl_ciphers,
   $ssl_cache                    = 'shared:SSL:10m',
   $ssl_crl                      = undef,
   $ssl_stapling                 = false,
@@ -230,15 +230,15 @@ define nginx::resource::vhost (
   $ssl_session_tickets          = undef,
   $ssl_session_ticket_key       = undef,
   $ssl_trusted_cert             = undef,
-  $spdy                         = $::nginx::config::spdy,
-  $http2                        = $::nginx::config::http2,
+  $spdy                         = $::nginx::spdy,
+  $http2                        = $::nginx::http2,
   $proxy                        = undef,
   $proxy_redirect               = undef,
-  $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
-  $proxy_set_header             = $::nginx::config::proxy_set_header,
-  $proxy_hide_header            = $::nginx::config::proxy_hide_header,
-  $proxy_pass_header            = $::nginx::config::proxy_pass_header,
+  $proxy_read_timeout           = $::nginx::proxy_read_timeout,
+  $proxy_connect_timeout        = $::nginx::proxy_connect_timeout,
+  $proxy_set_header             = $::nginx::proxy_set_header,
+  $proxy_hide_header            = $::nginx::proxy_hide_header,
+  $proxy_pass_header            = $::nginx::proxy_pass_header,
   $proxy_cache                  = false,
   $proxy_cache_key              = undef,
   $proxy_cache_use_stale        = undef,
@@ -250,7 +250,7 @@ define nginx::resource::vhost (
   $resolver                     = [],
   $fastcgi                      = undef,
   $fastcgi_param                = undef,
-  $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_params               = "${::nginx::conf_dir}/fastcgi_params",
   $fastcgi_script               = undef,
   $uwsgi                        = undef,
   $uwsgi_params                 = "${nginx::config::conf_dir}/uwsgi_params",
@@ -298,9 +298,9 @@ define nginx::resource::vhost (
   $string_mappings              = {},
   $geo_mappings                 = {},
   $gzip_types                   = undef,
-  $owner                        = $::nginx::config::global_owner,
-  $group                        = $::nginx::config::global_group,
-  $mode                         = $::nginx::config::global_mode,
+  $owner                        = $::nginx::global_owner,
+  $group                        = $::nginx::global_group,
+  $mode                         = $::nginx::global_mode,
   $maintenance                  = false,
   $maintenance_value            = 'return 503',
   $error_pages                  = undef,
@@ -569,11 +569,11 @@ define nginx::resource::vhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  if $::nginx::config::confd_only {
-    $vhost_dir = "${::nginx::config::conf_dir}/conf.d"
+  if $::nginx::confd_only {
+    $vhost_dir = "${::nginx::conf_dir}/conf.d"
   } else {
-    $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
-    $vhost_enable_dir = "${::nginx::config::conf_dir}/sites-enabled"
+    $vhost_dir = "${::nginx::conf_dir}/sites-available"
+    $vhost_enable_dir = "${::nginx::conf_dir}/sites-enabled"
     $vhost_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',
@@ -721,7 +721,7 @@ define nginx::resource::vhost (
     }
   }
 
-  unless $::nginx::config::confd_only {
+  unless $::nginx::confd_only {
     file{ "${name_sanitized}.conf symlink":
       ensure  => $vhost_symlink_ensure,
       path    => "${vhost_enable_dir}/${name_sanitized}.conf",

@@ -19,7 +19,7 @@ describe 'nginx::resource::map' do
 
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 

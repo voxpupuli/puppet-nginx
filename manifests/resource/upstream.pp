@@ -65,7 +65,7 @@ define nginx::resource::upstream (
     validate_hash($upstream_cfg_prepend)
   }
 
-  $root_group = $::nginx::config::root_group
+  $root_group = $::nginx::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -85,7 +85,7 @@ define nginx::resource::upstream (
     mode  => '0644',
   }
 
-  concat { "${conf_dir}/${name}-upstream.conf":
+  concat { "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
     ensure  => $ensure_real,
     notify  => Class['::nginx::service'],
     require => File[$conf_dir],
@@ -93,7 +93,7 @@ define nginx::resource::upstream (
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
-    target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '10',
     content => template('nginx/upstream/upstream_header.erb'),
   }
@@ -101,7 +101,7 @@ define nginx::resource::upstream (
   if $members != undef {
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
-      target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+      target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
       order   => '50',
       content => template('nginx/upstream/upstream_members.erb'),
     }
@@ -115,7 +115,7 @@ define nginx::resource::upstream (
   }
 
   concat::fragment { "${name}_upstream_footer":
-    target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '90',
     content => template('nginx/upstream/upstream_footer.erb'),
   }

@@ -56,14 +56,14 @@ define nginx::resource::streamhost (
   $ipv6_listen_port             = 80,
   $ipv6_listen_options          = 'default ipv6only=on',
   $proxy                        = undef,
-  $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
+  $proxy_read_timeout           = $::nginx::proxy_read_timeout,
+  $proxy_connect_timeout        = $::nginx::proxy_connect_timeout,
   $resolver                     = [],
   $raw_prepend                  = undef,
   $raw_append                   = undef,
-  $owner                        = $::nginx::config::global_owner,
-  $group                        = $::nginx::config::global_group,
-  $mode                         = $::nginx::config::global_mode,
+  $owner                        = $::nginx::global_owner,
+  $group                        = $::nginx::global_group,
+  $mode                         = $::nginx::global_mode,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -102,11 +102,11 @@ define nginx::resource::streamhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  if $::nginx::config::confd_only {
-    $streamhost_dir = "${::nginx::config::conf_dir}/conf.stream.d"
+  if $::nginx::confd_only {
+    $streamhost_dir = "${::nginx::conf_dir}/conf.stream.d"
   } else {
-    $streamhost_dir = "${::nginx::config::conf_dir}/streams-available"
-    $streamhost_enable_dir = "${::nginx::config::conf_dir}/streams-enabled"
+    $streamhost_dir = "${::nginx::conf_dir}/streams-available"
+    $streamhost_enable_dir = "${::nginx::conf_dir}/streams-enabled"
     $streamhost_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',
@@ -147,7 +147,7 @@ define nginx::resource::streamhost (
     order   => '001',
   }
 
-  unless $::nginx::config::confd_only {
+  unless $::nginx::confd_only {
     file{ "${name_sanitized}.conf symlink":
       ensure  => $streamhost_symlink_ensure,
       path    => "${streamhost_enable_dir}/${name_sanitized}.conf",

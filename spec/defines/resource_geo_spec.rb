@@ -5,6 +5,12 @@ describe 'nginx::resource::geo' do
     'client_network'
   end
 
+  let :pre_condition do
+    [
+      'include ::nginx'
+    ]
+  end
+
   let :default_params do
     {
       default: 'extra',
@@ -15,12 +21,6 @@ describe 'nginx::resource::geo' do
       },
       proxies: ['1.2.3.4', '4.3.2.1']
     }
-  end
-
-  let :pre_condition do
-    [
-      'include ::nginx::config'
-    ]
   end
 
   describe 'os-independent items' do

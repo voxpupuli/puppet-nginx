@@ -54,8 +54,8 @@ define nginx::resource::mailhost (
   $ipv6_listen_options = 'default ipv6only=on',
   $ssl                 = false,
   $ssl_cert            = undef,
-  $ssl_protocols       = $::nginx::config::ssl_protocols,
-  $ssl_ciphers         = $::nginx::config::ssl_ciphers,
+  $ssl_protocols       = $::nginx::ssl_protocols,
+  $ssl_ciphers         = $::nginx::ssl_ciphers,
   $ssl_key             = undef,
   $ssl_port            = undef,
   $starttls            = 'off',
@@ -66,7 +66,7 @@ define nginx::resource::mailhost (
   $server_name         = [$name]
 ) {
 
-  $root_group = $::nginx::config::root_group
+  $root_group = $::nginx::root_group
 
   File {
     owner => 'root',
@@ -130,7 +130,7 @@ define nginx::resource::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_dir  = "${::nginx::config::conf_dir}/conf.mail.d"
+  $config_dir  = "${::nginx::conf_dir}/conf.mail.d"
   $config_file = "${config_dir}/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled

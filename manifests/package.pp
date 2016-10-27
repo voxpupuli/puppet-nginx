@@ -19,7 +19,9 @@ class nginx::package(
   $package_ensure = 'present',
   $package_flavor = undef,
   $manage_repo    = $::nginx::params::manage_repo,
-) inherits ::nginx::params {
+) {
+
+  assert_private()
 
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
