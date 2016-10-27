@@ -1,9 +1,17 @@
-# NGINX Module
+# NGINX module for Puppet
 
-This module got migrated from James Fryman <james@frymanet.com> and Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-nginx.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-nginx)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-nginx/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-nginx)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
 
+This module got migrated from James Fryman <james@frymanet.com> and
+Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
 
 ## INSTALLING OR UPGRADING
+
 ** Please note **: This module is currently undergoing some structural
 maintenance. Please take a look at [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md)
 before upgrading or installing Version 0.1.0 or greater.
@@ -11,7 +19,6 @@ before upgrading or installing Version 0.1.0 or greater.
 [![Puppet
 Forge](http://img.shields.io/puppetforge/v/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
 [![Build Status](https://travis-ci.org/voxpupuli/puppet-nginx.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-nginx)
-
 
 This module manages NGINX configuration.
 
@@ -24,8 +31,7 @@ This module manages NGINX configuration.
 ### Additional Documentation
 
 * [A Quickstart Guide to the NGINX Puppet Module][quickstart]
-[quickstart]: https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md
-
+  [quickstart]: <https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md>
 
 ### Install and bootstrap an NGINX instance
 
@@ -88,26 +94,46 @@ nginx::resource::mailhost { 'domain1.example':
 
 ## SSL configuration
 
-By default, creating a vhost resource will only create a HTTP vhost. To also create a HTTPS (SSL-enabled) vhost, set `ssl => true` on the vhost. You will have a HTTP server listening on `listen_port` (port `80` by default) and a HTTPS server listening on `ssl_port` (port `443` by default). Both vhosts will have the same `server_name` and a similar configuration.
+By default, creating a vhost resource will only create a HTTP vhost. To also
+create a HTTPS (SSL-enabled) vhost, set `ssl => true` on the vhost. You will
+have a HTTP server listening on `listen_port` (port `80` by default) and a HTTPS
+server listening on `ssl_port` (port `443` by default). Both vhosts will have
+the same `server_name` and a similar configuration.
 
-To create only a HTTPS vhost, set `ssl => true` and also set `listen_port` to the same value as `ssl_port`. Setting these to the same value disables the HTTP vhost. The resulting vhost will be listening on `ssl_port`.
+To create only a HTTPS vhost, set `ssl => true` and also set `listen_port` to the
+same value as `ssl_port`. Setting these to the same value disables the HTTP vhost.
+The resulting vhost will be listening on `ssl_port`.
 
 ### Locations
 
-Locations require specific settings depending on whether they should be included in the HTTP, HTTPS or both vhosts.
+Locations require specific settings depending on whether they should be included
+in the HTTP, HTTPS or both vhosts.
 
 #### HTTP only vhost (default)
-If you only have a HTTP vhost (i.e. `ssl => false` on the vhost) make sure you don't set `ssl => true` on any location you associate with the vhost.
+
+If you only have a HTTP vhost (i.e. `ssl => false` on the vhost) make sure you
+don't set `ssl => true` on any location you associate with the vhost.
 
 #### HTTP and HTTPS vhost
-If you set `ssl => true` and also set `listen_port` and `ssl_port` to different values on the vhost you will need to be specific with the location settings since you will have a HTTP vhost listening on `listen_port` and a HTTPS vhost listening on `ssl_port`:
 
-* To add a location to only the HTTP server, set `ssl => false` on the location (this is the default).
-* To add a location to both the HTTP and HTTPS server, set `ssl => true` on the location, and ensure `ssl_only => false` (which is the default value for `ssl_only`).
-* To add a location only to the HTTPS server, set both `ssl => true` and `ssl_only => true` on the location.
+If you set `ssl => true` and also set `listen_port` and `ssl_port` to different
+values on the vhost you will need to be specific with the location settings since
+you will have a HTTP vhost listening on `listen_port` and a HTTPS vhost listening
+on `ssl_port`:
+
+* To add a location to only the HTTP server, set `ssl => false` on the location
+  (this is the default).
+* To add a location to both the HTTP and HTTPS server, set `ssl => true` on the
+  location, and ensure `ssl_only => false` (which is the default value for `ssl_only`).
+* To add a location only to the HTTPS server, set both `ssl => true`
+  and `ssl_only => true` on the location.
 
 #### HTTPS only vhost
-If you have set `ssl => true` and also set `listen_port` and `ssl_port` to the same value on the vhost, you will have a single HTTPS vhost listening on `ssl_port`. To add a location to this vhost set `ssl => true` and `ssl_only => true` on the location.
+
+If you have set `ssl => true` and also set `listen_port` and `ssl_port` to the
+same value on the vhost, you will have a single HTTPS vhost listening on
+`ssl_port`. To add a location to this vhost set `ssl => true` and
+`ssl_only => true` on the location.
 
 ## Hiera Support
 
@@ -146,7 +172,10 @@ nginx::nginx_mailhosts:
 
 ## Nginx with precompiled Passenger
 
-Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and Passenger packages from the Phusion repo. See additional notes in [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md)
+Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and
+Passenger packages from the Phusion repo. See additional notes in
+[https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md)
+
 ```puppet
 class { 'nginx':
   package_source  => 'passenger',
@@ -170,8 +199,8 @@ class { 'nginx':
 }
 ```
 
-Package source `passenger` will add [Phusion Passenger repository](https://oss-binaries.phusionpassenger.com/apt/passenger) to APT sources.
-For each virtual host you should specify which ruby should be used.
+Package source `passenger` will add [Phusion Passenger repository](https://oss-binaries.phusionpassenger.com/apt/passenger)
+to APT sources. For each virtual host you should specify which ruby should be used.
 
 ```puppet
 nginx::resource::vhost { 'www.puppetlabs.com':
