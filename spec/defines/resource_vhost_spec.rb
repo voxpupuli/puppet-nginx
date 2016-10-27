@@ -953,7 +953,7 @@ describe 'nginx::resource::vhost' do
           default_params.merge(uwsgi: 'uwsgi_upstream')
         end
 
-        it { should contain_file('/etc/nginx/uwsgi_params').with_mode('0660') }
+        it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0660') }
       end
 
       context 'when listen_port == ssl_port' do
