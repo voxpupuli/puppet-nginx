@@ -1,13 +1,12 @@
 require 'beaker-rspec'
-require 'beaker/puppet_install_helper'
-
-run_puppet_install_helper
 
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
   c.formatter = :documentation
+
+  install_puppet_agent_on(hosts, options)
 
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
