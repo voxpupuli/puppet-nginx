@@ -31,6 +31,7 @@ class nginx (
   $client_body_temp_path          = undef,
   $client_max_body_size           = undef,
   $events_use                     = undef,
+  $daemon                         = undef,
   $fastcgi_cache_inactive         = undef,
   $fastcgi_cache_key              = undef,
   $fastcgi_cache_keys_zone        = undef,
@@ -304,6 +305,7 @@ class nginx (
       sites_available_owner          => $sites_available_owner,
       sites_available_group          => $sites_available_group,
       sites_available_mode           => $sites_available_mode,
+      daemon                         => $daemon,
     }
   }
 

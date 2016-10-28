@@ -1,4 +1,7 @@
 # MANAGED BY PUPPET
+<% if @daemon -%>
+daemon <%= @daemon %>;
+<% end -%>
 <% if @super_user -%>
 user <%= @daemon_user %>;
 <% end -%>
