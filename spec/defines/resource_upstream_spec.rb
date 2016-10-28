@@ -87,6 +87,29 @@ describe 'nginx::resource::upstream' do
             '  server     test1  fail_timeout=10s;',
             '  server     test2  fail_timeout=10s;'
           ]
+        },
+        {
+          title: 'should contain ordered appended directives',
+          attr: 'upstream_cfg_append',
+          fragment: 'footer',
+          value: {
+            'test3' => 'test value 3',
+            'test6' => { 'subkey1' => %w(subvalue1 subvalue2) },
+            'test1' => 'test value 1',
+            'test2' => 'test value 2',
+            'test5' => { 'subkey1' => 'subvalue1' },
+            'test4' => ['test value 1', 'test value 2']
+          },
+          match: [
+            '  test1 test value 1;',
+            '  test2 test value 2;',
+            '  test3 test value 3;',
+            '  test4 test value 1;',
+            '  test4 test value 2;',
+            '  test5 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue2;'
+          ]
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
