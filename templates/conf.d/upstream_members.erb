@@ -1,2 +1,4 @@
-  <% @members.each do |i| %>
-  server     <%= i %>  fail_timeout=<%= @upstream_fail_timeout %><% if @upstream_max_fails -%> max_fails=<%=@upstream_max_fails %><% end %>;<% end %>
+<% @members.each do |key, value| %>
+  # <%= key %>
+server <%= value["member"] %>:<%= value["port"] %> fail_timeout=<%= @upstream_fail_timeout %><% if @upstream_max_fails -%> max_fails=<%=@upstream_max_fails %><% end %><% if value["backup"] -%> backup<% end %>;
+<% end %>
