@@ -2,40 +2,45 @@ class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {
-    'conf_dir'    => '/etc/nginx',
-    'daemon_user' => 'nginx',
-    'pid'         => '/var/run/nginx.pid',
-    'root_group'  => 'root',
-    'log_dir'     => '/var/log/nginx',
-    'run_dir'     => '/var/nginx',
+    'conf_dir'     => '/etc/nginx',
+    'daemon_user'  => 'nginx',
+    'daemon_group' => 'nginx',
+    'pid'          => '/var/run/nginx.pid',
+    'root_group'   => 'root',
+    'log_dir'      => '/var/log/nginx',
+    'run_dir'      => '/var/nginx',
     'package_name' => 'nginx',
     'manage_repo'  => false,
   }
   case $::osfamily {
     'ArchLinux': {
       $_module_os_overrides = {
-        'pid'         => false,
-        'daemon_user' => 'http',
+        'pid'          => false,
+        'daemon_user'  => 'http',
+        'daemon_group' => 'http',
       }
     }
     'Debian': {
       if ($::operatingsystem == 'ubuntu' and $::lsbdistcodename in ['lucid', 'precise', 'trusty'])
       or ($::operatingsystem == 'debian' and $::operatingsystemmajrelease in ['6', '7', '8']) {
         $_module_os_overrides = {
-          'manage_repo' => true,
-          'daemon_user' => 'www-data',
+          'manage_repo'  => true,
+          'daemon_user'  => 'www-data',
+          'daemon_group' => 'www-data',
         }
       } else {
         $_module_os_overrides = {
-          'daemon_user' => 'www-data',
+          'daemon_user'  => 'www-data',
+          'daemon_group' => 'www-data',
         }
       }
     }
     'FreeBSD': {
       $_module_os_overrides = {
-        'conf_dir'    => '/usr/local/etc/nginx',
-        'daemon_user' => 'www',
-        'root_group'  => 'wheel',
+        'conf_dir'     => '/usr/local/etc/nginx',
+        'daemon_user'  => 'www',
+        'daemon_group' => 'www',
+        'root_group'   => 'wheel',
       }
     }
     'Gentoo': {
@@ -55,15 +60,17 @@ class nginx::params {
     'Solaris': {
       $_module_os_overrides = {
         'daemon_user'  => 'webservd',
+        'daemon_group' => 'webservd',
         'package_name' => undef,
       }
     }
     'OpenBSD': {
       $_module_os_overrides = {
-        'daemon_user' => 'www',
-        'root_group'  => 'wheel',
-        'log_dir'     => '/var/www/logs',
-        'run_dir'     => '/var/www',
+        'daemon_user'  => 'www',
+        'daemon_group' => 'www',
+        'root_group'   => 'wheel',
+        'log_dir'      => '/var/www/logs',
+        'run_dir'      => '/var/www',
       }
     }
     default: {
@@ -71,8 +78,9 @@ class nginx::params {
       case $::operatingsystem {
         'SmartOS': {
           $_module_os_overrides = {
-            'conf_dir'    => '/usr/local/etc/nginx',
-            'daemon_user' => 'www',
+            'conf_dir'     => '/usr/local/etc/nginx',
+            'daemon_user'  => 'www',
+            'daemon_group' => 'www',
           }
         }
         default: { $_module_os_overrides = {} }
@@ -92,6 +100,8 @@ class nginx::params {
 
   $client_body_temp_path = "${run_dir}/client_body_temp"
   $daemon_user           = $_module_parameters['daemon_user']
+  $daemon_group          = $_module_parameters['daemon_group']
+  $set_daemon_group      = false
   $global_owner          = 'root'
   $global_group          = $_module_parameters['root_group']
   $global_mode           = '0644'
