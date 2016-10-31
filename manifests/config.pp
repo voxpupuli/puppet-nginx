@@ -50,6 +50,7 @@ class nginx::config(
   $client_body_buffer_size        = '128k',
   $client_max_body_size           = '10m',
   $client_body_timeout            = '60',
+  $daemon                         = undef,
   $send_timeout                   = '60',
   $lingering_timeout              = '5',
   $events_use                     = false,
@@ -275,6 +276,10 @@ class nginx::config(
   file {$client_body_temp_path:
     ensure => directory,
     owner  => $daemon_user,
+  }
+
+  if ($daemon) {
+    validate_re($daemon, '^(on|off)$')
   }
 
   file {$proxy_temp_path:

@@ -108,6 +108,24 @@ describe 'nginx::config' do
           match: 'user test-user;'
         },
         {
+          title: 'should not set daemon',
+          attr: 'daemon',
+          value: :undef,
+          notmatch: %r{^\s*daemon\s+}
+        },
+        {
+          title: 'should set daemon on',
+          attr: 'daemon',
+          value: 'on',
+          match: %r{^daemon\s+on;$}
+        },
+        {
+          title: 'should set daemon off',
+          attr: 'daemon',
+          value: 'off',
+          match: %r{^daemon\s+off;$}
+        },
+        {
           title: 'should set worker_processes',
           attr: 'worker_processes',
           value: '4',
