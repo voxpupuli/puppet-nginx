@@ -632,6 +632,18 @@ describe 'nginx::resource::location' do
     describe 'vhost_location_proxy template content' do
       [
         {
+          title: 'should set proxy_redirect',
+          attr: 'proxy_redirect',
+          value: 'value',
+          match: %r{^\s+proxy_redirect\s+value;}
+        },
+        {
+          title: 'should not set proxy_redirect',
+          attr: 'proxy_redirect',
+          value: :undef,
+          notmatch: %r{proxy_redirect\b}
+        },
+        {
           title: 'should set proxy_cache',
           attr: 'proxy_cache',
           value: 'value',

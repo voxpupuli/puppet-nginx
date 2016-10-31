@@ -95,7 +95,7 @@ class nginx::config(
   $proxy_headers_hash_bucket_size = '64',
   $proxy_http_version             = undef,
   $proxy_read_timeout             = '90',
-  $proxy_redirect                 = 'off',
+  $proxy_redirect                 = undef,
   $proxy_send_timeout             = '90',
   $proxy_set_header               = [
     'Host $host',
