@@ -41,6 +41,7 @@
 #  }
 define nginx::resource::upstream (
   $members = undef,
+  $members_tag = undef,
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
   $upstream_fail_timeout = '10s',
@@ -97,9 +98,11 @@ define nginx::resource::upstream (
       content => template('nginx/conf.d/upstream_members.erb'),
     }
   } else {
-    class { '::nginx::resource::upstream::collect':
-      # Collect exported members
-      upstream_name => $name,
+    # Collect exported members:
+    if $members_tag {
+      ::Nginx::Resource::Upstream::Member <<| upstream == $name and tag == $members_tag |>>
+    } else {
+      ::Nginx::Resource::Upstream::Member <<| upstream == $name |>>
     }
   }
 
