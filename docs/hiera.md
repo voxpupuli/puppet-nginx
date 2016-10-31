@@ -1,7 +1,5 @@
 # Usage of Hiera
 
-Passing through parameters from the main Class[nginx] and then having them chain down to Class[nginx::config] creates a ton of unnecessary spaghetti code that makes the module more complex to understand and difficult to extend.
-
 Going forward, it is recommended to declare your changes in Hiera based on the system(s) role and location in your environment. In Puppet < 3.x, this is accomplished with Hiera bindings.
 
 ## Example Conversion
@@ -20,8 +18,6 @@ Moving this to hiera is simple. First, identify the appropriate hiera level to a
 ---
   nginx::config::gzip: false
 ```
-
-Magically, it's all done! Work through these until the deprecation notices go away.
 
 ## I (cannot/do not want to) use Hiera
 
@@ -53,9 +49,4 @@ class { 'nginx' :
 ```
 
 The order in which this commands are parsed is important, since nginx looks for nginx::config via a defined(nginx::config) statement, which as of puppet 3.x is still parse-order dependent.
-
-# Why again are you doing this?
-
-Well, the fact of the matter, the old Package/Config/Service pattern has served us well, but times are a-changin. Many users are starting to manage their packages and service seperately outside of the traditional pattern (Docker, anyone?). This means that in order to stay true to the goals of Configuration Management, it is becoming necessary to make less assumptions about how an organizations graph is composed, and allow the end-user additional flexibility. This is requring a re-think about how to best consume this module.
-
 

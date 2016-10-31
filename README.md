@@ -12,9 +12,8 @@ Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
 
 ## INSTALLING OR UPGRADING
 
-**Please note**: This module is currently undergoing some structural
-maintenance. Please take a look at [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/hiera.md)
-before upgrading or installing Version 0.1.0 or greater.
+**Please note**: This module is undergoing some structural maintenance.
+You may experience breaking changes between minor versions.
 
 This module manages NGINX configuration.
 
