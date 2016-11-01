@@ -46,6 +46,7 @@
 #   [*resolver*]            - Array: Configures name servers used to resolve
 #     names of upstream servers into addresses.
 #   [*fastcgi*]             - location of fastcgi (host:port)
+#   [*fastcgi_param*]       - Set additional custom fastcgi_params
 #   [*fastcgi_params*]      - optional alternative fastcgi_params file to use
 #   [*fastcgi_script*]      - optional SCRIPT_FILE parameter
 #   [*uwsgi_read_timeout*]  - optional value for uwsgi_read_timeout
@@ -248,6 +249,7 @@ define nginx::resource::vhost (
   $proxy_buffering              = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
+  $fastcgi_param                = undef,
   $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",
   $fastcgi_script               = undef,
   $uwsgi                        = undef,
@@ -645,6 +647,7 @@ define nginx::resource::vhost (
       proxy_set_body              => $proxy_set_body,
       proxy_buffering             => $proxy_buffering,
       fastcgi                     => $fastcgi,
+      fastcgi_param               => $fastcgi_param,
       fastcgi_params              => $fastcgi_params,
       fastcgi_script              => $fastcgi_script,
       uwsgi                       => $uwsgi,

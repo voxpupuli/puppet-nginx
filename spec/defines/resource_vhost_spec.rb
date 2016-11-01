@@ -948,6 +948,14 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
+      context 'when fastcgi_param => {key => value}' do
+        let :params do
+          default_params.merge(fastcgi_param: { 'key' => 'value' })
+        end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_param('key' => 'value') }
+      end
+
       context 'when uwsgi => "uwsgi_upstream"' do
         let :params do
           default_params.merge(uwsgi: 'uwsgi_upstream')
