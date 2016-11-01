@@ -6,6 +6,7 @@
 #   [*members*]               - Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
 #                               If omitted, individual members should be defined with nginx::resource::upstream::member
 #   [*ensure*]                - Enables or disables the specified location (present|absent)
+#   [*upstream_cfg_append*]   - Hash of custom directives to put after other directives in upstream
 #   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
 #   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
 #   [*upstream_max_fails*]    - Set the max_fails for the upstream. Default is to use nginx default value which is 1.
@@ -40,13 +41,14 @@
 #    upstream_cfg_prepend => $my_config,
 #  }
 define nginx::resource::upstream (
-  $members = undef,
-  $members_tag = undef,
-  $ensure = 'present',
-  $upstream_cfg_prepend = undef,
+  $members               = undef,
+  $members_tag           = undef,
+  $ensure                = 'present',
+  $upstream_cfg_append   = undef,
+  $upstream_cfg_prepend  = undef,
   $upstream_fail_timeout = '10s',
-  $upstream_max_fails = undef,
-  $upstream_context = 'http',
+  $upstream_max_fails    = undef,
+  $upstream_context      = 'http',
 ) {
 
   if $members != undef {
@@ -56,6 +58,9 @@ define nginx::resource::upstream (
     "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
   validate_re($upstream_context, '^(http|stream)$',
       "${upstream_context} is not supported for upstream_context. Allowed values are 'http' and 'stream'.")
+  if ($upstream_cfg_append != undef) {
+    validate_hash($upstream_cfg_append)
+  }
   if ($upstream_cfg_prepend != undef) {
     validate_hash($upstream_cfg_prepend)
   }
@@ -87,7 +92,7 @@ define nginx::resource::upstream (
   concat::fragment { "${name}_upstream_header":
     target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '10',
-    content => template('nginx/conf.d/upstream_header.erb'),
+    content => template('nginx/upstream/upstream_header.erb'),
   }
 
   if $members != undef {
@@ -95,7 +100,7 @@ define nginx::resource::upstream (
     concat::fragment { "${name}_upstream_members":
       target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
       order   => '50',
-      content => template('nginx/conf.d/upstream_members.erb'),
+      content => template('nginx/upstream/upstream_members.erb'),
     }
   } else {
     # Collect exported members:
@@ -109,6 +114,6 @@ define nginx::resource::upstream (
   concat::fragment { "${name}_upstream_footer":
     target  => "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '90',
-    content => "}\n",
+    content => template('nginx/upstream/upstream_footer.erb'),
   }
 }
