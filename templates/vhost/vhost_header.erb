@@ -134,12 +134,10 @@ server {
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
-<% if @rewrite_to_https -%>
-  if ($ssl_protocol = "") {
-       return 301 https://$host<% if @ssl_port.to_i != 443 %>:<%= @ssl_port %><% end %>$request_uri;
-  }
+<% if @ssl_redirect -%>
+  return 301 https://$host<% if @_ssl_redirect_port.to_i != 443 %>:<%= @_ssl_redirect_port %><% end %>$request_uri;
 <% end -%>
-<% if @index_files.count > 0 -%>
+<% if @index_files.count > 0 and not @ssl_only -%>
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 
 <% end -%>
