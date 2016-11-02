@@ -77,15 +77,18 @@ define nginx::resource::upstream (
     default  => 'conf.d',
   }
 
+  $conf_dir = "${::nginx::config::conf_dir}/${conf_dir_real}"
+
   Concat {
     owner => 'root',
     group => $root_group,
     mode  => '0644',
   }
 
-  concat { "${::nginx::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
-    ensure => $ensure_real,
-    notify => Class['::nginx::service'],
+  concat { "${conf_dir}/${name}-upstream.conf":
+    ensure  => $ensure_real,
+    notify  => Class['::nginx::service'],
+    require => File[$conf_dir],
   }
 
   # Uses: $name, $upstream_cfg_prepend

@@ -27,6 +27,7 @@ describe 'nginx::resource::geo' do
     describe 'basic assumptions' do
       let(:params) { default_params }
 
+      it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").that_requires('File[/etc/nginx/conf.d]') }
       it do
         is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
           'owner' => 'root',

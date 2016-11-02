@@ -10,7 +10,7 @@
 #   [*mappings*]   - Hash of map lookup keys and resultant values
 #   [*hostnames*]  - Indicates that source values can be hostnames with a
 #                    prefix or suffix mask.
-
+#
 # Actions:
 #
 # Requires:
@@ -81,6 +81,7 @@ define nginx::resource::map (
   if ($default != undef) { validate_string($default) }
 
   $root_group = $::nginx::config::root_group
+  $conf_dir   = "${::nginx::config::conf_dir}/conf.d"
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -93,9 +94,10 @@ define nginx::resource::map (
     mode  => '0644',
   }
 
-  file { "${::nginx::config::conf_dir}/conf.d/${name}-map.conf":
+  file { "${conf_dir}/${name}-map.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
     notify  => Class['::nginx::service'],
+    require => File[$conf_dir],
   }
 }
