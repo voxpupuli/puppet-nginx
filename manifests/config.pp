@@ -24,6 +24,8 @@ class nginx::config(
   $global_group                   = $::nginx::params::global_group,
   $global_mode                    = $::nginx::params::global_mode,
   $log_dir                        = $::nginx::params::log_dir,
+  $log_group                      = $::nginx::params::log_group,
+  $log_mode                       = '0750',
   $http_access_log                = "${log_dir}/${::nginx::params::http_access_log_file}",
   $http_format_log                = undef,
   $nginx_error_log                = "${log_dir}/${::nginx::params::nginx_error_log_file}",
@@ -271,6 +273,9 @@ class nginx::config(
 
   file { $log_dir:
     ensure => directory,
+    mode   => $log_mode,
+    owner  => $daemon_user,
+    group  => $log_group,
   }
 
   file {$client_body_temp_path:

@@ -88,8 +88,9 @@ describe 'nginx::config' do
     it do
       is_expected.to contain_file('/var/log/nginx').with(
         ensure: 'directory',
-        group: 'root',
-        mode: '0644'
+        owner: 'www-data',
+        group: 'adm',
+        mode: '0750'
       )
     end
 
@@ -841,6 +842,25 @@ describe 'nginx::config' do
           %r{error_log  /foo/bar/error.log error;}
         )
       end
+    end
+
+    context 'when log_mode is non-default' do
+      let(:params) { { log_mode: '0771' } }
+
+      it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
+    end
+  end
+
+  context 'With RedHat facts' do
+    let(:facts) { { operatingsystem: 'redhat', osfamily: 'RedHat', operatingsystemmajrelease: '6' } }
+
+    it do
+      is_expected.to contain_file('/var/log/nginx').with(
+        ensure: 'directory',
+        owner: 'nginx',
+        group: 'nginx',
+        mode: '0750'
+      )
     end
   end
 end
