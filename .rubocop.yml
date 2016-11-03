@@ -57,7 +57,7 @@ Style/AndOr:
 Style/RedundantSelf:
   Enabled: True
 
-Metric/BlockLength:
+Metrics/BlockLength:
   Enabled: False
 
 # Method length is not necessarily an indicator of code quality
