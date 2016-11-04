@@ -27,7 +27,7 @@ describe 'nginx::resource::upstream' do
     describe 'basic assumptions' do
       let(:params) { default_params }
 
-      it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf") }
+      it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf").that_requires('File[/etc/nginx/conf.d]') }
       it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(%r{upstream #{title}}) }
 
       it do
