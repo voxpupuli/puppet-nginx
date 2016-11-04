@@ -19,7 +19,9 @@ class nginx::service(
   $service_name    = $::nginx::service_name,
   $service_flags   = $::nginx::service_flags,
   $service_manage  = $::nginx::service_manage,
-) inherits nginx {
+) {
+
+  assert_private()
 
   $service_enable = $service_ensure ? {
     'running' => true,

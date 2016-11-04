@@ -13,13 +13,7 @@ describe 'nginx::resource::upstream' do
 
   let :pre_condition do
     [
-      'include ::nginx::config'
-    ]
-  end
-
-  let :pre_condition do
-    [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 

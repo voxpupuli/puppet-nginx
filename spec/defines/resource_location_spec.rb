@@ -7,7 +7,7 @@ describe 'nginx::resource::location' do
   end
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 

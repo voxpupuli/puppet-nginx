@@ -162,15 +162,15 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
-  $proxy_redirect       = $::nginx::config::proxy_redirect,
-  $proxy_read_timeout   = $::nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout = $::nginx::config::proxy_connect_timeout,
-  $proxy_set_header     = $::nginx::config::proxy_set_header,
-  $proxy_hide_header    = $::nginx::config::proxy_hide_header,
-  $proxy_pass_header    = $::nginx::config::proxy_pass_header,
+  $proxy_redirect       = $::nginx::proxy_redirect,
+  $proxy_read_timeout   = $::nginx::proxy_read_timeout,
+  $proxy_connect_timeout = $::nginx::proxy_connect_timeout,
+  $proxy_set_header     = $::nginx::proxy_set_header,
+  $proxy_hide_header    = $::nginx::proxy_hide_header,
+  $proxy_pass_header    = $::nginx::proxy_pass_header,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
-  $fastcgi_params       = "${::nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_params       = "${::nginx::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
   $uwsgi                = undef,
@@ -211,7 +211,7 @@ define nginx::resource::location (
   $expires              = undef,
 ) {
 
-  $root_group = $::nginx::config::root_group
+  $root_group = $::nginx::root_group
 
   File {
     owner  => 'root',
@@ -387,10 +387,10 @@ define nginx::resource::location (
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  if $::nginx::config::confd_only {
-    $vhost_dir = "${::nginx::config::conf_dir}/conf.d"
+  if $::nginx::confd_only {
+    $vhost_dir = "${::nginx::conf_dir}/conf.d"
   } else {
-    $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
+    $vhost_dir = "${::nginx::conf_dir}/sites-available"
   }
 
   $config_file = "${vhost_dir}/${vhost_sanitized}.conf"
