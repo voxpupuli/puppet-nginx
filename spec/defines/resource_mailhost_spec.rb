@@ -17,7 +17,7 @@ describe 'nginx::resource::mailhost' do
       it { is_expected.to contain_class('nginx::config') }
       it do
         is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with('owner' => 'root',
-        'group' => 'root',
+                                                                                   'group' => 'root',
                                                                                    'mode'  => '0644')
       end
       it { is_expected.to contain_concat__fragment("#{title}-header") }
@@ -150,7 +150,7 @@ describe 'nginx::resource::mailhost' do
             '  test1 test value 1;',
             '  test2 test value 2a;',
             '  test2 test value 2b;',
-            '  test3 test value 3;',
+            '  test3 test value 3;'
           ]
         },
         {
@@ -161,7 +161,7 @@ describe 'nginx::resource::mailhost' do
             '  test1 test value 1;',
             '  test2 test value 2a;',
             '  test2 test value 2b;',
-            '  test3 test value 3;',
+            '  test3 test value 3;'
           ]
         }
       ].each do |param|
@@ -191,7 +191,7 @@ describe 'nginx::resource::mailhost' do
       end
     end
 
-    describe "mailhost template content for imap" do
+    describe 'mailhost template content for imap' do
       [
         {
           title: 'should set imap_auth',
@@ -210,15 +210,18 @@ describe 'nginx::resource::mailhost' do
           attr: 'imap_client_buffer',
           value: '8k',
           match: '  imap_client_buffer  8k;'
-        },
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let :default_params do {
-            listen_port: 25,
-            ipv6_enable: true,
-            protocol: 'imap',
-          } end
-          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+          let :default_params do
+            {
+              listen_port: 25,
+              ipv6_enable: true,
+              protocol: 'imap'
+            }
+          end
+
+          let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
@@ -235,7 +238,7 @@ describe 'nginx::resource::mailhost' do
       end
     end
 
-    describe "mailhost template content for pop3" do
+    describe 'mailhost template content for pop3' do
       [
         {
           title: 'should set pop3_auth',
@@ -246,17 +249,19 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set pop3_capabilities',
           attr: 'pop3_capabilities',
-          value: ['TOP', 'USER', 'UIDL'],
+          value: %w(TOP USER UIDL),
           match: '  pop3_capabilities  TOP USER UIDL;'
-        },
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let :default_params do {
-            listen_port: 25,
-            ipv6_enable: true,
-            protocol: 'pop3',
-          } end
-          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+          let :default_params do
+            {
+              listen_port: 25,
+              ipv6_enable: true,
+              protocol: 'pop3'
+            }
+          end
+          let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
@@ -273,7 +278,7 @@ describe 'nginx::resource::mailhost' do
       end
     end
 
-    describe "mailhost template content for smtp" do
+    describe 'mailhost template content for smtp' do
       [
         {
           title: 'should set smtp_auth',
@@ -284,17 +289,19 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set smtp_capabilities',
           attr: 'smtp_capabilities',
-          value: ['8BITMIME', 'PIPELINING', 'HELP'],
-          match: '  smtp_capabilities  8BITMIME PIPELINING HELP;',
-        },
+          value: %w(8BITMIME PIPELINING HELP),
+          match: '  smtp_capabilities  8BITMIME PIPELINING HELP;'
+        }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
-          let :default_params do {
-            listen_port: 25,
-            ipv6_enable: true,
-            protocol: 'smtp',
-          } end
-          let :params do default_params.merge({ param[:attr].to_sym => param[:value] }) end
+          let :default_params do
+            {
+              listen_port: 25,
+              ipv6_enable: true,
+              protocol: 'smtp'
+            }
+          end
+          let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it param[:title] do
@@ -311,7 +318,7 @@ describe 'nginx::resource::mailhost' do
       end
     end
 
-    describe "mailhost template content (SSL enabled)" do
+    describe 'mailhost template content (SSL enabled)' do
       [
         {
           title: 'should set starttls',
