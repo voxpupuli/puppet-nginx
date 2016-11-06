@@ -28,7 +28,7 @@
 #   [*ssl_protocols*]            - SSL protocols enabled. Defaults to nginx::config::ssl_protocols
 #   [*ssl_session_cache*]        - Sets the type and size of the session cache.
 #   [*ssl_session_ticket_key*]   - This directive specifies a file containing secret key used to encrypt and decrypt TLS session tickets.
-#   [*ssl_session_tickets*]      - Wheter to enable or disable session resumption through TLS session tickets.
+#   [*ssl_session_tickets*]      - Whether to enable or disable session resumption through TLS session tickets.
 #   [*ssl_session_timeout*]      - String: Specifies a time during which a client may reuse the session parameters stored in a cache.
 #                                  Defaults to 5m.
 #   [*ssl_trusted_cert*]         - String: Specifies a file with trusted CA certificates in the PEM format used to verify client
