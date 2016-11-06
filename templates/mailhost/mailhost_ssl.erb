@@ -35,12 +35,12 @@ server {
   listen                [<%= @ipv6_listen_ip %>]:<%= @ssl_port %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
-  <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) -%>
+<%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) -%>
 
   ssl                   on;
   starttls              off;
 
-  <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) -%>
+<%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) -%>
 <% if @mailhost_cfg_append -%>
   <%- @mailhost_cfg_append.sort_by{ |k,v| k}.each do |key,value| -%>
     <%- if value.is_a?(Hash) -%>

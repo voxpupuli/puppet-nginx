@@ -35,13 +35,13 @@ server {
   listen                [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
-  <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) %>
+<%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) -%>
 
   ssl                   off;
   starttls              <%= @starttls %>;
 
 <% if @starttls == 'on' || @starttls == 'only' %>
-  <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) %>
+<%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) -%>
 <%- end -%>
 <% if @mailhost_cfg_append -%>
   <%- @mailhost_cfg_append.sort_by{ |k,v| k}.each do |key,value| -%>
