@@ -4,7 +4,16 @@ include RspecPuppetFacts
 
 unless RUBY_VERSION =~ %r{^1.9}
   require 'coveralls'
-  Coveralls.wear!
+  require 'simplecov'
+  require 'simplecov-console'
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::Console,
+    Coveralls::SimpleCov::Formatter
+  ]
+  SimpleCov.start do
+    add_filter '/spec'
+  end
 end
 
 RSpec.configure do |c|

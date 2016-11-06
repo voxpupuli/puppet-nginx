@@ -4,6 +4,7 @@ describe 'nginx::resource::vhost' do
   let :title do
     'www.rspec.example.com'
   end
+
   let :default_params do
     {
       www_root: '/',
@@ -11,21 +12,23 @@ describe 'nginx::resource::vhost' do
       listen_unix_socket_enable: true
     }
   end
+
   let :facts do
     {
       ipaddress6: '::'
     }
   end
+
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let(:params) { default_params }
-      it { is_expected.to contain_class('nginx::config') }
+      it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with('owner' => 'root',
                                                                                        'group' => 'root',
@@ -46,7 +49,7 @@ describe 'nginx::resource::vhost' do
     describe 'with $confd_only enabled' do
       let(:pre_condition) { 'class { "nginx": confd_only => true }' }
       let(:params) { default_params }
-      it { is_expected.to contain_class('nginx::config') }
+      it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/conf.d/#{title}.conf").with('owner' => 'root',
                                                                               'group' => 'root',
@@ -864,6 +867,34 @@ describe 'nginx::resource::vhost' do
         it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
       end
 
+      context 'SSL cert and key are both set to fully qualified paths' do
+        let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt', ssl_key: '/tmp/foo.key:' } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate\s+/tmp/foo.crt}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate_key\s+/tmp/foo.key}) }
+      end
+
+      context 'SSL cert and key are both set to false' do
+        let(:params) { { ssl: true, ssl_cert: false, ssl_key: false } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate}) }
+        it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate_key}) }
+      end
+
+      context 'SSL cert without key' do
+        let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt' } }
+
+        msg = %r{ssl_key must be set to false or to a fully qualified path}
+        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, msg) }
+      end
+
+      context 'SSL key without cert' do
+        let(:params) { { ssl: true, ssl_key: '/tmp/foo.key' } }
+
+        msg = %r{ssl_cert must be set to false or to a fully qualified path}
+        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error, msg) }
+      end
+
       context 'when use_default_location => true' do
         let :params do
           default_params.merge(use_default_location: true)
@@ -920,12 +951,20 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
       end
 
+      context 'when fastcgi_param => {key => value}' do
+        let :params do
+          default_params.merge(fastcgi_param: { 'key' => 'value' })
+        end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_param('key' => 'value') }
+      end
+
       context 'when uwsgi => "uwsgi_upstream"' do
         let :params do
           default_params.merge(uwsgi: 'uwsgi_upstream')
         end
 
-        it { should contain_file('/etc/nginx/uwsgi_params').with_mode('0660') }
+        it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0660') }
       end
 
       context 'when listen_port == ssl_port' do
@@ -1082,12 +1121,21 @@ describe 'nginx::resource::vhost' do
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{passenger_env_var  test3 test value 3;}) }
       end
 
-      context 'when passenger_pre_start is set' do
+      context 'when passenger_pre_start is a string' do
         let :params do
           default_params.merge(passenger_pre_start: 'http://example.com:80/test/me')
         end
 
         it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:80/test/me;}) }
+      end
+
+      context 'when passenger_pre_start is an array' do
+        let :params do
+          default_params.merge(passenger_pre_start: ['http://example.com:80/test/me', 'http://example.com:3009/foo/bar'])
+        end
+
+        it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:80/test/me;}) }
+        it { is_expected.to contain_concat__fragment("#{title}-footer").with_content(%r{passenger_pre_start http://example.com:3009/foo/bar;}) }
       end
 
       context 'when vhost name is sanitized' do

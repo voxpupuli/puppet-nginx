@@ -1,7 +1,9 @@
     proxy_pass            <%= @proxy %>;
     proxy_read_timeout    <%= @proxy_read_timeout %>;
     proxy_connect_timeout <%= @proxy_connect_timeout %>;
+<% if @proxy_redirect -%>
     proxy_redirect        <%= @proxy_redirect %>;
+<% end -%>
 <% if @proxy_http_version -%>
     proxy_http_version    <%= @proxy_http_version %>;
 <% end -%>

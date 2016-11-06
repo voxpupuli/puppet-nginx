@@ -13,13 +13,7 @@ describe 'nginx::resource::upstream' do
 
   let :pre_condition do
     [
-      'include ::nginx::config'
-    ]
-  end
-
-  let :pre_condition do
-    [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 
@@ -27,7 +21,7 @@ describe 'nginx::resource::upstream' do
     describe 'basic assumptions' do
       let(:params) { default_params }
 
-      it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf") }
+      it { is_expected.to contain_concat("/etc/nginx/conf.d/#{title}-upstream.conf").that_requires('File[/etc/nginx/conf.d]') }
       it { is_expected.to contain_concat__fragment("#{title}_upstream_header").with_content(%r{upstream #{title}}) }
 
       it do
@@ -86,6 +80,29 @@ describe 'nginx::resource::upstream' do
             '  server     test3  fail_timeout=10s;',
             '  server     test1  fail_timeout=10s;',
             '  server     test2  fail_timeout=10s;'
+          ]
+        },
+        {
+          title: 'should contain ordered appended directives',
+          attr: 'upstream_cfg_append',
+          fragment: 'footer',
+          value: {
+            'test3' => 'test value 3',
+            'test6' => { 'subkey1' => %w(subvalue1 subvalue2) },
+            'test1' => 'test value 1',
+            'test2' => 'test value 2',
+            'test5' => { 'subkey1' => 'subvalue1' },
+            'test4' => ['test value 1', 'test value 2']
+          },
+          match: [
+            '  test1 test value 1;',
+            '  test2 test value 2;',
+            '  test3 test value 3;',
+            '  test4 test value 1;',
+            '  test4 test value 2;',
+            '  test5 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue1;',
+            '  test6 subkey1 subvalue2;'
           ]
         }
       ].each do |param|

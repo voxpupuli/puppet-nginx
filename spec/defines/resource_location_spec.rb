@@ -7,7 +7,7 @@ describe 'nginx::resource::location' do
   end
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 
@@ -512,7 +512,7 @@ describe 'nginx::resource::location' do
       context "when fastcgi_param is {'CUSTOM_PARAM' => 'value'}" do
         let(:params) { default_params.merge(fastcgi_param: { 'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2' }) }
         it 'sets fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{fastcgi_param\s+CUSTOM_PARAM\s+value;}).
             with_content(%r{fastcgi_param\s+CUSTOM_PARAM2\s+value2;})
         end
@@ -521,7 +521,7 @@ describe 'nginx::resource::location' do
       context 'when fastcgi_param is {\'HTTP_PROXY\' => ""}' do
         let(:params) { default_params.merge(fastcgi_param: { 'HTTP_PROXY' => '""' }) }
         it 'sets fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{fastcgi_param\s+HTTP_PROXY\s+"";})
         end
       end
@@ -529,12 +529,12 @@ describe 'nginx::resource::location' do
       context 'when fastcgi_param is not set' do
         let(:params) { default_params }
         it 'does not set fastcgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{fastcgi_param\s+CUSTOM_PARAM\s+.+?;}).
             without_content(%r{fastcgi_param\s+CUSTOM_PARAM2\s+.+?;})
         end
         it 'does not add comment # Enable custom fastcgi_params' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{# Enable custom fastcgi_params\s+})
         end
       end
@@ -606,7 +606,7 @@ describe 'nginx::resource::location' do
       context "when uwsgi_param is {'CUSTOM_PARAM' => 'value'}" do
         let(:params) { default_params.merge(uwsgi_param: { 'CUSTOM_PARAM' => 'value', 'CUSTOM_PARAM2' => 'value2' }) }
         it 'sets uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{uwsgi_param\s+CUSTOM_PARAM\s+value;}).
             with_content(%r{uwsgi_param\s+CUSTOM_PARAM2\s+value2;})
         end
@@ -615,7 +615,7 @@ describe 'nginx::resource::location' do
       context 'when uwsgi_param is {\'HTTP_PROXY\' => ""}' do
         let(:params) { default_params.merge(uwsgi_param: { 'HTTP_PROXY' => '""' }) }
         it 'sets uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             with_content(%r{uwsgi_param\s+HTTP_PROXY\s+"";})
         end
       end
@@ -623,7 +623,7 @@ describe 'nginx::resource::location' do
       context 'when uwsgi_param is not set' do
         let(:params) { default_params }
         it 'does not set uwsgi_param' do
-          should contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+          is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
             without_content(%r{^\s+uwsgi_param\s+})
         end
       end
@@ -631,6 +631,18 @@ describe 'nginx::resource::location' do
 
     describe 'vhost_location_proxy template content' do
       [
+        {
+          title: 'should set proxy_redirect',
+          attr: 'proxy_redirect',
+          value: 'value',
+          match: %r{^\s+proxy_redirect\s+value;}
+        },
+        {
+          title: 'should not set proxy_redirect',
+          attr: 'proxy_redirect',
+          value: :undef,
+          notmatch: %r{proxy_redirect\b}
+        },
         {
           title: 'should set proxy_cache',
           attr: 'proxy_cache',
@@ -808,7 +820,7 @@ describe 'nginx::resource::location' do
       context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
         let(:params) { { uwsgi: 'uwsgi_upstream', vhost: 'vhost1' } }
 
-        it { should contain_file('/etc/nginx/uwsgi_params') }
+        it { is_expected.to contain_file('/etc/nginx/uwsgi_params') }
       end
 
       context 'when ssl_only => true' do

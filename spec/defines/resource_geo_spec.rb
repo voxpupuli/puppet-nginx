@@ -5,6 +5,12 @@ describe 'nginx::resource::geo' do
     'client_network'
   end
 
+  let :pre_condition do
+    [
+      'include ::nginx'
+    ]
+  end
+
   let :default_params do
     {
       default: 'extra',
@@ -17,16 +23,11 @@ describe 'nginx::resource::geo' do
     }
   end
 
-  let :pre_condition do
-    [
-      'include ::nginx::config'
-    ]
-  end
-
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let(:params) { default_params }
 
+      it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").that_requires('File[/etc/nginx/conf.d]') }
       it do
         is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
           'owner' => 'root',

@@ -12,3 +12,4 @@ log/
 .idea/
 *.iml
 .*.sw
+.yardoc/

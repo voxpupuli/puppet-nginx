@@ -4,26 +4,29 @@ describe 'nginx::resource::streamhost' do
   let :title do
     'www.rspec.example.com'
   end
+
   let :default_params do
     {
       ipv6_enable: true
     }
   end
+
   let :facts do
     {
       ipaddress6: '::'
     }
   end
+
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let(:params) { default_params }
-      it { is_expected.to contain_class('nginx::config') }
+      it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/streams-available/#{title}.conf").with('owner' => 'root',
                                                                                          'group' => 'root',
@@ -39,7 +42,7 @@ describe 'nginx::resource::streamhost' do
     describe 'when confd_only true' do
       let(:pre_condition) { 'class { "nginx": confd_only => true }' }
       let(:params) { default_params }
-      it { is_expected.to contain_class('nginx::config') }
+      it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
                                                                                      'group' => 'root',
@@ -96,12 +99,6 @@ describe 'nginx::resource::streamhost' do
           attr: 'ipv6_listen_options',
           value: 'spdy',
           match: %r{\s+listen\s+\[::\]:80 spdy;}
-        },
-        {
-          title: 'should set servername(s)',
-          attr: 'server_name',
-          value: ['www.foo.com', 'foo.com'],
-          match: %r{\s+server_name\s+www.foo.com foo.com;}
         },
         {
           title: 'should contain raw_prepend directives',

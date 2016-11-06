@@ -19,7 +19,7 @@ describe 'nginx::resource::map' do
 
   let :pre_condition do
     [
-      'include ::nginx::config'
+      'include ::nginx'
     ]
   end
 
@@ -27,6 +27,7 @@ describe 'nginx::resource::map' do
     describe 'basic assumptions' do
       let(:params) { default_params }
 
+      it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").that_requires('File[/etc/nginx/conf.d]') }
       it do
         is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with(
           'owner' => 'root',

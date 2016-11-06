@@ -4,11 +4,8 @@
 # https://github.com/voxpupuli/modulesync_config
 HOSTS:
   ubuntu-1204-x64:
-    default_apply_opts:
-      order: random
-      strict_variables:
     platform: ubuntu-12.04-amd64
-    hypervisor : docker
+    hypervisor: docker
     image: ubuntu:12.04
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
@@ -16,7 +13,7 @@ HOSTS:
       - 'apt-get install -y net-tools wget'
       - 'locale-gen en_US.UTF-8'
 CONFIG:
-  type: aio
-  log_level: debug
+  trace_limit: 200
+  masterless: true
 ...
 # vim: syntax=yaml

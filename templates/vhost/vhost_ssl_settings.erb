@@ -1,7 +1,11 @@
   ssl on;
 
+<% if @ssl_cert -%>
   ssl_certificate           <%= @ssl_cert %>;
+<% end -%>
+<% if @ssl_key -%>
   ssl_certificate_key       <%= @ssl_key %>;
+<% end -%>
 <% if defined? @ssl_client_cert -%>
   ssl_client_certificate    <%= @ssl_client_cert %>;
   ssl_verify_client         <%= @ssl_verify_client %>;

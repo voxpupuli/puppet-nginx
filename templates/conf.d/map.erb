@@ -14,7 +14,7 @@ map <%= @string %> $<%= @name %> {
   <%- end -%>
 <% end -%>
 <% if @mappings.is_a?(Array) -%>
-  <%- field_width = @mappings.inject(0) { |l,(h)| h['key'].size > l ? h['key'].size : l } -%>
+  <%- field_width = @mappings.inject(0) { |l,h| h['key'].size > l ? h['key'].size : l } -%>
   <%- @mappings.each do |h| -%>
   <%= sprintf("%-*s", field_width, h['key']) %> <%= h['value'] %>;
   <%- end -%>

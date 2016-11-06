@@ -27,82 +27,109 @@
 # }
 class nginx (
   ### START Nginx Configuration ###
-  $client_body_buffer_size        = undef,
-  $client_body_temp_path          = undef,
-  $client_max_body_size           = undef,
-  $events_use                     = undef,
-  $fastcgi_cache_inactive         = undef,
-  $fastcgi_cache_key              = undef,
-  $fastcgi_cache_keys_zone        = undef,
-  $fastcgi_cache_levels           = undef,
-  $fastcgi_cache_max_size         = undef,
-  $fastcgi_cache_path             = undef,
-  $fastcgi_cache_use_stale        = undef,
-  $gzip                           = undef,
-  $http_cfg_prepend               = undef,
-  $http_cfg_append                = undef,
-  $http_tcp_nodelay               = undef,
-  $http_tcp_nopush                = undef,
-  $keepalive_timeout              = undef,
-  $keepalive_requests             = undef,
-  $mail                           = undef,
-  $multi_accept                   = undef,
-  $names_hash_bucket_size         = undef,
-  $names_hash_max_size            = undef,
-  $proxy_buffers                  = undef,
-  $proxy_buffer_size              = undef,
-  $proxy_cache_inactive           = undef,
-  $proxy_cache_keys_zone          = undef,
-  $proxy_cache_levels             = undef,
-  $proxy_cache_max_size           = undef,
-  $proxy_cache_path               = undef,
-  $proxy_use_temp_path            = undef,
-  $proxy_connect_timeout          = undef,
-  $proxy_headers_hash_bucket_size = undef,
-  $proxy_http_version             = undef,
-  $proxy_read_timeout             = undef,
-  $proxy_redirect                 = undef,
-  $proxy_send_timeout             = undef,
-  $proxy_set_header               = undef,
-  $proxy_hide_header              = undef,
-  $proxy_pass_header              = undef,
-  $sendfile                       = undef,
-  $server_tokens                  = undef,
-  $spdy                           = undef,
-  $types_hash_bucket_size         = undef,
-  $types_hash_max_size            = undef,
-  $worker_connections             = undef,
-  $worker_processes               = undef,
-  $worker_rlimit_nofile           = undef,
-  ### END Nginx Configuration
-
-  ### START Module/App Configuration ###
-  $confd_only                     = undef,
-  $confd_purge                    = undef,
-  $conf_dir                       = undef,
-  $daemon_user                    = undef,
-  $global_owner                   = undef,
-  $global_group                   = undef,
-  $global_mode                    = undef,
-  $logdir                         = undef,
-  $log_format                     = undef,
-  $http_access_log                = undef,
-  $nginx_error_log                = undef,
-  $pid                            = undef,
-  $proxy_temp_path                = undef,
-  $root_group                     = undef,
-  $run_dir                        = undef,
-  $sites_available_owner          = undef,
-  $sites_available_group          = undef,
-  $sites_available_mode           = undef,
-  $super_user                     = undef,
-  $temp_dir                       = undef,
-  $vhost_purge                    = undef,
+  $client_body_temp_path          = $::nginx::params::client_body_temp_path,
+  $confd_only                     = false,
+  $confd_purge                    = false,
+  $conf_dir                       = $::nginx::params::conf_dir,
+  $daemon                         = undef,
+  $daemon_user                    = $::nginx::params::daemon_user,
+  $global_owner                   = $::nginx::params::global_owner,
+  $global_group                   = $::nginx::params::global_group,
+  $global_mode                    = $::nginx::params::global_mode,
+  $log_dir                        = $::nginx::params::log_dir,
+  $log_group                      = $::nginx::params::log_group,
+  $log_mode                       = '0750',
+  $http_access_log                = "${log_dir}/${::nginx::params::http_access_log_file}",
+  $http_format_log                = undef,
+  $nginx_error_log                = "${log_dir}/${::nginx::params::nginx_error_log_file}",
+  $nginx_error_log_severity       = 'error',
+  $pid                            = $::nginx::params::pid,
+  $proxy_temp_path                = $::nginx::params::proxy_temp_path,
+  $root_group                     = $::nginx::params::root_group,
+  $run_dir                        = $::nginx::params::run_dir,
+  $sites_available_owner          = $::nginx::params::sites_available_owner,
+  $sites_available_group          = $::nginx::params::sites_available_group,
+  $sites_available_mode           = $::nginx::params::sites_available_mode,
+  $super_user                     = $::nginx::params::super_user,
+  $temp_dir                       = $::nginx::params::temp_dir,
+  $vhost_purge                    = false,
 
   # Primary Templates
-  $conf_template                  = undef,
+  $conf_template                  = 'nginx/conf.d/nginx.conf.erb',
   $proxy_conf_template            = undef,
-  ### END Module/App Configuration ###
+
+  ### START Nginx Configuration ###
+  $accept_mutex                   = 'on',
+  $accept_mutex_delay             = '500ms',
+  $client_body_buffer_size        = '128k',
+  $client_max_body_size           = '10m',
+  $client_body_timeout            = '60',
+  $send_timeout                   = '60',
+  $lingering_timeout              = '5',
+  $events_use                     = false,
+  $fastcgi_cache_inactive         = '20m',
+  $fastcgi_cache_key              = false,
+  $fastcgi_cache_keys_zone        = 'd3:100m',
+  $fastcgi_cache_levels           = '1',
+  $fastcgi_cache_max_size         = '500m',
+  $fastcgi_cache_path             = false,
+  $fastcgi_cache_use_stale        = false,
+  $gzip                           = 'on',
+  $gzip_buffers                   = undef,
+  $gzip_comp_level                = 1,
+  $gzip_disable                   = 'msie6',
+  $gzip_min_length                = 20,
+  $gzip_http_version              = 1.1,
+  $gzip_proxied                   = 'off',
+  $gzip_types                     = undef,
+  $gzip_vary                      = 'off',
+  $http_cfg_prepend               = false,
+  $http_cfg_append                = false,
+  $http_tcp_nodelay               = 'on',
+  $http_tcp_nopush                = 'off',
+  $keepalive_timeout              = '65',
+  $keepalive_requests             = '100',
+  $log_format                     = {},
+  $mail                           = false,
+  $stream                         = false,
+  $multi_accept                   = 'off',
+  $names_hash_bucket_size         = '64',
+  $names_hash_max_size            = '512',
+  $nginx_cfg_prepend              = false,
+  $proxy_buffers                  = '32 4k',
+  $proxy_buffer_size              = '8k',
+  $proxy_cache_inactive           = '20m',
+  $proxy_cache_keys_zone          = 'd2:100m',
+  $proxy_cache_levels             = '1',
+  $proxy_cache_max_size           = '500m',
+  $proxy_cache_path               = false,
+  $proxy_use_temp_path            = false,
+  $proxy_connect_timeout          = '90',
+  $proxy_headers_hash_bucket_size = '64',
+  $proxy_http_version             = undef,
+  $proxy_read_timeout             = '90',
+  $proxy_redirect                 = undef,
+  $proxy_send_timeout             = '90',
+  $proxy_set_header               = [
+    'Host $host',
+    'X-Real-IP $remote_addr',
+    'X-Forwarded-For $proxy_add_x_forwarded_for',
+    'Proxy ""',
+  ],
+  $proxy_hide_header              = [],
+  $proxy_pass_header              = [],
+  $sendfile                       = 'on',
+  $server_tokens                  = 'on',
+  $spdy                           = 'off',
+  $http2                          = 'off',
+  $ssl_stapling                   = 'off',
+  $types_hash_bucket_size         = '512',
+  $types_hash_max_size            = '1024',
+  $worker_connections             = '1024',
+  $worker_processes               = '1',
+  $worker_rlimit_nofile           = '1024',
+  $ssl_protocols                  = 'TLSv1 TLSv1.1 TLSv1.2',
+  $ssl_ciphers                    = 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS',
 
   ### START Package Configuration ###
   $package_ensure                 = present,
@@ -132,92 +159,103 @@ class nginx (
   ### END Hiera Lookups ###
 ) inherits ::nginx::params {
 
-  ### DEPRECATION WARNING ###
-  ###
-  ### During the transition from the params pattern -> puppet-module-data,
-  ### we need a graceful way to notify the consumer that the pattern is
-  ### changing, and point them toward docs on how to transition.
-  ###
-  ### Once we hit 1.0, this whole block goes away.
-  ###
-  ### Please note: as a contributor to this module, no Pulls will be accepted
-  ### that do add additional parameters to this class. Get on this puppet-module-data
-  ### level!
+  ### Validations ###
+  if ($worker_processes != 'auto') and (!is_integer($worker_processes)) {
+    fail('$worker_processes must be an integer or have value "auto".')
+  }
+  if (!is_integer($worker_connections)) {
+    fail('$worker_connections must be an integer.')
+  }
+  if (!is_integer($worker_rlimit_nofile)) {
+    fail('$worker_rlimit_nofile must be an integer.')
+  }
+  if (!is_string($events_use)) and ($events_use != false) {
+    fail('$events_use must be a string or false.')
+  }
+  validate_string($multi_accept)
+  validate_array($proxy_set_header)
+  validate_array($proxy_hide_header)
+  validate_array($proxy_pass_header)
+  if ($proxy_http_version != undef) {
+    validate_string($proxy_http_version)
+  }
+  if ($proxy_conf_template != undef) {
+    warning('The $proxy_conf_template parameter is deprecated and has no effect.')
+  }
+  validate_bool($confd_only)
+  validate_bool($confd_purge)
+  validate_bool($vhost_purge)
+  if ( $proxy_cache_path != false) {
+    if ( is_string($proxy_cache_path) or is_hash($proxy_cache_path)) {}
+    else {
+      fail('proxy_cache_path must be a string or a hash')
+    }
+  }
+  validate_re($proxy_cache_levels, '^[12](:[12])*$')
+  validate_string($proxy_cache_keys_zone)
+  validate_string($proxy_cache_max_size)
+  validate_string($proxy_cache_inactive)
 
-  ### This block makes me sad, but what can you do.... we need to do this
-  ### migration the Right Way(tm) -- JDF
+  if ($proxy_use_temp_path != false) {
+        validate_re($proxy_use_temp_path, '^(on|off)$')
+  }
 
-  if $client_body_buffer_size or
-        $client_body_temp_path or
-        $client_max_body_size or
-        $confd_purge or
-        $conf_dir or
-        $conf_template or
-        $daemon_user or
-        $events_use or
-        $fastcgi_cache_inactive or
-        $fastcgi_cache_key or
-        $fastcgi_cache_keys_zone or
-        $fastcgi_cache_levels or
-        $fastcgi_cache_max_size or
-        $fastcgi_cache_path or
-        $fastcgi_cache_use_stale or
-        $gzip or
-        $http_access_log or
-        $http_cfg_append or
-        $http_tcp_nodelay or
-        $http_tcp_nopush or
-        $keepalive_timeout or
-        $keepalive_requests or
-        $logdir or
-        $log_format or
-        $mail or
-        $multi_accept or
-        $names_hash_bucket_size or
-        $names_hash_max_size or
-        $nginx_error_log or
-        $pid or
-        $proxy_buffers or
-        $proxy_buffer_size or
-        $proxy_cache_inactive or
-        $proxy_cache_keys_zone or
-        $proxy_cache_levels or
-        $proxy_cache_max_size or
-        $proxy_cache_path or
-        $proxy_use_temp_path or
-        $proxy_conf_template or
-        $proxy_connect_timeout or
-        $proxy_headers_hash_bucket_size or
-        $proxy_http_version or
-        $proxy_read_timeout or
-        $proxy_redirect or
-        $proxy_send_timeout or
-        $proxy_set_header or
-        $proxy_hide_header or
-        $proxy_pass_header or
-        $proxy_temp_path or
-        $run_dir or
-        $sendfile or
-        $server_tokens or
-        $spdy or
-        $super_user or
-        $temp_dir or
-        $types_hash_bucket_size or
-        $types_hash_max_size or
-        $vhost_purge or
-        $worker_connections or
-        $worker_processes or
-        $worker_rlimit_nofile or
-        $global_owner or
-        $global_group or
-        $global_mode or
-        $sites_available_owner or
-        $sites_available_group or
-        $sites_available_mode {
-          include ::nginx::notice::config
-        }
+  if ($fastcgi_cache_path != false) {
+        validate_string($fastcgi_cache_path)
+  }
+  validate_re($fastcgi_cache_levels, '^[12](:[12])*$')
+  validate_string($fastcgi_cache_keys_zone)
+  validate_string($fastcgi_cache_max_size)
+  validate_string($fastcgi_cache_inactive)
+  if ($fastcgi_cache_key != false) {
+    validate_string($fastcgi_cache_key)
+  }
+  if ($fastcgi_cache_use_stale != false) {
+    validate_string($fastcgi_cache_use_stale)
+  }
 
-  ### END DEPRECATION WARNING ###
+  validate_bool($mail)
+  validate_bool($stream)
+  validate_string($server_tokens)
+  validate_string($client_max_body_size)
+  if (!is_integer($names_hash_bucket_size)) {
+    fail('$names_hash_bucket_size must be an integer.')
+  }
+  if (!is_integer($names_hash_max_size)) {
+    fail('$names_hash_max_size must be an integer.')
+  }
+  validate_string($proxy_buffers)
+  validate_string($proxy_buffer_size)
+  if ($http_cfg_prepend != false) {
+    if !(is_hash($http_cfg_prepend) or is_array($http_cfg_prepend)) {
+      fail('$http_cfg_prepend must be either a hash or array')
+    }
+  }
+
+  if ($http_cfg_append != false) {
+    if !(is_hash($http_cfg_append) or is_array($http_cfg_append)) {
+      fail('$http_cfg_append must be either a hash or array')
+    }
+  }
+
+  if ($nginx_cfg_prepend != false) {
+    if !(is_hash($nginx_cfg_prepend) or is_array($nginx_cfg_prepend)) {
+      fail('$nginx_cfg_prepend must be either a hash or array')
+    }
+  }
+
+  if !(is_string($http_access_log) or is_array($http_access_log)) {
+    fail('$http_access_log must be either a string or array')
+  }
+
+  if !(is_string($nginx_error_log) or is_array($nginx_error_log)) {
+    fail('$nginx_error_log must be either a string or array')
+  }
+
+  validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
+  validate_string($proxy_headers_hash_bucket_size)
+  validate_bool($super_user)
+  ### END VALIDATIONS ###
 
   class { '::nginx::package':
     package_name   => $package_name,
@@ -228,82 +266,7 @@ class nginx (
     manage_repo    => $manage_repo,
   }
 
-  ## This `if` statement is here in the event a user cannot use
-  ## Hiera based parameter overrides. Will not be here in 1.0 release
-  if !defined(Class['::nginx::config']) {
-    class { '::nginx::config':
-      client_body_buffer_size        => $client_body_buffer_size,
-      client_body_temp_path          => $client_body_temp_path,
-      client_max_body_size           => $client_max_body_size,
-      confd_purge                    => $confd_purge,
-      confd_only                     => $confd_only,
-      conf_dir                       => $conf_dir,
-      conf_template                  => $conf_template,
-      daemon_user                    => $daemon_user,
-      events_use                     => $events_use,
-      fastcgi_cache_inactive         => $fastcgi_cache_inactive,
-      fastcgi_cache_key              => $fastcgi_cache_key,
-      fastcgi_cache_keys_zone        => $fastcgi_cache_keys_zone,
-      fastcgi_cache_levels           => $fastcgi_cache_levels,
-      fastcgi_cache_max_size         => $fastcgi_cache_max_size,
-      fastcgi_cache_path             => $fastcgi_cache_path,
-      fastcgi_cache_use_stale        => $fastcgi_cache_use_stale,
-      gzip                           => $gzip,
-      http_access_log                => $http_access_log,
-      http_cfg_prepend               => $http_cfg_prepend,
-      http_cfg_append                => $http_cfg_append,
-      http_tcp_nodelay               => $http_tcp_nodelay,
-      http_tcp_nopush                => $http_tcp_nopush,
-      keepalive_timeout              => $keepalive_timeout,
-      keepalive_requests             => $keepalive_requests,
-      log_dir                        => $logdir,
-      log_format                     => $log_format,
-      mail                           => $mail,
-      multi_accept                   => $multi_accept,
-      names_hash_bucket_size         => $names_hash_bucket_size,
-      names_hash_max_size            => $names_hash_max_size,
-      nginx_error_log                => $nginx_error_log,
-      pid                            => $pid,
-      proxy_buffers                  => $proxy_buffers,
-      proxy_buffer_size              => $proxy_buffer_size,
-      proxy_cache_inactive           => $proxy_cache_inactive,
-      proxy_cache_keys_zone          => $proxy_cache_keys_zone,
-      proxy_cache_levels             => $proxy_cache_levels,
-      proxy_cache_max_size           => $proxy_cache_max_size,
-      proxy_cache_path               => $proxy_cache_path,
-      proxy_use_temp_path            => $proxy_use_temp_path,
-      proxy_conf_template            => $proxy_conf_template,
-      proxy_connect_timeout          => $proxy_connect_timeout,
-      proxy_headers_hash_bucket_size => $proxy_headers_hash_bucket_size,
-      proxy_http_version             => $proxy_http_version,
-      proxy_read_timeout             => $proxy_read_timeout,
-      proxy_redirect                 => $proxy_redirect,
-      proxy_send_timeout             => $proxy_send_timeout,
-      proxy_set_header               => $proxy_set_header,
-      proxy_hide_header              => $proxy_hide_header,
-      proxy_pass_header              => $proxy_pass_header,
-      proxy_temp_path                => $proxy_temp_path,
-      run_dir                        => $run_dir,
-      sendfile                       => $sendfile,
-      server_tokens                  => $server_tokens,
-      spdy                           => $spdy,
-      super_user                     => $super_user,
-      temp_dir                       => $temp_dir,
-      types_hash_bucket_size         => $types_hash_bucket_size,
-      types_hash_max_size            => $types_hash_max_size,
-      vhost_purge                    => $vhost_purge,
-      worker_connections             => $worker_connections,
-      worker_processes               => $worker_processes,
-      worker_rlimit_nofile           => $worker_rlimit_nofile,
-      global_owner                   => $global_owner,
-      global_group                   => $global_group,
-      global_mode                    => $global_mode,
-      sites_available_owner          => $sites_available_owner,
-      sites_available_group          => $sites_available_group,
-      sites_available_mode           => $sites_available_mode,
-    }
-  }
-
+  include '::nginx::config'
   include '::nginx::service'
 
   Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
