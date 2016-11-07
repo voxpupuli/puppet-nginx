@@ -235,22 +235,16 @@ describe 'nginx::resource::vhost' do
           notmatch: %r{  root /;}
         },
         {
-          title: 'should rewrite to HTTPS',
-          attr: 'rewrite_to_https',
+          title: 'should force https (SSL) redirect',
+          attr: 'ssl_redirect',
           value: true,
-          match: [
-            '  if ($ssl_protocol = "") {',
-            '       return 301 https://$host$request_uri;'
-          ]
+          match: %r{  return 301 https://\$host\$request_uri;}
         },
         {
-          title: 'should not rewrite to HTTPS',
-          attr: 'rewrite_to_https',
+          title: 'should not force https (SSL) redirect',
+          attr: 'ssl_redirect',
           value: false,
-          notmatch: [
-            %r'if \(\$ssl_protocol = ""\) \{',
-            %r{\s+return 301 https://\$host\$request_uri;}
-          ]
+          notmatch: %r{\s*return\s+301}
         },
         {
           title: 'should set access_log',
@@ -853,6 +847,49 @@ describe 'nginx::resource::vhost' do
         it "sets the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
           is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
         end
+      end
+
+      context 'ssl_redirect' do
+        let(:params) { { ssl_redirect: true } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").without_content(%r{^\s*index\s+}) }
+        it { is_expected.to contain_concat__fragment("#{title}-header").without_content(%r{^\s*location\s+}) }
+      end
+
+      context 'ssl_redirect with alternate port' do
+        let(:params) { { ssl_redirect: true, ssl_port: 8888 } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{  return 301 https://\$host:8888\$request_uri;}) }
+      end
+
+      context 'ssl_redirect with standard port set explicitly' do
+        let(:params) { { ssl_redirect: true, ssl_port: 443 } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{  return 301 https://\$host\$request_uri;}) }
+      end
+
+      context 'ssl_redirect with overridden port' do
+        let(:params) { { ssl_redirect: true, ssl_redirect_port: 8878 } }
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{  return 301 https://\$host:8878\$request_uri;}) }
+      end
+
+      context 'ssl_redirect with ssl_port set and overridden redirect port' do
+        let(:params) do
+          {
+            ssl_redirect: true,
+            ssl_redirect_port: 9787,
+            ssl_port: 9783
+          }
+        end
+
+        it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{  return 301 https://\$host:9787\$request_uri;}) }
+      end
+
+      context 'ssl_redirect should set ssl_only' do
+        let(:params) { { ssl_redirect: true } }
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
       end
 
       context 'SSL cert missing' do
