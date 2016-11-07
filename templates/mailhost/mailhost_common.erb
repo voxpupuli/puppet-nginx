@@ -1,0 +1,41 @@
+  server_name           <%= @server_name.join(" ") %>;
+<% if defined? @protocol -%>
+  protocol              <%= @protocol %>;
+<% end -%>
+  xclient               <%= @xclient %>;
+<% if defined? @auth_http -%>
+  auth_http             <%= @auth_http %>;
+<% end -%>
+<%- if @auth_http_header -%>
+  auth_http_header      <%= @auth_http_header %>;
+<%- end -%>
+
+  proxy_pass_error_message  <%= @proxy_pass_error_message %>;
+
+<% if @protocol == 'imap' %>
+<% if defined? @imap_auth -%>
+  imap_auth           <%= @imap_auth %>;
+<% end -%>
+<% if defined? @imap_capabilities -%>
+  imap_capabilities   <%= @imap_capabilities.join(" ") %>;
+<% end -%>
+<% if defined? @imap_client_buffer -%>
+  imap_client_buffer  <%= @imap_client_buffer %>;
+<% end -%>
+<%- end -%>
+<% if @protocol == 'pop3' %>
+<% if defined? @pop3_auth -%>
+  pop3_auth          <%= @pop3_auth %>;
+<% end -%>
+<% if defined? @pop3_capabilities -%>
+  pop3_capabilities  <%= @pop3_capabilities.join(" ") %>;
+<% end -%>
+<%- end -%>
+<% if @protocol == 'smtp' %>
+<% if defined? @smtp_auth -%>
+  smtp_auth          <%= @smtp_auth %>;
+<% end -%>
+<% if defined? @smtp_capabilities -%>
+  smtp_capabilities  <%= @smtp_capabilities.join(" ") %>;
+<% end -%>
+<%- end -%>
