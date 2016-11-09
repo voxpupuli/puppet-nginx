@@ -5,7 +5,7 @@
 
     autoindex <%= @autoindex %>;
 <% end -%>
-<% if @index_files.count > 0 -%>
+<% if @index_files and @index_files.count > 0 -%>
     index    <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 <% if @try_files -%>
