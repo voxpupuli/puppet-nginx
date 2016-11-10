@@ -284,33 +284,69 @@ describe 'nginx::resource::location' do
 
     describe 'vhost_location_alias template content' do
       let :default_params do
-        { location: 'location', vhost: 'vhost1', location_alias: 'value' }
+        {
+          location: 'location',
+          vhost: 'vhost1',
+          location_alias: 'value'
+        }
       end
 
-      context "when location_alias is 'value'" do
+      context 'location_alias template with default params' do
         let(:params) { default_params }
         it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
         it 'sets alias' do
           is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
-            with_content(%r{^[ ]+alias\s+value;})
+            with_content(%r{^\s+alias\s+value;})
         end
-      end
-
-      context "when autoindex is 'on'" do
-        let(:params) { default_params.merge(autoindex: 'on') }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
-        it 'sets autoindex' do
+        it "doesn't set try_files" do
           is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
-            with_content(%r{^[ ]+autoindex\s+on;})
+            without_content(%r{^\s+try_files[^;]+;})
         end
-      end
-
-      context 'when autoindex is not set' do
-        let(:params) { default_params }
-        it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')) }
-        it 'does not set autoindex' do
+        it "doesn't set autoindex" do
           is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('location')).
             without_content(%r{^[ ]+autoindex[^;]+;})
+        end
+      end
+
+      [
+        {
+          title: 'should set autoindex',
+          attr: 'autoindex',
+          value: 'on',
+          match: '    autoindex on;'
+        },
+        {
+          title: 'should set try_file(s)',
+          attr: 'try_files',
+          value: %w(name1 name2),
+          match: '    try_files name1 name2;'
+        },
+        {
+          title: 'should set index_file(s)',
+          attr: 'index_files',
+          value: %w(name1 name2),
+          match: '    index     name1 name2;'
+        }
+      ].each do |param|
+        context "when #{param[:attr]} is #{param[:value]}" do
+          let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
+
+          it { is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
+          it param[:title] do
+            fragment = 'vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)
+            matches  = Array(param[:match])
+
+            if matches.all? { |m| m.is_a? Regexp }
+              matches.each { |item| is_expected.to contain_concat__fragment(fragment).with_content(item) }
+            else
+              lines = catalogue.resource('concat::fragment', fragment).send(:parameters)[:content].split("\n")
+              expect(lines & matches).to eq(matches)
+            end
+
+            Array(param[:notmatch]).each do |item|
+              is_expected.to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).without_content(item)
+            end
+          end
         end
       end
     end

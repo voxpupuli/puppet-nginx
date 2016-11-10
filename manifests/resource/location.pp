@@ -232,7 +232,9 @@ define nginx::resource::location (
   if ($autoindex != undef) {
     validate_string($autoindex)
   }
-  validate_array($index_files)
+  if ($index_files != undef) {
+    validate_array($index_files)
+  }
   if ($proxy != undef) {
     validate_string($proxy)
   }
