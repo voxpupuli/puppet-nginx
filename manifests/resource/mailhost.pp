@@ -49,8 +49,8 @@
 #   [*server_name*]              - List of mailhostnames for which this mailhost will respond. Default [$name].
 #   [*raw_prepend*]              - A single string, or an array of strings to prepend to the server directive (after mailhost_cfg_prepend directive). NOTE: YOU are responsible for a semicolon on each line that requires one.
 #   [*raw_append*]               - A single string, or an array of strings to append to the server directive (after mailhost_cfg_append directive). NOTE: YOU are responsible for a semicolon on each line that requires one.
-#   [*mailhost_cfg_append*]      - It expects a hash with custom directives to put after everything else inside vhost
-#   [*mailhost_cfg_prepend*]     - It expects a hash with custom directives to put before everything else inside vhost
+#   [*mailhost_cfg_append*]      - It expects a hash with custom directives to put after everything else inside server
+#   [*mailhost_cfg_prepend*]     - It expects a hash with custom directives to put before everything else inside server
 #
 # Actions:
 #

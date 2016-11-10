@@ -42,7 +42,7 @@ class nginx::config {
   $sites_available_mode           = $::nginx::sites_available_mode
   $super_user                     = $::nginx::super_user
   $temp_dir                       = $::nginx::temp_dir
-  $vhost_purge                    = $::nginx::vhost_purge
+  $server_purge                    = $::nginx::server_purge
   $accept_mutex                   = $::nginx::accept_mutex
   $accept_mutex_delay             = $::nginx::accept_mutex_delay
   $client_body_buffer_size        = $::nginx::client_body_buffer_size
@@ -132,10 +132,10 @@ class nginx::config {
     ensure => directory,
   }
   if $confd_purge {
-    # Err on the side of caution - make sure *both* $vhost_purge and
+    # Err on the side of caution - make sure *both* $server_purge and
     # $confd_purge are set if $confd_only is set, before purging files
     # ${conf_dir}/conf.d
-    if (($confd_only and $vhost_purge) or !$confd_only) {
+    if (($confd_only and $server_purge) or !$confd_only) {
       File["${conf_dir}/conf.d"] {
         purge   => true,
         recurse => true,
@@ -194,7 +194,7 @@ class nginx::config {
     file { "${conf_dir}/sites-enabled":
       ensure => directory,
     }
-    if $vhost_purge {
+    if $server_purge {
       File["${conf_dir}/sites-available"] {
         purge   => true,
         recurse => true,
@@ -214,7 +214,7 @@ class nginx::config {
     file { "${conf_dir}/streams-available":
       ensure => directory,
     }
-    if $vhost_purge {
+    if $server_purge {
       File["${conf_dir}/streams-enabled"] {
         purge   => true,
         recurse => true,

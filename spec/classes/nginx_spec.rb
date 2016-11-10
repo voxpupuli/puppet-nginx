@@ -10,9 +10,9 @@ describe 'nginx' do
   let :params do
     {
       nginx_upstreams: { 'upstream1' => { 'members' => ['localhost:3000'] } },
-      nginx_vhosts: { 'test2.local' => { 'www_root' => '/' } },
-      nginx_vhosts_defaults: { 'listen_options' => 'default_server' },
-      nginx_locations: { 'test2.local' => { 'vhost' => 'test2.local', 'www_root' => '/' } },
+      nginx_servers: { 'test2.local' => { 'www_root' => '/' } },
+      nginx_servers_defaults: { 'listen_options' => 'default_server' },
+      nginx_locations: { 'test2.local' => { 'server' => 'test2.local', 'www_root' => '/' } },
       nginx_mailhosts: { 'smtp.test2.local' => { 'auth_http' => 'server2.example/cgi-bin/auth', 'protocol' => 'smtp', 'listen_port' => 587 } },
       nginx_streamhosts: { 'streamhost1' => { 'proxy' => 'streamproxy' } }
     }
@@ -29,8 +29,8 @@ describe 'nginx' do
     it { is_expected.to contain_class('nginx::service').that_subscribes_to('Class[nginx::config]') }
     it { is_expected.to contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
     it { is_expected.to contain_nginx__resource__upstream('upstream1') }
-    it { is_expected.to contain_nginx__resource__vhost('test2.local') }
-    it { is_expected.to contain_nginx__resource__vhost('test2.local').with_listen_options('default_server') }
+    it { is_expected.to contain_nginx__resource__server('test2.local') }
+    it { is_expected.to contain_nginx__resource__server('test2.local').with_listen_options('default_server') }
     it { is_expected.to contain_nginx__resource__location('test2.local') }
     it { is_expected.to contain_nginx__resource__mailhost('smtp.test2.local') }
     it { is_expected.to contain_nginx__resource__streamhost('streamhost1').with_proxy('streamproxy') }
@@ -945,8 +945,8 @@ describe 'nginx' do
         end
       end
 
-      context 'when vhost_purge true' do
-        let(:params) { { vhost_purge: true } }
+      context 'when server_purge true' do
+        let(:params) { { server_purge: true } }
         it do
           is_expected.to contain_file('/etc/nginx/sites-available').with(
             purge: true,
@@ -961,12 +961,12 @@ describe 'nginx' do
         end
       end
 
-      context 'when confd_purge true, vhost_purge true, and confd_only true' do
+      context 'when confd_purge true, server_purge true, and confd_only true' do
         let(:params) do
           {
             confd_purge: true,
             confd_only: true,
-            vhost_purge: true
+            server_purge: true
           }
         end
         it do
@@ -983,7 +983,7 @@ describe 'nginx' do
         end
       end
 
-      context 'when confd_purge true, vhost_purge default (false), confd_only true' do
+      context 'when confd_purge true, server_purge default (false), confd_only true' do
         let(:params) do
           {
             confd_purge: true,
@@ -1006,8 +1006,8 @@ describe 'nginx' do
         end
       end
 
-      context 'when vhost_purge false' do
-        let(:params) { { vhost_purge: false } }
+      context 'when server_purge false' do
+        let(:params) { { server_purge: false } }
         it do
           is_expected.to contain_file('/etc/nginx/sites-available').without(
             %w(
