@@ -435,33 +435,34 @@ define nginx::resource::location (
     }
   }
 
-
-  ## Create stubs for vHost File Fragment Pattern
-  $location_md5 = md5($location)
-  if ($ssl_only != true) {
-    concat::fragment { "${vhost_sanitized}-${priority}-${location_md5}":
-      target  => $config_file,
-      content => join([
-        template('nginx/vhost/location_header.erb'),
-        $content_real,
-        template('nginx/vhost/location_footer.erb'),
-      ], ''),
-      order   => $priority,
+  if $ensure == present {
+    ## Create stubs for vHost File Fragment Pattern
+    $location_md5 = md5($location)
+    if ($ssl_only != true) {
+      concat::fragment { "${vhost_sanitized}-${priority}-${location_md5}":
+        target  => $config_file,
+        content => join([
+          template('nginx/vhost/location_header.erb'),
+          $content_real,
+          template('nginx/vhost/location_footer.erb'),
+        ], ''),
+        order   => $priority,
+      }
     }
-  }
 
-  ## Only create SSL Specific locations if $ssl is true.
-  if ($ssl == true or $ssl_only == true) {
-    $ssl_priority = $priority + 300
+    ## Only create SSL Specific locations if $ssl is true.
+    if ($ssl == true or $ssl_only == true) {
+      $ssl_priority = $priority + 300
 
-    concat::fragment { "${vhost_sanitized}-${ssl_priority}-${location_md5}-ssl":
-      target  => $config_file,
-      content => join([
-        template('nginx/vhost/location_header.erb'),
-        $content_real,
-        template('nginx/vhost/location_footer.erb'),
-      ], ''),
-      order   => $ssl_priority,
+      concat::fragment { "${vhost_sanitized}-${ssl_priority}-${location_md5}-ssl":
+        target  => $config_file,
+        content => join([
+          template('nginx/vhost/location_header.erb'),
+          $content_real,
+          template('nginx/vhost/location_footer.erb'),
+        ], ''),
+        order   => $ssl_priority,
+      }
     }
   }
 }

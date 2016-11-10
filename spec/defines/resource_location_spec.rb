@@ -927,6 +927,31 @@ describe 'nginx::resource::location' do
         it { is_expected.to contain_concat__fragment('www_rspec-vhost_com-500-' + Digest::MD5.hexdigest('www.rspec-location.com')).with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
         it { is_expected.to contain_concat__fragment('www_rspec-vhost_com-800-' + Digest::MD5.hexdigest('www.rspec-location.com') + '-ssl').with_target('/etc/nginx/sites-available/www_rspec-vhost_com.conf') }
       end
+
+      context 'when ensure => absent' do
+        let :params do
+          {
+            vhost: 'vhost1',
+            www_root: '/',
+            ensure: 'absent'
+          }
+        end
+
+        it { is_expected.not_to contain_concat__fragment('vhost1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+      end
+
+      context 'when ensure => absent and ssl => true' do
+        let :params do
+          {
+            ssl: true,
+            vhost: 'vhost1',
+            www_root: '/',
+            ensure: 'absent'
+          }
+        end
+
+        it { is_expected.not_to contain_concat__fragment('vhost1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
+      end
     end
   end
 end
