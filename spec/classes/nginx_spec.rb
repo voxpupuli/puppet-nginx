@@ -148,10 +148,8 @@ describe 'nginx' do
         it { is_expected.to contain_package('nginx') }
         it { is_expected.not_to contain_package('passenger') }
         it do
-          is_expected.to contain_apt__source('nginx').with(
-            'location'   => "http://nginx.org/packages/#{operatingsystem.downcase}",
-            'repos'      => 'nginx',
-            'key'        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'
+          is_expected.to contain_apt__ppa('ppa:nginx/stable').with(
+            'ensure'   => 'present'
           )
         end
         it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
@@ -161,8 +159,8 @@ describe 'nginx' do
       context 'package_source => nginx-mainline' do
         let(:params) { { package_source: 'nginx-mainline' } }
         it do
-          is_expected.to contain_apt__source('nginx').with(
-            'location' => "http://nginx.org/packages/mainline/#{operatingsystem.downcase}"
+          is_expected.to contain_apt__source('ppa:nginx/stable').with(
+            'ensure'   => 'present'
           )
         end
       end
