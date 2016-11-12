@@ -1,0 +1,13 @@
+<%= scope.function_template(['nginx/vhost/location_header.erb']) -%>
+<%= scope.function_template(['nginx/vhost/locations/alias.erb']) -%>
+<%= scope.function_template(['nginx/vhost/locations/stub_status.erb']) -%>
+<% if @fastcgi or @uwsgi or @proxy -%>
+<%= scope.function_template(['nginx/vhost/locations/proxy.erb']) -%>
+<%= scope.function_template(['nginx/vhost/locations/uwsgi.erb']) -%>
+<%= scope.function_template(['nginx/vhost/locations/fastcgi.erb']) -%>
+<% else -%>
+<%= scope.function_template(['nginx/vhost/locations/directory.erb']) -%>
+<% end -%>
+<%= scope.function_template(['nginx/vhost/locations/try_files.erb']) -%>
+<%= scope.function_template(['nginx/vhost/locations/empty.erb']) -%>
+<%= scope.function_template(['nginx/vhost/location_footer.erb']) -%>

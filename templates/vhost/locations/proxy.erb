@@ -1,3 +1,4 @@
+<% if @proxy -%>
     proxy_pass            <%= @proxy %>;
     proxy_read_timeout    <%= @proxy_read_timeout %>;
     proxy_connect_timeout <%= @proxy_connect_timeout %>;
@@ -44,4 +45,5 @@
 <% end -%>
 <% if @proxy_cache_key -%>
     proxy_cache_key         <%= @proxy_cache_key %>;
+<% end -%>
 <% end -%>

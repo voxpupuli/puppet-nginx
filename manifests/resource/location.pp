@@ -169,6 +169,7 @@ define nginx::resource::location (
   $proxy_hide_header    = $::nginx::proxy_hide_header,
   $proxy_pass_header    = $::nginx::proxy_pass_header,
   $fastcgi              = undef,
+  $fastcgi_index        = undef,
   $fastcgi_param        = undef,
   $fastcgi_params       = "${::nginx::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
@@ -258,6 +259,9 @@ define nginx::resource::location (
   }
   if ($fastcgi_split_path != undef) {
     validate_string($fastcgi_split_path)
+  }
+  if ($fastcgi_index != undef) {
+    validate_string($fastcgi_index)
   }
   if ($uwsgi != undef) {
     validate_string($uwsgi)
@@ -400,25 +404,6 @@ define nginx::resource::location (
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
 
-  # Use proxy or fastcgi template if $proxy is defined, otherwise use directory template.
-  if ($proxy != undef) {
-    $content_real = template('nginx/vhost/locations/proxy.erb')
-  } elsif ($location_alias != undef) {
-    $content_real = template('nginx/vhost/locations/alias.erb')
-  } elsif ($stub_status != undef) {
-    $content_real = template('nginx/vhost/locations/stub_status.erb')
-  } elsif ($fastcgi != undef) {
-    $content_real = template('nginx/vhost/locations/fastcgi.erb')
-  } elsif ($uwsgi != undef) {
-    $content_real = template('nginx/vhost/locations/uwsgi.erb')
-  } elsif ($www_root != undef) {
-    $content_real = template('nginx/vhost/locations/directory.erb')
-  } elsif ($try_files != undef) {
-    $content_real = template('nginx/vhost/locations/try_files.erb')
-  } else {
-    $content_real = template('nginx/vhost/locations/empty.erb')
-  }
-
   if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
@@ -441,11 +426,7 @@ define nginx::resource::location (
     if ($ssl_only != true) {
       concat::fragment { "${vhost_sanitized}-${priority}-${location_md5}":
         target  => $config_file,
-        content => join([
-          template('nginx/vhost/location_header.erb'),
-          $content_real,
-          template('nginx/vhost/location_footer.erb'),
-        ], ''),
+        content => template('nginx/vhost/location.erb'),
         order   => $priority,
       }
     }
@@ -456,11 +437,7 @@ define nginx::resource::location (
 
       concat::fragment { "${vhost_sanitized}-${ssl_priority}-${location_md5}-ssl":
         target  => $config_file,
-        content => join([
-          template('nginx/vhost/location_header.erb'),
-          $content_real,
-          template('nginx/vhost/location_footer.erb'),
-        ], ''),
+        content => template('nginx/vhost/location.erb'),
         order   => $ssl_priority,
       }
     }
