@@ -53,22 +53,22 @@ describe 'nginx::resource::upstream' do
           attr: 'upstream_cfg_prepend',
           fragment: 'header',
           value: {
-            'test3' => 'test value 3',
-            'test6' => { 'subkey1' => %w(subvalue1 subvalue2) },
-            'test1' => 'test value 1',
-            'test2' => 'test value 2',
-            'test5' => { 'subkey1' => 'subvalue1' },
-            'test4' => ['test value 1', 'test value 2']
+            'test3'     => 'test value 3',
+            'test6'     => { 'subkey1' => %w(subvalue1 subvalue2) },
+            'keepalive' => 'keepalive 1',
+            'test2'     => 'test value 2',
+            'test5'     => { 'subkey1' => 'subvalue1' },
+            'test4'     => ['test value 1', 'test value 2']
           },
           match: [
-            '  test1 test value 1;',
             '  test2 test value 2;',
             '  test3 test value 3;',
             '  test4 test value 1;',
             '  test4 test value 2;',
             '  test5 subkey1 subvalue1;',
             '  test6 subkey1 subvalue1;',
-            '  test6 subkey1 subvalue2;'
+            '  test6 subkey1 subvalue2;',
+            '  keepalive keepalive 1;'
           ]
         },
         {
@@ -89,20 +89,20 @@ describe 'nginx::resource::upstream' do
           value: {
             'test3' => 'test value 3',
             'test6' => { 'subkey1' => %w(subvalue1 subvalue2) },
-            'test1' => 'test value 1',
+            'keepalive' => 'keepalive 1',
             'test2' => 'test value 2',
             'test5' => { 'subkey1' => 'subvalue1' },
             'test4' => ['test value 1', 'test value 2']
           },
           match: [
-            '  test1 test value 1;',
             '  test2 test value 2;',
             '  test3 test value 3;',
             '  test4 test value 1;',
             '  test4 test value 2;',
             '  test5 subkey1 subvalue1;',
             '  test6 subkey1 subvalue1;',
-            '  test6 subkey1 subvalue2;'
+            '  test6 subkey1 subvalue2;',
+            '  keepalive keepalive 1;'
           ]
         }
       ].each do |param|
