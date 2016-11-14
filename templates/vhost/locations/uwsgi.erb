@@ -1,8 +1,6 @@
+<% if @uwsgi -%>
 <% if defined? @www_root -%>
     root  <%= @www_root %>;
-<% end -%>
-<% if @try_files -%>
-    try_files<% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
     include <%= @uwsgi_params %>;
     uwsgi_pass <%= @uwsgi %>;
@@ -14,4 +12,5 @@
 <% end -%>
 <% if @uwsgi_read_timeout-%>
     uwsgi_read_timeout <%= @uwsgi_read_timeout %>;
+<% end -%>
 <% end -%>

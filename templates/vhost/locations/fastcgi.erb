@@ -1,14 +1,15 @@
+<% if @fastcgi -%>
 <% if defined? @www_root -%>
     root          <%= @www_root %>;
 <% end -%>
     include       <%= @fastcgi_params %>;
 
     fastcgi_pass  <%= @fastcgi %>;
+<% if @fastcgi_index -%>
+    fastcgi_index <%= @fastcgi_index %>;
+<% end -%>
 <% if @fastcgi_split_path -%>
     fastcgi_split_path_info <%= @fastcgi_split_path %>;
-<% end -%>
-<% if @try_files -%>
-    try_files    <% @try_files.each do |try| -%> <%= try %><% end -%>;
 <% end -%>
 <% if defined? @fastcgi_script -%>
     <%-# this setting can be overridden by setting it in the fastcgi_param hash too %>
@@ -19,4 +20,5 @@
 	<%- @fastcgi_param.sort_by {|k,v| k}.each do |key, val| -%>
     fastcgi_param <%= sprintf("%-*s", field_width, key) %> <%= val %>;
 	<%- end -%>
+<% end -%>
 <% end -%>
