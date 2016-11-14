@@ -34,14 +34,14 @@ class nginx::package::debian(
     case $package_source {
       'nginx', 'nginx-stable': {
         apt::source { 'nginx':
-          location => "http://nginx.org/packages/${distro}",
+          location => "https://nginx.org/packages/${distro}",
           repos    => 'nginx',
           key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
         }
       }
       'nginx-mainline': {
         apt::source { 'nginx':
-          location => "http://nginx.org/packages/mainline/${distro}",
+          location => "https://nginx.org/packages/mainline/${distro}",
           repos    => 'nginx',
           key      => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
         }
