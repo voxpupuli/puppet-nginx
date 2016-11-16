@@ -257,7 +257,7 @@ class nginx (
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
-  if $package_ensure != 'omit' {
+  if $package_ensure =~ /(present|installed|latest|absent|purged|held)/ or (versioncmp('0.0.0', $package_ensure) > -1) {
     class { '::nginx::package':
       package_name   => $package_name,
       package_source => $package_source,
