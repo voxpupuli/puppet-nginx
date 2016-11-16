@@ -257,7 +257,7 @@ class nginx (
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
-  if $package_ensure =~ /(present|absent)/ {
+  if $package_ensure != 'omit' {
     class { '::nginx::package':
       package_name   => $package_name,
       package_source => $package_source,
