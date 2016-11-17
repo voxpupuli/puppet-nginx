@@ -71,6 +71,7 @@
 #   [*location_cfg_append*]   - Expects a hash with extra directives to put
 #     after everything else inside location (used with all other types except
 #     custom_cfg)
+#   [*include*]               - An array of files to include for this location
 #   [*try_files*]             - An array of file locations to try
 #   [*option*]                - Reserved for future use
 #   [*proxy_cache*]           - This directive sets name of zone for caching.
