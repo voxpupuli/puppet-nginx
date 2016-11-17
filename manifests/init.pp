@@ -257,36 +257,38 @@ class nginx (
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
-  class { '::nginx::package':
-    package_name   => $package_name,
-    package_source => $package_source,
-    package_ensure => $package_ensure,
-    package_flavor => $package_flavor,
-    notify         => Class['::nginx::service'],
-    manage_repo    => $manage_repo,
-  }
+  if $package_ensure != 'omit' {
+    class { '::nginx::package':
+      package_name   => $package_name,
+      package_source => $package_source,
+      package_ensure => $package_ensure,
+      package_flavor => $package_flavor,
+      notify         => Class['::nginx::service'],
+      manage_repo    => $manage_repo,
+    }
 
-  include '::nginx::config'
-  include '::nginx::service'
+    include '::nginx::config'
+    include '::nginx::service'
 
-  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
+    Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
-  create_resources('nginx::resource::upstream', $nginx_upstreams)
-  create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
-  create_resources('nginx::resource::location', $nginx_locations)
-  create_resources('nginx::resource::mailhost', $nginx_mailhosts)
-  create_resources('nginx::resource::streamhost', $nginx_streamhosts)
-  create_resources('nginx::resource::map', $string_mappings)
-  create_resources('nginx::resource::geo', $geo_mappings)
+    create_resources('nginx::resource::upstream', $nginx_upstreams)
+    create_resources('nginx::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
+    create_resources('nginx::resource::location', $nginx_locations)
+    create_resources('nginx::resource::mailhost', $nginx_mailhosts)
+    create_resources('nginx::resource::streamhost', $nginx_streamhosts)
+    create_resources('nginx::resource::map', $string_mappings)
+    create_resources('nginx::resource::geo', $geo_mappings)
 
-  # Allow the end user to establish relationships to the "main" class
-  # and preserve the relationship to the implementation classes through
-  # a transitive relationship to the composite class.
-  anchor{ 'nginx::begin':
-    before => Class['::nginx::package'],
-    notify => Class['::nginx::service'],
-  }
-  anchor { 'nginx::end':
-    require => Class['::nginx::service'],
+    # Allow the end user to establish relationships to the "main" class
+    # and preserve the relationship to the implementation classes through
+    # a transitive relationship to the composite class.
+    anchor{ 'nginx::begin':
+      before => Class['::nginx::package'],
+      notify => Class['::nginx::service'],
+    }
+    anchor { 'nginx::end':
+      require => Class['::nginx::service'],
+    }
   }
 }
