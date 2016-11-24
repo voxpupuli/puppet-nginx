@@ -177,7 +177,7 @@ define nginx::resource::location (
   $fastcgi_split_path   = undef,
   $uwsgi                = undef,
   $uwsgi_param          = undef,
-  $uwsgi_params         = "${nginx::config::conf_dir}/uwsgi_params",
+  $uwsgi_params         = "${nginx::conf_dir}/uwsgi_params",
   $uwsgi_read_timeout   = undef,
   $ssl                  = false,
   $ssl_only             = false,
