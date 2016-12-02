@@ -2,7 +2,7 @@ require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
-unless RUBY_VERSION =~ %r{^1.9}
+if Dir.exist?(File.expand_path('../../lib', __FILE__)) && RUBY_VERSION !~ %r{^1.9}
   require 'coveralls'
   require 'simplecov'
   require 'simplecov-console'
@@ -12,7 +12,10 @@ unless RUBY_VERSION =~ %r{^1.9}
     Coveralls::SimpleCov::Formatter
   ]
   SimpleCov.start do
+    track_files 'lib/**/*.rb'
     add_filter '/spec'
+    add_filter '/vendor'
+    add_filter '/.vendor'
   end
 end
 

@@ -11,5 +11,5 @@ coverage/
 log/
 .idea/
 *.iml
-.*.sw
+.*.sw?
 .yardoc/
