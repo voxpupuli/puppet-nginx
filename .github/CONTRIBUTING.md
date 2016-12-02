@@ -2,10 +2,11 @@ This module has grown over time based on a range of contributions from
 people using it. If you follow these contributing guidelines your patch
 will likely make it into a release a little quicker.
 
-
 ## Contributing
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms. [Contributor Code of Conduct](https://voxpupuli.org/coc/).
+Please note that this project is released with a Contributor Code of Conduct.
+By participating in this project you agree to abide by its terms.
+[Contributor Code of Conduct](https://voxpupuli.org/coc/).
 
 1. Fork the repo.
 
@@ -75,7 +76,6 @@ To run a specific spec test set the `SPEC` variable:
 To run the linter, the syntax checker and the unit tests:
 
     bundle exec rake test
-
 
 ## Integration tests
 
