@@ -50,7 +50,7 @@ describe 'nginx::resource::streamhost' do
       end
     end
 
-    describe 'vhost_header template content' do
+    describe 'server_header template content' do
       [
         {
           title: 'should set the IPv4 listen IP',

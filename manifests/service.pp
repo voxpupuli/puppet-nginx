@@ -1,6 +1,6 @@
 # Class: nginx::service
 #
-# This module manages NGINX service management and vhost rebuild
+# This module manages NGINX service management and server rebuild
 #
 # Parameters:
 #
