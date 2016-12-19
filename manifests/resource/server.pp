@@ -123,6 +123,7 @@
 #      password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
 #     the authentication realm.
+#   [*auth_request*]          - This allows you to specify a custom auth endpoint
 #   [*client_max_body_size*]    - This directive sets client_max_body_size.
 #   [*client_body_timeout*]     - Sets how long the server will wait for a
 #      client body. Default is 60s
@@ -275,6 +276,7 @@ define nginx::resource::server (
   $try_files                    = undef,
   $auth_basic                   = undef,
   $auth_basic_user_file         = undef,
+  $auth_request                 = undef,
   $client_body_timeout          = undef,
   $client_header_timeout        = undef,
   $client_max_body_size         = undef,
@@ -510,6 +512,9 @@ define nginx::resource::server (
   }
   if ($auth_basic_user_file != undef) {
     validate_string($auth_basic_user_file)
+  }
+  if ($auth_request != undef) {
+    validate_string($auth_request)
   }
   if ($server_cfg_prepend != undef) {
     validate_hash($server_cfg_prepend)

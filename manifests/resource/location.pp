@@ -92,6 +92,7 @@
 #     with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]  - This directive sets the htpasswd filename for
 #     the authentication realm.
+#   [*auth_request*]          - This allows you to specify a custom auth endpoint
 #   [*priority*]              - Location priority. Default: 500. User priority
 #     401-499, 501-599. If the priority is higher than the default priority,
 #     the location will be defined after root, or before root.
@@ -206,6 +207,7 @@ define nginx::resource::location (
   $proxy_buffering             = undef,
   $auth_basic                  = undef,
   $auth_basic_user_file        = undef,
+  $auth_request                = undef,
   $rewrite_rules               = [],
   $priority                    = 500,
   $mp4                         = false,
@@ -358,6 +360,9 @@ define nginx::resource::location (
   }
   if ($auth_basic_user_file != undef) {
     validate_string($auth_basic_user_file)
+  }
+  if ($auth_request != undef) {
+    validate_string($auth_request)
   }
   if !is_integer($priority) {
     fail('$priority must be an integer.')

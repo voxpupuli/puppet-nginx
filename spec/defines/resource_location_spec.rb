@@ -172,6 +172,12 @@ describe 'nginx::resource::location' do
           attr: 'auth_basic_user_file',
           value: 'value',
           match: '    auth_basic_user_file value;'
+        },
+        {
+          title: 'should set auth_request',
+          attr: 'auth_request',
+          value: 'value',
+          match: %r{\s+auth_request\s+value;}
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
