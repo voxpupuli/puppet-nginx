@@ -184,6 +184,12 @@ describe 'nginx::resource::server' do
           match: %r{\s+auth_basic_user_file\s+value;}
         },
         {
+          title: 'should set auth_request',
+          attr: 'auth_request',
+          value: 'value',
+          match: %r{\s+auth_request\s+value;}
+        },
+        {
           title: 'should set the client_body_timeout',
           attr: 'client_body_timeout',
           value: 'value',
@@ -581,6 +587,12 @@ describe 'nginx::resource::server' do
           attr: 'auth_basic_user_file',
           value: 'value',
           match: %r{\s+auth_basic_user_file\s+"value";}
+        },
+        {
+          title: 'should set auth_request',
+          attr: 'auth_request',
+          value: 'value',
+          match: %r{\s+auth_request\s+value;}
         },
         {
           title: 'should set the client_body_timeout',
