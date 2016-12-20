@@ -87,6 +87,9 @@ class nginx::config {
   $proxy_cache_levels             = $::nginx::proxy_cache_levels
   $proxy_cache_max_size           = $::nginx::proxy_cache_max_size
   $proxy_cache_path               = $::nginx::proxy_cache_path
+  $proxy_cache_loader_files       = $::nginx::proxy_cache_loader_files
+  $proxy_cache_loader_sleep       = $::nginx::proxy_cache_loader_sleep
+  $proxy_cache_loader_threshold   = $::nginx::proxy_cache_loader_threshold
   $proxy_use_temp_path            = $::nginx::proxy_use_temp_path
   $proxy_connect_timeout          = $::nginx::proxy_connect_timeout
   $proxy_headers_hash_bucket_size = $::nginx::proxy_headers_hash_bucket_size

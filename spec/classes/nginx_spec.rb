@@ -897,6 +897,21 @@ describe 'nginx' do
         end
       end
 
+      context 'when proxy_cache_path is /path/to/proxy.cache and loader_files is 1000' do
+        let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_files: '1000' } }
+        it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_files=1000;}) }
+      end
+
+      context 'when proxy_cache_path is /path/to/nginx and loader_sleep is 50ms' do
+        let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_sleep: '50ms' } }
+        it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_sleep=50ms;}) }
+      end
+
+      context 'when proxy_cache_path is /path/to/nginx and loader_threshold is 300ms' do
+        let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_threshold: '300ms' } }
+        it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_threshold=300ms;}) }
+      end
+
       context 'when conf_dir is /path/to/nginx' do
         let(:params) { { conf_dir: '/path/to/nginx' } }
         it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       /path/to/nginx/mime\.types;}) }
