@@ -14,10 +14,11 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo    = true,
-  $package_ensure = 'present',
-  $package_name   = 'nginx',
-  $package_source = 'nginx-stable',
+  $manage_repo                 = true,
+  $package_ensure              = 'present',
+  $package_name                = 'nginx',
+  $package_source              = 'nginx-stable',
+  $passenger_package_ensure    = 'present',
 ) {
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
@@ -84,7 +85,7 @@ class nginx::package::redhat (
           }
 
           package { 'passenger':
-            ensure  => present,
+            ensure  => $passenger_package_ensure,
             require => Yumrepo['passenger'],
           }
 

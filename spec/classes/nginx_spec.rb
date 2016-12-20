@@ -95,7 +95,15 @@ describe 'nginx' do
         end
         it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
         it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
-        it { is_expected.to contain_package('passenger') }
+        it { is_expected.to contain_package('passenger').with('ensure' => 'present') }
+      end
+
+      describe 'installs the requested passenger package version' do
+        let(:params) { { package_source: 'passenger', passenger_package_ensure: '4.1.0-1.el9' } }
+
+        it 'installs specified version exactly' do
+          is_expected.to contain_package('passenger').with('ensure' => '4.1.0-1.el9')
+        end
       end
 
       context 'manage_repo => false' do

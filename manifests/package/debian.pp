@@ -13,11 +13,12 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian(
-    $manage_repo    = true,
-    $package_name   = 'nginx',
-    $package_source = 'nginx',
-    $package_ensure = 'present'
+class nginx::package::debian (
+    $manage_repo              = true,
+    $package_name             = 'nginx',
+    $package_source           = 'nginx',
+    $package_ensure           = 'present',
+    $passenger_package_ensure = 'present'
   ) {
 
   $distro = downcase($::operatingsystem)
@@ -58,7 +59,7 @@ class nginx::package::debian(
         Package['apt-transport-https','ca-certificates'] -> Apt::Source['nginx']
 
         package { 'passenger':
-          ensure  => 'present',
+          ensure  => $passenger_package_ensure,
           require => Exec['apt_update'],
         }
 
