@@ -103,6 +103,9 @@ class nginx (
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
   $proxy_cache_path               = false,
+  $proxy_cache_loader_files       = undef,
+  $proxy_cache_loader_sleep       = undef,
+  $proxy_cache_loader_threshold   = undef,
   $proxy_use_temp_path            = false,
   $proxy_connect_timeout          = '90',
   $proxy_headers_hash_bucket_size = '64',
@@ -195,6 +198,12 @@ class nginx (
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
   validate_string($proxy_cache_inactive)
+
+  if ($proxy_cache_loader_files != undef) and !is_integer($proxy_cache_loader_files) {
+    fail('proxy_cache_loader_files must be an integer')
+  }
+  validate_string($proxy_cache_loader_sleep)
+  validate_string($proxy_cache_loader_threshold)
 
   if ($proxy_use_temp_path != false) {
         validate_re($proxy_use_temp_path, '^(on|off)$')
