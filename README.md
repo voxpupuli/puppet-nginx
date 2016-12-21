@@ -19,9 +19,7 @@ This module manages NGINX configuration.
 
 ### Requirements
 
-* Puppet 3.0.0 or later
-* Facter 1.7.0 or later
-* Ruby 1.9.3 or later (Support for Ruby-1.8.7 is not guaranteed. YMMV).
+* Puppet 3.8.7 or later
 
 ### Additional Documentation
 
