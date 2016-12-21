@@ -31,10 +31,13 @@ matrix:
     env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
   - rvm: 2.3.3
     env: PUPPET_VERSION="~> 4.0" CHECK=test
-  - rvm: 2.4.0-preview3
+  - rvm: 2.4.0-rc1
     env: PUPPET_VERSION="~> 4.0" CHECK=test
   allow_failures:
-    - rvm: 2.4.0-preview3
+    - rvm: 2.4.0-rc1
+branches:
+  only:
+  - master
 notifications:
   email: false
 deploy:
