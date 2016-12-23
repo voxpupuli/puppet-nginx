@@ -1200,12 +1200,7 @@ describe 'nginx::resource::server' do
         end
 
         it 'has correctly ordered entries in the config' do
-          is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{
-            %r|
-            \s+add_header\s+header1 test value 1;\n
-            \s+add_header\s+header2 test value 2;\n
-            \s+add_header\s+header3 test value 3;\n
-            |})
+          is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2";\n\s+add_header\s+"header3" "test value 3";\n})
         end
       end
 
@@ -1218,12 +1213,7 @@ describe 'nginx::resource::server' do
         end
 
         it 'has correctly ordered entries in the config' do
-          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{
-            %r|
-            \s+add_header\s+header1 test value 1;\n
-            \s+add_header\s+header2 test value 2;\n
-            \s+add_header\s+header3 test value 3;\n
-            |})
+          is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2";\n\s+add_header\s+"header3" "test value 3";\n})
         end
       end
     end
