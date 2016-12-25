@@ -14,10 +14,9 @@
 #
 # This class file is not called directly
 class nginx::package::debian(
-    $manage_repo    = true,
     $package_name   = 'nginx',
-    $package_source = 'nginx',
-    $package_ensure = 'present'
+    $package_ensure = 'present',
+    $package_source = undef,
   ) {
 
   $distro = downcase($::operatingsystem)
@@ -27,7 +26,7 @@ class nginx::package::debian(
     name   => $package_name,
   }
 
-  if $manage_repo {
+  if $package_source {
     include '::apt'
     Exec['apt_update'] -> Package['nginx']
 

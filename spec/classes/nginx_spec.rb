@@ -98,9 +98,9 @@ describe 'nginx' do
         it { is_expected.to contain_package('passenger') }
       end
 
-      context 'manage_repo => false' do
+      context 'package_source => unmanaged' do
         let(:facts) { { operatingsystem: operatingsystem, osfamily: 'RedHat', operatingsystemmajrelease: '7' } }
-        let(:params) { { manage_repo: false } }
+        let(:params) { { package_source: 'unmanaged' } }
         it { is_expected.to contain_package('nginx') }
         it { is_expected.not_to contain_yumrepo('nginx-release') }
       end
@@ -180,8 +180,8 @@ describe 'nginx' do
         end
       end
 
-      context 'manage_repo => false' do
-        let(:params) { { manage_repo: false } }
+      context 'package_source => unmanaged' do
+        let(:params) { { package_source: unmanaged} }
         it { is_expected.to contain_package('nginx') }
         it { is_expected.not_to contain_apt__source('nginx') }
         it { is_expected.not_to contain_package('passenger') }
@@ -209,7 +209,7 @@ describe 'nginx' do
       {
         service_ensure: 'running',
         service_name: 'nginx',
-        service_manage: true
+        manage_service: true
       }
     end
 

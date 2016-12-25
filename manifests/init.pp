@@ -135,11 +135,11 @@ class nginx (
   $ssl_ciphers                    = 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS',
 
   ### START Package Configuration ###
+  $manage_package                 = true,
   $package_ensure                 = present,
   $package_name                   = $::nginx::params::package_name,
-  $package_source                 = 'nginx',
+  $package_source                 = undef,
   $package_flavor                 = undef,
-  $manage_repo                    = $::nginx::params::manage_repo,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
@@ -147,7 +147,7 @@ class nginx (
   $service_flags                  = undef,
   $service_restart                = undef,
   $service_name                   = undef,
-  $service_manage                 = true,
+  $manage_service                 = true,
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
@@ -266,19 +266,8 @@ class nginx (
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
-  class { '::nginx::package':
-    package_name   => $package_name,
-    package_source => $package_source,
-    package_ensure => $package_ensure,
-    package_flavor => $package_flavor,
-    notify         => Class['::nginx::service'],
-    manage_repo    => $manage_repo,
-  }
-
-  include '::nginx::config'
-  include '::nginx::service'
-
-  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
+  class { '::nginx::package': } -> class { '::nginx::config': } ~> class { '::nginx::service': }
+  Class['::nginx::package'] ~> Class['::nginx::service']
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)

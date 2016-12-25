@@ -14,22 +14,21 @@
 #
 # This class file is not called directly
 class nginx::package::redhat (
-  $manage_repo    = true,
   $package_ensure = 'present',
   $package_name   = 'nginx',
-  $package_source = 'nginx-stable',
+  $package_source = undef,
 ) {
 
-  #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
-  #clone and provide the Red Hat-specific package. This comes into play when not
-  #on RHEL or CentOS and $manage_repo is set manually to 'true'.
+  # Install the CentOS-specific packages on that OS, otherwise assume it's a
+  # RHEL clone and provide the Red Hat-specific package. This comes into play
+  # when not on RHEL or CentOS and $package_source is set.
   if $::operatingsystem == 'centos' {
     $_os = 'centos'
   } else {
     $_os = 'rhel'
   }
 
-  if $manage_repo {
+  if $package_source {
     case $package_source {
       'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
