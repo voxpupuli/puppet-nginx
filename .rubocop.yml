@@ -510,3 +510,11 @@ RSpec/ExampleLength:
 
 RSpec/NamedSubject:
   Enabled: False
+
+# disabled for now since they cause a lot of issues
+# these issues aren't easy to fix
+RSpec/RepeatedDescription:
+  Enabled: False
+
+RSpec/NestedGroups:
+  Enabled: False
