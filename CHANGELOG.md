@@ -1,5 +1,32 @@
 # Changelog
 
+## 2017-01-13 - Release 0.6.0
+
+This is the last release with Puppet 3 support!
+This release contains several breaking changes!
+* Add $members_tag parameter to nginx::resource::upstream
+* Default proxy_redirect to undef in locations (resolves #395)
+* Officially add Ubuntu 1604 support (#935)
+* Fix rubocop failures after rubocop version update
+* Allow setting $daemon to "on" or "off" (defaults to unset)
+* Add upstream_cfg_append (to match prepend)
+* Add 'require' for parent dir of upstream, map, and geo configs
+* Set log directory ownership / permissions explicitly
+* fix map.erb to work on Redhat 6 releases
+* Move all parameters back to top scope (nginx vs nginx::config) (major change)
+* Rename rewrite_to_https => ssl_force_redirect (breaking change)
+* Adds new SSL && protocol specific directives to mailhost setup (#769)
+* allow try_files and index in location resource (#966)
+* Put keepalive at bottom of upstream_cfg\_{append,prepend} sections
+* Reorganize templates for clearer understanding (#970)
+* Use SSL for nginx APT repository
+* Fix validation range for location priority
+* Rename v[hH]ost to server everywhere (major change)
+* Added auth_request configuration capability
+* Add support for proxy_cache_path loader directives
+* Add passenger_package_ensure parameter to allow pinning passenger version
+* Bump minimum version dependencies (for Puppet 4)
+
 ## 2016-10-26 Release [v0.5.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.5.0)
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.4.0...v0.5.0)
 
