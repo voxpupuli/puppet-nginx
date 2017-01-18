@@ -26,7 +26,9 @@ group :test do
   gem 'puppet-blacksmith',                                          :require => false
   gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
   gem 'puppet-strings', '~> 1.0.0',                                 :require => false
-  gem 'rubocop-rspec', '~> 1.9.0',                                  :require => false if RUBY_VERSION >= '2.3.0'
+  gem 'redcarpet',                                                  :require => false
+  gem 'rubocop', '~> 0.47.0',                                       :require => false if RUBY_VERSION >= '2.3.0'
+  gem 'rubocop-rspec', '~> 1.10.0',                                 :require => false if RUBY_VERSION >= '2.3.0'
   gem 'mocha', '>= 1.2.1',                                          :require => false
   gem 'coveralls',                                                  :require => false
   gem 'simplecov-console',                                          :require => false
