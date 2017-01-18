@@ -74,7 +74,7 @@ Style/WhileUntilModifier:
 Lint/AmbiguousRegexpLiteral:
   Enabled: True
 
-Lint/Eval:
+Security/Eval:
   Enabled: True
 
 Lint/BlockAlignment:
@@ -302,7 +302,7 @@ Style/EmptyLiteral:
 Metrics/LineLength:
   Enabled: False
 
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Enabled: True
 
 Style/MethodDefParentheses:
@@ -518,3 +518,7 @@ RSpec/RepeatedDescription:
 
 RSpec/NestedGroups:
   Enabled: False
+
+# disable Yaml safe_load. This is needed to support ruby2.0.0 development envs
+Security/YAMLLoad:
+  Enabled: false
