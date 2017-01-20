@@ -856,7 +856,7 @@ describe 'nginx::resource::location' do
       context 'when fastcgi => "localhost:9000"' do
         let(:params) { { fastcgi: 'localhost:9000', server: 'server1' } }
 
-        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
+        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0644') }
       end
 
       context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
