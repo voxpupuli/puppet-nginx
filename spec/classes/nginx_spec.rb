@@ -1076,24 +1076,6 @@ describe 'nginx' do
             )
           )
         end
-        it do
-          is_expected.to contain_file('/etc/nginx/streams-available').without(
-            %w(
-              ignore
-              purge
-              recurse
-            )
-          )
-        end
-        it do
-          is_expected.to contain_file('/etc/nginx/streams-enabled').without(
-            %w(
-              ignore
-              purge
-              recurse
-            )
-          )
-        end
       end
 
       context 'when daemon_user = www-data' do
