@@ -104,6 +104,7 @@
 #   [*proxy_method*]            - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
 #   [*proxy_set_body*]          - If defined, sets the body passed to the backend.
+#   [*proxy_next_upstream*]     - If defined, sets the proxy_next_upstream directive.
 #   [*auth_basic*]              - This directive includes testing name and
 #      password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]    - This directive sets the htpasswd filename for
@@ -220,6 +221,7 @@ define nginx::resource::vhost (
   $proxy_cache_valid            = false,
   $proxy_method                 = undef,
   $proxy_set_body               = undef,
+  $proxy_next_upstream          = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
   $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",

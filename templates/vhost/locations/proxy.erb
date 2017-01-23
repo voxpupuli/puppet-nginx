@@ -27,3 +27,6 @@
 <% if @proxy_cache_key -%>
     proxy_cache_key         <%= @proxy_cache_key %>;
 <% end -%>
+<% if @proxy_next_upstream-%>
+    proxy_next_upstream     <%= @proxy_next_upstream %>;
+<% end -%>
