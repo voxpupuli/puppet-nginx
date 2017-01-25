@@ -407,8 +407,12 @@ define nginx::resource::location (
 
   $config_file = "${server_dir}/${server_sanitized}.conf"
 
-  $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
-  $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
+  if !($location =~ /^~/) {
+    $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
+    $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')
+  } else {
+    $location_sanitized = $location_sanitized_tmp
+  }
 
   if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
