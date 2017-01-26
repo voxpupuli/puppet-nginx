@@ -410,7 +410,7 @@ define nginx::resource::location (
   if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
-      mode    => '0770',
+      mode    => '0644',
       content => template('nginx/server/fastcgi_params.erb'),
     }
   }
@@ -418,7 +418,7 @@ define nginx::resource::location (
   if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
-      mode    => '0770',
+      mode    => '0644',
       content => template('nginx/server/uwsgi_params.erb'),
     }
   }

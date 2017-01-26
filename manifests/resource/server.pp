@@ -694,7 +694,7 @@ define nginx::resource::server (
   if $fastcgi != undef and !defined(File[$fastcgi_params]) {
     file { $fastcgi_params:
       ensure  => present,
-      mode    => '0770',
+      mode    => '0644',
       content => template('nginx/server/fastcgi_params.erb'),
     }
   }
@@ -702,7 +702,7 @@ define nginx::resource::server (
   if $uwsgi != undef and !defined(File[$uwsgi_params]) {
     file { $uwsgi_params:
       ensure  => present,
-      mode    => '0660',
+      mode    => '0644',
       content => template('nginx/server/uwsgi_params.erb'),
     }
   }

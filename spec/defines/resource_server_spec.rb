@@ -997,7 +997,7 @@ describe 'nginx::resource::server' do
           default_params.merge(fastcgi: 'localhost:9000')
         end
 
-        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0770') }
+        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0644') }
       end
 
       context 'when fastcgi_param => {key => value}' do
@@ -1013,7 +1013,7 @@ describe 'nginx::resource::server' do
           default_params.merge(uwsgi: 'uwsgi_upstream')
         end
 
-        it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0660') }
+        it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0644') }
       end
 
       context 'when listen_port == ssl_port' do
