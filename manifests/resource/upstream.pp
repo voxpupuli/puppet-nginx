@@ -10,6 +10,7 @@
 #   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
 #   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
 #   [*upstream_max_fails*]    - Set the max_fails for the upstream. Default is to use nginx default value which is 1.
+#   [*upstream_weight*]       - Set the weight for the upstream. Default is to use nginx default value which is 1.
 #
 # Actions:
 #
@@ -49,6 +50,7 @@ define nginx::resource::upstream (
   $upstream_fail_timeout = '10s',
   $upstream_max_fails    = undef,
   $upstream_context      = 'http',
+  $upstream_weight       = undef,
 ) {
 
   if $members != undef {
