@@ -14,7 +14,7 @@ This release contains several breaking changes!
 * Set log directory ownership / permissions explicitly
 * fix map.erb to work on Redhat 6 releases
 * Move all parameters back to top scope (nginx vs nginx::config) (major change)
-* Rename rewrite_to_https => ssl_force_redirect (breaking change)
+* Rename rewrite_to_https => ssl_redirect (breaking change)
 * Adds new SSL && protocol specific directives to mailhost setup (#769)
 * allow try_files and index in location resource (#966)
 * Put keepalive at bottom of upstream_cfg\_{append,prepend} sections
