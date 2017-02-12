@@ -10,7 +10,7 @@ HOSTS:
     docker_preserve_image: true
     docker_cmd: '["/usr/sbin/init"]'
     docker_image_commands:
-      - 'yum install -y crontabs initscripts iproute openssl sysvinit-tools tar wget which'
+      - 'yum install -y crontabs initscripts iproute openssl sysvinit-tools tar wget which ss'
 CONFIG:
   trace_limit: 200
   masterless: true
