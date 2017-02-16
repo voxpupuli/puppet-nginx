@@ -990,14 +990,16 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0644') }
       end
 
-      context 'when listen_port == ssl_port' do
+      context 'when listen_port == ssl_port but ssl = false' do
         let :params do
           default_params.merge(listen_port: 80,
-                               ssl_port: 80)
+                               ssl_port: 80,
+                               ssl: false)
         end
 
-        it { is_expected.not_to contain_concat__fragment("#{title}-header") }
-        it { is_expected.not_to contain_concat__fragment("#{title}-footer") }
+        # TODO: implement test after this can be tested
+        # msg = %r{nginx: ssl must be true if listen_port is the same as ssl_port}
+        it 'Testing for warnings not yet implemented in classes'
       end
 
       context 'when listen_port != ssl_port' do
