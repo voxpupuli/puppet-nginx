@@ -133,19 +133,19 @@ same value on the server, you will have a single HTTPS server listening on
 Defining nginx resources in Hiera.
 
 ```yaml
-nginx::nginx_upstreams:
+nginx::resource::upstream:
   'puppet_rack_app':
     ensure: present
     members:
       - localhost:3000
       - localhost:3001
       - localhost:3002
-nginx::nginx_servers:
+nginx::resource::server:
   'www.puppetlabs.com':
     www_root: '/var/www/www.puppetlabs.com'
   'rack.puppetlabs.com':
     proxy: 'http://puppet_rack_app'
-nginx::nginx_locations:
+nginx::resource::location:
   'static':
     location: '~ "^/static/[0-9a-fA-F]{8}\/(.*)$"'
     server: www.puppetlabs.com
@@ -154,7 +154,7 @@ nginx::nginx_locations:
     location: /userContent
     server: www.puppetlabs.com
     www_root: /var/www/html
-nginx::nginx_mailhosts:
+nginx::resource::mailhost:
   'smtp':
     auth_http: server2.example/cgi-bin/auth
     protocol: smtp
