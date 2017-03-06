@@ -22,8 +22,6 @@ class nginx::package(
   $manage_repo              = $::nginx::params::manage_repo,
 ) {
 
-  assert_private()
-
   anchor { 'nginx::package::begin': }
   anchor { 'nginx::package::end': }
 
