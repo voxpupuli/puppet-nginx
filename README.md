@@ -163,6 +163,33 @@ nginx::nginx_mailhosts:
     starttls: only
 ```
 
+### A stream syslog UDP proxy
+
+```yaml
+nginx::nginx_cfg_prepend:
+  include:
+    - '/etc/nginx/modules-enabled/*.conf'
+
+nginx::nginx_streamhosts:
+  'syslog':
+    ensure:                 'present'
+    listen_port:            '514'
+    listen_options:         'udp'
+    proxy:                  'syslog'
+    proxy_read_timeout:     '1'
+    proxy_connect_timeout:  '1'
+    raw_append:
+      - 'error_log off;'
+
+nginx::nginx_upstreams:
+  'syslog':
+    upstream_context: 'stream'
+    members:
+      - '10.0.0.1:514'
+      - '10.0.0.2:514'
+      - '10.0.0.3:514'
+```
+
 ## Nginx with precompiled Passenger
 
 Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and
