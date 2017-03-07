@@ -395,7 +395,7 @@ describe 'nginx' do
           {
             title: 'should set worker_processes',
             attr: 'worker_processes',
-            value: '4',
+            value: 4,
             match: 'worker_processes 4;'
           },
           {
@@ -407,7 +407,7 @@ describe 'nginx' do
           {
             title: 'should set worker_rlimit_nofile',
             attr: 'worker_rlimit_nofile',
-            value: '10000',
+            value: 10000,
             match: 'worker_rlimit_nofile 10000;'
           },
           {
@@ -464,7 +464,7 @@ describe 'nginx' do
           {
             title: 'should set worker_connections',
             attr: 'worker_connections',
-            value: '100',
+            value: 100,
             match: '  worker_connections 100;'
           },
           {
@@ -502,12 +502,6 @@ describe 'nginx' do
             attr: 'events_use',
             value: 'eventport',
             match: %r{\s*use\s+eventport;}
-          },
-          {
-            title: 'should not set events_use',
-            attr: 'events_use',
-            value: false,
-            notmatch: %r{use }
           },
           {
             title: 'should set access_log',
@@ -687,34 +681,16 @@ describe 'nginx' do
             match: %r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;}
           },
           {
-            title: 'should not set proxy_cache_path',
-            attr: 'proxy_cache_path',
-            value: false,
-            notmatch: %r{proxy_cache_path}
-          },
-          {
             title: 'should set fastcgi_cache_path',
             attr: 'fastcgi_cache_path',
             value: '/path/to/proxy.cache',
             match: %r{\s*fastcgi_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d3:100m max_size=500m inactive=20m;}
           },
           {
-            title: 'should not set fastcgi_cache_path',
-            attr: 'fastcgi_cache_path',
-            value: false,
-            notmatch: %r{fastcgi_cache_path}
-          },
-          {
             title: 'should set fastcgi_cache_use_stale',
             attr: 'fastcgi_cache_use_stale',
             value: 'invalid_header',
             match: '  fastcgi_cache_use_stale invalid_header;'
-          },
-          {
-            title: 'should not set fastcgi_cache_use_stale',
-            attr: 'fastcgi_cache_use_stale',
-            value: false,
-            notmatch: %r{fastcgi_cache_use_stale}
           },
           {
             title: 'should contain ordered appended directives from hash',
@@ -906,7 +882,13 @@ describe 'nginx' do
       end
 
       context 'when proxy_cache_path is /path/to/proxy.cache and loader_files is 1000' do
-        let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_files: '1000' } }
+        let(:params) do
+          {
+            conf_dir: '/path/to/nginx',
+            proxy_cache_path: '/path/to/proxy.cache',
+            proxy_cache_loader_files: 1000
+          }
+        end
         it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_files=1000;}) }
       end
 
@@ -1083,12 +1065,6 @@ describe 'nginx' do
         it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
         it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
         it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
-      end
-
-      context 'when nginx_error_log_severity = invalid' do
-        let(:params) { { nginx_error_log_severity: 'invalid' } }
-
-        it { expect { is_expected.to contain_class('nginx::config') }.to raise_error(Puppet::Error, %r{\$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg}) }
       end
 
       context 'when log_dir is non-default' do
