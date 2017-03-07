@@ -104,16 +104,6 @@ describe 'nginx::resource::map' do
 
         it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_ensure('absent') }
       end
-
-      context 'when mappings is a string' do
-        let :params do
-          default_params.merge(
-            mappings: 'foo pool_b'
-          )
-        end
-
-        it { is_expected.to raise_error(Puppet::Error, %r[mappings must be a hash of the form { 'foo' => 'pool_b' }]) }
-      end
     end
   end
 end
