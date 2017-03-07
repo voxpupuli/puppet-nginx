@@ -47,59 +47,24 @@
 #    ensure   => present,
 #  }
 define nginx::resource::streamhost (
-  $ensure                       = 'present',
-  $listen_ip                    = '*',
-  $listen_port                  = 80,
-  $listen_options               = undef,
-  $ipv6_enable                  = false,
-  $ipv6_listen_ip               = '::',
-  $ipv6_listen_port             = 80,
-  $ipv6_listen_options          = 'default ipv6only=on',
-  $proxy                        = undef,
-  $proxy_read_timeout           = $::nginx::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx::proxy_connect_timeout,
-  $resolver                     = [],
-  $raw_prepend                  = undef,
-  $raw_append                   = undef,
-  $owner                        = $::nginx::global_owner,
-  $group                        = $::nginx::global_group,
-  $mode                         = $::nginx::global_mode,
+  Enum['absent', 'present'] $ensure       = 'present',
+  Variant[Array, String] $listen_ip       = '*',
+  Integer $listen_port                    = 80,
+  Optional[String] $listen_options        = undef,
+  Boolean $ipv6_enable                    = false,
+  Variant[Array, String] $ipv6_listen_ip  = '::',
+  Integer $ipv6_listen_port               = 80,
+  String $ipv6_listen_options             = 'default ipv6only=on',
+  $proxy                                  = undef,
+  String $proxy_read_timeout              = $::nginx::proxy_read_timeout,
+  $proxy_connect_timeout                  = $::nginx::proxy_connect_timeout,
+  Array $resolver                         = [],
+  $raw_prepend                            = undef,
+  $raw_append                             = undef,
+  String $owner                           = $::nginx::global_owner,
+  String $group                           = $::nginx::global_group,
+  String $mode                            = $::nginx::global_mode,
 ) {
-
-  validate_re($ensure, '^(present|absent)$',
-    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-  if !(is_array($listen_ip) or is_string($listen_ip)) {
-    fail('$listen_ip must be a string or array.')
-  }
-  if is_string($listen_port) {
-    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($listen_port) {
-    fail('$listen_port must be an integer.')
-  }
-  if ($listen_options != undef) {
-    validate_string($listen_options)
-  }
-  validate_bool($ipv6_enable)
-  if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
-    fail('$ipv6_listen_ip must be a string or array.')
-  }
-  if is_string($ipv6_listen_port) {
-    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($ipv6_listen_port) {
-    fail('$ipv6_listen_port must be an integer.')
-  }
-  validate_string($ipv6_listen_options)
-
-  validate_string($proxy_read_timeout)
-
-  validate_array($resolver)
-
-  validate_string($owner)
-  validate_string($group)
-  validate_re($mode, '^\d{4}$',
-    "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
   if $::nginx::confd_only {
