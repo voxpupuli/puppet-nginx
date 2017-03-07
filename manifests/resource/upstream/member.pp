@@ -37,25 +37,10 @@
 define nginx::resource::upstream::member (
   $upstream,
   $server,
-  $ensure                 = 'present',
-  $port                   = 80,
+  Enum['present', 'absent'] $ensure = 'present',
+  Integer $port                     = 80,
   $upstream_fail_timeout  = '10s',
 ) {
-
-  validate_re($ensure, '^(present|absent)$',
-    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-
-  if is_string($port) {
-    warning('DEPRECATION: String $port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($port) {
-    fail('$port must be an integer.')
-  }
-
-  $ensure_real = $ensure ? {
-    'absent' => absent,
-    default  => present,
-  }
 
   # Uses: $server, $port, $upstream_fail_timeout
   concat::fragment { "${upstream}_upstream_member_${name}":
