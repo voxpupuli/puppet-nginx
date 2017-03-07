@@ -1,2 +1,2 @@
   <% @members.each do |i| %>
-  server     <%= i %>  fail_timeout=<%= @upstream_fail_timeout %><% if @upstream_max_fails -%> max_fails=<%=@upstream_max_fails %><% end %>;<% end %>
+  server     <%= i %>  fail_timeout=<%= @upstream_fail_timeout %><% if @upstream_max_fails -%> max_fails=<%=@upstream_max_fails %><% end %><% if @upstream_weight -%> weight=<%=@upstream_weight %><% end %>;<% end %>
