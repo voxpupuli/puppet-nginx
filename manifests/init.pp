@@ -31,7 +31,7 @@ class nginx (
   $confd_only                     = false,
   $confd_purge                    = false,
   $conf_dir                       = $::nginx::params::conf_dir,
-  $daemon                         = undef,
+  Optional[Enum['on', 'off']] $daemon = undef,
   $daemon_user                    = $::nginx::params::daemon_user,
   $global_owner                   = $::nginx::params::global_owner,
   $global_group                   = $::nginx::params::global_group,
