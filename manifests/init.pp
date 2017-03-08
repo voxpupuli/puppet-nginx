@@ -108,7 +108,7 @@ class nginx (
   $proxy_cache_loader_threshold   = undef,
   $proxy_use_temp_path            = false,
   $proxy_connect_timeout          = '90',
-  $proxy_headers_hash_bucket_size = '64',
+  $proxy_headers_hash_bucket_size = 64,
   $proxy_http_version             = undef,
   $proxy_read_timeout             = '90',
   $proxy_redirect                 = undef,
@@ -263,7 +263,6 @@ class nginx (
   }
 
   validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
-  validate_string($proxy_headers_hash_bucket_size)
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
