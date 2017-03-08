@@ -407,7 +407,7 @@ describe 'nginx' do
           {
             title: 'should set worker_rlimit_nofile',
             attr: 'worker_rlimit_nofile',
-            value: 10000,
+            value: 10_000,
             match: 'worker_rlimit_nofile 10000;'
           },
           {
