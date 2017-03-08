@@ -102,7 +102,7 @@ class nginx (
   $proxy_cache_keys_zone          = 'd2:100m',
   $proxy_cache_levels             = '1',
   $proxy_cache_max_size           = '500m',
-  $proxy_cache_path               = false,
+  $proxy_cache_path               = undef,
   $proxy_cache_loader_files       = undef,
   $proxy_cache_loader_sleep       = undef,
   $proxy_cache_loader_threshold   = undef,
@@ -189,12 +189,6 @@ class nginx (
   validate_bool($confd_only)
   validate_bool($confd_purge)
   validate_bool($server_purge)
-  if ( $proxy_cache_path != false) {
-    if ( is_string($proxy_cache_path) or is_hash($proxy_cache_path)) {}
-    else {
-      fail('proxy_cache_path must be a string or a hash')
-    }
-  }
   validate_re($proxy_cache_levels, '^[12](:[12])*$')
   validate_string($proxy_cache_keys_zone)
   validate_string($proxy_cache_max_size)
