@@ -128,7 +128,7 @@ class nginx (
   $ssl_stapling                   = 'off',
   $types_hash_bucket_size         = '512',
   $types_hash_max_size            = '1024',
-  $worker_connections             = '1024',
+  $worker_connections             = 1024,
   $worker_processes               = '1',
   $worker_rlimit_nofile           = '1024',
   $ssl_protocols                  = 'TLSv1 TLSv1.1 TLSv1.2',
