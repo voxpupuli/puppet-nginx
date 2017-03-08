@@ -72,7 +72,7 @@ class nginx (
   $fastcgi_cache_keys_zone        = 'd3:100m',
   $fastcgi_cache_levels           = '1',
   $fastcgi_cache_max_size         = '500m',
-  $fastcgi_cache_path             = false,
+  $fastcgi_cache_path             = undef,
   $fastcgi_cache_use_stale        = undef,
   $gzip                           = 'on',
   $gzip_buffers                   = undef,
@@ -197,9 +197,6 @@ class nginx (
   validate_string($proxy_cache_loader_sleep)
   validate_string($proxy_cache_loader_threshold)
 
-  if ($fastcgi_cache_path != false) {
-        validate_string($fastcgi_cache_path)
-  }
   validate_re($fastcgi_cache_levels, '^[12](:[12])*$')
   validate_string($fastcgi_cache_keys_zone)
   validate_string($fastcgi_cache_max_size)
