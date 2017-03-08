@@ -66,7 +66,7 @@ class nginx (
   $client_body_timeout            = '60',
   $send_timeout                   = '60',
   $lingering_timeout              = '5',
-  $events_use                     = false,
+  $events_use                     = undef,
   $fastcgi_cache_inactive         = '20m',
   $fastcgi_cache_key              = false,
   $fastcgi_cache_keys_zone        = 'd3:100m',
@@ -172,9 +172,6 @@ class nginx (
   }
   if (!is_integer($worker_rlimit_nofile)) {
     fail('$worker_rlimit_nofile must be an integer.')
-  }
-  if (!is_string($events_use)) and ($events_use != false) {
-    fail('$events_use must be a string or false.')
   }
   validate_string($multi_accept)
   validate_array($proxy_set_header)
