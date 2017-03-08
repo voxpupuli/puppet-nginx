@@ -68,7 +68,7 @@ class nginx (
   $lingering_timeout              = '5',
   $events_use                     = undef,
   $fastcgi_cache_inactive         = '20m',
-  $fastcgi_cache_key              = false,
+  $fastcgi_cache_key              = undef,
   $fastcgi_cache_keys_zone        = 'd3:100m',
   $fastcgi_cache_levels           = '1',
   $fastcgi_cache_max_size         = '500m',
@@ -201,9 +201,6 @@ class nginx (
   validate_string($fastcgi_cache_keys_zone)
   validate_string($fastcgi_cache_max_size)
   validate_string($fastcgi_cache_inactive)
-  if ($fastcgi_cache_key != false) {
-    validate_string($fastcgi_cache_key)
-  }
 
   validate_bool($mail)
   validate_bool($stream)
