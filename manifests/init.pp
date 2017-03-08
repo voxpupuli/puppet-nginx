@@ -73,7 +73,7 @@ class nginx (
   $fastcgi_cache_levels           = '1',
   $fastcgi_cache_max_size         = '500m',
   $fastcgi_cache_path             = false,
-  $fastcgi_cache_use_stale        = false,
+  $fastcgi_cache_use_stale        = undef,
   $gzip                           = 'on',
   $gzip_buffers                   = undef,
   $gzip_comp_level                = 1,
@@ -219,9 +219,6 @@ class nginx (
   validate_string($fastcgi_cache_inactive)
   if ($fastcgi_cache_key != false) {
     validate_string($fastcgi_cache_key)
-  }
-  if ($fastcgi_cache_use_stale != false) {
-    validate_string($fastcgi_cache_use_stale)
   }
 
   validate_bool($mail)
