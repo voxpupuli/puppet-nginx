@@ -263,7 +263,9 @@ class nginx (
   }
 
   validate_re($nginx_error_log_severity,['debug','info','notice','warn','error','crit','alert','emerg'],'$nginx_error_log_severity must be debug, info, notice, warn, error, crit, alert or emerg')
-  validate_string($proxy_headers_hash_bucket_size)
+  if (!is_integer($proxy_headers_hash_bucket_size)) {
+    fail('$proxy_headers_hash_bucket_size must be an integer.')
+  }
   validate_bool($super_user)
   ### END VALIDATIONS ###
 
