@@ -94,7 +94,7 @@ class nginx (
   $stream                         = false,
   $multi_accept                   = 'off',
   $names_hash_bucket_size         = 64,
-  $names_hash_max_size            = '512',
+  $names_hash_max_size            = 512,
   $nginx_cfg_prepend              = false,
   $proxy_buffers                  = '32 4k',
   $proxy_buffer_size              = '8k',
