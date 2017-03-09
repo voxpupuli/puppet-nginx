@@ -178,9 +178,6 @@ class nginx::config {
     owner  => $daemon_user,
   }
 
-  if ($daemon) {
-    validate_re($daemon, '^(on|off)$')
-  }
 
   file {$proxy_temp_path:
     ensure => directory,

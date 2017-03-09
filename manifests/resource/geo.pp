@@ -53,25 +53,15 @@
 
 
 define nginx::resource::geo (
-  $networks,
-  $default         = undef,
-  $ensure          = 'present',
-  $ranges          = false,
-  $address         = undef,
-  $delete          = undef,
-  $proxies         = undef,
-  $proxy_recursive = undef
+  Hash $networks,
+  Optional[String] $default           = undef,
+  Enum['present', 'absent'] $ensure   = 'present',
+  Boolean $ranges                     = false,
+  Optional[String] $address           = undef,
+  Optional[String] $delete            = undef,
+  Optional[Array] $proxies            = undef,
+  Optional[Boolean] $proxy_recursive  = undef
 ) {
-
-  validate_hash($networks)
-  validate_bool($ranges)
-  validate_re($ensure, '^(present|absent)$',
-    "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
-  if ($default != undef) { validate_string($default) }
-  if ($address != undef) { validate_string($address) }
-  if ($delete != undef) { validate_string($delete) }
-  if ($proxies != undef) { validate_array($proxies) }
-  if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
   $root_group = $::nginx::root_group
   $conf_dir   = "${::nginx::conf_dir}/conf.d"
