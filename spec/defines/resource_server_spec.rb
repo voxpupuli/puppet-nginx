@@ -904,18 +904,6 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
       end
 
-      context 'SSL cert missing' do
-        let(:params) { { ssl: true, ssl_key: 'key' } }
-
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
-      end
-
-      context 'SSL key missing' do
-        let(:params) { { ssl: true, ssl_cert: 'cert' } }
-
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
-      end
-
       context 'SSL cert and key are both set to fully qualified paths' do
         let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt', ssl_key: '/tmp/foo.key:' } }
 
@@ -928,20 +916,6 @@ describe 'nginx::resource::server' do
 
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate_key}) }
-      end
-
-      context 'SSL cert without key' do
-        let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt' } }
-
-        msg = %r{ssl_key must be set to false or to a fully qualified path}
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, msg) }
-      end
-
-      context 'SSL key without cert' do
-        let(:params) { { ssl: true, ssl_key: '/tmp/foo.key' } }
-
-        msg = %r{ssl_cert must be set to false or to a fully qualified path}
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, msg) }
       end
 
       context 'when use_default_location => true' do
