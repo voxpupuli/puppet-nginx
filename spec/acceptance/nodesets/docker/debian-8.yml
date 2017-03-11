@@ -13,6 +13,7 @@ HOSTS:
       - 'echo deb http://ftp.debian.org/debian jessie-backports main >> /etc/apt/sources.list'
       - 'apt-get update && apt-get install -y cron locales-all net-tools wget'
       - 'rm -f /usr/sbin/policy-rc.d'
+      - 'systemctl mask getty@tty1.service getty-static.service'
 CONFIG:
   trace_limit: 200
   masterless: true

@@ -7,7 +7,7 @@
 # Hint: image IDs (ami-*) for the same image are different per location.
 #
 AMI:
-  # Amazon Linux AMI 2016.09.1 (HVM), SSD Volume Type 
+  # Amazon Linux AMI 2016.09.1 (HVM), SSD Volume Type
   amazonlinux-2016091-eu-central-1:
     :image:
       :aio: ami-af0fc0c0
