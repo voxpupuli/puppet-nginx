@@ -11,6 +11,7 @@ HOSTS:
     docker_cmd: '["/usr/sbin/init"]'
     docker_image_commands:
       - 'yum install -y crontabs initscripts iproute openssl sysvinit-tools tar wget which ss'
+      - 'systemctl mask getty@tty1.service'
 CONFIG:
   trace_limit: 200
   masterless: true
