@@ -63,22 +63,14 @@
 
 
 define nginx::resource::map (
-  $string,
-  $mappings,
-  $default    = undef,
-  $ensure     = 'present',
-  $hostnames  = false
+  String $string,
+  Variant[Array, Hash] $mappings,
+  Optional[String] $default         = undef,
+  Enum['absent', 'present'] $ensure = 'present',
+  Boolean $hostnames                = false
 ) {
-  validate_string($string)
   validate_re($string, '^.{2,}$',
     "Invalid string value [${string}]. Expected a minimum of 2 characters.")
-  if ! ( is_array($mappings) or is_hash($mappings) ) {
-    fail("\$mappings must be a hash of the form { 'foo' => 'pool_b' } or array of hashes of form [{ 'key' => 'foo', 'value' => 'pool_b' }, ...]")
-  }
-  validate_bool($hostnames)
-  validate_re($ensure, '^(present|absent)$',
-    "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
-  if ($default != undef) { validate_string($default) }
 
   $root_group = $::nginx::root_group
   $conf_dir   = "${::nginx::conf_dir}/conf.d"
