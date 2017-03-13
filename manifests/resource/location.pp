@@ -154,12 +154,12 @@
 
 define nginx::resource::location (
   Enum['present', 'absent'] $ensure                   = present,
-  $internal                                           = false,
+  Boolean $internal                                   = false,
   String $location                                    = $name,
   String $server                                      = undef,
   Optional[String] $www_root                          = undef,
   Optional[String] $autoindex                         = undef,
-  Optional[Array ]$index_files                        = [
+  Optional[Array] $index_files                        = [
     'index.html',
     'index.htm',
     'index.php'],
@@ -192,8 +192,8 @@ define nginx::resource::location (
   Optional[Hash] $location_custom_cfg                 = undef,
   Optional[Hash] $location_cfg_prepend                = undef,
   Optional[Hash] $location_cfg_append                 = undef,
-  $location_custom_cfg_prepend                        = undef,
-  $location_custom_cfg_append                         = undef,
+  Optional[Hash] $location_custom_cfg_prepend         = undef,
+  Optional[Hash] $location_custom_cfg_append          = undef,
   Optional[Array] $include                            = undef,
   Optional[Array] $try_files                          = undef,
   Optional[String] $proxy_cache                       = undef,
@@ -209,8 +209,8 @@ define nginx::resource::location (
   Optional[String] $auth_request                      = undef,
   Array $rewrite_rules                                = [],
   Integer[401,599] $priority                          = 500,
-  $mp4                                                = false,
-  $flv                                                = false,
+  Boolean $mp4                                        = false,
+  Boolean $flv                                        = false,
   Optional[String] $expires                           = undef,
 ) {
 
