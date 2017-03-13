@@ -208,7 +208,7 @@ define nginx::resource::location (
   Optional[String] $auth_basic_user_file              = undef,
   Optional[String] $auth_request                      = undef,
   Array $rewrite_rules                                = [],
-  Integer $priority                                   = 500,
+  Integer[401,599] $priority                          = 500,
   $mp4                                                = false,
   $flv                                                = false,
   Optional[String] $expires                           = undef,
@@ -223,9 +223,6 @@ define nginx::resource::location (
     notify => Class['::nginx::service'],
   }
 
-  if (($priority + 0) < 401) or (($priority + 0) > 599) {
-    fail('$priority must be in the range 401-599.')
-  }
   # # Shared Variables
   $ensure_real = $ensure ? {
     'absent' => absent,
