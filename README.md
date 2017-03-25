@@ -19,7 +19,7 @@ This module manages NGINX configuration.
 
 ### Requirements
 
-* Puppet 3.8.7 or later
+* Puppet 4.6.1 or later.  Puppet 3 was supported up until release 0.6.0.
 
 ### Additional Documentation
 
