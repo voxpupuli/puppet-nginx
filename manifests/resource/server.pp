@@ -197,381 +197,120 @@
 #    ssl_key  => '/tmp/server.pem',
 #  }
 define nginx::resource::server (
-  $ensure                       = 'present',
-  $listen_ip                    = '*',
-  $listen_port                  = 80,
-  $listen_options               = undef,
-  $listen_unix_socket_enable    = false,
-  $listen_unix_socket           = '/var/run/nginx.sock',
-  $listen_unix_socket_options   = undef,
-  $location_satisfy             = undef,
-  $location_allow               = [],
-  $location_deny                = [],
-  $ipv6_enable                  = false,
-  $ipv6_listen_ip               = '::',
-  $ipv6_listen_port             = 80,
-  $ipv6_listen_options          = 'default ipv6only=on',
-  $add_header                   = undef,
-  $ssl                          = false,
-  $ssl_listen_option            = true,
-  $ssl_cert                     = undef,
-  $ssl_client_cert              = undef,
-  $ssl_verify_client            = 'on',
-  $ssl_dhparam                  = undef,
-  $ssl_redirect                 = false,
-  $ssl_redirect_port            = undef,
-  $ssl_key                      = undef,
-  $ssl_port                     = 443,
-  $ssl_protocols                = $::nginx::ssl_protocols,
-  $ssl_buffer_size              = undef,
-  $ssl_ciphers                  = $::nginx::ssl_ciphers,
-  $ssl_cache                    = 'shared:SSL:10m',
-  $ssl_crl                      = undef,
-  $ssl_stapling                 = false,
-  $ssl_stapling_file            = undef,
-  $ssl_stapling_responder       = undef,
-  $ssl_stapling_verify          = false,
-  $ssl_session_timeout          = '5m',
-  $ssl_session_tickets          = undef,
-  $ssl_session_ticket_key       = undef,
-  $ssl_trusted_cert             = undef,
-  $spdy                         = $::nginx::spdy,
-  $http2                        = $::nginx::http2,
-  $proxy                        = undef,
-  $proxy_redirect               = undef,
-  $proxy_read_timeout           = $::nginx::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx::proxy_connect_timeout,
-  $proxy_set_header             = $::nginx::proxy_set_header,
-  $proxy_hide_header            = $::nginx::proxy_hide_header,
-  $proxy_pass_header            = $::nginx::proxy_pass_header,
-  $proxy_cache                  = undef,
-  $proxy_cache_key              = undef,
-  $proxy_cache_use_stale        = undef,
-  $proxy_cache_valid            = undef,
-  $proxy_method                 = undef,
-  $proxy_http_version           = undef,
-  $proxy_set_body               = undef,
-  $proxy_buffering              = undef,
-  $resolver                     = [],
-  $fastcgi                      = undef,
-  $fastcgi_param                = undef,
-  $fastcgi_params               = "${::nginx::conf_dir}/fastcgi_params",
-  $fastcgi_script               = undef,
-  $uwsgi                        = undef,
-  $uwsgi_params                 = "${nginx::config::conf_dir}/uwsgi_params",
-  $uwsgi_read_timeout           = undef,
-  $index_files                  = [
+  Enum['absent', 'present'] $ensure                                              = 'present',
+  Variant[Array, String] $listen_ip                                              = '*',
+  Integer $listen_port                                                           = 80,
+  Optional[String] $listen_options                                               = undef,
+  Boolean $listen_unix_socket_enable                                             = false,
+  Variant[Array[Stdlib::Absolutepath], Stdlib::Absolutepath] $listen_unix_socket = '/var/run/nginx.sock',
+  Optional[String] $listen_unix_socket_options                                   = undef,
+  Optional[Enum['any', 'all']] $location_satisfy                                 = undef,
+  Array $location_allow                                                          = [],
+  Array $location_deny                                                           = [],
+  Boolean $ipv6_enable                                                           = false,
+  Variant[Array, String] $ipv6_listen_ip                                         = '::',
+  Integer $ipv6_listen_port                                                      = 80,
+  String $ipv6_listen_options                                                    = 'default ipv6only=on',
+  Optional[Hash] $add_header                                                     = undef,
+  Boolean $ssl                                                                   = false,
+  Boolean $ssl_listen_option                                                     = true,
+  Optional[Variant[String, Boolean]] $ssl_cert                                   = undef,
+  Optional[String] $ssl_client_cert                                              = undef,
+  Optional[String] $ssl_verify_client                                            = 'on',
+  Optional[String] $ssl_dhparam                                                  = undef,
+  Boolean $ssl_redirect                                                          = false,
+  Optional[Integer] $ssl_redirect_port                                           = undef,
+  Optional[Variant[String, Boolean]] $ssl_key                                    = undef,
+  Integer $ssl_port                                                              = 443,
+  String $ssl_protocols                                                          = $::nginx::ssl_protocols,
+  $ssl_buffer_size                                                               = undef,
+  String $ssl_ciphers                                                            = $::nginx::ssl_ciphers,
+  String $ssl_cache                                                              = 'shared:SSL:10m',
+  Optional[String] $ssl_crl                                                      = undef,
+  Boolean $ssl_stapling                                                          = false,
+  Optional[String] $ssl_stapling_file                                            = undef,
+  Optional[String] $ssl_stapling_responder                                       = undef,
+  Boolean $ssl_stapling_verify                                                   = false,
+  String $ssl_session_timeout                                                    = '5m',
+  Optional[String] $ssl_session_tickets                                          = undef,
+  Optional[String] $ssl_session_ticket_key                                       = undef,
+  Optional[String] $ssl_trusted_cert                                             = undef,
+  String $spdy                                                                   = $::nginx::spdy,
+  $http2                                                                         = $::nginx::http2,
+  Optional[String] $proxy                                                        = undef,
+  Optional[String]$proxy_redirect                                                = undef,
+  String $proxy_read_timeout                                                     = $::nginx::proxy_read_timeout,
+  $proxy_connect_timeout                                                         = $::nginx::proxy_connect_timeout,
+  Array[String] $proxy_set_header                                                = $::nginx::proxy_set_header,
+  Array[String] $proxy_hide_header                                               = $::nginx::proxy_hide_header,
+  Array[String] $proxy_pass_header                                               = $::nginx::proxy_pass_header,
+  Optional[String] $proxy_cache                                                  = undef,
+  Optional[String] $proxy_cache_key                                              = undef,
+  Optional[String] $proxy_cache_use_stale                                        = undef,
+  Optional[Variant[Array[String], String]] $proxy_cache_valid                    = undef,
+  Optional[String] $proxy_method                                                 = undef,
+  Optional[String] $proxy_http_version                                           = undef,
+  Optional[String] $proxy_set_body                                               = undef,
+  Optional[String] $proxy_buffering                                              = undef,
+  Array $resolver                                                                = [],
+  Optional[String] $fastcgi                                                      = undef,
+  $fastcgi_param                                                                 = undef,
+  String $fastcgi_params                                                         = "${::nginx::conf_dir}/fastcgi_params",
+  Optional[String] $fastcgi_script                                               = undef,
+  Optional[String] $uwsgi                                                        = undef,
+  String $uwsgi_params                                                           = "${nginx::config::conf_dir}/uwsgi_params",
+  Optional[String] $uwsgi_read_timeout                                           = undef,
+  Array $index_files                                                             = [
     'index.html',
     'index.htm',
     'index.php'],
-  $autoindex                    = undef,
-  $server_name                  = [$name],
-  $www_root                     = undef,
-  $rewrite_www_to_non_www       = false,
-  $location_custom_cfg          = undef,
-  $location_cfg_prepend         = undef,
-  $location_cfg_append          = undef,
-  $location_custom_cfg_prepend  = undef,
-  $location_custom_cfg_append   = undef,
-  $try_files                    = undef,
-  $auth_basic                   = undef,
-  $auth_basic_user_file         = undef,
-  $auth_request                 = undef,
-  $client_body_timeout          = undef,
-  $client_header_timeout        = undef,
-  $client_max_body_size         = undef,
-  $raw_prepend                  = undef,
-  $raw_append                   = undef,
-  $location_raw_prepend         = undef,
-  $location_raw_append          = undef,
-  $server_cfg_prepend           = undef,
-  $server_cfg_append            = undef,
-  $server_cfg_ssl_prepend       = undef,
-  $server_cfg_ssl_append        = undef,
-  $include_files                = undef,
-  $access_log                   = undef,
-  $error_log                    = undef,
-  $format_log                   = 'combined',
-  $passenger_cgi_param          = undef,
-  $passenger_set_header         = undef,
-  $passenger_env_var            = undef,
-  $passenger_pre_start          = undef,
-  $log_by_lua                   = undef,
-  $log_by_lua_file              = undef,
-  $use_default_location         = true,
-  $rewrite_rules                = [],
-  $string_mappings              = {},
-  $geo_mappings                 = {},
-  $gzip_types                   = undef,
-  $owner                        = $::nginx::global_owner,
-  $group                        = $::nginx::global_group,
-  $mode                         = $::nginx::global_mode,
-  $maintenance                  = false,
-  $maintenance_value            = 'return 503',
-  $error_pages                  = undef,
-  $locations                    = {}
+  Optional[String] $autoindex                                                    = undef,
+  Array[String] $server_name                                                     = [$name],
+  Optional[String] $www_root                                                     = undef,
+  Boolean $rewrite_www_to_non_www                                                = false,
+  Optional[Hash] $location_custom_cfg                                            = undef,
+  Optional[Hash] $location_cfg_prepend                                           = undef,
+  Optional[Hash] $location_cfg_append                                            = undef,
+  Optional[Hash] $location_custom_cfg_prepend                                    = undef,
+  Optional[Hash] $location_custom_cfg_append                                     = undef,
+  Optional[Array[String]] $try_files                                             = undef,
+  Optional[String] $auth_basic                                                   = undef,
+  Optional[String] $auth_basic_user_file                                         = undef,
+  Optional[String] $auth_request                                                 = undef,
+  Optional[String] $client_body_timeout                                          = undef,
+  Optional[String] $client_header_timeout                                        = undef,
+  $client_max_body_size                                                          = undef,
+  Optional[Variant[Array[String], String]] $raw_prepend                          = undef,
+  Optional[Variant[Array[String], String]] $raw_append                           = undef,
+  Optional[Variant[Array[String], String]] $location_raw_prepend                 = undef,
+  Optional[Variant[Array[String], String]] $location_raw_append                  = undef,
+  Optional[Hash] $server_cfg_prepend                                             = undef,
+  Optional[Hash] $server_cfg_append                                              = undef,
+  Optional[Hash] $server_cfg_ssl_prepend                                         = undef,
+  Optional[Hash] $server_cfg_ssl_append                                          = undef,
+  Optional[Array[String]] $include_files                                         = undef,
+  Optional[Variant[String, Array]] $access_log                                   = undef,
+  Optional[Variant[String, Array]] $error_log                                    = undef,
+  $format_log                                                                    = 'combined',
+  Optional[Hash] $passenger_cgi_param                                            = undef,
+  Optional[Hash] $passenger_set_header                                           = undef,
+  Optional[Hash] $passenger_env_var                                              = undef,
+  Optional[Variant[Array[String], String]] $passenger_pre_start                  = undef,
+  Optional[String] $log_by_lua                                                   = undef,
+  Optional[String] $log_by_lua_file                                              = undef,
+  $use_default_location                                                          = true,
+  $rewrite_rules                                                                 = [],
+  $string_mappings                                                               = {},
+  $geo_mappings                                                                  = {},
+  Optional[String] $gzip_types                                                   = undef,
+  String $owner                                                                  = $::nginx::global_owner,
+  String $group                                                                  = $::nginx::global_group,
+  String $mode                                                                   = $::nginx::global_mode,
+  Boolean $maintenance                                                           = false,
+  String $maintenance_value                                                      = 'return 503',
+  $error_pages                                                                   = undef,
+  Hash $locations                                                                = {}
 ) {
-
-  validate_re($ensure, '^(present|absent)$',
-    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-  if !(is_array($listen_ip) or is_string($listen_ip)) {
-    fail('$listen_ip must be a string or array.')
-  }
-  if !is_integer($listen_port) {
-    fail('$listen_port must be an integer.')
-  }
-  if ($listen_options != undef) {
-    validate_string($listen_options)
-  }
-  validate_bool($listen_unix_socket_enable)
-  if !(is_array($listen_unix_socket) or is_string($listen_unix_socket)) {
-    fail('$listen_unix_socket must be a string or array.')
-  }
-  if ($listen_unix_socket_options != undef) {
-    validate_string($listen_unix_socket_options)
-  }
-  if ($location_satisfy != undef) {
-    validate_re($location_satisfy, '^(any|all)$',
-    "${$location_satisfy} is not supported for location_satisfy. Allowed values are 'any' and 'all'.")
-  }
-  validate_array($location_allow)
-  validate_array($location_deny)
-  validate_bool($ipv6_enable)
-  if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
-    fail('$ipv6_listen_ip must be a string or array.')
-  }
-  if is_string($ipv6_listen_port) {
-    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($ipv6_listen_port) {
-    fail('$ipv6_listen_port must be an integer.')
-  }
-  validate_string($ipv6_listen_options)
-  if ($add_header != undef) {
-    validate_hash($add_header)
-  }
-  validate_bool($ssl)
-  if $ssl_cert {
-    validate_string($ssl_cert)
-  }
-  if ($ssl_client_cert != undef) {
-    validate_string($ssl_client_cert)
-  }
-  if ($ssl_verify_client != undef) {
-    validate_string($ssl_verify_client)
-  }
-  if ($ssl_crl != undef) {
-    validate_string($ssl_crl)
-  }
-  validate_bool($ssl_listen_option)
-  if ($ssl_dhparam != undef) {
-    validate_string($ssl_dhparam)
-  }
-  validate_bool($ssl_redirect)
-  if ($ssl_redirect_port != undef) {
-    if !is_integer($ssl_redirect_port) {
-      fail('$ssl_redirect_port must be an integer.')
-    }
-  }
-  if $ssl_key {
-    validate_string($ssl_key)
-  }
-  if !is_integer($ssl_port) {
-    fail('$ssl_port must be an integer.')
-  }
-  validate_string($ssl_protocols)
-  validate_string($ssl_ciphers)
-  validate_string($ssl_cache)
-  validate_bool($ssl_stapling)
-  if ($ssl_stapling_file != undef) {
-    validate_string($ssl_stapling_file)
-  }
-  if ($ssl_stapling_responder != undef) {
-    validate_string($ssl_stapling_responder)
-  }
-  validate_bool($ssl_stapling_verify)
-  validate_string($ssl_session_timeout)
-  if ($ssl_session_tickets) {
-    validate_string($ssl_session_tickets)
-  }
-  if ($ssl_session_ticket_key) {
-    validate_string($ssl_session_ticket_key)
-  }
-  if ($ssl_trusted_cert != undef) {
-    validate_string($ssl_trusted_cert)
-  }
-  validate_string($spdy)
-  if ($proxy != undef) {
-    validate_string($proxy)
-  }
-  validate_string($proxy_read_timeout)
-  if ($proxy_redirect != undef) {
-    validate_string($proxy_redirect)
-  }
-  validate_array($proxy_set_header)
-  validate_array($proxy_hide_header)
-  validate_array($proxy_pass_header)
-  if ($proxy_cache != false) {
-    validate_string($proxy_cache)
-  }
-  if ($proxy_cache_key != undef) {
-    validate_string($proxy_cache_key)
-  }
-  if ($proxy_cache_use_stale != undef) {
-    validate_string($proxy_cache_use_stale)
-  }
-  if ($proxy_cache_valid != false) {
-    if !(is_array($proxy_cache_valid) or is_string($proxy_cache_valid)) {
-      fail('$proxy_cache_valid must be a string or an array or false.')
-    }
-  }
-  if ($access_log != undef) and !(is_array($access_log) or is_string($access_log)) {
-    fail('$access_log must be a string or array.')
-  }
-  if ($error_log != undef) and !(is_array($error_log) or is_string($error_log)) {
-    fail('$error_log must be a string or array.')
-  }
-  if ($proxy_method != undef) {
-    validate_string($proxy_method)
-  }
-  if ($proxy_http_version != undef) {
-    validate_string($proxy_http_version)
-  }
-  if ($proxy_set_body != undef) {
-    validate_string($proxy_set_body)
-  }
-  if ($proxy_buffering != undef) {
-    validate_re($proxy_buffering, '^(on|off)$')
-  }
-  validate_array($resolver)
-  if ($fastcgi != undef) {
-    validate_string($fastcgi)
-  }
-  validate_string($fastcgi_params)
-  if ($fastcgi_script != undef) {
-    validate_string($fastcgi_script)
-  }
-  if ($uwsgi != undef) {
-    validate_string($uwsgi)
-  }
-  validate_string($uwsgi_params)
-  if ($uwsgi_read_timeout != undef) {
-    validate_string($uwsgi_read_timeout)
-  }
-  validate_array($index_files)
-  if ($autoindex != undef) {
-    validate_string($autoindex)
-  }
-  validate_array($server_name)
-  if ($www_root != undef) {
-    validate_string($www_root)
-  }
-  validate_bool($rewrite_www_to_non_www)
-  if ($raw_prepend != undef) {
-    if (is_array($raw_prepend)) {
-      validate_array($raw_prepend)
-    } else {
-      validate_string($raw_prepend)
-    }
-  }
-  if ($raw_append != undef) {
-    if (is_array($raw_append)) {
-      validate_array($raw_append)
-    } else {
-      validate_string($raw_append)
-    }
-  }
-  if ($location_raw_prepend != undef) {
-    if (is_array($location_raw_prepend)) {
-      validate_array($location_raw_prepend)
-    } else {
-      validate_string($location_raw_prepend)
-    }
-  }
-  if ($location_raw_append != undef) {
-    if (is_array($location_raw_append)) {
-      validate_array($location_raw_append)
-    } else {
-      validate_string($location_raw_append)
-    }
-  }
-  if ($location_custom_cfg != undef) {
-    validate_hash($location_custom_cfg)
-  }
-  if ($location_cfg_prepend != undef) {
-    validate_hash($location_cfg_prepend)
-  }
-  if ($location_cfg_append != undef) {
-    validate_hash($location_cfg_append)
-  }
-  if ($try_files != undef) {
-    validate_array($try_files)
-  }
-  if ($auth_basic != undef) {
-    validate_string($auth_basic)
-  }
-  if ($auth_basic_user_file != undef) {
-    validate_string($auth_basic_user_file)
-  }
-  if ($auth_request != undef) {
-    validate_string($auth_request)
-  }
-  if ($server_cfg_prepend != undef) {
-    validate_hash($server_cfg_prepend)
-  }
-  if ($server_cfg_append != undef) {
-    validate_hash($server_cfg_append)
-  }
-  if ($server_cfg_ssl_prepend != undef) {
-    validate_hash($server_cfg_ssl_prepend)
-  }
-  if ($server_cfg_ssl_append != undef) {
-    validate_hash($server_cfg_ssl_append)
-  }
-  if ($include_files != undef) {
-    validate_array($include_files)
-  }
-  if ($passenger_cgi_param != undef) {
-    validate_hash($passenger_cgi_param)
-  }
-  if ($passenger_set_header != undef) {
-    validate_hash($passenger_set_header)
-  }
-  if ($passenger_env_var != undef) {
-    validate_hash($passenger_env_var)
-  }
-  if ($passenger_pre_start != undef) {
-    if (is_array($passenger_pre_start)) {
-      validate_array($passenger_pre_start)
-    } else {
-      validate_string($passenger_pre_start)
-    }
-  }
-  if ($log_by_lua != undef) {
-    validate_string($log_by_lua)
-  }
-  if ($log_by_lua_file != undef) {
-    validate_string($log_by_lua_file)
-  }
-  if ($client_body_timeout != undef) {
-    validate_string($client_body_timeout)
-  }
-  if ($client_header_timeout != undef) {
-    validate_string($client_header_timeout)
-  }
-  if ($gzip_types != undef) {
-    validate_string($gzip_types)
-  }
-  validate_bool($use_default_location)
-  validate_array($rewrite_rules)
-  validate_hash($string_mappings)
-  validate_hash($geo_mappings)
-  validate_hash($locations)
-
-  validate_string($owner)
-  validate_string($group)
-  validate_re($mode, '^\d{4}$',
-    "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
   if $::nginx::confd_only {
