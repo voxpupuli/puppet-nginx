@@ -70,49 +70,49 @@
 #    ssl_key     => '/tmp/server.pem',
 #  }
 define nginx::resource::mailhost (
-  $listen_port,
-  $ensure                   = 'present',
-  $listen_ip                = '*',
-  $listen_options           = undef,
-  $ipv6_enable              = false,
-  $ipv6_listen_ip           = '::',
-  $ipv6_listen_port         = 80,
-  $ipv6_listen_options      = 'default ipv6only=on',
-  $ssl                      = false,
-  $ssl_cert                 = undef,
-  $ssl_ciphers              = $::nginx::ssl_ciphers,
-  $ssl_client_cert          = undef,
-  $ssl_crl                  = undef,
-  $ssl_dhparam              = undef,
-  $ssl_ecdh_curve           = undef,
-  $ssl_key                  = undef,
-  $ssl_password_file        = undef,
-  $ssl_port                 = undef,
-  $ssl_protocols            = $::nginx::ssl_protocols,
-  $ssl_session_cache        = undef,
-  $ssl_session_ticket_key   = undef,
-  $ssl_session_tickets      = undef,
-  $ssl_session_timeout      = '5m',
-  $ssl_trusted_cert         = undef,
-  $ssl_verify_depth         = undef,
-  $starttls                 = 'off',
-  $protocol                 = undef,
-  $auth_http                = undef,
-  $auth_http_header         = undef,
-  $xclient                  = 'on',
-  $imap_auth                = undef,
-  $imap_capabilities        = undef,
-  $imap_client_buffer       = undef,
-  $pop3_auth                = undef,
-  $pop3_capabilities        = undef,
-  $smtp_auth                = undef,
-  $smtp_capabilities        = undef,
-  $raw_prepend              = undef,
-  $raw_append               = undef,
-  $mailhost_cfg_prepend     = undef,
-  $mailhost_cfg_append      = undef,
-  $proxy_pass_error_message = 'off',
-  $server_name              = [$name]
+  Integer $listen_port,
+  Enum['absent', 'present'] $ensure              = 'present',
+  Variant[Array[String], String] $listen_ip      = '*',
+  Optional[String] $listen_options               = undef,
+  Boolean $ipv6_enable                           = false,
+  Variant[Array[String], String] $ipv6_listen_ip = '::',
+  Integer $ipv6_listen_port                      = 80,
+  String $ipv6_listen_options                    = 'default ipv6only=on',
+  Boolean $ssl                                   = false,
+  Optional[String] $ssl_cert                     = undef,
+  String $ssl_ciphers                            = $::nginx::ssl_ciphers,
+  Optional[String] $ssl_client_cert              = undef,
+  Optional[String] $ssl_crl                      = undef,
+  Optional[String] $ssl_dhparam                  = undef,
+  Optional[String] $ssl_ecdh_curve               = undef,
+  Optional[String] $ssl_key                      = undef,
+  Optional[String] $ssl_password_file            = undef,
+  Optional[Integer] $ssl_port                    = undef,
+  String $ssl_protocols                          = $::nginx::ssl_protocols,
+  Optional[String] $ssl_session_cache            = undef,
+  Optional[String] $ssl_session_ticket_key       = undef,
+  Optional[String] $ssl_session_tickets          = undef,
+  String $ssl_session_timeout                    = '5m',
+  Optional[String] $ssl_trusted_cert             = undef,
+  Optional[Integer] $ssl_verify_depth            = undef,
+  Enum['on', 'off', 'only'] $starttls            = 'off',
+  $protocol                                      = undef,
+  Optional[String] $auth_http                    = undef,
+  Optional[String] $auth_http_header             = undef,
+  String $xclient                                = 'on',
+  Optional[String] $imap_auth                    = undef,
+  Optional[Array] $imap_capabilities             = undef,
+  Optional[String] $imap_client_buffer           = undef,
+  Optional[String] $pop3_auth                    = undef,
+  Optional[Array] $pop3_capabilities             = undef,
+  Optional[String] $smtp_auth                    = undef,
+  Optional[Array] $smtp_capabilities             = undef,
+  Optional[Variant[Array, String]] $raw_prepend  = undef,
+  Optional[Variant[Array, String]] $raw_append   = undef,
+  Optional[Hash] $mailhost_cfg_prepend           = undef,
+  Optional[Hash] $mailhost_cfg_append            = undef,
+  String $proxy_pass_error_message               = 'off',
+  Array $server_name                             = [$name]
 ) {
 
   $root_group = $::nginx::root_group
@@ -122,135 +122,6 @@ define nginx::resource::mailhost (
     group => $root_group,
     mode  => '0644',
   }
-
-  if is_string($listen_port) {
-    warning('DEPRECATION: String $listen_port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($listen_port) {
-    fail('$listen_port must be an integer.')
-  }
-  validate_re($ensure, '^(present|absent)$',
-    "${ensure} is not supported for ensure. Allowed values are 'present' and 'absent'.")
-  if !(is_array($listen_ip) or is_string($listen_ip)) {
-    fail('$listen_ip must be a string or array.')
-  }
-  if ($listen_options != undef) {
-    validate_string($listen_options)
-  }
-  validate_bool($ipv6_enable)
-  if !(is_array($ipv6_listen_ip) or is_string($ipv6_listen_ip)) {
-    fail('$ipv6_listen_ip must be a string or array.')
-  }
-  if is_string($ipv6_listen_port) {
-    warning('DEPRECATION: String $ipv6_listen_port must be converted to an integer. Integer string support will be removed in a future release.')
-  }
-  elsif !is_integer($ipv6_listen_port) {
-    fail('$ipv6_listen_port must be an integer.')
-  }
-  validate_string($ipv6_listen_options)
-  validate_bool($ssl)
-  if ($ssl_cert != undef) {
-    validate_string($ssl_cert)
-  }
-  validate_string($ssl_protocols)
-  if ($ssl_key != undef) {
-    validate_string($ssl_key)
-  }
-  if $ssl_port != undef {
-    if is_string($ssl_port) {
-      warning('DEPRECATION: String $ssl_port must be converted to an integer. Integer string support will be removed in a future release.')
-    }
-    elsif !is_integer($ssl_port) {
-    fail('$ssl_port must be an integer.')
-    }
-  }
-  validate_string($ssl_ciphers)
-  if ($ssl_client_cert != undef) {
-    validate_string($ssl_client_cert)
-  }
-  if ($ssl_crl != undef) {
-    validate_string($ssl_crl)
-  }
-  if ($ssl_dhparam != undef) {
-    validate_string($ssl_dhparam)
-  }
-  if ($ssl_ecdh_curve != undef) {
-    validate_string($ssl_ecdh_curve)
-  }
-  if ($ssl_session_cache != undef) {
-    validate_string($ssl_session_cache)
-  }
-  if ($ssl_session_ticket_key != undef) {
-    validate_string($ssl_session_ticket_key)
-  }
-  if ($ssl_session_tickets != undef) {
-    validate_string($ssl_session_tickets)
-  }
-  validate_string($ssl_session_timeout)
-  if ($ssl_password_file != undef) {
-    validate_string($ssl_password_file)
-  }
-  if ($ssl_trusted_cert != undef) {
-    validate_string($ssl_trusted_cert)
-  }
-  if ($ssl_verify_depth != undef) and (!is_integer($ssl_verify_depth)) {
-    fail('$ssl_verify_depth must be an integer.')
-  }
-  validate_re($starttls, '^(on|only|off)$',
-    "${starttls} is not supported for starttls. Allowed values are 'on', 'only' and 'off'.")
-  if ($protocol != undef) {
-    validate_string($protocol)
-  }
-  if ($auth_http != undef) {
-    validate_string($auth_http)
-  }
-  if ($auth_http_header != undef) {
-    validate_string($auth_http_header)
-  }
-  validate_string($xclient)
-  if ($imap_auth != undef) {
-    validate_string($imap_auth)
-  }
-  if ($imap_capabilities != undef) {
-    validate_array($imap_capabilities)
-  }
-  if ($imap_client_buffer != undef) {
-    validate_string($imap_client_buffer)
-  }
-  if ($pop3_auth != undef) {
-    validate_string($pop3_auth)
-  }
-  if ($pop3_capabilities != undef) {
-    validate_array($pop3_capabilities)
-  }
-  if ($smtp_auth != undef) {
-    validate_string($smtp_auth)
-  }
-  if ($smtp_capabilities != undef) {
-    validate_array($smtp_capabilities)
-  }
-  if ($raw_prepend != undef) {
-    if (is_array($raw_prepend)) {
-      validate_array($raw_prepend)
-    } else {
-      validate_string($raw_prepend)
-    }
-  }
-  if ($raw_append != undef) {
-    if (is_array($raw_append)) {
-      validate_array($raw_append)
-    } else {
-      validate_string($raw_append)
-    }
-  }
-  if ($mailhost_cfg_prepend != undef) {
-    validate_hash($mailhost_cfg_prepend)
-  }
-  if ($mailhost_cfg_append != undef) {
-    validate_hash($mailhost_cfg_append)
-  }
-  validate_string($proxy_pass_error_message)
-  validate_array($server_name)
 
   $config_dir  = "${::nginx::conf_dir}/conf.mail.d"
   $config_file = "${config_dir}/${name}.conf"
