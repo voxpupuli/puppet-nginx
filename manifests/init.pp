@@ -174,8 +174,8 @@ class nginx (
     manage_repo              => $manage_repo,
   }
 
-  include '::nginx::config'
-  include '::nginx::service'
+  contain '::nginx::config'
+  contain '::nginx::service'
 
   Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
@@ -190,11 +190,5 @@ class nginx (
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
   # a transitive relationship to the composite class.
-  anchor{ 'nginx::begin':
-    before => Class['::nginx::package'],
-    notify => Class['::nginx::service'],
-  }
-  anchor { 'nginx::end':
-    require => Class['::nginx::service'],
-  }
+  Class['::nginx::package'] ~> Class['::nginx::service']
 }
