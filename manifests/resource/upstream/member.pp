@@ -14,6 +14,7 @@
 #   [*server*]                  - Hostname or IP of the upstream member server
 #   [*port*]                    - Port of the listening service on the upstream member
 #   [*upstream_fail_timeout*]   - Set the fail_timeout for the upstream. Default is 10 seconds
+#   [*upstream_context*]        - Sets the context for upstream: 'http' (default) or 'stream'
 #
 #
 # Examples:
@@ -21,10 +22,11 @@
 #   Exporting the resource on a upstream member server:
 #
 #   @@nginx::resource::upstream::member { $::fqdn:
-#     ensure    => present,
-#     upstream  => 'proxypass',
-#     server    => $::ipaddress,
-#     port      => 3000,
+#     ensure           => present,
+#     upstream         => 'proxypass',
+#     server           => $::ipaddress,
+#     port             => 3000,
+#     upstream_context => 'http'
 #   }
 #
 #
@@ -40,11 +42,17 @@ define nginx::resource::upstream::member (
   Enum['present', 'absent'] $ensure = 'present',
   Integer $port                     = 80,
   $upstream_fail_timeout  = '10s',
+  Enum['http', 'stream'] $upstream_context  = 'http',
 ) {
+
+  $conf_dir_real = $upstream_context ? {
+    'stream' => 'conf.stream.d',
+    default  => 'conf.d',
+  }
 
   # Uses: $server, $port, $upstream_fail_timeout
   concat::fragment { "${upstream}_upstream_member_${name}":
-    target  => "${::nginx::conf_dir}/conf.d/${upstream}-upstream.conf",
+    target  => "${::nginx::conf_dir}/${conf_dir_real}/${upstream}-upstream.conf",
     order   => 40,
     content => template('nginx/upstream/upstream_member.erb'),
   }
