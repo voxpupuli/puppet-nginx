@@ -150,6 +150,9 @@ server {
 <% if defined? @log_by_lua_file -%>
   log_by_lua_file "<%= @log_by_lua_file %>";
 <% end -%>
+<% if defined? @access_by_lua_file -%>
+  access_by_lua_file "<%= @access_by_lua_file %>";
+<% end -%>
 <% if @access_log.is_a?(Array) -%>
   <%- @access_log.each do |log_item| -%>
   access_log            <%= log_item %> <%= @format_log %>;

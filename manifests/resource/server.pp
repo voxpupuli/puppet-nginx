@@ -184,6 +184,7 @@
 #   [*error_pages*]             - Hash: setup errors pages, hash key is the http
 #                                 code and hash value the page
 #   [*locations*]               - Hash of servers ressources used by this server
+#   [*access_by_lua_file*]      - Path of a lua file that controls server access
 # Actions:
 #
 # Requires:
@@ -309,7 +310,8 @@ define nginx::resource::server (
   $maintenance                  = false,
   $maintenance_value            = 'return 503',
   $error_pages                  = undef,
-  $locations                    = {}
+  $locations                    = {},
+  $access_by_lua_file           = undef,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -572,6 +574,9 @@ define nginx::resource::server (
   validate_string($group)
   validate_re($mode, '^\d{4}$',
     "${mode} is not valid. It should be 4 digits (0644 by default).")
+  if ($access_by_lua_file != undef) {
+    validate_string($access_by_lua_file)
+  }
 
   # Variables
   if $::nginx::confd_only {

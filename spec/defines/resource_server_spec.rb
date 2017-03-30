@@ -721,6 +721,12 @@ describe 'nginx::resource::server' do
           attr: 'use_default_location',
           value: true,
           notmatch: %r{  root /;}
+        },
+        {
+          title: 'should set lua access file',
+          attr: 'access_by_lua_file',
+          value: '/etc/nginx/access.lua',
+          match: '  access_by_lua_file "/etc/nginx/access.lua";',
         }
       ].each do |param|
         context "when #{param[:attr]} is #{param[:value]}" do
