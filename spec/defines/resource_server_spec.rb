@@ -898,10 +898,28 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{  return 301 https://\$host:9787\$request_uri;}) }
       end
 
-      context 'ssl_redirect should set ssl_only' do
-        let(:params) { { ssl_redirect: true } }
+      context 'ssl_redirect should set ssl_only when ssl => true' do
+        let(:params) do
+          {
+            ssl_redirect: true,
+            ssl: true,
+            ssl_key: 'dummy.key',
+            ssl_cert: 'dummy.crt'
+          }
+        end
 
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
+      end
+
+      context 'ssl_redirect should not include default location when ssl => false' do
+        let(:params) do
+          {
+            ssl_redirect: true,
+            ssl: false
+          }
+        end
+
+        it { is_expected.not_to contain_nginx__resource__location("#{title}-default") }
       end
 
       context 'SSL cert and key are both set to fully qualified paths' do

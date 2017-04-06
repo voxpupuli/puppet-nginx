@@ -370,7 +370,7 @@ define nginx::resource::server (
     $_ssl_redirect_port = $ssl_port
   }
 
-  # Suppress unneded stuff in non-SSL location block when certain conditions are
+  # Suppress unneeded stuff in non-SSL location block when certain conditions are
   # met.
   if (($ssl == true) and ($ssl_port == $listen_port)) or ($ssl_redirect) {
     $ssl_only = true
@@ -378,7 +378,11 @@ define nginx::resource::server (
     $ssl_only = false
   }
 
-  if $use_default_location == true {
+  # If we're redirecting to SSL, the default location block is useless, *unless*
+  # SSL is enabled for this server
+  # either       and    ssl -> true
+  # ssl redirect and no ssl -> false
+  if ($ssl_redirect != true or $ssl == true) and $use_default_location == true {
     # Create the default location reference for the server
     nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
