@@ -26,7 +26,7 @@
 <% end -%>
   ssl_protocols             <%= @ssl_protocols %>;
   ssl_ciphers               <%= @ssl_ciphers %>;
-  ssl_prefer_server_ciphers on;
+  ssl_prefer_server_ciphers <%= @ssl_prefer_server_ciphers %>;
 <% if @ssl_crl -%>
   ssl_crl                   <%= @ssl_crl %>;
 <% end -%>

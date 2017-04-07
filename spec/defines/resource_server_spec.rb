@@ -577,6 +577,18 @@ describe 'nginx::resource::server' do
           match: %r{\s+ssl_ciphers\s+HIGH;}
         },
         {
+          title: 'should set ssl_prefer_server_ciphers on',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'on',
+          match: %r{\s+ssl_prefer_server_ciphers\s+on;}
+        },
+        {
+          title: 'should set ssl_prefer_server_ciphers off',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'off',
+          match: %r{\s+ssl_prefer_server_ciphers\s+off;}
+        },
+        {
           title: 'should set auth_basic',
           attr: 'auth_basic',
           value: 'value',

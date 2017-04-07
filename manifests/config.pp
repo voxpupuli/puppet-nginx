@@ -110,6 +110,7 @@ class nginx::config {
   $worker_connections             = $::nginx::worker_connections
   $worker_processes               = $::nginx::worker_processes
   $worker_rlimit_nofile           = $::nginx::worker_rlimit_nofile
+  $ssl_prefer_server_ciphers      = $::nginx::ssl_prefer_server_ciphers
   $ssl_protocols                  = $::nginx::ssl_protocols
   $ssl_ciphers                    = $::nginx::ssl_ciphers
 
