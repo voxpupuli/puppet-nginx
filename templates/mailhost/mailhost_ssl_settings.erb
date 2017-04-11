@@ -21,7 +21,7 @@
 <%- if defined? @ssl_password_file -%>
   ssl_password_file          <%= @ssl_password_file %>;
 <%- end -%>
-  ssl_prefer_server_ciphers  on;
+  ssl_prefer_server_ciphers  <%= @ssl_prefer_server_ciphers %>;
   ssl_protocols              <%= @ssl_protocols %>;
 <% if defined? @ssl_session_cache -%>
   ssl_session_cache          <%= @ssl_session_cache %>;
