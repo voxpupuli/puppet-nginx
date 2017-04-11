@@ -118,6 +118,10 @@ define nginx::resource::mailhost (
   Array $server_name                             = [$name]
 ) {
 
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   $root_group = $::nginx::root_group
 
   File {

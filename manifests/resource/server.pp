@@ -249,6 +249,10 @@ define nginx::resource::server (
   Hash $locations                                                                = {}
 ) {
 
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   # Variables
   if $::nginx::confd_only {
     $server_dir = "${::nginx::conf_dir}/conf.d"

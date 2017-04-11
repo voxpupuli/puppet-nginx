@@ -41,6 +41,9 @@ define nginx::resource::upstream::member (
   Integer $port                     = 80,
   $upstream_fail_timeout  = '10s',
 ) {
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
 
   # Uses: $server, $port, $upstream_fail_timeout
   concat::fragment { "${upstream}_upstream_member_${name}":
