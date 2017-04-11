@@ -161,7 +161,7 @@ describe 'nginx' do
           is_expected.to contain_apt__source('nginx').with(
             'location'   => "https://nginx.org/packages/#{operatingsystem.downcase}",
             'repos'      => 'nginx',
-            'key'        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'
+            'key'        => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
           )
         end
         it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
@@ -185,7 +185,7 @@ describe 'nginx' do
           is_expected.to contain_apt__source('nginx').with(
             'location'   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
             'repos'      => 'main',
-            'key'        => '16378A33A6EF16762922526E561F9B9CAC40B2F7'
+            'key'        => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' }
           )
         end
       end
