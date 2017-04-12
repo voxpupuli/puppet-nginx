@@ -876,16 +876,6 @@ describe 'nginx::resource::location' do
         it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
       end
 
-      context 'location type missing' do
-        let :params do
-          {
-            server: 'server1'
-          }
-        end
-
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in server1:rspec-test}) }
-      end
-
       context 'www_root and proxy are set' do
         let :params do
           {

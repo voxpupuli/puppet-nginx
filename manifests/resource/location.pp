@@ -229,9 +229,6 @@ define nginx::resource::location (
     default  => file,
   }
 
-  if !($www_root or $proxy or $location_alias or $stub_status or $fastcgi or $uwsgi or $location_custom_cfg or $internal or $try_files or $location_allow or $location_deny) {
-    fail("Cannot create a location reference without a www_root, proxy, location_alias, stub_status, fastcgi, uwsgi, location_custom_cfg, internal, try_files, location_allow, or location_deny defined in ${server}:${title}")
-  }
   if ($www_root and $proxy) {
     fail("Cannot define both directory and proxy in ${server}:${title}")
   }
