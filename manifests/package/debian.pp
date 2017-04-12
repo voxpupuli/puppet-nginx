@@ -13,13 +13,14 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian (
-    $manage_repo              = true,
-    $package_name             = 'nginx',
-    $package_source           = 'nginx',
-    $package_ensure           = 'present',
-    $passenger_package_ensure = 'present'
-  ) {
+class nginx::package::debian {
+
+  $package_name             = $::nginx::package_name
+  $package_source           = $::nginx::package_source
+  $package_ensure           = $::nginx::package_ensure
+  $package_flavor           = $::nginx::package_flavor
+  $passenger_package_ensure = $::nginx::passenger_package_ensure
+  $manage_repo              = $::nginx::manage_repo
 
   $distro = downcase($::operatingsystem)
 

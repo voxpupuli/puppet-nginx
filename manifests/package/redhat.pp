@@ -13,21 +13,21 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat (
-  $manage_repo                 = true,
-  $package_ensure              = 'present',
-  $package_name                = 'nginx',
-  $package_source              = 'nginx-stable',
-  $passenger_package_ensure    = 'present',
-) {
+class nginx::package::redhat {
+
+  $package_name             = $::nginx::package_name
+  $package_source           = $::nginx::package_source
+  $package_ensure           = $::nginx::package_ensure
+  $package_flavor           = $::nginx::package_flavor
+  $passenger_package_ensure = $::nginx::passenger_package_ensure
+  $manage_repo              = $::nginx::manage_repo
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not
   #on RHEL or CentOS and $manage_repo is set manually to 'true'.
-  if $::operatingsystem == 'centos' {
-    $_os = 'centos'
-  } else {
-    $_os = 'rhel'
+  $_os = $::operatingsystem? {
+    'centos' => 'centos',
+    default  => 'rhel'
   }
 
   if $manage_repo {

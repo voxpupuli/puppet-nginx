@@ -16,7 +16,6 @@
 #
 #  stdlib
 #    - puppetlabs-stdlib module >= 0.1.6
-#    - plugin sync enabled to obtain the anchor type
 #
 # Sample Usage:
 #
@@ -164,20 +163,9 @@ class nginx (
   ### END Hiera Lookups ###
 ) inherits ::nginx::params {
 
-  class { '::nginx::package':
-    package_name             => $package_name,
-    package_source           => $package_source,
-    package_ensure           => $package_ensure,
-    package_flavor           => $package_flavor,
-    passenger_package_ensure => $passenger_package_ensure,
-    notify                   => Class['::nginx::service'],
-    manage_repo              => $manage_repo,
-  }
-
+  contain '::nginx::package'
   contain '::nginx::config'
   contain '::nginx::service'
-
-  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
@@ -190,5 +178,6 @@ class nginx (
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
   # a transitive relationship to the composite class.
+  Class['::nginx::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
   Class['::nginx::package'] ~> Class['::nginx::service']
 }

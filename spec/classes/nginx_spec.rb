@@ -22,13 +22,9 @@ describe 'nginx' do
   describe 'with defaults' do
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_class('nginx') }
-    it { is_expected.to contain_anchor('nginx::begin') }
-    it { is_expected.to contain_class('nginx::package').that_requires('Anchor[nginx::begin]') }
     it { is_expected.to contain_class('nginx::config').that_requires('Class[nginx::package]') }
-    it { is_expected.to contain_class('nginx::service').that_subscribes_to('Anchor[nginx::begin]') }
     it { is_expected.to contain_class('nginx::service').that_subscribes_to('Class[nginx::package]') }
     it { is_expected.to contain_class('nginx::service').that_subscribes_to('Class[nginx::config]') }
-    it { is_expected.to contain_anchor('nginx::end').that_requires('Class[nginx::service]') }
     it { is_expected.to contain_nginx__resource__upstream('upstream1') }
     it { is_expected.to contain_nginx__resource__server('test2.local') }
     it { is_expected.to contain_nginx__resource__server('test2.local').with_listen_options('default_server') }
@@ -60,8 +56,6 @@ describe 'nginx' do
         end
         it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
         it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
-        it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
-        it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
       end
 
       context 'package_source => nginx-mainline' do
@@ -164,8 +158,6 @@ describe 'nginx' do
             'key'        => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
           )
         end
-        it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
-        it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::debian]') }
       end
 
       context 'package_source => nginx-mainline' do
