@@ -14,7 +14,7 @@
 #   [*server*]                  - Hostname or IP of the upstream member server
 #   [*port*]                    - Port of the listening service on the upstream member
 #   [*upstream_fail_timeout*]   - Set the fail_timeout for the upstream. Default is 10 seconds
-#   [*upstream_weight*]         - Set the weight for the upstream. Default is to use nginx default value which is 1.
+#   [*upstream_weight*]         - Set the weight for the upstream.
 #
 #
 # Examples:
@@ -41,7 +41,7 @@ define nginx::resource::upstream::member (
   Enum['present', 'absent'] $ensure  = 'present',
   Integer $port                      = 80,
   $upstream_fail_timeout             = '10s',
-  Optional[Integer] $upstream_weight = 1,
+  Optional[Integer] $upstream_weight = undef,
 ) {
 
   # Uses: $server, $port, $upstream_fail_timeout
