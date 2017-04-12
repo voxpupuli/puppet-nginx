@@ -9,7 +9,8 @@ describe 'nginx::resource::server' do
     {
       www_root: '/',
       ipv6_enable: true,
-      listen_unix_socket_enable: true
+      listen_unix_socket_enable: true,
+      fastcgi_index: 'index.php'
     }
   end
 
@@ -577,6 +578,18 @@ describe 'nginx::resource::server' do
           match: %r{\s+ssl_ciphers\s+HIGH;}
         },
         {
+          title: 'should set ssl_prefer_server_ciphers on',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'on',
+          match: %r{\s+ssl_prefer_server_ciphers\s+on;}
+        },
+        {
+          title: 'should set ssl_prefer_server_ciphers off',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'off',
+          match: %r{\s+ssl_prefer_server_ciphers\s+off;}
+        },
+        {
           title: 'should set auth_basic',
           attr: 'auth_basic',
           value: 'value',
@@ -904,18 +917,6 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ssl_only(true) }
       end
 
-      context 'SSL cert missing' do
-        let(:params) { { ssl: true, ssl_key: 'key' } }
-
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
-      end
-
-      context 'SSL key missing' do
-        let(:params) { { ssl: true, ssl_cert: 'cert' } }
-
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error) }
-      end
-
       context 'SSL cert and key are both set to fully qualified paths' do
         let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt', ssl_key: '/tmp/foo.key:' } }
 
@@ -928,20 +929,6 @@ describe 'nginx::resource::server' do
 
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate}) }
         it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate_key}) }
-      end
-
-      context 'SSL cert without key' do
-        let(:params) { { ssl: true, ssl_cert: '/tmp/foo.crt' } }
-
-        msg = %r{ssl_key must be set to false or to a fully qualified path}
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, msg) }
-      end
-
-      context 'SSL key without cert' do
-        let(:params) { { ssl: true, ssl_key: '/tmp/foo.key' } }
-
-        msg = %r{ssl_cert must be set to false or to a fully qualified path}
-        it { expect { is_expected.to contain_class('nginx::resource::server') }.to raise_error(Puppet::Error, msg) }
       end
 
       context 'when use_default_location => true' do
@@ -1000,6 +987,14 @@ describe 'nginx::resource::server' do
         it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0644') }
       end
 
+      context 'when fastcgi_index => "index.php"' do
+        let :params do
+          default_params.merge(fastcgi_index: 'index.php')
+        end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_index('index.php') }
+      end
+
       context 'when fastcgi_param => {key => value}' do
         let :params do
           default_params.merge(fastcgi_param: { 'key' => 'value' })
@@ -1026,30 +1021,10 @@ describe 'nginx::resource::server' do
         it { is_expected.not_to contain_concat__fragment("#{title}-footer") }
       end
 
-      context 'when listen_port == "ssl_port"' do
-        let :params do
-          default_params.merge(listen_port: 80,
-                               ssl_port: '80')
-        end
-
-        it { is_expected.not_to contain_concat__fragment("#{title}-header") }
-        it { is_expected.not_to contain_concat__fragment("#{title}-footer") }
-      end
-
       context 'when listen_port != ssl_port' do
         let :params do
           default_params.merge(listen_port: 80,
                                ssl_port: 443)
-        end
-
-        it { is_expected.to contain_concat__fragment("#{title}-header") }
-        it { is_expected.to contain_concat__fragment("#{title}-footer") }
-      end
-
-      context 'when listen_port != "ssl_port"' do
-        let :params do
-          default_params.merge(listen_port: 80,
-                               ssl_port: '443')
         end
 
         it { is_expected.to contain_concat__fragment("#{title}-header") }

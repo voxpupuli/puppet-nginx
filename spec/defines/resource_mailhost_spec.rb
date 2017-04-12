@@ -358,6 +358,18 @@ describe 'nginx::resource::mailhost' do
           match: '  ssl_ciphers                ECDHE-ECDSA-CHACHA20-POLY1305;'
         },
         {
+          title: 'should set ssl_prefer_server_ciphers to on',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'on',
+          match: '  ssl_prefer_server_ciphers  on;'
+        },
+        {
+          title: 'should set ssl_prefer_server_ciphers to off',
+          attr: 'ssl_prefer_server_ciphers',
+          value: 'off',
+          match: '  ssl_prefer_server_ciphers  off;'
+        },
+        {
           title: 'should set ssl_client_certificate',
           attr: 'ssl_client_cert',
           value: 'client-cert',
@@ -653,7 +665,7 @@ describe 'nginx::resource::mailhost' do
       context 'when listen_port != "ssl_port"' do
         let :params do
           default_params.merge(listen_port: 80,
-                               ssl_port: '443')
+                               ssl_port: 443)
         end
 
         it { is_expected.to contain_concat__fragment("#{title}-header") }
@@ -671,7 +683,7 @@ describe 'nginx::resource::mailhost' do
       context 'when listen_port == "ssl_port"' do
         let :params do
           default_params.merge(listen_port: 80,
-                               ssl_port: '80')
+                               ssl_port: 80)
         end
 
         it { is_expected.not_to contain_concat__fragment("#{title}-header") }

@@ -130,6 +130,7 @@ class nginx (
   Integer $worker_connections                                                                   = 1024,
   Variant[Integer, Enum['auto']] $worker_processes                                              = 1,
   Integer $worker_rlimit_nofile                                                                 = 1024,
+  Enum['on', 'off'] $ssl_prefer_server_ciphers                                                  = 'on',
   $ssl_protocols                                                                                = 'TLSv1 TLSv1.1 TLSv1.2',
   $ssl_ciphers                                                                                  = 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS',
 
@@ -155,6 +156,7 @@ class nginx (
   $string_mappings                                                                              = {},
   $nginx_locations                                                                              = {},
   $nginx_mailhosts                                                                              = {},
+  $nginx_mailhosts_defaults                                                                     = {},
   $nginx_streamhosts                                                                            = {},
   $nginx_upstreams                                                                              = {},
   $nginx_servers                                                                                = {},
@@ -180,7 +182,7 @@ class nginx (
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
   create_resources('nginx::resource::location', $nginx_locations)
-  create_resources('nginx::resource::mailhost', $nginx_mailhosts)
+  create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
   create_resources('nginx::resource::streamhost', $nginx_streamhosts)
   create_resources('nginx::resource::map', $string_mappings)
   create_resources('nginx::resource::geo', $geo_mappings)

@@ -14,6 +14,7 @@ describe 'nginx' do
       nginx_servers_defaults: { 'listen_options' => 'default_server' },
       nginx_locations: { 'test2.local' => { 'server' => 'test2.local', 'www_root' => '/' } },
       nginx_mailhosts: { 'smtp.test2.local' => { 'auth_http' => 'server2.example/cgi-bin/auth', 'protocol' => 'smtp', 'listen_port' => 587 } },
+      nginx_mailhosts_defaults: { 'listen_options' => 'default_server_smtp' },
       nginx_streamhosts: { 'streamhost1' => { 'proxy' => 'streamproxy' } }
     }
   end
@@ -33,6 +34,7 @@ describe 'nginx' do
     it { is_expected.to contain_nginx__resource__server('test2.local').with_listen_options('default_server') }
     it { is_expected.to contain_nginx__resource__location('test2.local') }
     it { is_expected.to contain_nginx__resource__mailhost('smtp.test2.local') }
+    it { is_expected.to contain_nginx__resource__mailhost('smtp.test2.local').with_listen_options('default_server_smtp') }
     it { is_expected.to contain_nginx__resource__streamhost('streamhost1').with_proxy('streamproxy') }
   end
 
@@ -159,7 +161,7 @@ describe 'nginx' do
           is_expected.to contain_apt__source('nginx').with(
             'location'   => "https://nginx.org/packages/#{operatingsystem.downcase}",
             'repos'      => 'nginx',
-            'key'        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'
+            'key'        => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
           )
         end
         it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
@@ -183,7 +185,7 @@ describe 'nginx' do
           is_expected.to contain_apt__source('nginx').with(
             'location'   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
             'repos'      => 'main',
-            'key'        => '16378A33A6EF16762922526E561F9B9CAC40B2F7'
+            'key'        => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' }
           )
         end
       end

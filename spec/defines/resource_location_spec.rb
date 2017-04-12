@@ -692,12 +692,6 @@ describe 'nginx::resource::location' do
           match: %r{^\s+proxy_cache\s+value;}
         },
         {
-          title: 'should not set proxy_cache_valid',
-          attr: 'proxy_cache_valid',
-          value: false,
-          notmatch: %r{proxy_cache_valid\b}
-        },
-        {
           title: 'should set proxy_cache_valid when string',
           attr: 'proxy_cache_valid',
           value: 'value',
@@ -711,12 +705,6 @@ describe 'nginx::resource::location' do
             %r{^\s+proxy_cache_valid\s+value1;},
             %r{^\s+proxy_cache_valid\s+value2;}
           ]
-        },
-        {
-          title: 'should not set proxy_cache',
-          attr: 'proxy_cache',
-          value: false,
-          notmatch: %r{proxy_cache\b}
         },
         {
           title: 'should set proxy_cache_key',
@@ -886,16 +874,6 @@ describe 'nginx::resource::location' do
         let(:params) { { ssl: false, server: 'server1', www_root: '/' } }
 
         it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
-      end
-
-      context 'server missing' do
-        let :params do
-          {
-            www_root: '/'
-          }
-        end
-
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, %r{Cannot create a location reference without attaching to a virtual host}) }
       end
 
       context 'location type missing' do
