@@ -50,7 +50,7 @@ define nginx::resource::upstream (
   $upstream_fail_timeout                    = '10s',
   $upstream_max_fails                       = undef,
   Enum['http', 'stream'] $upstream_context  = 'http',
-  $upstream_weight                          = undef,
+  Optional[Integer] $upstream_weight        = 1,
 ) {
 
   $root_group = $::nginx::root_group

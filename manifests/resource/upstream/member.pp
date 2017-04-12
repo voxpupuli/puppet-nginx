@@ -38,10 +38,10 @@
 define nginx::resource::upstream::member (
   $upstream,
   $server,
-  Enum['present', 'absent'] $ensure = 'present',
-  Integer $port                     = 80,
-  $upstream_fail_timeout  = '10s',
-  $upstream_weight        = undef,
+  Enum['present', 'absent'] $ensure  = 'present',
+  Integer $port                      = 80,
+  $upstream_fail_timeout             = '10s',
+  Optional[Integer] $upstream_weight = 1,
 ) {
 
   # Uses: $server, $port, $upstream_fail_timeout
