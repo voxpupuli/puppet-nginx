@@ -31,7 +31,6 @@
 #   [*fastcgi*]                    - location of fastcgi (host:port)
 #   [*fastcgi_param*]              - Set additional custom fastcgi_params
 #   [*fastcgi_params*]             - optional alternative fastcgi_params file to use
-#   [*fastcgi_index*]              - optional FastCGI index page
 #   [*fastcgi_script*]             - optional SCRIPT_FILE parameter
 #   [*uwsgi_read_timeout*]         - optional value for uwsgi_read_timeout
 #   [*ssl*]                        - Indicates whether to setup SSL bindings for this server.
@@ -121,7 +120,6 @@
 #   [*maintenance_value*]          - Value to return when maintenance is on.  Default to return 503
 #   [*error_pages*]                - Hash: setup errors pages, hash key is the http code and hash value the page
 #   [*locations*]                  - Hash of servers resources used by this server
-
 # Actions:
 #
 # Requires:
@@ -193,7 +191,6 @@ define nginx::resource::server (
   Optional[String] $proxy_buffering                                              = undef,
   Array $resolver                                                                = [],
   Optional[String] $fastcgi                                                      = undef,
-  Optional[String] $fastcgi_index                                                = undef,
   $fastcgi_param                                                                 = undef,
   String $fastcgi_params                                                         = "${::nginx::conf_dir}/fastcgi_params",
   Optional[String] $fastcgi_script                                               = undef,
@@ -345,7 +342,6 @@ define nginx::resource::server (
       proxy_set_body              => $proxy_set_body,
       proxy_buffering             => $proxy_buffering,
       fastcgi                     => $fastcgi,
-      fastcgi_index               => $fastcgi_index,
       fastcgi_param               => $fastcgi_param,
       fastcgi_params              => $fastcgi_params,
       fastcgi_script              => $fastcgi_script,
