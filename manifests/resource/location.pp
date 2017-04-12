@@ -173,12 +173,12 @@ define nginx::resource::location (
   Optional[String] $fastcgi                           = undef,
   Optional[String] $fastcgi_index                     = undef,
   Optional[Hash] $fastcgi_param                       = undef,
-  String $fastcgi_params                              = "${::nginx::conf_dir}/fastcgi_params",
+  Optional[String] $fastcgi_params                    = "${::nginx::conf_dir}/fastcgi.conf",
   Optional[String] $fastcgi_script                    = undef,
   Optional[String] $fastcgi_split_path                = undef,
   Optional[String] $uwsgi                             = undef,
   Optional[Hash] $uwsgi_param                         = undef,
-  String $uwsgi_params                                = "${nginx::config::conf_dir}/uwsgi_params",
+  Optional[String] $uwsgi_params                      = "${nginx::config::conf_dir}/uwsgi_params",
   Optional[String] $uwsgi_read_timeout                = undef,
   Boolean $ssl                                        = false,
   Boolean $ssl_only                                   = false,
@@ -248,15 +248,18 @@ define nginx::resource::location (
 
   $config_file = "${server_dir}/${server_sanitized}.conf"
 
-  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) {
+  # Only try to manage these files if they're the default one (as you presumably
+  # usually don't want the default template if you're using a custom file.
+
+  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) and $fastcgi_params == "${::nginx::conf_dir}/fastcgi.conf" {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0644',
-      content => template('nginx/server/fastcgi_params.erb'),
+      content => template('nginx/server/fastcgi.conf.erb'),
     }
   }
 
-  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) {
+  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${::nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0644',

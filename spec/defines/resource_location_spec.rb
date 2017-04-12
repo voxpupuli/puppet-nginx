@@ -22,7 +22,7 @@ describe 'nginx::resource::location' do
 
       it { is_expected.to contain_class('nginx::config') }
       it { is_expected.to contain_concat__fragment('server1-500-33c6aa94600c830ad2d316bb4db36724').with_content(%r{location rspec-test}) }
-      it { is_expected.not_to contain_file('/etc/nginx/fastcgi_params') }
+      it { is_expected.not_to contain_file('/etc/nginx/fastcgi.conf') }
       it { is_expected.not_to contain_concat__fragment('server1-800-rspec-test-ssl') }
       it { is_expected.not_to contain_file('/etc/nginx/rspec-test_htpasswd') }
     end
@@ -844,13 +844,59 @@ describe 'nginx::resource::location' do
       context 'when fastcgi => "localhost:9000"' do
         let(:params) { { fastcgi: 'localhost:9000', server: 'server1' } }
 
-        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0644') }
+        it { is_expected.to contain_file('/etc/nginx/fastcgi.conf').with_mode('0644') }
+      end
+
+      context 'when fastcgi_params is non-default' do
+        let(:params) do
+          {
+            location: 'location',
+            fastcgi: 'localhost:9000',
+            fastcgi_params: '/etc/nginx/mycustomparams',
+            server: 'server1'
+          }
+        end
+
+        it { is_expected.not_to contain_file('/etc/nginx/mycustomparams') }
+        it do
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            with_content(%r{include\s+/etc/nginx/mycustomparams;})
+        end
+      end
+
+      context 'when fastcgi_params is undef' do
+        let(:params) do
+          {
+            location: 'location',
+            fastcgi: 'localhost:9000',
+            fastcgi_params: nil,
+            server: 'server1'
+          }
+        end
+
+        it { is_expected.not_to contain_file('/etc/nginx/fastcgi.conf') }
+        it do
+          is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)).
+            without_content(%r{include\s+/etc/nginx/fastcgi.conf;})
+        end
       end
 
       context 'when uwsgi => "unix:/home/project/uwsgi.socket"' do
         let(:params) { { uwsgi: 'uwsgi_upstream', server: 'server1' } }
 
         it { is_expected.to contain_file('/etc/nginx/uwsgi_params') }
+      end
+
+      context 'when uwsgi_params is non-default' do
+        let(:params) do
+          {
+            uwsgi: 'uwsgi_upstream',
+            uwsgi_params: '/etc/nginx/bogusparams',
+            server: 'server1'
+          }
+        end
+
+        it { is_expected.not_to contain_file('/etc/nginx/uwsgi_params') }
       end
 
       context 'when ssl_only => true' do
