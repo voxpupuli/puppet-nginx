@@ -13,42 +13,23 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package(
-  $package_name             = $::nginx::params::package_name,
-  $package_source           = 'nginx',
-  $package_ensure           = 'present',
-  $package_flavor           = undef,
-  $passenger_package_ensure = 'present',
-  $manage_repo              = $::nginx::params::manage_repo,
-) {
+class nginx::package {
+
+  $package_name             = $::nginx::package_name
+  $package_source           = $::nginx::package_source
+  $package_ensure           = $::nginx::package_ensure
+  $package_flavor           = $::nginx::package_flavor
+  $passenger_package_ensure = $::nginx::passenger_package_ensure
+  $manage_repo              = $::nginx::manage_repo
 
   assert_private()
 
-  anchor { 'nginx::package::begin': }
-  anchor { 'nginx::package::end': }
-
   case $::osfamily {
     'redhat': {
-      class { '::nginx::package::redhat':
-        manage_repo              => $manage_repo,
-        package_source           => $package_source,
-        package_ensure           => $package_ensure,
-        passenger_package_ensure => $passenger_package_ensure,
-        package_name             => $package_name,
-        require                  => Anchor['nginx::package::begin'],
-        before                   => Anchor['nginx::package::end'],
-      }
+      contain ::nginx::package::redhat
     }
     'debian': {
-      class { '::nginx::package::debian':
-        package_name             => $package_name,
-        package_source           => $package_source,
-        package_ensure           => $package_ensure,
-        passenger_package_ensure => $passenger_package_ensure,
-        manage_repo              => $manage_repo,
-        require                  => Anchor['nginx::package::begin'],
-        before                   => Anchor['nginx::package::end'],
-      }
+      contain ::nginx::package::debian
     }
     'Solaris': {
       # $package_name needs to be specified. SFEnginx,CSWnginx depending on
