@@ -21,8 +21,6 @@ class nginx::service(
   $service_manage  = $::nginx::service_manage,
 ) {
 
-  assert_private()
-
   $service_enable = $service_ensure ? {
     'running' => true,
     'absent'  => false,
