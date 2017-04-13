@@ -49,7 +49,7 @@ class nginx::params {
       }
     }
     'RedHat': {
-      if ($::operatingsystem in ['RedHat', 'CentOS'] and $::operatingsystemmajrelease in ['5', '6', '7']) {
+      if ($::operatingsystem in ['RedHat', 'CentOS', 'Oracle'] and $::operatingsystemmajrelease in ['6', '7']) {
         $_module_os_overrides = {
           'manage_repo' => true,
           'log_group'   => 'nginx',
