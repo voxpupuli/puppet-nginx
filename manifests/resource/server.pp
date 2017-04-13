@@ -293,6 +293,12 @@ define nginx::resource::server (
     }
   }
 
+  # Try to error in the case where the user sets ssl_port == listen_port but
+  # doesn't set ssl = true
+  if (!($ssl == true) and ($ssl_port == $listen_port)) {
+    warning('nginx: ssl must be true if listen_port is the same as ssl_port')
+  }
+
   concat { $config_file:
     owner   => $owner,
     group   => $group,
