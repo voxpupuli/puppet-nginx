@@ -28,6 +28,7 @@ describe 'nginx::resource::server' do
       describe 'os-independent items' do
         describe 'basic assumptions' do
           let(:params) { default_params }
+
           it { is_expected.to contain_class('nginx') }
           it do
             is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with('owner' => 'root',
@@ -49,6 +50,7 @@ describe 'nginx::resource::server' do
         describe 'with $confd_only enabled' do
           let(:pre_condition) { 'class { "nginx": confd_only => true }' }
           let(:params) { default_params }
+
           it { is_expected.to contain_class('nginx') }
           it do
             is_expected.to contain_concat("/etc/nginx/conf.d/#{title}.conf").with('owner' => 'root',
@@ -742,6 +744,7 @@ describe 'nginx::resource::server' do
                                      :ssl_key            => 'dummy.key',
                                      :ssl_cert           => 'dummy.crt')
               end
+
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header") }
               it param[:title] do
                 matches = Array(param[:match])
@@ -847,7 +850,7 @@ describe 'nginx::resource::server' do
                 ssl: true,
                 ssl_cert: 'cert',
                 ssl_key: 'key',
-                server_name: %w(www.foo.com bar.foo.com foo.com),
+            server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
@@ -862,7 +865,7 @@ describe 'nginx::resource::server' do
             let(:title) { 'foo.com' }
             let(:params) do
               {
-                server_name: %w(www.foo.com bar.foo.com foo.com),
+            server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
@@ -1256,6 +1259,7 @@ describe 'nginx::resource::server' do
                 }
               }
             end
+
             it { is_expected.to contain_nginx__resource__location('one') }
             it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
             it { is_expected.to contain_nginx__resource__location('one').with_expires('@12h34m') }
@@ -1279,6 +1283,7 @@ describe 'nginx::resource::server' do
                 }
               }
             end
+
             it { is_expected.to contain_nginx__resource__location('one') }
             it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
             it { is_expected.to contain_nginx__resource__location('one').with_expires('@12h34m') }
@@ -1307,6 +1312,7 @@ describe 'nginx::resource::server' do
                 }
               }
             end
+
             it { is_expected.to contain_nginx__resource__location('one') }
             it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
             it { is_expected.to contain_nginx__resource__location('one').with_www_root('/overwrite') }
