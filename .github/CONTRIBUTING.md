@@ -98,3 +98,7 @@ If you don't want to have to recreate the virtual machine every time you
 can use `BEAKER_DESTROY=no` and `BEAKER_PROVISION=no`. On the first run you will
 at least need `BEAKER_PROVISION` set to yes (the default). The Vagrantfile
 for the created virtual machines will be in `.vagrant/beaker_vagrant_fies`.
+
+The easiest way to debug in a docker container is to open a shell:
+
+    docker exec -it -u root ${container_id_or_name} bash
