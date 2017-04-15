@@ -1,0 +1,26 @@
+server {
+  <% if @config %>
+	<% @config.to_hash.each_pair do |param,lines| -%>
+	  <%- lines = Array(lines) -%>
+	  <% if lines %>
+        <% lines.each do |line| -%>
+		  <%= param %>                  <%= line %>;
+		<% end -%>
+	  <% end %>
+	<% end -%>
+  <% end %>
+
+  access_log            <%= @access_log_real %>;
+  error_log             <%= @error_log_real %>;
+  
+<% if @ssl_config['enabled'] %>
+  ssl on;
+
+  ssl_certificate           <%= @ssl_config['cert'] %>;
+  ssl_certificate_key       <%= @ssl_config['key'] %>;
+  ssl_session_cache         <%= @ssl_config['cache'] %>;
+  ssl_session_timeout       5m;
+  ssl_protocols             <%= @ssl_config['protocols'] %>;
+  ssl_ciphers               <%= @ssl_config['ciphers'] %>;
+  ssl_prefer_server_ciphers on;
+<% end %>
