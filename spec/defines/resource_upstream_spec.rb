@@ -54,7 +54,7 @@ describe 'nginx::resource::upstream' do
           fragment: 'header',
           value: {
             'test3'     => 'test value 3',
-            'test6'     => { 'subkey1' => %w(subvalue1 subvalue2) },
+            'test6'     => { 'subkey1' => %w[subvalue1 subvalue2] },
             'keepalive' => 'keepalive 1',
             'test2'     => 'test value 2',
             'test5'     => { 'subkey1' => 'subvalue1' },
@@ -75,7 +75,7 @@ describe 'nginx::resource::upstream' do
           title: 'should set server',
           attr: 'members',
           fragment: 'members',
-          value: %w(test3 test1 test2),
+          value: %w[test3 test1 test2],
           match: [
             '  server     test3  fail_timeout=10s;',
             '  server     test1  fail_timeout=10s;',
@@ -88,7 +88,7 @@ describe 'nginx::resource::upstream' do
           fragment: 'footer',
           value: {
             'test3' => 'test value 3',
-            'test6' => { 'subkey1' => %w(subvalue1 subvalue2) },
+            'test6' => { 'subkey1' => %w[subvalue1 subvalue2] },
             'keepalive' => 'keepalive 1',
             'test2' => 'test value 2',
             'test5' => { 'subkey1' => 'subvalue1' },

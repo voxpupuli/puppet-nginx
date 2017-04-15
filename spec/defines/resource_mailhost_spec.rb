@@ -14,6 +14,7 @@ describe 'nginx::resource::mailhost' do
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let(:params) { default_params }
+
       it { is_expected.to contain_class('nginx') }
       it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").that_requires('File[/etc/nginx/conf.mail.d]') }
       it do
@@ -78,7 +79,7 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set servername(s)',
           attr: 'server_name',
-          value: %w(name1 name2),
+          value: %w[name1 name2],
           match: '  server_name           name1 name2;'
         },
         {
@@ -250,7 +251,7 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set pop3_capabilities',
           attr: 'pop3_capabilities',
-          value: %w(TOP USER UIDL),
+          value: %w[TOP USER UIDL],
           match: '  pop3_capabilities  TOP USER UIDL;'
         }
       ].each do |param|
@@ -290,7 +291,7 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set smtp_capabilities',
           attr: 'smtp_capabilities',
-          value: %w(8BITMIME PIPELINING HELP),
+          value: %w[8BITMIME PIPELINING HELP],
           match: '  smtp_capabilities  8BITMIME PIPELINING HELP;'
         }
       ].each do |param|
@@ -515,7 +516,7 @@ describe 'nginx::resource::mailhost' do
         {
           title: 'should set servername(s)',
           attr: 'server_name',
-          value: %w(name1 name2),
+          value: %w[name1 name2],
           match: '  server_name           name1 name2;'
         },
         {

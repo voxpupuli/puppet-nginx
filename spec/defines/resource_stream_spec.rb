@@ -26,6 +26,7 @@ describe 'nginx::resource::streamhost' do
   describe 'os-independent items' do
     describe 'basic assumptions' do
       let(:params) { default_params }
+
       it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/streams-available/#{title}.conf").with('owner' => 'root',
@@ -42,6 +43,7 @@ describe 'nginx::resource::streamhost' do
     describe 'when confd_only true' do
       let(:pre_condition) { 'class { "nginx": confd_only => true }' }
       let(:params) { default_params }
+
       it { is_expected.to contain_class('nginx') }
       it do
         is_expected.to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
