@@ -34,7 +34,7 @@ class nginx::package::redhat {
     case $package_source {
       'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "http://nginx.org/packages/${_os}/\$releasever/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
@@ -51,7 +51,7 @@ class nginx::package::redhat {
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/mainline/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "http://nginx.org/packages/mainline/${_os}/\$releasever/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
