@@ -2,7 +2,9 @@
 <% if defined? @www_root -%>
     root          <%= @www_root %>;
 <% end -%>
+<% if defined? @fastcgi_params -%>
     include       <%= @fastcgi_params %>;
+<% end -%>
 
     fastcgi_pass  <%= @fastcgi %>;
 <% if @fastcgi_index -%>

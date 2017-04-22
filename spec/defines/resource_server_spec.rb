@@ -39,7 +39,7 @@ describe 'nginx::resource::server' do
       it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log\s+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
       it { is_expected.to contain_concat__fragment("#{title}-footer") }
       it { is_expected.to contain_nginx__resource__location("#{title}-default") }
-      it { is_expected.not_to contain_file('/etc/nginx/fastcgi_params') }
+      it { is_expected.not_to contain_file('/etc/nginx/fastcgi.conf') }
       it do
         is_expected.to contain_file("#{title}.conf symlink").with('ensure' => 'link',
                                                                   'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
@@ -1002,7 +1002,28 @@ describe 'nginx::resource::server' do
           default_params.merge(fastcgi: 'localhost:9000')
         end
 
-        it { is_expected.to contain_file('/etc/nginx/fastcgi_params').with_mode('0644') }
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_params('/etc/nginx/fastcgi.conf') }
+        it { is_expected.to contain_file('/etc/nginx/fastcgi.conf').with_mode('0644') }
+      end
+
+      context 'when fastcgi_params is non-default' do
+        let :params do
+          default_params.merge(fastcgi: 'localhost:9000',
+                               fastcgi_params: '/etc/nginx/mycustomparams')
+        end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_params('/etc/nginx/mycustomparams') }
+        it { is_expected.not_to contain_file('/etc/nginx/mycustomparams') }
+      end
+
+      context 'when fastcgi_params is not defined' do
+        let :params do
+          default_params.merge(fastcgi: 'localhost:9000',
+                               fastcgi_params: nil)
+        end
+
+        it { is_expected.to contain_nginx__resource__location("#{title}-default").with_fastcgi_params('nil') }
+        it { is_expected.not_to contain_file('/etc/nginx/fastcgi.conf') }
       end
 
       context 'when fastcgi_index => "index.php"' do
@@ -1027,6 +1048,15 @@ describe 'nginx::resource::server' do
         end
 
         it { is_expected.to contain_file('/etc/nginx/uwsgi_params').with_mode('0644') }
+      end
+
+      context 'when uwsgi_params is non-default' do
+        let :params do
+          default_params.merge(uwsgi: 'uwsgi_upstream',
+                               uwsgi_params: '/etc/nginx/bogusparams')
+        end
+
+        it { is_expected.not_to contain_file('/etc/nginx/bogusparams') }
       end
 
       context 'when listen_port == ssl_port but ssl = false' do
