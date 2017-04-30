@@ -431,7 +431,7 @@ define nginx::resource::server (
       ensure  => $server_symlink_ensure,
       path    => "${server_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
-      require => [File[$server_dir], File[$server_enable_dir], Concat[$config_file]],
+      require => [File[$server_dir], Concat[$config_file]],
       notify  => Class['::nginx::service'],
     }
   }
