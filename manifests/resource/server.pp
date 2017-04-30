@@ -440,7 +440,7 @@ define nginx::resource::server (
   create_resources('::nginx::resource::geo', $geo_mappings)
   create_resources('::nginx::resource::location', $locations, {
     ensure   => $ensure,
-    server    => $name_sanitized,
+    server   => $name_sanitized,
     ssl      => $ssl,
     ssl_only => $ssl_only,
     www_root => $www_root,
