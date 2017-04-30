@@ -279,23 +279,23 @@ define nginx::resource::server (
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable == true) and (!$::ipaddress6) {
+  if $ipv6_enable and !$::ipaddress6 {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
   # Check to see if SSL Certificates are properly defined.
-  if ($ssl == true) {
-    if ($ssl_cert == undef)  {
+  if $ssl {
+    if $ssl_cert == undef {
       fail('nginx: ssl_cert must be set to false or to a fully qualified path')
     }
-    if ($ssl_key == undef) {
+    if $ssl_key == undef {
       fail('nginx: ssl_key must be set to false or to a fully qualified path')
     }
   }
 
   # Try to error in the case where the user sets ssl_port == listen_port but
   # doesn't set ssl = true
-  if (!($ssl == true) and ($ssl_port == $listen_port)) {
+  if !$ssl and $ssl_port == $listen_port {
     warning('nginx: ssl must be true if listen_port is the same as ssl_port')
   }
 
@@ -309,25 +309,21 @@ define nginx::resource::server (
 
   # This deals with a situation where the listen directive for SSL doesn't match
   # the port we want to force the SSL redirect to.
-  if ($ssl_redirect_port) {
+  if $ssl_redirect_port {
     $_ssl_redirect_port = $ssl_redirect_port
-  } elsif ($ssl_port) {
+  } elsif $ssl_port {
     $_ssl_redirect_port = $ssl_port
   }
 
   # Suppress unneeded stuff in non-SSL location block when certain conditions are
   # met.
-  if (($ssl == true) and ($ssl_port == $listen_port)) or ($ssl_redirect) {
-    $ssl_only = true
-  } else {
-    $ssl_only = false
-  }
+  $ssl_only = ($ssl and $ssl_port == $listen_port) or $ssl_redirect
 
   # If we're redirecting to SSL, the default location block is useless, *unless*
   # SSL is enabled for this server
   # either       and    ssl -> true
   # ssl redirect and no ssl -> false
-  if ($ssl_redirect != true or $ssl == true) and $use_default_location == true {
+  if (!$ssl_redirect or $ssl) and $use_default_location {
     # Create the default location reference for the server
     nginx::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
@@ -399,16 +395,14 @@ define nginx::resource::server (
     }
   }
 
-  if (($listen_port + 0) != ($ssl_port + 0)) {
+  if $listen_port != $ssl_port {
     concat::fragment { "${name_sanitized}-header":
       target  => $config_file,
       content => template('nginx/server/server_header.erb'),
       order   => '001',
     }
-  }
 
-  # Create a proper file close stub.
-  if (($listen_port + 0) != ($ssl_port + 0)) {
+    # Create a proper file close stub.
     concat::fragment { "${name_sanitized}-footer":
       target  => $config_file,
       content => template('nginx/server/server_footer.erb'),
@@ -417,7 +411,7 @@ define nginx::resource::server (
   }
 
   # Create SSL File Stubs if SSL is enabled
-  if ($ssl == true) {
+  if $ssl {
     # Access and error logs are named differently in ssl template
 
     concat::fragment { "${name_sanitized}-ssl-header":
