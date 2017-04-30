@@ -154,6 +154,7 @@ class nginx (
   $geo_mappings                                     = {},
   $string_mappings                                  = {},
   $nginx_locations                                  = {},
+  $nginx_locations_defaults                         = {},
   $nginx_mailhosts                                  = {},
   $nginx_mailhosts_defaults                         = {},
   $nginx_streamhosts                                = {},
@@ -169,7 +170,7 @@ class nginx (
 
   create_resources('nginx::resource::upstream', $nginx_upstreams)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
-  create_resources('nginx::resource::location', $nginx_locations)
+  create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
   create_resources('nginx::resource::streamhost', $nginx_streamhosts)
   create_resources('nginx::resource::map', $string_mappings)

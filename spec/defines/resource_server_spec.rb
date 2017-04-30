@@ -1242,5 +1242,81 @@ describe 'nginx::resource::server' do
         end
       end
     end
+
+    describe 'with locations' do
+      context 'simple location' do
+        let(:params) do
+          {
+            use_default_location: false,
+            locations: {
+              'one' => {
+                'location_custom_cfg' => {},
+                'location' => '/one',
+                'expires' => '@12h34m'
+              }
+            }
+          }
+        end
+        it { is_expected.to contain_nginx__resource__location('one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_expires('@12h34m') }
+      end
+
+      context 'multiple locations' do
+        let(:params) do
+          {
+            use_default_location: false,
+            locations: {
+              'one' => {
+                'location_custom_cfg' => {},
+                'location' => '/one',
+                'expires' => '@12h34m'
+              },
+              'two' => {
+                'location_custom_cfg' => {},
+                'location' => '= /two',
+                'expires' => '@23h45m'
+              }
+            }
+          }
+        end
+        it { is_expected.to contain_nginx__resource__location('one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_expires('@12h34m') }
+        it { is_expected.to contain_nginx__resource__location('two') }
+        it { is_expected.to contain_nginx__resource__location('two').with_location('= /two') }
+        it { is_expected.to contain_nginx__resource__location('two').with_expires('@23h45m') }
+      end
+
+      context 'with locations default' do
+        let(:params) do
+          {
+            www_root: '/toplevel',
+            locations_defaults: {
+              'www_root' => '/overwrite',
+              'expires' => '@12h34m'
+            },
+            locations: {
+              'one' => {
+                'location_custom_cfg' => {},
+                'location' => '/one'
+              },
+              'two' => {
+                'location_custom_cfg' => {},
+                'location' => '= /two'
+              }
+            }
+          }
+        end
+        it { is_expected.to contain_nginx__resource__location('one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_location('/one') }
+        it { is_expected.to contain_nginx__resource__location('one').with_www_root('/overwrite') }
+        it { is_expected.to contain_nginx__resource__location('one').with_expires('@12h34m') }
+        it { is_expected.to contain_nginx__resource__location('two') }
+        it { is_expected.to contain_nginx__resource__location('two').with_location('= /two') }
+        it { is_expected.to contain_nginx__resource__location('two').with_www_root('/overwrite') }
+        it { is_expected.to contain_nginx__resource__location('two').with_expires('@12h34m') }
+      end
+    end
   end
 end
