@@ -39,4 +39,11 @@ describe Facter::Util::Fact do
       # Openresty never used the old format as far as I can find, no point testing
     end
   end
+  context 'with openresty nginx' do
+    before do
+      Facter::Util::Resolution.stubs(:which).with('nginx').returns(true)
+      Facter::Util::Resolution.stubs(:exec).with('nginx -v 2>&1').returns('nginx: nginx version: openresty/1.11.2.1')
+    end
+    it { expect(Facter.fact(:nginx_version).value).to eq('1.11.2.1') }
+  end
 end
