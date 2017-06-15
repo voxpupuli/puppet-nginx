@@ -1,6 +1,2 @@
 ---
-osfamily: "Debian"
-operatingsystem: "Debian"
-operatingsystemmajrelease: "8"
-lsbdistid: "Debian"
-lsbdistcodename: "jessie"
+ipaddress6: '::'
