@@ -30,7 +30,11 @@ server {
     <%- end -%>
   <%- end -%>
   server_name  www.<%= s.gsub(/^www\./, '') %>;
+  <%- if @ssl_redirect or @ssl_only -%>
+  return       301 https://<%= s.gsub(/^www\./, '') %><% if @_ssl_redirect_port.to_i != 443 %>:<%= @_ssl_redirect_port %><% end %>$request_uri;
+  <%- else -%>
   return       301 http://<%= s.gsub(/^www\./, '') %>$request_uri;
+  <%- end -%>
 }
 
 <% end -%>
