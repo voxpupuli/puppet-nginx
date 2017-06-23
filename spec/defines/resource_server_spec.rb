@@ -850,7 +850,7 @@ describe 'nginx::resource::server' do
                 ssl: true,
                 ssl_cert: 'cert',
                 ssl_key: 'key',
-            server_name: %w[www.foo.com bar.foo.com foo.com],
+                server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
@@ -865,7 +865,7 @@ describe 'nginx::resource::server' do
             let(:title) { 'foo.com' }
             let(:params) do
               {
-            server_name: %w[www.foo.com bar.foo.com foo.com],
+                server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
