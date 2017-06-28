@@ -1078,7 +1078,7 @@ describe 'nginx' do
             it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
           end
         end
-        it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
+        it { is_expected.to contain_file('/var/log/nginx').with(mode: '0750') }
       end
     end
 
