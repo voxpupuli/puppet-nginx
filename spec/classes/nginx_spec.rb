@@ -659,6 +659,16 @@ describe 'nginx' do
                 match: '  fastcgi_cache_use_stale invalid_header;'
               },
               {
+                title: 'should contain http_raw_prepend directives',
+                attr: 'http_raw_prepend',
+                value: [
+                  'if (a) {',
+                  '  b;',
+                  '}'
+                ],
+                match: %r{^\s+if \(a\) \{\n\s++b;\n\s+\}}
+              },
+              {
                 title: 'should contain ordered appended directives from hash',
                 attr: 'http_cfg_prepend',
                 value: { 'test1' => 'test value 1', 'test2' => 'test value 2', 'allow' => 'test value 3' },
@@ -685,6 +695,16 @@ describe 'nginx' do
                   '  test1 test value 1;',
                   '  test1 test value 2;'
                 ]
+              },
+              {
+                title: 'should contain http_raw_append directives',
+                attr: 'http_raw_append',
+                value: [
+                  'if (a) {',
+                  '  b;',
+                  '}'
+                ],
+                match: %r{^\s+if \(a\) \{\n\s++b;\n\s+\}}
               },
               {
                 title: 'should contain ordered appended directives from hash',
