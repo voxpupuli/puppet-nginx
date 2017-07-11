@@ -317,6 +317,18 @@ describe 'nginx::resource::server' do
               attr: 'error_pages',
               value: { '503' => '/foo.html' },
               match: '  error_page  503 /foo.html;'
+            },
+            {
+              title: 'should set index_file(s)',
+              attr: 'index_files',
+              value: %w(name1 name2),
+              match: %r{\s*index\s+name1\s+name2;}
+            },
+            {
+              title: 'should not set index_file(s)',
+              attr: 'index_files',
+              value: :undef,
+              match: %r{^((?!index).)*$}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
@@ -733,6 +745,18 @@ describe 'nginx::resource::server' do
               attr: 'use_default_location',
               value: true,
               notmatch: %r{  root /;}
+            },
+            {
+              title: 'should set index_file(s)',
+              attr: 'index_files',
+              value: %w(name1 name2),
+              match: %r{\s*index\s+name1\s+name2;}
+            },
+            {
+              title: 'should not set index_file(s)',
+              attr: 'index_files',
+              value: :undef,
+              match: %r{^((?!index).)*$}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
