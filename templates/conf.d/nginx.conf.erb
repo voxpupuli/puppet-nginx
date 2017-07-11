@@ -45,6 +45,12 @@ events {
 }
 
 http {
+<% if @http_raw_prepend && Array(@http_raw_prepend).size > 0 -%>
+    <%- Array(@http_raw_prepend).each do |line| -%>
+    <%= line %>
+    <%- end -%>
+<% end -%>
+
 <% if @http_cfg_prepend -%>
   <%- field_width = @http_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @http_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
@@ -187,6 +193,12 @@ http {
   <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
   <%- end -%>
   <%- end -%>
+<% end -%>
+
+<% if @http_raw_append && Array(@http_raw_append).size > 0 -%>
+    <%- Array(@http_raw_append).each do |line| -%>
+    <%= line %>
+    <%- end -%>
 <% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
