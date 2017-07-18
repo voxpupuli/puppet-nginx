@@ -11,8 +11,7 @@ def location_for(place, fake_version = nil)
 end
 
 group :test do
-  gem 'puppetlabs_spec_helper', '~> 2.0.1',                         :require => false
-  gem 'parallel_tests',                                             :require => false
+  gem 'puppetlabs_spec_helper', '~> 2.1.1',                         :require => false
   gem 'rspec-puppet', '~> 2.5',                                     :require => false
   gem 'rspec-puppet-facts',                                         :require => false
   gem 'rspec-puppet-utils',                                         :require => false
@@ -26,22 +25,24 @@ group :test do
   gem 'metadata-json-lint',                                         :require => false
   gem 'puppet-blacksmith',                                          :require => false
   gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
-  gem 'puppet-strings', '~> 1.0.0',                                 :require => false
+  gem 'puppet-strings', '~> 1.0',                                   :require => false
   gem 'redcarpet',                                                  :require => false
-  gem 'rubocop', '~> 0.47.0',                                       :require => false if RUBY_VERSION >= '2.3.0'
-  gem 'rubocop-rspec', '~> 1.10.0',                                 :require => false if RUBY_VERSION >= '2.3.0'
+  gem 'rubocop', '~> 0.48.0',                                       :require => false if RUBY_VERSION >= '2.3.0'
+  gem 'rubocop-rspec', '~> 1.15.0',                                 :require => false if RUBY_VERSION >= '2.3.0'
   gem 'mocha', '>= 1.2.1',                                          :require => false
   gem 'coveralls',                                                  :require => false
   gem 'simplecov-console',                                          :require => false
   gem 'github_changelog_generator', '~> 1.13.0',                    :require => false if RUBY_VERSION < '2.2.2'
   gem 'rack', '~> 1.0',                                             :require => false if RUBY_VERSION < '2.2.2'
   gem 'github_changelog_generator',                                 :require => false if RUBY_VERSION >= '2.2.2'
+  gem 'parallel_tests',                                             :require => false
 end
 
 group :development do
-  gem 'travis',       :require => false
-  gem 'travis-lint',  :require => false
-  gem 'guard-rake',   :require => false
+  gem 'travis',                   :require => false
+  gem 'travis-lint',              :require => false
+  gem 'guard-rake',               :require => false
+  gem 'overcommit', '~> 0.39.1',  :require => false
 end
 
 group :system_tests do
