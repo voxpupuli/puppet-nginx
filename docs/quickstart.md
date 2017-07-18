@@ -90,7 +90,7 @@ Combining our configurations above into a single manifest, our code block looks 
 ```  
 
 In summary, this Puppet code block will:
-* Install the latest version of nginx from the 'mainline' nginx distributino.
+* Install the latest version of nginx from the 'mainline' nginx distribution.
 * Define a virtual host `www.myhost.com` for our website.
 * Define an *upstream* service that consists of a single external IP address.
 * Define a URL that will proxy to the upstream resource.  In this case,  `http://www.myhost.com/blog` will proxy to an external resource hosted at `http://192.168.99.1`.
