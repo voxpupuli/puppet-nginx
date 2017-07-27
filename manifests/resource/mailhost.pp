@@ -85,7 +85,7 @@ define nginx::resource::mailhost (
   String $ssl_ciphers                            = $::nginx::ssl_ciphers,
   Optional[String] $ssl_client_cert              = undef,
   Optional[String] $ssl_crl                      = undef,
-  Optional[String] $ssl_dhparam                  = undef,
+  Optional[String] $ssl_dhparam                  = $::nginx::ssl_dhparam,
   Optional[String] $ssl_ecdh_curve               = undef,
   Optional[String] $ssl_key                      = undef,
   Optional[String] $ssl_password_file            = undef,
