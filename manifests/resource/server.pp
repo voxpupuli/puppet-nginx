@@ -42,7 +42,7 @@
 #   [*ssl_verify_client*]          - Enables verification of client certificates.
 #   [*ssl_crl*]                    - String: Specifies CRL path in file system
 #   [*ssl_dhparam*]                - This directive specifies a file containing Diffie-Hellman key agreement protocol cryptographic
-#     parameters, in PEM format, utilized for exchanging session keys between server and client.
+#     parameters, in PEM format, utilized for exchanging session keys between server and client. Defaults to nginx::ssl_dhparam
 #   [*ssl_prefer_server_ciphers*]  - String: Specifies that server ciphers should be preferred over client ciphers when using the SSLv3 and
 #     TLS protocols. Defaults to nginx::ssl_prefer_server_ciphers.
 #   [*ssl_redirect*]               - Adds a server directive and return statement to force ssl redirect. Will honor ssl_port if it's set.
@@ -155,7 +155,7 @@ define nginx::resource::server (
   Optional[Variant[String, Boolean]] $ssl_cert                                   = undef,
   Optional[String] $ssl_client_cert                                              = undef,
   Optional[String] $ssl_verify_client                                            = 'on',
-  Optional[String] $ssl_dhparam                                                  = undef,
+  Optional[String] $ssl_dhparam                                                  = $::nginx::ssl_dhparam,
   Boolean $ssl_redirect                                                          = false,
   Optional[Integer] $ssl_redirect_port                                           = undef,
   Optional[Variant[String, Boolean]] $ssl_key                                    = undef,
