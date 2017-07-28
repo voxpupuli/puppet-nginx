@@ -18,6 +18,7 @@ describe 'nginx::resource::mailhost' do
       describe 'os-independent items' do
         describe 'basic assumptions' do
           let(:params) { default_params }
+
           it { is_expected.to contain_class('nginx') }
           it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").that_requires('File[/etc/nginx/conf.mail.d]') }
           it do
