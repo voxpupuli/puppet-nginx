@@ -10,7 +10,7 @@ HOSTS:
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
-      - 'apt-get install -y net-tools wget'
+      - 'apt-get install -y net-tools wget locales'
       - 'locale-gen en_US.UTF-8'
 CONFIG:
   trace_limit: 200
