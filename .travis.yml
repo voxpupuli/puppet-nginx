@@ -3,7 +3,6 @@ sudo: false
 dist: trusty
 language: ruby
 cache: bundler
-bundler_args: --without system_tests development
 before_install:
   - bundle -v
   - rm Gemfile.lock || true
@@ -17,17 +16,35 @@ matrix:
   fast_finish: true
   include:
   - rvm: 2.1.9
+    bundler_args: --without development
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-14.04 CHECK=beaker
+    services: docker
+    sudo: required
+  - rvm: 2.1.9
+    bundler_args: --without development
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-16.04 CHECK=beaker
+    services: docker
+    sudo: required
+  - rvm: 2.1.9
+    bundler_args: --without development
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7 CHECK=beaker
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
     env: PUPPET_VERSION="~> 4.0" CHECK=test
-  - rvm: 2.2.6
-    env: PUPPET_VERSION="~> 4.0" CHECK=test
-  - rvm: 2.3.3
-    env: PUPPET_VERSION="~> 4.0" CHECK=test
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=test
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
-  - rvm: 2.4.0
-    env: PUPPET_VERSION="~> 4.0" CHECK=build DEPLOY_TO_FORGE=yes
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 5.0" CHECK=test
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 5.0" CHECK=rubocop
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
 branches:
   only:
   - master

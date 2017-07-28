@@ -62,6 +62,7 @@ describe 'nginx' do
 
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
+
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
                 'baseurl' => "http://nginx.org/packages/mainline/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
@@ -78,6 +79,7 @@ describe 'nginx' do
 
           context 'package_source => passenger' do
             let(:params) { { package_source: 'passenger' } }
+
             it do
               is_expected.to contain_yumrepo('passenger').with(
                 'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:operatingsystemmajrelease]}/$basearch",
@@ -106,6 +108,7 @@ describe 'nginx' do
 
           context 'manage_repo => false' do
             let(:params) { { manage_repo: false } }
+
             it { is_expected.to contain_package('nginx') }
             it { is_expected.not_to contain_yumrepo('nginx-release') }
           end
@@ -133,6 +136,7 @@ describe 'nginx' do
 
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
+
             it do
               is_expected.to contain_apt__source('nginx').with(
                 'location' => "https://nginx.org/packages/mainline/#{facts[:operatingsystem].downcase}"
@@ -142,6 +146,7 @@ describe 'nginx' do
 
           context "package_source => 'passenger'" do
             let(:params) { { package_source: 'passenger' } }
+
             it { is_expected.to contain_package('nginx') }
             it { is_expected.to contain_package('passenger') }
             it do
@@ -155,6 +160,7 @@ describe 'nginx' do
 
           context 'manage_repo => false' do
             let(:params) { { manage_repo: false } }
+
             it { is_expected.to contain_package('nginx') }
             it { is_expected.not_to contain_apt__source('nginx') }
             it { is_expected.not_to contain_package('passenger') }
@@ -194,6 +200,7 @@ describe 'nginx' do
               service_name: 'nginx'
             }
           end
+
           it { is_expected.to contain_service('nginx').with_restart('a restart command') }
         end
 
@@ -203,6 +210,7 @@ describe 'nginx' do
               service_name: 'nginx14'
             }
           end
+
           it { is_expected.to contain_service('nginx').with_name('nginx14') }
         end
 
@@ -212,6 +220,7 @@ describe 'nginx' do
               service_manage: false
             }
           end
+
           it { is_expected.not_to contain_service('nginx') }
         end
       end
@@ -808,7 +817,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_set_header directives',
                 attr: 'proxy_set_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_set_header        header1;',
                   '  proxy_set_header        header2;'
@@ -817,7 +826,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_hide_header directives',
                 attr: 'proxy_hide_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_hide_header        header1;',
                   '  proxy_hide_header        header2;'
@@ -826,7 +835,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_pass_header directives',
                 attr: 'proxy_pass_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_pass_header        header1;',
                   '  proxy_pass_header        header2;'
@@ -875,21 +884,25 @@ describe 'nginx' do
                 proxy_cache_loader_files: 1000
               }
             end
+
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_files=1000;}) }
           end
 
           context 'when proxy_cache_path is /path/to/nginx and loader_sleep is 50ms' do
             let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_sleep: '50ms' } }
+
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_sleep=50ms;}) }
           end
 
           context 'when proxy_cache_path is /path/to/nginx and loader_threshold is 300ms' do
             let(:params) { { conf_dir: '/path/to/nginx', proxy_cache_path: '/path/to/proxy.cache', proxy_cache_loader_threshold: '300ms' } }
+
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m loader_threshold=300ms;}) }
           end
 
           context 'when conf_dir is /path/to/nginx' do
             let(:params) { { conf_dir: '/path/to/nginx' } }
+
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       /path/to/nginx/mime\.types;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/conf\.d/\*\.conf;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/sites-enabled/\*;}) }
@@ -897,6 +910,7 @@ describe 'nginx' do
 
           context 'when confd_purge true' do
             let(:params) { { confd_purge: true } }
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').with(
                 purge: true,
@@ -907,26 +921,28 @@ describe 'nginx' do
 
           context 'when confd_purge false' do
             let(:params) { { confd_purge: false } }
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
           end
 
           context 'when confd_only true' do
             let(:params) { { confd_only: true } }
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
               is_expected.not_to contain_file('/etc/nginx/sites-available')
               is_expected.not_to contain_file('/etc/nginx/sites-enabled')
@@ -938,6 +954,7 @@ describe 'nginx' do
 
           context 'when server_purge true' do
             let(:params) { { server_purge: true } }
+
             it do
               is_expected.to contain_file('/etc/nginx/sites-available').with(
                 purge: true,
@@ -960,6 +977,7 @@ describe 'nginx' do
                 server_purge: true
               }
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').with(
                 purge: true,
@@ -981,73 +999,76 @@ describe 'nginx' do
                 confd_only: true
               }
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   purge
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/conf.stream.d').without(
-                %w(
+                %w[
                   purge
-                )
+                ]
               )
             end
           end
 
           context 'when server_purge false' do
             let(:params) { { server_purge: false } }
+
             it do
               is_expected.to contain_file('/etc/nginx/sites-available').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/sites-enabled').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/var/log/nginx').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/streams-available').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/streams-enabled').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
           end
 
           context 'when daemon_user = www-data' do
             let(:params) { { daemon_user: 'www-data' } }
+
             it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
