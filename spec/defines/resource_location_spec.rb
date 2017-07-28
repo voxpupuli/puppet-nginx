@@ -92,7 +92,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should set location_allow',
               attr: 'location_allow',
-              value: %w(127.0.0.1 10.0.0.1),
+              value: %w[127.0.0.1 10.0.0.1],
               match: [
                 '    allow 127.0.0.1;',
                 '    allow 10.0.0.1;'
@@ -101,7 +101,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should set location_deny',
               attr: 'location_deny',
-              value: %w(127.0.0.1 10.0.0.1),
+              value: %w[127.0.0.1 10.0.0.1],
               match: [
                 '    deny 127.0.0.1;',
                 '    deny 10.0.0.1;'
@@ -125,7 +125,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should contain custom prepended directives',
               attr: 'location_custom_cfg_prepend',
-              value: { 'test1' => 'bar', 'test2' => %w(foobar barbaz),
+              value: { 'test1' => 'bar', 'test2' => %w[foobar barbaz],
                        'test3' => { 'subtest1' => ['"sub test value1a"', '"sub test value1b"'],
                                     'subtest2' => '"sub test value2"' } },
               match: [
@@ -240,7 +240,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should contain custom appended directives',
               attr: 'location_custom_cfg_append',
-              value: { 'test1' => 'bar', 'test2' => %w(foobar barbaz),
+              value: { 'test1' => 'bar', 'test2' => %w[foobar barbaz],
                        'test3' => { 'subtest1' => ['"sub test value1a"', '"sub test value1b"'],
                                     'subtest2' => '"sub test value2"' } },
               match: [
@@ -331,13 +331,13 @@ describe 'nginx::resource::location' do
             {
               title: 'should set try_file(s)',
               attr: 'try_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: '    try_files name1 name2;'
             },
             {
               title: 'should set index_file(s)',
               attr: 'index_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: '    index     name1 name2;'
             }
           ].each do |param|
@@ -383,13 +383,13 @@ describe 'nginx::resource::location' do
             {
               title: 'should set try_file(s)',
               attr: 'try_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: '    try_files name1 name2;'
             },
             {
               title: 'should set index_file(s)',
               attr: 'index_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: '    index     name1 name2;'
             }
           ].each do |param|
@@ -504,7 +504,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should set try_file(s)',
               attr: 'try_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: %r{\s+try_files\s+name1 name2;}
             },
             {
@@ -615,7 +615,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should set try_file(s)',
               attr: 'try_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: %r{\s+try_files\s+name1 name2;}
             },
             {
@@ -717,7 +717,7 @@ describe 'nginx::resource::location' do
             {
               title: 'should set proxy_cache_valid when array of strings',
               attr: 'proxy_cache_valid',
-              value: %w(value1 value2),
+              value: %w[value1 value2],
               match: [
                 %r{^\s+proxy_cache_valid\s+value1;},
                 %r{^\s+proxy_cache_valid\s+value2;}

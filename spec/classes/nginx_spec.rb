@@ -817,7 +817,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_set_header directives',
                 attr: 'proxy_set_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_set_header        header1;',
                   '  proxy_set_header        header2;'
@@ -826,7 +826,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_hide_header directives',
                 attr: 'proxy_hide_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_hide_header        header1;',
                   '  proxy_hide_header        header2;'
@@ -835,7 +835,7 @@ describe 'nginx' do
               {
                 title: 'should contain ordered appended proxy_pass_header directives',
                 attr: 'proxy_pass_header',
-                value: %w(header1 header2),
+                value: %w[header1 header2],
                 match: [
                   '  proxy_pass_header        header1;',
                   '  proxy_pass_header        header2;'
@@ -924,11 +924,11 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
           end
@@ -938,11 +938,11 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
               is_expected.not_to contain_file('/etc/nginx/sites-available')
               is_expected.not_to contain_file('/etc/nginx/sites-enabled')
@@ -1002,16 +1002,16 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_file('/etc/nginx/conf.d').without(
-                %w(
+                %w[
                   purge
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/conf.stream.d').without(
-                %w(
+                %w[
                   purge
-                )
+                ]
               )
             end
           end
@@ -1021,47 +1021,47 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_file('/etc/nginx/sites-available').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/sites-enabled').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/var/log/nginx').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/streams-available').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/streams-enabled').without(
-                %w(
+                %w[
                   ignore
                   purge
                   recurse
-                )
+                ]
               )
             end
           end
