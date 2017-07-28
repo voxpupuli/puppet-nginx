@@ -323,7 +323,7 @@ describe 'nginx::resource::server' do
             {
               title: 'should set index_file(s)',
               attr: 'index_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: %r{\s*index\s+name1\s+name2;}
             },
             {
@@ -751,7 +751,7 @@ describe 'nginx::resource::server' do
             {
               title: 'should set index_file(s)',
               attr: 'index_files',
-              value: %w(name1 name2),
+              value: %w[name1 name2],
               match: %r{\s*index\s+name1\s+name2;}
             },
             {
@@ -874,7 +874,7 @@ describe 'nginx::resource::server' do
                 ssl: true,
                 ssl_cert: 'cert',
                 ssl_key: 'key',
-                server_name: %w(www.foo.com bar.foo.com foo.com),
+                server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
@@ -889,7 +889,7 @@ describe 'nginx::resource::server' do
             let(:title) { 'foo.com' }
             let(:params) do
               {
-                server_name: %w(www.foo.com bar.foo.com foo.com),
+                server_name: %w[www.foo.com bar.foo.com foo.com],
                 use_default_location: false,
                 rewrite_www_to_non_www: true
               }
