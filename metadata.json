@@ -1,6 +1,6 @@
 {
   "name": "puppet-nginx",
-  "version": "0.6.1-rc0",
+  "version": "0.7.0",
   "author": "Vox Pupuli",
   "summary": "Puppet NGINX management module",
   "license": "MIT",
@@ -24,7 +24,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 5.0.0"
+      "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -66,8 +66,8 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04",
         "12.04",
+        "14.04",
         "16.04"
       ]
     }
