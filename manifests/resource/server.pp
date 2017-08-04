@@ -69,8 +69,8 @@
 #   [*http2*]                      - Toggles HTTP/2 protocol.
 #   [*server_name*]                - List of servernames for which this server will respond. Default [$name].
 #   [*www_root*]                   - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*rewrite_www_to_non_www*]     - Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com in order to avoid
-#     duplicate content (SEO);
+#   [*rewrite_www_to_non_www*]     - Adds a server directive and rewrite rule to rewrite www.example.com to example.com
+#   [*rewrite_non_www_to_www*]     - Adds a server directive and rewrite rule to rewrite example.com to www.example.com.
 #   [*try_files*]                  - Specifies the locations for files to be checked as an array. Cannot be used in conjuction with $proxy.
 #   [*proxy_cache*]                - This directive sets name of zone for caching. The same zone can be used in multiple places.
 #   [*proxy_cache_key*]            - Override the default proxy_cache_key of $scheme$proxy_host$request_uri
@@ -208,6 +208,7 @@ define nginx::resource::server (
   Array[String] $server_name                                                     = [$name],
   Optional[String] $www_root                                                     = undef,
   Boolean $rewrite_www_to_non_www                                                = false,
+  Boolean $rewrite_non_www_to_www                                                = false,
   Optional[Hash] $location_custom_cfg                                            = undef,
   Optional[Hash] $location_cfg_prepend                                           = undef,
   Optional[Hash] $location_cfg_append                                            = undef,
@@ -287,6 +288,11 @@ define nginx::resource::server (
   # and support does not exist for it in the kernel.
   if $ipv6_enable and !$ipv6_listen_ip {
     warning('nginx: IPv6 support is not enabled or configured properly')
+  }
+
+  # Mutually exclusive for obvious reasons.
+  if $rewrite_www_to_non_www and $rewrite_non_www_to_www {
+    fail('rewrite_www_to_non_www and rewrite_non_www_to_www are mutually exclusive')
   }
 
   # Check to see if SSL Certificates are properly defined.

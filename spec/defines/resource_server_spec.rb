@@ -159,19 +159,31 @@ describe 'nginx::resource::server' do
               title: 'should set servername(s)',
               attr: 'server_name',
               value: ['www.foo.com', 'foo.com'],
-              match: %r{\s+server_name\s+www.foo.com foo.com;}
+              match: %r{\s+server_name\s+www\.foo\.com foo\.com;}
             },
             {
               title: 'should rewrite www servername to non-www',
               attr: 'rewrite_www_to_non_www',
               value: true,
-              match: %r{\s+server_name\s+rspec.example.com;}
+              match: %r{\s+server_name\s+rspec\.example\.com;}
             },
             {
               title: 'should not rewrite www servername to non-www',
               attr: 'rewrite_www_to_non_www',
               value: false,
-              match: %r{\s+server_name\s+www.rspec.example.com;}
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
+            },
+            {
+              title: 'rewrite_non_www_to_www => true should have no effect when hostname has www',
+              attr: 'rewrite_non_www_to_www',
+              value: true,
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
+            },
+            {
+              title: 'rewrite_non_www_to_www => false should have no effect when hostname has www',
+              attr: 'rewrite_non_www_to_www',
+              value: false,
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
             },
             {
               title: 'should set auth_basic',
@@ -367,6 +379,16 @@ describe 'nginx::resource::server' do
               }x
             },
             {
+              title: 'should not contain non-www to www rewrite',
+              attr: 'rewrite_non_www_to_www',
+              value: false,
+              notmatch: %r{
+              ^
+              \s+server_name\s+www\.rspec\.example\.com;\n
+              \s+return\s+301\s+https://www\.rspec\.example\.com\$request_uri;
+              }x
+            },
+            {
               title: 'should contain include directives',
               attr: 'include_files',
               value: ['/file1', '/file2'],
@@ -515,20 +537,32 @@ describe 'nginx::resource::server' do
             {
               title: 'should set servername(s)',
               attr: 'server_name',
-              value: ['www.foo.com', 'foo.com'],
-              match: %r{\s+server_name\s+www.foo.com foo.com;}
+              value: ['www.example.net', 'example.net'],
+              match: %r{\s+server_name\s+www\.example\.net example\.net;}
             },
             {
               title: 'should rewrite www servername to non-www',
               attr: 'rewrite_www_to_non_www',
               value: true,
-              match: %r{\s+server_name\s+rspec.example.com;}
+              match: %r{\s+server_name\s+rspec\.example\.com;}
             },
             {
               title: 'should not rewrite www servername to non-www',
               attr: 'rewrite_www_to_non_www',
               value: false,
-              match: %r{\s+server_name\s+www.rspec.example.com;}
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
+            },
+            {
+              title: 'should rewrite non-www servername to www',
+              attr: 'rewrite_non_www_to_www',
+              value: true,
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
+            },
+            {
+              title: 'should not change www servername when rewrite_non_www_to_www is false',
+              attr: 'rewrite_non_www_to_www',
+              value: false,
+              match: %r{\s+server_name\s+www\.rspec\.example\.com;}
             },
             {
               title: 'should set the SSL buffer size',
@@ -800,6 +834,16 @@ describe 'nginx::resource::server' do
               }x
             },
             {
+              title: 'should not contain non-www to www rewrite',
+              attr: 'rewrite_non_www_to_www',
+              value: false,
+              notmatch: %r{
+              ^
+              \s+server_name\s+rspec\.example\.com;\n
+              \s+return\s+301\s+https://www\.rspec\.example\.com\$request_uri;
+              }x
+            },
+            {
               title: 'should contain include directives',
               attr: 'include_files',
               value: ['/file1', '/file2'],
@@ -881,7 +925,7 @@ describe 'nginx::resource::server' do
             end
 
             it "sets the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
-              is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
+              is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+server_name\s+foo\.com\s+bar\.foo\.com\s+foo\.com;})
             end
           end
 
@@ -896,7 +940,49 @@ describe 'nginx::resource::server' do
             end
 
             it "sets the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
-              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
+              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+foo\.com\s+bar\.foo\.com\s+foo\.com;})
+            end
+          end
+
+          context 'with SSL enabled, naked domain rewrite to www with multiple server_names' do
+            let(:title) { 'foo.com' }
+            let(:params) do
+              {
+                ssl: true,
+                ssl_cert: 'cert',
+                ssl_key: 'key',
+                server_name: %w[www.foo.com bar.foo.com foo.com],
+                use_default_location: false,
+                rewrite_non_www_to_www: true
+              }
+            end
+
+            it "sets the server_name of the rewrite server stanza to every server_name with 'www.' appended" do
+              is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+server_name\s+www\.foo\.com\s+www\.bar\.foo\.com\s+www\.foo\.com;})
+            end
+          end
+
+          context 'with SSL disabled, rewrite_non_www_to_www => true' do
+            let(:title) { 'example.com' }
+            let(:params) { { rewrite_non_www_to_www: true } }
+
+            it 'rewrites named hostname to www' do
+              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+www\.example\.com;})
+            end
+          end
+
+          context 'with SSL disabled, naked domain rewrite to www with multiple server_names' do
+            let(:title) { 'foo.com' }
+            let(:params) do
+              {
+                server_name: %w[www.foo.com bar.foo.com foo.com],
+                use_default_location: false,
+                rewrite_non_www_to_www: true
+              }
+            end
+
+            it "sets the server_name of the rewrite server stanza to every server_name with 'www.' appended" do
+              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+www\.foo\.com\s+www\.bar\.foo\.com\s+www\.foo\.com;})
             end
           end
 
