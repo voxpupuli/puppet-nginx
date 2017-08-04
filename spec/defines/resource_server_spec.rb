@@ -1117,6 +1117,7 @@ describe 'nginx::resource::server' do
 
             it { is_expected.to contain_nginx__resource__location("#{title}-default").with_ensure('absent') }
             it { is_expected.to contain_file("#{title}.conf symlink").with_ensure('absent') }
+            it { is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with_ensure('absent') }
           end
 
           context 'when ssl => true and ssl_port == listen_port' do
