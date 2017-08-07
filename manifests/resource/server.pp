@@ -302,6 +302,7 @@ define nginx::resource::server (
   }
 
   concat { $config_file:
+    ensure  => $ensure,
     owner   => $owner,
     group   => $group,
     mode    => $mode,
