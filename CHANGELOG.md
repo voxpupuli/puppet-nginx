@@ -7,7 +7,7 @@ These should not impact the functionality of the module.
 ## [v0.7.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.7.0) (2017-08-01)
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.6.0...v0.7.0)
 
-**Implemented enhancements:**
+******Implemented enhancements:******
 
 - Fix deprecated apt::source usage [\#995](https://github.com/voxpupuli/puppet-nginx/issues/995)
 - Allow default ssl\_dhparam to be set in base class [\#1096](https://github.com/voxpupuli/puppet-nginx/pull/1096) ([alexjfisher](https://github.com/alexjfisher))
