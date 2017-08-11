@@ -31,7 +31,8 @@ class nginx::package::debian {
 
   if $manage_repo {
     include '::apt'
-    Exec['apt_update'] -> Package['nginx']
+    ensure_packages([ 'apt-transport-https', 'ca-certificates' ])
+    Package['apt-transport-https','ca-certificates'] -> Exec['apt_update'] -> Package['nginx']
 
     case $package_source {
       'nginx', 'nginx-stable': {
@@ -54,8 +55,6 @@ class nginx::package::debian {
           repos    => 'main',
           key      => {'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7'},
         }
-
-        ensure_packages([ 'apt-transport-https', 'ca-certificates' ])
 
         Package['apt-transport-https','ca-certificates'] -> Apt::Source['nginx']
 
