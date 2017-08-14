@@ -54,6 +54,9 @@
       "operatingsystem": "FreeBSD"
     },
     {
+      "operatingsystem": "DragonFly"
+    },
+    {
       "operatingsystem": "NetBSD"
     },
     {
