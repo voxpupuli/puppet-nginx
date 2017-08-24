@@ -35,7 +35,7 @@ class nginx::params {
         }
       }
     }
-    'FreeBSD': {
+    'DragonFly', 'FreeBSD': {
       $_module_os_overrides = {
         'conf_dir'    => '/usr/local/etc/nginx',
         'daemon_user' => 'www',
