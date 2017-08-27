@@ -1,5 +1,7 @@
 # define: nginx::resource::mailhost
 #
+# lint:ignore:140chars
+#
 # This definition creates a virtual host
 #
 # Parameters:
@@ -71,6 +73,9 @@
 #    ssl_cert    => '/tmp/server.crt',
 #    ssl_key     => '/tmp/server.pem',
 #  }
+#
+# lint:endignore
+#
 define nginx::resource::mailhost (
   Integer $listen_port,
   Enum['absent', 'present'] $ensure              = 'present',
