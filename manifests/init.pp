@@ -154,6 +154,7 @@ class nginx (
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
+  $hiera_merge                                               = false,
   $geo_mappings                                              = {},
   $string_mappings                                           = {},
   $nginx_locations                                           = {},
@@ -171,11 +172,23 @@ class nginx (
   contain '::nginx::config'
   contain '::nginx::service'
 
-  create_resources('nginx::resource::upstream', $nginx_upstreams)
-  create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
-  create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
+  if $hiera_merge {
+    $merged_nginx_upstreams = lookup('nginx::nginx_upstreams', Hash, 'hash')
+    $merged_nginx_servers = lookup('nginx::nginx_servers', Hash, 'hash')
+    $merged_nginx_locations = lookup('nginx::nginx_locations', Hash, 'hash')
+    $merged_nginx_streamhosts = lookup('nginx::nginx_streamhosts', Hash, 'hash')
+    create_resources('nginx::resource::upstream', $merged_nginx_upstreams, $nginx_servers_defaults)
+    create_resources('nginx::resource::server', $merged_nginx_servers, $nginx_servers_defaults)
+    create_resources('nginx::resource::location', $merged_nginx_locations, $nginx_servers_defaults)
+    create_resources('nginx::resource::streamhost', $merged_nginx_streamhosts)
+  } else {
+    create_resources('nginx::resource::upstream', $nginx_upstreams)
+    create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
+    create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
+    create_resources('nginx::resource::streamhost', $nginx_streamhosts)
+  }
+
   create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
-  create_resources('nginx::resource::streamhost', $nginx_streamhosts)
   create_resources('nginx::resource::map', $string_mappings)
   create_resources('nginx::resource::geo', $geo_mappings)
 
