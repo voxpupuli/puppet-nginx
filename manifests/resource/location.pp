@@ -251,7 +251,12 @@ define nginx::resource::location (
   # Only try to manage these files if they're the default one (as you presumably
   # usually don't want the default template if you're using a custom file.
 
-  if $ensure == present and $fastcgi != undef and !defined(File[$fastcgi_params]) and $fastcgi_params == "${::nginx::conf_dir}/fastcgi.conf" { # lint:ignore:140chars
+  if  (
+    $ensure == present              and
+    $fastcgi != undef               and
+    !defined(File[$fastcgi_params]) and
+    $fastcgi_params == "${::nginx::conf_dir}/fastcgi.conf"
+      ) {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0644',
