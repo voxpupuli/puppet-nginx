@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not impact the functionality of the module.
 
-## [v0.7.1-rc0](https://github.com/voxpupuli/puppet-nginx/tree/v0.7.1-rc0) (2017-09-01)
-[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.7.0...v0.7.1-rc0)
+## [v0.7.1](https://github.com/voxpupuli/puppet-nginx/tree/v0.7.1) (2017-09-01)
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.7.0...v0.7.1)
 
 **Closed issues:**
 
