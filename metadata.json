@@ -1,6 +1,6 @@
 {
   "name": "puppet-nginx",
-  "version": "0.7.1",
+  "version": "0.7.2-rc0",
   "author": "Vox Pupuli",
   "summary": "Puppet NGINX management module",
   "license": "MIT",
