@@ -917,28 +917,32 @@ describe 'nginx::resource::location' do
             it { is_expected.not_to contain_file('/etc/nginx/uwsgi_params') }
           end
 
-          context 'when ssl_only => true' do
+          # defaults are ssl => false, ssl_only => false
+          context 'when ssl => false and ssl_only => true' do
             let(:params) { { ssl_only: true, server: 'server1', www_root: '/' } }
 
-            it { is_expected.not_to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+            it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+            it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
           end
 
-          context 'when ssl_only => false' do
-            let(:params) { { ssl_only: false, server: 'server1', www_root: '/' } }
+          context 'when ssl => false and ssl_only => false' do
+            let(:params) { { server: 'server1', www_root: '/' } }
 
             it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+            it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
           end
 
-          context 'when ssl => true' do
+          context 'when ssl => true and ssl_only => false' do
             let(:params) { { ssl: true, server: 'server1', www_root: '/' } }
 
+            it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
             it { is_expected.to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
           end
 
-          context 'when ssl => false' do
-            let(:params) { { ssl: false, server: 'server1', www_root: '/' } }
-
-            it { is_expected.not_to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
+          context 'when ssl => true and ssl_only => true' do
+            let(:params) { { ssl: true, ssl_only: true, server: 'server1', www_root: '/' } }
+            it { is_expected.not_to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
+            it { is_expected.to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
           end
 
           context 'www_root and proxy are set' do
