@@ -941,6 +941,7 @@ describe 'nginx::resource::location' do
 
           context 'when ssl => true and ssl_only => true' do
             let(:params) { { ssl: true, ssl_only: true, server: 'server1', www_root: '/' } }
+
             it { is_expected.not_to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('rspec-test')) }
             it { is_expected.to contain_concat__fragment('server1-800-' + Digest::MD5.hexdigest('rspec-test') + '-ssl') }
           end
