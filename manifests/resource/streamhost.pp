@@ -66,6 +66,10 @@ define nginx::resource::streamhost (
   String $mode                            = $::nginx::global_mode,
 ) {
 
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   # Variables
   if $::nginx::confd_only {
     $streamhost_dir = "${::nginx::conf_dir}/conf.stream.d"

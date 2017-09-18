@@ -63,6 +63,10 @@ define nginx::resource::geo (
   Optional[Boolean] $proxy_recursive  = undef
 ) {
 
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   $root_group = $::nginx::root_group
   $conf_dir   = "${::nginx::conf_dir}/conf.d"
 

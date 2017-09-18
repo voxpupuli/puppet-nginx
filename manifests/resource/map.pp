@@ -69,6 +69,10 @@ define nginx::resource::map (
   Enum['absent', 'present'] $ensure = 'present',
   Boolean $hostnames                = false
 ) {
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   validate_re($string, '^.{2,}$',
     "Invalid string value [${string}]. Expected a minimum of 2 characters.")
 

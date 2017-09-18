@@ -51,6 +51,10 @@ define nginx::resource::upstream (
   Enum['http', 'stream'] $upstream_context  = 'http',
 ) {
 
+  if ! defined(Class['nginx']) {
+    fail('You must include the nginx base class before using any defined resources')
+  }
+
   $root_group = $::nginx::root_group
 
   $ensure_real = $ensure ? {
