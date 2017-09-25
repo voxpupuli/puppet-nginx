@@ -23,6 +23,7 @@ class nginx::config {
   $conf_dir                       = $::nginx::conf_dir
   $daemon                         = $::nginx::daemon
   $daemon_user                    = $::nginx::daemon_user
+  $daemon_group                   = $::nginx::daemon_group
   $global_owner                   = $::nginx::global_owner
   $global_group                   = $::nginx::global_group
   $global_mode                    = $::nginx::global_mode
