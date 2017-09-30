@@ -329,8 +329,8 @@ describe 'nginx::resource::server' do
             {
               title: 'should not set index_file(s)',
               attr: 'index_files',
-              value: :undef,
-              match: %r{^((?!index).)*$}
+              value: [],
+              notmatch: %r{\s+index\s+}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
@@ -757,8 +757,8 @@ describe 'nginx::resource::server' do
             {
               title: 'should not set index_file(s)',
               attr: 'index_files',
-              value: :undef,
-              match: %r{^((?!index).)*$}
+              value: [],
+              notmatch: %r{\s+index\s+}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

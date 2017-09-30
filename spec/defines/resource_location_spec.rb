@@ -339,6 +339,12 @@ describe 'nginx::resource::location' do
               attr: 'index_files',
               value: %w[name1 name2],
               match: '    index     name1 name2;'
+            },
+            {
+              title: 'should not set index_file(s)',
+              attr: 'index_files',
+              value: [],
+              notmatch: %r{\s+index\s+}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
@@ -391,6 +397,12 @@ describe 'nginx::resource::location' do
               attr: 'index_files',
               value: %w[name1 name2],
               match: '    index     name1 name2;'
+            },
+            {
+              title: 'should not set index_file(s)',
+              attr: 'index_files',
+              value: [],
+              notmatch: %r{\s+index\s+}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
