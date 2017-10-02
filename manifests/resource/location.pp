@@ -159,7 +159,7 @@ define nginx::resource::location (
   String $server                                      = undef,
   Optional[String] $www_root                          = undef,
   Optional[String] $autoindex                         = undef,
-  Optional[Array] $index_files                        = [
+  Array $index_files                                  = [
     'index.html',
     'index.htm',
     'index.php'],
