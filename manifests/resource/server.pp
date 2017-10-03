@@ -200,7 +200,7 @@ define nginx::resource::server (
   Optional[String] $uwsgi                                                        = undef,
   Optional[String] $uwsgi_params                                                 = "${nginx::config::conf_dir}/uwsgi_params",
   Optional[String] $uwsgi_read_timeout                                           = undef,
-  Optional[Array] $index_files                                                   = [
+  Array $index_files                                                             = [
     'index.html',
     'index.htm',
     'index.php'],
