@@ -9,17 +9,7 @@ server {
   <%- else -%>
   listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
-<%# check to see if ipv6 support exists in the kernel before applying -%>
-<%# FIXME this logic is duplicated all over the place -%>
-  <%- if @ipv6_enable && (defined? @ipaddress6) -%>
-    <%- if @ipv6_listen_ip.is_a?(Array) then -%>
-      <%- @ipv6_listen_ip.each do |ipv6| -%>
-  listen [<%= ipv6 %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
-      <%- end -%>
-    <%- else -%>
-  listen       [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
-    <%- end -%>
-  <%- end -%>
+<%= scope.function_template(["nginx/server/server_ssl_ipv6_listen.erb"]) %>
   server_name  www.<%= s.gsub(/^www\./, '') %>;
   return       301 https://<%= s.gsub(/^www\./, '') %>$request_uri;
 
@@ -37,16 +27,7 @@ server {
   <%- else -%>
   listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
-<%# check to see if ipv6 support exists in the kernel before applying -%>
-  <%- if @ipv6_enable && (defined? @ipaddress6) -%>
-    <%- if @ipv6_listen_ip.is_a?(Array) then -%>
-      <%- @ipv6_listen_ip.each do |ipv6| -%>
-  listen       [<%= ipv6 %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
-      <%- end -%>
-    <%- else -%>
-  listen       [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
-    <%- end -%>
-  <%- end -%>
+<%= scope.function_template(["nginx/server/server_ssl_ipv6_listen.erb"]) %>
   server_name  <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;
 
 <%= scope.function_template(["nginx/server/server_ssl_settings.erb"]) %>

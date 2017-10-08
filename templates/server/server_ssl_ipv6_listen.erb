@@ -1,0 +1,10 @@
+<%# check to see if ipv6 support exists in the kernel before applying -%>
+  <%- if @ipv6_enable -%>
+    <%- if @ipv6_listen_ip.is_a?(Array) then -%>
+      <%- @ipv6_listen_ip.each do |ipv6| -%>
+  listen [<%= ipv6 %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
+      <%- end -%>
+    <%- else -%>
+  listen       [<%= @ipv6_listen_ip %>]:<%= @ssl_port %> ssl<% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @ipv6_listen_options %> <%= @ipv6_listen_options %><% end %>;
+    <%- end -%>
+  <%- end -%>
