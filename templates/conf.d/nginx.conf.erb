@@ -3,7 +3,7 @@
 daemon <%= @daemon %>;
 <% end -%>
 <% if @super_user -%>
-user <%= @daemon_user %>;
+user <%= @daemon_user %><% if @daemon_group -%> <%= @daemon_group %><% end -%>;
 <% end -%>
 worker_processes <%= @worker_processes %>;
 <% if @worker_rlimit_nofile -%>

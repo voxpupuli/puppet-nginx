@@ -344,6 +344,12 @@ describe 'nginx' do
                 notmatch: %r{user}
               },
               {
+                title: 'should not set group',
+                attr: 'daemon_group',
+                value: :undef,
+                notmatch: %r{^user \S+ \S+;}
+              },
+              {
                 title: 'should set user',
                 attr: 'daemon_user',
                 value: 'test-user',
@@ -1072,6 +1078,12 @@ describe 'nginx' do
             it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
+          end
+
+          context 'when daemon_group = test-group' do
+            let(:params) { { daemon_group: 'test-group' } }
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user .* test-group;} }
           end
 
           context 'when log_dir is non-default' do
