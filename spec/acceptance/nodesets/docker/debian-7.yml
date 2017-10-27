@@ -10,7 +10,6 @@ HOSTS:
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
-      - 'echo deb http://ftp.debian.org/debian wheezy-backports main >> /etc/apt/sources.list'
       - 'apt-get update && apt-get install -y cron locales-all net-tools wget'
 CONFIG:
   trace_limit: 200
