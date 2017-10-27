@@ -1,6 +1,6 @@
 This module has grown over time based on a range of contributions from
 people using it. If you follow these contributing guidelines your patch
-will likely make it into a release a little quicker.
+will likely make it into a release a little more quickly.
 
 ## Contributing
 
@@ -65,6 +65,10 @@ add tests if you're adding new functionality. If you've not used
 [rspec-puppet](http://rspec-puppet.com/) before then feel free to ask
 about how best to test your new feature.
 
+To run the linter, the syntax checker and the unit tests:
+
+    bundle exec rake test
+
 To run your all the unit tests
 
     bundle exec rake spec SPEC_OPTS='--format documentation'
@@ -72,10 +76,6 @@ To run your all the unit tests
 To run a specific spec test set the `SPEC` variable:
 
     bundle exec rake spec SPEC=spec/foo_spec.rb
-
-To run the linter, the syntax checker and the unit tests:
-
-    bundle exec rake test
 
 ## Integration tests
 
@@ -89,15 +89,20 @@ with:
 
     bundle exec rake acceptance
 
-This will run the tests on an Ubuntu 12.04 virtual machine. You can also
-run the integration tests against Centos 6.6 with.
+This will run the tests on the module's default nodeset. You can override the
+nodeset used, e.g.,
 
-    BEAKER_set=centos-66-x64 bundle exec rake acceptances
+    BEAKER_set=centos-7-x64 bundle exec rake acceptance
 
-If you don't want to have to recreate the virtual machine every time you
-can use `BEAKER_DESTROY=no` and `BEAKER_PROVISION=no`. On the first run you will
-at least need `BEAKER_PROVISION` set to yes (the default). The Vagrantfile
-for the created virtual machines will be in `.vagrant/beaker_vagrant_fies`.
+There are default rake tasks for the various acceptance test modules, e.g.,
+
+    bundle exec rake beaker:centos-7-x64
+    bundle exec rake beaker:ssh:centos-7-x64
+
+If you don't want to have to recreate the virtual machine every time you can
+use `BEAKER_destroy=no` and `BEAKER_provision=no`. On the first run you will at
+least need `BEAKER_provision` set to yes (the default). The Vagrantfile for the
+created virtual machines will be in `.vagrant/beaker_vagrant_files`.
 
 The easiest way to debug in a docker container is to open a shell:
 
