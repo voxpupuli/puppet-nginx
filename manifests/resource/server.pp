@@ -187,6 +187,8 @@ define nginx::resource::server (
   Optional[String] $proxy_cache_key                                              = undef,
   Optional[String] $proxy_cache_use_stale                                        = undef,
   Optional[Variant[Array[String], String]] $proxy_cache_valid                    = undef,
+  Optional[String] $proxy_cache_lock						 = undef,
+  Optional[Variant[Array[String], String]] $proxy_cache_bypass			 = undef,
   Optional[String] $proxy_method                                                 = undef,
   Optional[String] $proxy_http_version                                           = undef,
   Optional[String] $proxy_set_body                                               = undef,
