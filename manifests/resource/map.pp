@@ -67,7 +67,7 @@ define nginx::resource::map (
   Variant[Array, Hash] $mappings,
   Optional[String] $default         = undef,
   Enum['absent', 'present'] $ensure = 'present',
-  Array $includes  		    = undef
+  Array $includes  		    = undef,
   Boolean $hostnames                = false
 ) {
   if ! defined(Class['nginx']) {
