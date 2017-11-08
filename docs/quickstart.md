@@ -82,7 +82,7 @@ Combining our configurations above into a single manifest, our code block looks 
     www_root => '/opt/html/',
   }
 
-  nginx::resource::location{'/proxy':
+  nginx::resource::location{'/blog':
     proxy => 'http://upstream_app/' ,
     server => 'www.myhost.com',
 
