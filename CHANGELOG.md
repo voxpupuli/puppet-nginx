@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v0.8.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.8.0) (2017-10-11)
+## [v0.9.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.9.0) (2017-11-11)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.8.0...v0.9.0)
+
+**Implemented enhancements:**
+
+- Suffix timeout values with second indicator [\#1138](https://github.com/voxpupuli/puppet-nginx/pull/1138) ([rudybroersma](https://github.com/rudybroersma))
+
+**Fixed bugs:**
+
+- nginx\_locations appearing in the wrong location in the config file [\#1142](https://github.com/voxpupuli/puppet-nginx/issues/1142)
+- invalid config generated when ssl is false and listen\_port == ssl\_port [\#648](https://github.com/voxpupuli/puppet-nginx/issues/648)
+- Confine NGINX version fact to exclude Cisco Nexus switches [\#1140](https://github.com/voxpupuli/puppet-nginx/pull/1140) ([murdok5](https://github.com/murdok5))
+
+**Closed issues:**
+
+- Including nginx class not working due too nginx\_error\_log\_severity parameter [\#1143](https://github.com/voxpupuli/puppet-nginx/issues/1143)
+- http\_format\_log for nginx servers  [\#1139](https://github.com/voxpupuli/puppet-nginx/issues/1139)
+- Incorrect default timeout values [\#1137](https://github.com/voxpupuli/puppet-nginx/issues/1137)
+- setting index files to undef doesn't work as expected [\#1128](https://github.com/voxpupuli/puppet-nginx/issues/1128)
+
+**Merged pull requests:**
+
+- Doc-only: Fix proxy/blog location reference [\#1144](https://github.com/voxpupuli/puppet-nginx/pull/1144) ([tarnation](https://github.com/tarnation))
+- release 0.8.0 [\#1132](https://github.com/voxpupuli/puppet-nginx/pull/1132) ([bastelfreak](https://github.com/bastelfreak))
+- add settable nginx daemon group [\#1126](https://github.com/voxpupuli/puppet-nginx/pull/1126) ([miksercz](https://github.com/miksercz))
+
+## [v0.8.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.8.0) (2017-10-10)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.7.1...v0.8.0)
 
 **Fixed bugs:**
@@ -17,10 +45,17 @@ These should not affect the functionality of the module.
 - Remove 'Optional' for resources with default settings [\#1130](https://github.com/voxpupuli/puppet-nginx/pull/1130) ([wyardley](https://github.com/wyardley))
 - Remove Optional for index\_files \(\#1128\) [\#1129](https://github.com/voxpupuli/puppet-nginx/pull/1129) ([wyardley](https://github.com/wyardley))
 - Fix indent auth\_basic\_user\_file ssl server [\#1122](https://github.com/voxpupuli/puppet-nginx/pull/1122) ([fe80](https://github.com/fe80))
+- Release 0.7.1 [\#1119](https://github.com/voxpupuli/puppet-nginx/pull/1119) ([wyardley](https://github.com/wyardley))
 - Fail defined types if nginx class was not declared before [\#1070](https://github.com/voxpupuli/puppet-nginx/pull/1070) ([vinzent](https://github.com/vinzent))
 
 ## [v0.7.1](https://github.com/voxpupuli/puppet-nginx/tree/v0.7.1) (2017-09-01)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.7.0...v0.7.1)
+
+**Breaking changes:**
+
+- Optional parameters should default to undef and not false [\#1048](https://github.com/voxpupuli/puppet-nginx/issues/1048)
+- Don't allow strings to be given for integer parameters [\#1047](https://github.com/voxpupuli/puppet-nginx/issues/1047)
 
 **Closed issues:**
 
@@ -31,13 +66,10 @@ These should not affect the functionality of the module.
 - Hiera/Problem with concat:  Target Concat\_file with path of ... not found in the catalog [\#1102](https://github.com/voxpupuli/puppet-nginx/issues/1102)
 - Bump puppetlabs/apt dependency [\#1086](https://github.com/voxpupuli/puppet-nginx/issues/1086)
 - Custom nginx.conf template is no longer working [\#1083](https://github.com/voxpupuli/puppet-nginx/issues/1083)
-- Optional parameters should default to undef and not false [\#1048](https://github.com/voxpupuli/puppet-nginx/issues/1048)
-- Don't allow strings to be given for integer parameters [\#1047](https://github.com/voxpupuli/puppet-nginx/issues/1047)
 - Hiera merge with multiple yaml files [\#614](https://github.com/voxpupuli/puppet-nginx/issues/614)
 
 **Merged pull requests:**
 
-- Release 0.7.1 [\#1119](https://github.com/voxpupuli/puppet-nginx/pull/1119) ([wyardley](https://github.com/wyardley))
 - 0.7.1 release [\#1118](https://github.com/voxpupuli/puppet-nginx/pull/1118) ([wyardley](https://github.com/wyardley))
 - fix lint warnings [\#1115](https://github.com/voxpupuli/puppet-nginx/pull/1115) ([PascalBourdier](https://github.com/PascalBourdier))
 - Add DragonFly BSD support [\#1111](https://github.com/voxpupuli/puppet-nginx/pull/1111) ([strangelittlemonkey](https://github.com/strangelittlemonkey))
@@ -45,9 +77,32 @@ These should not affect the functionality of the module.
 - bump concat to \<5.0.0 instead of \<4.0.0 \(\#1107\) [\#1108](https://github.com/voxpupuli/puppet-nginx/pull/1108) ([wyardley](https://github.com/wyardley))
 - make apt a soft dependency per styleguide \(resolves \#1086\) [\#1106](https://github.com/voxpupuli/puppet-nginx/pull/1106) ([wyardley](https://github.com/wyardley))
 - Ensure absent on concat resource for server resource with ensure =\> absent \(\#1103\) [\#1104](https://github.com/voxpupuli/puppet-nginx/pull/1104) ([wyardley](https://github.com/wyardley))
+- Release 0.7.0 [\#1099](https://github.com/voxpupuli/puppet-nginx/pull/1099) ([alexjfisher](https://github.com/alexjfisher))
 
 ## [v0.7.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.7.0) (2017-08-01)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.6.0...v0.7.0)
+
+**Breaking changes:**
+
+- replace validate\_\* calles with datatypes in server.pp [\#1057](https://github.com/voxpupuli/puppet-nginx/pull/1057) ([bastelfreak](https://github.com/bastelfreak))
+- replace validate\_\* with datatypes [\#1056](https://github.com/voxpupuli/puppet-nginx/pull/1056) ([bastelfreak](https://github.com/bastelfreak))
+- BREAKING: Drop puppet 3 support. Replace validate\_\* calls with datatypes in location.pp [\#1050](https://github.com/voxpupuli/puppet-nginx/pull/1050) ([bastelfreak](https://github.com/bastelfreak))
+- change fastcgi\_cache\_key default false-\>undef [\#1049](https://github.com/voxpupuli/puppet-nginx/pull/1049) ([bastelfreak](https://github.com/bastelfreak))
+- change fastcgi\_cache\_use\_stale default false-\>undef [\#1045](https://github.com/voxpupuli/puppet-nginx/pull/1045) ([bastelfreak](https://github.com/bastelfreak))
+- change fastcgi\_cache\_path default false-\>undef [\#1044](https://github.com/voxpupuli/puppet-nginx/pull/1044) ([bastelfreak](https://github.com/bastelfreak))
+- change http\_cfg\_prepend default false-\>undef [\#1043](https://github.com/voxpupuli/puppet-nginx/pull/1043) ([bastelfreak](https://github.com/bastelfreak))
+- change http\_cfg\_append default false-\>undef [\#1042](https://github.com/voxpupuli/puppet-nginx/pull/1042) ([bastelfreak](https://github.com/bastelfreak))
+- change events\_use default false-\>undef [\#1041](https://github.com/voxpupuli/puppet-nginx/pull/1041) ([bastelfreak](https://github.com/bastelfreak))
+- change worker\_rlimit\_nofile default string-\>int [\#1040](https://github.com/voxpupuli/puppet-nginx/pull/1040) ([bastelfreak](https://github.com/bastelfreak))
+- change worker\_processes default string-\>int [\#1039](https://github.com/voxpupuli/puppet-nginx/pull/1039) ([bastelfreak](https://github.com/bastelfreak))
+- change names\_hash\_bucket\_size default string-\>int [\#1038](https://github.com/voxpupuli/puppet-nginx/pull/1038) ([bastelfreak](https://github.com/bastelfreak))
+- change names\_hash\_max\_size default string-\>int [\#1037](https://github.com/voxpupuli/puppet-nginx/pull/1037) ([bastelfreak](https://github.com/bastelfreak))
+- change proxy\_cache\_path default false-\>undef [\#1036](https://github.com/voxpupuli/puppet-nginx/pull/1036) ([bastelfreak](https://github.com/bastelfreak))
+- change proxy\_use\_temp\_path default false-\>undef [\#1035](https://github.com/voxpupuli/puppet-nginx/pull/1035) ([bastelfreak](https://github.com/bastelfreak))
+- change proxy\_headers\_hash\_bucket\_size default string-\>int [\#1034](https://github.com/voxpupuli/puppet-nginx/pull/1034) ([bastelfreak](https://github.com/bastelfreak))
+- change worker\_connections default string-\>int [\#1033](https://github.com/voxpupuli/puppet-nginx/pull/1033) ([bastelfreak](https://github.com/bastelfreak))
+- BREAKING: Drop puppet 3 support. Replace validate\_\* with datatypes [\#1031](https://github.com/voxpupuli/puppet-nginx/pull/1031) ([bastelfreak](https://github.com/bastelfreak))
 
 **Implemented enhancements:**
 
@@ -60,8 +115,6 @@ These should not affect the functionality of the module.
 - Make ssl\_prefer\_server\_ciphers configurable in server / mailhost [\#1067](https://github.com/voxpupuli/puppet-nginx/pull/1067) ([wyardley](https://github.com/wyardley))
 - Avoid spurious location block when redirecting to SSL in another server block [\#1066](https://github.com/voxpupuli/puppet-nginx/pull/1066) ([oranenj](https://github.com/oranenj))
 - Add fastcgi index [\#1062](https://github.com/voxpupuli/puppet-nginx/pull/1062) ([elmobp](https://github.com/elmobp))
-- BREAKING: Drop puppet 3 support. Replace validate\_\* calls with datatypes in location.pp [\#1050](https://github.com/voxpupuli/puppet-nginx/pull/1050) ([bastelfreak](https://github.com/bastelfreak))
-- BREAKING: Drop puppet 3 support. Replace validate\_\* with datatypes [\#1031](https://github.com/voxpupuli/puppet-nginx/pull/1031) ([bastelfreak](https://github.com/bastelfreak))
 - Warn if $ssl=false but $ssl\_port == $listen\_port \(\#1015\) [\#1022](https://github.com/voxpupuli/puppet-nginx/pull/1022) ([wyardley](https://github.com/wyardley))
 - Switch apt::source key from string to hash. [\#1016](https://github.com/voxpupuli/puppet-nginx/pull/1016) ([darkstego](https://github.com/darkstego))
 
@@ -89,7 +142,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- Release 0.7.0 [\#1099](https://github.com/voxpupuli/puppet-nginx/pull/1099) ([alexjfisher](https://github.com/alexjfisher))
 - Fix misspelling [\#1095](https://github.com/voxpupuli/puppet-nginx/pull/1095) ([rdev5](https://github.com/rdev5))
 - Use correct scheme with rewrite\_www\_to\_non\_www [\#1091](https://github.com/voxpupuli/puppet-nginx/pull/1091) ([alfoeternia](https://github.com/alfoeternia))
 - Use rspec-puppet-facts [\#1090](https://github.com/voxpupuli/puppet-nginx/pull/1090) ([alexjfisher](https://github.com/alexjfisher))
@@ -101,32 +153,24 @@ These should not affect the functionality of the module.
 - Revert "Add fastcgi index" [\#1072](https://github.com/voxpupuli/puppet-nginx/pull/1072) ([wyardley](https://github.com/wyardley))
 - Add location defaults to init and server resource [\#1071](https://github.com/voxpupuli/puppet-nginx/pull/1071) ([dol](https://github.com/dol))
 - Use some more puppet 4 features to reduce code [\#1058](https://github.com/voxpupuli/puppet-nginx/pull/1058) ([igalic](https://github.com/igalic))
-- replace validate\_\* calles with datatypes in server.pp [\#1057](https://github.com/voxpupuli/puppet-nginx/pull/1057) ([bastelfreak](https://github.com/bastelfreak))
-- replace validate\_\* with datatypes [\#1056](https://github.com/voxpupuli/puppet-nginx/pull/1056) ([bastelfreak](https://github.com/bastelfreak))
 - Update README's puppet requirement section [\#1054](https://github.com/voxpupuli/puppet-nginx/pull/1054) ([alexjfisher](https://github.com/alexjfisher))
-- change fastcgi\_cache\_key default false-\>undef [\#1049](https://github.com/voxpupuli/puppet-nginx/pull/1049) ([bastelfreak](https://github.com/bastelfreak))
-- change fastcgi\_cache\_use\_stale default false-\>undef [\#1045](https://github.com/voxpupuli/puppet-nginx/pull/1045) ([bastelfreak](https://github.com/bastelfreak))
-- change fastcgi\_cache\_path default false-\>undef [\#1044](https://github.com/voxpupuli/puppet-nginx/pull/1044) ([bastelfreak](https://github.com/bastelfreak))
-- change http\_cfg\_prepend default false-\>undef [\#1043](https://github.com/voxpupuli/puppet-nginx/pull/1043) ([bastelfreak](https://github.com/bastelfreak))
-- change http\_cfg\_append default false-\>undef [\#1042](https://github.com/voxpupuli/puppet-nginx/pull/1042) ([bastelfreak](https://github.com/bastelfreak))
-- change events\_use default false-\>undef [\#1041](https://github.com/voxpupuli/puppet-nginx/pull/1041) ([bastelfreak](https://github.com/bastelfreak))
-- change worker\_rlimit\_nofile default string-\>int [\#1040](https://github.com/voxpupuli/puppet-nginx/pull/1040) ([bastelfreak](https://github.com/bastelfreak))
-- change worker\_processes default string-\>int [\#1039](https://github.com/voxpupuli/puppet-nginx/pull/1039) ([bastelfreak](https://github.com/bastelfreak))
-- change names\_hash\_bucket\_size default string-\>int [\#1038](https://github.com/voxpupuli/puppet-nginx/pull/1038) ([bastelfreak](https://github.com/bastelfreak))
-- change names\_hash\_max\_size default string-\>int [\#1037](https://github.com/voxpupuli/puppet-nginx/pull/1037) ([bastelfreak](https://github.com/bastelfreak))
-- change proxy\_cache\_path default false-\>undef [\#1036](https://github.com/voxpupuli/puppet-nginx/pull/1036) ([bastelfreak](https://github.com/bastelfreak))
-- change proxy\_use\_temp\_path default false-\>undef [\#1035](https://github.com/voxpupuli/puppet-nginx/pull/1035) ([bastelfreak](https://github.com/bastelfreak))
-- change proxy\_headers\_hash\_bucket\_size default string-\>int [\#1034](https://github.com/voxpupuli/puppet-nginx/pull/1034) ([bastelfreak](https://github.com/bastelfreak))
-- change worker\_connections default string-\>int [\#1033](https://github.com/voxpupuli/puppet-nginx/pull/1033) ([bastelfreak](https://github.com/bastelfreak))
 - docs fix from @jurim76 [\#1021](https://github.com/voxpupuli/puppet-nginx/pull/1021) ([wyardley](https://github.com/wyardley))
 - Fixed typo in changelog notes: ssl\_force\_redirect -\> ssl\_redirect. [\#1013](https://github.com/voxpupuli/puppet-nginx/pull/1013) ([triforce](https://github.com/triforce))
 - Changed upstream\_member.erb template directory path to match new loca… [\#1012](https://github.com/voxpupuli/puppet-nginx/pull/1012) ([triforce](https://github.com/triforce))
 - Remove unused variables [\#1007](https://github.com/voxpupuli/puppet-nginx/pull/1007) ([mattkenn4545](https://github.com/mattkenn4545))
 - Update README.md [\#1000](https://github.com/voxpupuli/puppet-nginx/pull/1000) ([Cinderhaze](https://github.com/Cinderhaze))
+- release 0.6.0 [\#998](https://github.com/voxpupuli/puppet-nginx/pull/998) ([bastelfreak](https://github.com/bastelfreak))
 - Use double, vs single quotes around add\_header values \(\#991\) [\#992](https://github.com/voxpupuli/puppet-nginx/pull/992) ([wyardley](https://github.com/wyardley))
 
 ## [v0.6.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.6.0) (2017-01-13)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.5.0...v0.6.0)
+
+**Breaking changes:**
+
+- Rename v\[hH\]ost to server everywhere [\#980](https://github.com/voxpupuli/puppet-nginx/pull/980) ([sacres](https://github.com/sacres))
+- Rename rewrite\_to\_https =\> ssl\_redirect \(backwards-incompatible change\) [\#957](https://github.com/voxpupuli/puppet-nginx/pull/957) ([wyardley](https://github.com/wyardley))
+- Major change: Rework namespace \(get rid of ::config namespace again\) [\#950](https://github.com/voxpupuli/puppet-nginx/pull/950) ([wyardley](https://github.com/wyardley))
 
 **Implemented enhancements:**
 
@@ -134,7 +178,6 @@ These should not affect the functionality of the module.
 - nginx\_cfg\_prepend missing in nginx class [\#771](https://github.com/voxpupuli/puppet-nginx/issues/771)
 - upstream\_cfg\_append [\#717](https://github.com/voxpupuli/puppet-nginx/issues/717)
 - Nested Locations [\#692](https://github.com/voxpupuli/puppet-nginx/issues/692)
-- Log directory ownership and permissions do not respect OS [\#664](https://github.com/voxpupuli/puppet-nginx/issues/664)
 - Current setup of gpgcheck in redhat package is insecure [\#651](https://github.com/voxpupuli/puppet-nginx/issues/651)
 - Cannot purge unmanaged Upstreams [\#495](https://github.com/voxpupuli/puppet-nginx/issues/495)
 - Nginx configuration [\#161](https://github.com/voxpupuli/puppet-nginx/issues/161)
@@ -171,13 +214,11 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- release 0.6.0 [\#998](https://github.com/voxpupuli/puppet-nginx/pull/998) ([bastelfreak](https://github.com/bastelfreak))
 - Bump minimum version dependencies \(for Puppet 4\) [\#993](https://github.com/voxpupuli/puppet-nginx/pull/993) ([juniorsysadmin](https://github.com/juniorsysadmin))
 - Bump puppet minimum version\_requirement to 3.8.7 [\#989](https://github.com/voxpupuli/puppet-nginx/pull/989) ([juniorsysadmin](https://github.com/juniorsysadmin))
 - add passenger\_package\_ensure parameter to allow pinning passenger version [\#987](https://github.com/voxpupuli/puppet-nginx/pull/987) ([wyardley](https://github.com/wyardley))
 - Added auth\_request configuration capability [\#986](https://github.com/voxpupuli/puppet-nginx/pull/986) ([mvisonneau](https://github.com/mvisonneau))
 - Add support for proxy\_cache\_path loader directives [\#984](https://github.com/voxpupuli/puppet-nginx/pull/984) ([carroarmato0](https://github.com/carroarmato0))
-- Rename v\[hH\]ost to server everywhere [\#980](https://github.com/voxpupuli/puppet-nginx/pull/980) ([sacres](https://github.com/sacres))
 - Document include param for location and fix whitespace issue \(issue \#976\) [\#977](https://github.com/voxpupuli/puppet-nginx/pull/977) ([srinchiera](https://github.com/srinchiera))
 - fix validation range for location priority [\#972](https://github.com/voxpupuli/puppet-nginx/pull/972) ([wyardley](https://github.com/wyardley))
 - Reorganize templates for clearer understanding [\#970](https://github.com/voxpupuli/puppet-nginx/pull/970) ([xaque208](https://github.com/xaque208))
@@ -187,13 +228,11 @@ These should not affect the functionality of the module.
 - fix map.erb to work on Redhat 6 releases [\#963](https://github.com/voxpupuli/puppet-nginx/pull/963) ([mbelscher](https://github.com/mbelscher))
 - Set log directory ownership / permissions explicitly [\#959](https://github.com/voxpupuli/puppet-nginx/pull/959) ([wyardley](https://github.com/wyardley))
 - Add 'require' for parent dir of upstream, map, and geo configs as wel… [\#958](https://github.com/voxpupuli/puppet-nginx/pull/958) ([wyardley](https://github.com/wyardley))
-- Rename rewrite\_to\_https =\> ssl\_redirect \(backwards-incompatible change\) [\#957](https://github.com/voxpupuli/puppet-nginx/pull/957) ([wyardley](https://github.com/wyardley))
 - Add fastcgi\_param parameter to vhost resource [\#956](https://github.com/voxpupuli/puppet-nginx/pull/956) ([xaque208](https://github.com/xaque208))
 - Allow setting $daemon to "on" or "off" \(defaults to unset\) [\#955](https://github.com/voxpupuli/puppet-nginx/pull/955) ([wyardley](https://github.com/wyardley))
 - Add upstream\_cfg\_append \(to match prepend\) [\#953](https://github.com/voxpupuli/puppet-nginx/pull/953) ([wyardley](https://github.com/wyardley))
 - fix rubocop failures after rubocop version update [\#952](https://github.com/voxpupuli/puppet-nginx/pull/952) ([wyardley](https://github.com/wyardley))
 - officially add Ubuntu 1604 support [\#951](https://github.com/voxpupuli/puppet-nginx/pull/951) ([wyardley](https://github.com/wyardley))
-- Major change: Rework namespace \(get rid of ::config namespace again\) [\#950](https://github.com/voxpupuli/puppet-nginx/pull/950) ([wyardley](https://github.com/wyardley))
 - docs changes to reflect upcoming changes [\#949](https://github.com/voxpupuli/puppet-nginx/pull/949) ([wyardley](https://github.com/wyardley))
 - default proxy\_redirect to undef in locations \(resolves \#395\) [\#948](https://github.com/voxpupuli/puppet-nginx/pull/948) ([wyardley](https://github.com/wyardley))
 - Use SSL for nginx APT repository [\#939](https://github.com/voxpupuli/puppet-nginx/pull/939) ([saz](https://github.com/saz))
@@ -201,6 +240,7 @@ These should not affect the functionality of the module.
 - add $members\_tag parameter to nginx::resource::upstream [\#755](https://github.com/voxpupuli/puppet-nginx/pull/755) ([brunoleon](https://github.com/brunoleon))
 
 ## [v0.5.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.5.0) (2016-10-27)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.4.0...v0.5.0)
 
 **Implemented enhancements:**
@@ -322,6 +362,7 @@ These should not affect the functionality of the module.
 - Allow locations with try\_files only [\#834](https://github.com/voxpupuli/puppet-nginx/pull/834) ([FlorianSW](https://github.com/FlorianSW))
 
 ## [v0.4.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.4.0) (2016-09-02)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.3.0...v0.4.0)
 
 **Implemented enhancements:**
@@ -403,6 +444,7 @@ These should not affect the functionality of the module.
 - Add events accept mutex delay [\#747](https://github.com/voxpupuli/puppet-nginx/pull/747) ([mlrobinson](https://github.com/mlrobinson))
 
 ## [v0.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.3.0) (2016-02-06)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.7...v0.3.0)
 
 **Implemented enhancements:**
@@ -481,6 +523,7 @@ These should not affect the functionality of the module.
 - update default SSL ciphers [\#652](https://github.com/voxpupuli/puppet-nginx/pull/652) ([pulecp](https://github.com/pulecp))
 
 ## [v0.2.7](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.7) (2015-06-18)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.6...v0.2.7)
 
 **Implemented enhancements:**
@@ -563,6 +606,7 @@ These should not affect the functionality of the module.
 - Fixing default location to use specified index files. [\#530](https://github.com/voxpupuli/puppet-nginx/pull/530) ([scottsb](https://github.com/scottsb))
 
 ## [v0.2.6](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.6) (2015-04-07)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.5...v0.2.6)
 
 **Closed issues:**
@@ -574,6 +618,7 @@ These should not affect the functionality of the module.
 - Fix typo [\#593](https://github.com/voxpupuli/puppet-nginx/pull/593) ([mcanevet](https://github.com/mcanevet))
 
 ## [v0.2.5](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.5) (2015-04-02)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.4...v0.2.5)
 
 **Closed issues:**
@@ -589,6 +634,7 @@ These should not affect the functionality of the module.
 - Flags parameter supported only on OpenBSD [\#569](https://github.com/voxpupuli/puppet-nginx/pull/569) ([Zophar78](https://github.com/Zophar78))
 
 ## [v0.2.4](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.4) (2015-03-24)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.3...v0.2.4)
 
 **Merged pull requests:**
@@ -596,6 +642,7 @@ These should not affect the functionality of the module.
 - Changing apt key to 40 characters to support new apt module [\#583](https://github.com/voxpupuli/puppet-nginx/pull/583) ([errygg](https://github.com/errygg))
 
 ## [v0.2.3](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.3) (2015-03-23)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.2.2...v0.2.3)
 
 **Closed issues:**
@@ -624,6 +671,7 @@ These should not affect the functionality of the module.
 - allow listen\_ip and ipv6\_listen\_ip to contain a String or Array [\#546](https://github.com/voxpupuli/puppet-nginx/pull/546) ([b4ldr](https://github.com/b4ldr))
 
 ## [v0.2.2](https://github.com/voxpupuli/puppet-nginx/tree/v0.2.2) (2015-01-19)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/0.2.1...v0.2.2)
 
 **Closed issues:**
@@ -662,6 +710,7 @@ These should not affect the functionality of the module.
 - Impossible to set proxy\_set\_header for default location [\#467](https://github.com/voxpupuli/puppet-nginx/pull/467) ([invliD](https://github.com/invliD))
 
 ## [0.2.1](https://github.com/voxpupuli/puppet-nginx/tree/0.2.1) (2014-11-24)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/0.2.0...0.2.1)
 
 **Closed issues:**
@@ -679,6 +728,7 @@ These should not affect the functionality of the module.
 - Deprecated comment. [\#508](https://github.com/voxpupuli/puppet-nginx/pull/508) ([PierreR](https://github.com/PierreR))
 
 ## [0.2.0](https://github.com/voxpupuli/puppet-nginx/tree/0.2.0) (2014-11-22)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/0.1.1...0.2.0)
 
 **Closed issues:**
@@ -706,6 +756,7 @@ These should not affect the functionality of the module.
 - Allow internal-only location resources [\#464](https://github.com/voxpupuli/puppet-nginx/pull/464) ([danieldreier](https://github.com/danieldreier))
 
 ## [0.1.1](https://github.com/voxpupuli/puppet-nginx/tree/0.1.1) (2014-09-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/0.1.0...0.1.1)
 
 **Closed issues:**
@@ -717,6 +768,7 @@ These should not affect the functionality of the module.
 - Add instructions on bootstrapping puppet-module-data [\#461](https://github.com/voxpupuli/puppet-nginx/pull/461) ([jfryman](https://github.com/jfryman))
 
 ## [0.1.0](https://github.com/voxpupuli/puppet-nginx/tree/0.1.0) (2014-09-24)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.10...0.1.0)
 
 **Closed issues:**
@@ -768,6 +820,7 @@ These should not affect the functionality of the module.
 - Improve test suite \(Travis updates, librarian-puppet removal, better utilize puppet-lint\) [\#377](https://github.com/voxpupuli/puppet-nginx/pull/377) ([3flex](https://github.com/3flex))
 
 ## [v0.0.10](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.10) (2014-08-13)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.9...v0.0.10)
 
 **Closed issues:**
@@ -851,6 +904,7 @@ These should not affect the functionality of the module.
 - Make proxy\_redirect configurable [\#282](https://github.com/voxpupuli/puppet-nginx/pull/282) ([genehand](https://github.com/genehand))
 
 ## [v0.0.9](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.9) (2014-03-27)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.8...v0.0.9)
 
 **Closed issues:**
@@ -865,6 +919,7 @@ These should not affect the functionality of the module.
 - SmartOS support [\#280](https://github.com/voxpupuli/puppet-nginx/pull/280) ([ok-devalias](https://github.com/ok-devalias))
 
 ## [v0.0.8](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.8) (2014-03-20)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.7...v0.0.8)
 
 **Closed issues:**
@@ -913,6 +968,7 @@ These should not affect the functionality of the module.
 - Adding upstream fail\_timeout. [\#171](https://github.com/voxpupuli/puppet-nginx/pull/171) ([thomasbiddle](https://github.com/thomasbiddle))
 
 ## [v0.0.7](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.7) (2014-01-02)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.6...v0.0.7)
 
 **Closed issues:**
@@ -957,6 +1013,7 @@ These should not affect the functionality of the module.
 - Switch to using concat{} instead of lots of file{} magic. [\#167](https://github.com/voxpupuli/puppet-nginx/pull/167) ([3flex](https://github.com/3flex))
 
 ## [v0.0.6](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.6) (2013-10-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.5...v0.0.6)
 
 **Closed issues:**
@@ -994,6 +1051,7 @@ These should not affect the functionality of the module.
 - Fix SSL cert and key permissions [\#119](https://github.com/voxpupuli/puppet-nginx/pull/119) ([tombooth](https://github.com/tombooth))
 
 ## [v0.0.5](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.5) (2013-08-25)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.4...v0.0.5)
 
 **Merged pull requests:**
@@ -1001,6 +1059,7 @@ These should not affect the functionality of the module.
 - \* Bug fix, remove each\_line method [\#121](https://github.com/voxpupuli/puppet-nginx/pull/121) ([abraham1901](https://github.com/abraham1901))
 
 ## [v0.0.4](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.4) (2013-08-22)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.3...v0.0.4)
 
 **Closed issues:**
@@ -1011,12 +1070,14 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- sort $vhost\_cfg\_append hash in vhost\_footer.erb template [\#115](https://github.com/voxpupuli/puppet-nginx/pull/115) ([jhoblitt](https://github.com/jhoblitt))
 - Please reconsidere my pull request: Fix syntax "each" for ruby1.9 =\> each\_line and add listen\_port on rewrite\_www\_to\_non\_www [\#114](https://github.com/voxpupuli/puppet-nginx/pull/114) ([helldorado](https://github.com/helldorado))
 - Fix the error 'You cannot specify more than one of content, source, target' [\#109](https://github.com/voxpupuli/puppet-nginx/pull/109) ([vikraman](https://github.com/vikraman))
 - fix template, should use @ [\#104](https://github.com/voxpupuli/puppet-nginx/pull/104) ([stephenrjohnson](https://github.com/stephenrjohnson))
 - update nginx::package to select the package class by $::osfamily [\#99](https://github.com/voxpupuli/puppet-nginx/pull/99) ([jhoblitt](https://github.com/jhoblitt))
 
 ## [v0.0.3](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.3) (2013-08-04)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.2...v0.0.3)
 
 **Closed issues:**
@@ -1031,6 +1092,7 @@ These should not affect the functionality of the module.
 - Fixed RHEL package install and added some fastcgi options [\#97](https://github.com/voxpupuli/puppet-nginx/pull/97) ([justicel](https://github.com/justicel))
 
 ## [v0.0.2](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.2) (2013-08-01)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/show...v0.0.2)
 
 **Closed issues:**
@@ -1049,7 +1111,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- sort $vhost\_cfg\_append hash in vhost\_footer.erb template [\#115](https://github.com/voxpupuli/puppet-nginx/pull/115) ([jhoblitt](https://github.com/jhoblitt))
 - Inverted condition for IPv6 warning   [\#98](https://github.com/voxpupuli/puppet-nginx/pull/98) ([mnencia](https://github.com/mnencia))
 - Adding option http\_cfg\_append to class nginx [\#96](https://github.com/voxpupuli/puppet-nginx/pull/96) ([abraham1901](https://github.com/abraham1901))
 - Add Hiera support [\#95](https://github.com/voxpupuli/puppet-nginx/pull/95) ([xcompass](https://github.com/xcompass))
@@ -1115,9 +1176,13 @@ These should not affect the functionality of the module.
 - Fixed broken README markdown. [\#1](https://github.com/voxpupuli/puppet-nginx/pull/1) ([Frost](https://github.com/Frost))
 
 ## [show](https://github.com/voxpupuli/puppet-nginx/tree/show) (2011-06-07)
+
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.0.1...show)
 
 ## [v0.0.1](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.1) (2011-06-07)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/5d496f29e82632d391ec7b644026f585be94fec8...v0.0.1)
+
 
 
 \* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
