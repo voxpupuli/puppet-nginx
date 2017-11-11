@@ -43,6 +43,8 @@ group :system_tests do
   gem 'winrm',                         :require => false
   if beaker_version = ENV['BEAKER_VERSION']
     gem 'beaker', *location_for(beaker_version)
+  else
+    gem 'beaker', '>= 3.9.0', :require => false
   end
   if beaker_rspec_version = ENV['BEAKER_RSPEC_VERSION']
     gem 'beaker-rspec', *location_for(beaker_rspec_version)
