@@ -75,8 +75,8 @@
     <%- end -%>
 <% end -%>
 <% if @log_not_found -%>
-    log_not_found @log_not_found;
+    log_not_found <%= @log_not_found %>;
 <% end -%>
 <% if @access_log -%>
-    access_log @access_log;
+    access_log <%= @access_log %>;
 <% end -%>
