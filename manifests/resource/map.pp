@@ -39,6 +39,14 @@
 #    ]
 #  }
 #
+# Sample Usage (using external include)
+#
+# nginx::resource::map { 'redirections':
+#
+#    includes => [ '/etc/nginx/conf.d/redirections.map']
+#
+# }
+#
 # Sample Hiera usage:
 #
 #  nginx::string_mappings:
@@ -68,7 +76,7 @@ define nginx::resource::map (
   Variant[Array, Hash] $mappings,
   Optional[String] $default         = undef,
   Enum['absent', 'present'] $ensure = 'present',
-  Array $includes                   = [],
+  Array[String] $includes           = [],
   Boolean $hostnames                = false
 ) {
   if ! defined(Class['nginx']) {

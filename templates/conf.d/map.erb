@@ -6,11 +6,9 @@ map <%= @string %> $<%= @name %> {
 <% if @default -%>
   default <%= @default %>;
 <% end -%>
-<% if @includes.is_a?(Array) -%>
-  <%- @includes.each do |h| -%>
+<%- @includes.each do |h| -%>
   include <%= h %>;
-  <%- end -%>
-<% end -%>
+<%- end -%>
 
 <% if @mappings.is_a?(Hash) -%>
   <%- field_width = @mappings.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
