@@ -76,6 +76,8 @@
 #   [*proxy_cache_key*]            - Override the default proxy_cache_key of $scheme$proxy_host$request_uri
 #   [*proxy_cache_use_stale*]      - Override the default proxy_cache_use_stale value of off.
 #   [*proxy_cache_valid*]          - This directive sets the time for caching different replies.
+#   [*proxy_cache_lock*]           - This directive sets the locking mechanism for pouplating cache.
+#   [*proxy_cache_bypass*]         - Defines conditions which the response will not be cached
 #   [*proxy_method*]               - If defined, overrides the HTTP method of the request to be passed to the backend.
 #   [*proxy_http_version*]         - Sets the proxy http version
 #   [*proxy_set_body*]             - If defined, sets the body passed to the backend.
@@ -187,6 +189,8 @@ define nginx::resource::server (
   Optional[String] $proxy_cache_key                                              = undef,
   Optional[String] $proxy_cache_use_stale                                        = undef,
   Optional[Variant[Array[String], String]] $proxy_cache_valid                    = undef,
+  Optional[String] $proxy_cache_lock                                             = undef,
+  Optional[Variant[Array[String], String]] $proxy_cache_bypass                   = undef,
   Optional[String] $proxy_method                                                 = undef,
   Optional[String] $proxy_http_version                                           = undef,
   Optional[String] $proxy_set_body                                               = undef,
@@ -354,7 +358,9 @@ define nginx::resource::server (
       proxy_set_header            => $proxy_set_header,
       proxy_hide_header           => $proxy_hide_header,
       proxy_pass_header           => $proxy_pass_header,
+      proxy_cache_lock            => $proxy_cache_lock,
       proxy_set_body              => $proxy_set_body,
+      proxy_cache_bypass          => $proxy_cache_bypass,
       proxy_buffering             => $proxy_buffering,
       fastcgi                     => $fastcgi,
       fastcgi_index               => $fastcgi_index,
