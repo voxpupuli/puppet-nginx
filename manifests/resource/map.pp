@@ -10,6 +10,7 @@
 #   [*mappings*]   - Hash of map lookup keys and resultant values
 #   [*hostnames*]  - Indicates that source values can be hostnames with a
 #                    prefix or suffix mask.
+#   [*includes*]   - An array of external files to include
 #
 # Actions:
 #
@@ -37,6 +38,14 @@
 #      { 'key' => '*.nyc.example.com', 'value' => 'ny-pool-1' },
 #    ]
 #  }
+#
+# Sample Usage (using external include)
+#
+# nginx::resource::map { 'redirections':
+#
+#    includes => [ '/etc/nginx/conf.d/redirections.map']
+#
+# }
 #
 # Sample Hiera usage:
 #
@@ -67,6 +76,7 @@ define nginx::resource::map (
   Variant[Array, Hash] $mappings,
   Optional[String] $default         = undef,
   Enum['absent', 'present'] $ensure = 'present',
+  Array[String] $includes           = [],
   Boolean $hostnames                = false
 ) {
   if ! defined(Class['nginx']) {
