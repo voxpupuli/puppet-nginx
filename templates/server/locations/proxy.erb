@@ -35,7 +35,7 @@
 <% if @proxy_cache -%>
     proxy_cache           <%= @proxy_cache %>;
 <% end -%>
-<% if @proxy_cache_valid && Array(@proxy_cache_valid).size > 0 -%>
+<% if @proxy_cache_valid -%>
     <%- Array(@proxy_cache_valid).each do |line| -%>
     proxy_cache_valid     <%= line %>;
     <%- end -%>
@@ -46,7 +46,7 @@
 <% if @proxy_cache_key -%>
     proxy_cache_key         <%= @proxy_cache_key %>;
 <% end -%>
-<% if @proxy_cache_bypass && Array(@proxy_cache_bypass).size > 0 -%>
+<% if @proxy_cache_bypass -%>
   <%- Array(@proxy_cache_bypass).each do |line| -%>
     proxy_cache_bypass         <%= line %>;
   <% end -%>
