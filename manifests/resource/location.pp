@@ -201,7 +201,7 @@ define nginx::resource::location (
   Optional[String] $proxy_cache                        = undef,
   Optional[String] $proxy_cache_key                    = undef,
   Optional[String] $proxy_cache_use_stale              = undef,
-  Optional[String] $proxy_cache_lock                   = undef,
+  Optional[Enum['on', 'off']] $proxy_cache_lock        = undef,
   Optional[Variant[Array, String]] $proxy_cache_valid  = undef,
   Optional[Variant[Array, String]] $proxy_cache_bypass = undef,
   Optional[String] $proxy_method                       = undef,
