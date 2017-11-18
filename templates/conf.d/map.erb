@@ -6,7 +6,7 @@ map <%= @string %> $<%= @name %> {
 <% if @default -%>
   default <%= @default %>;
 <% end -%>
-<%- @includes.each do |h| -%>
+<%- @include_files.each do |h| -%>
   include <%= h %>;
 <%- end -%>
 
