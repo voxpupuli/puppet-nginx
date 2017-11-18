@@ -1,0 +1,3 @@
+---
+nginx::daemon_user: webservd
+nginx::package_name: ~

@@ -1,0 +1,14 @@
+---
+nginx::client_body_temp_path: /var/www/client_body_temp
+nginx::conf_dir: /etc/nginx
+nginx::daemon_user: www
+nginx::global_group: wheel
+nginx::log_dir: /var/www/logs
+nginx::log_group: wheel
+nginx::manage_repo: false
+nginx::package_name: nginx
+nginx::pid: /var/run/nginx.pid
+nginx::proxy_temp_path: /var/www/proxy_temp
+nginx::root_group: wheel
+nginx::run_dir: /var/www
+nginx::sites_available_group: wheel

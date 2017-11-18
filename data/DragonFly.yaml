@@ -1,0 +1,7 @@
+---
+nginx::conf_dir: /usr/local/etc/nginx
+nginx::daemon_user: www
+nginx::global_group: wheel
+nginx::log_group: wheel
+nginx::root_group: wheel
+nginx::sites_available_group: wheel

@@ -1,0 +1,3 @@
+---
+nginx::daemon_user: www-data
+nginx::log_group: adm

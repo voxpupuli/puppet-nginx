@@ -1,0 +1,5 @@
+---
+nginx::daemon_user: http
+nginx::log_group: log
+nginx::pid: false
+nginx::package_name: nginx-mainline
