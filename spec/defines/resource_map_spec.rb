@@ -67,8 +67,16 @@ describe 'nginx::resource::map' do
             {
               title: 'should contain multiple includes',
               attr: 'include_files',
-              value: ['/etc/includes/A.map','/etc/includes/B.map','/etc/includes/C.map', ],
-              match: ['  include /etc/includes/A.map;','  include /etc/includes/B.map;','  include /etc/includes/C.map;']
+              value: [
+                '/etc/includes/A.map',
+                '/etc/includes/B.map',
+                '/etc/includes/C.map'
+              ],
+              match: [
+                '  include /etc/includes/A.map;',
+                '  include /etc/includes/B.map;',
+                '  include /etc/includes/C.map;'
+              ]
             },
             {
               title: 'should set default',
