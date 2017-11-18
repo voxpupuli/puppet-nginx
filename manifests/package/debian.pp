@@ -21,6 +21,7 @@ class nginx::package::debian {
   $package_flavor           = $::nginx::package_flavor
   $passenger_package_ensure = $::nginx::passenger_package_ensure
   $manage_repo              = $::nginx::manage_repo
+  $release                  = $::nginx::repo_release
 
   $distro = downcase($facts['os']['name'])
 
@@ -39,6 +40,7 @@ class nginx::package::debian {
           location => "https://nginx.org/packages/${distro}",
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
+          release  => pick($release, $::lsbdistcodename),
         }
       }
       'nginx-mainline': {
@@ -46,6 +48,7 @@ class nginx::package::debian {
           location => "https://nginx.org/packages/mainline/${distro}",
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
+          release  => pick($release, $::lsbdistcodename),
         }
       }
       'passenger': {
