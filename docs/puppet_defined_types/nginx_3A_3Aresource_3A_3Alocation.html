@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Defined Type: nginx::resource::location
+  
+    &mdash; Documentation by YARD 0.9.10
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_defined_types::nginx::resource::location";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (n)</a> &raquo;
+    <span class='title'><span class='object_link'>Defined Types</span></span>
+     &raquo; 
+    <span class="title">nginx::resource::location</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Defined Type: nginx::resource::location</h1>
+<div class="box_info">
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/resource/location.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>present</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>internal</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$name</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>www_root</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>autoindex</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>index_files</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[
+    &#39;index.html&#39;,
+    &#39;index.htm&#39;,
+    &#39;index.php&#39;]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_redirect</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_redirect</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_read_timeout</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_read_timeout</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_connect_timeout</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_connect_timeout</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_set_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_set_header</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_hide_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_hide_header</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_pass_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::proxy_pass_header</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_index</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_param</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_params</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&quot;${::nginx::conf_dir}/fastcgi.conf&quot;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_script</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_split_path</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>uwsgi</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>uwsgi_param</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>uwsgi_params</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&quot;${nginx::config::conf_dir}/uwsgi_params&quot;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>uwsgi_read_timeout</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_only</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_alias</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_satisfy</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['any', 'all']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_allow</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_deny</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>stub_status</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean ]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>raw_prepend</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>raw_append</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_custom_cfg</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_cfg_prepend</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_cfg_append</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_custom_cfg_prepend</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>location_custom_cfg_append</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>include</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>try_files</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_key</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_use_stale</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_lock</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['on', 'off']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_valid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Array, String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_bypass</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Array, String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_method</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_http_version</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_set_body</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_buffering</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['on', 'off']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>auth_basic</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>auth_basic_user_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>auth_request</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>rewrite_rules</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>priority</span>
+      
+      
+        <span class='type'>(<tt>Integer[401,599]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>500</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mp4</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>flv</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>expires</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/resource/location.pp', line 157</span>
+
+define nginx::resource::location (
+  Enum[&#39;present&#39;, &#39;absent&#39;] $ensure                    = present,
+  Boolean $internal                                    = false,
+  String $location                                     = $name,
+  String $server                                       = undef,
+  Optional[String] $www_root                           = undef,
+  Optional[String] $autoindex                          = undef,
+  Array $index_files                                   = [
+    &#39;index.html&#39;,
+    &#39;index.htm&#39;,
+    &#39;index.php&#39;],
+  Optional[String] $proxy                              = undef,
+  Optional[String] $proxy_redirect                     = $::nginx::proxy_redirect,
+  String $proxy_read_timeout                           = $::nginx::proxy_read_timeout,
+  String $proxy_connect_timeout                        = $::nginx::proxy_connect_timeout,
+  Array $proxy_set_header                              = $::nginx::proxy_set_header,
+  Array $proxy_hide_header                             = $::nginx::proxy_hide_header,
+  Array $proxy_pass_header                             = $::nginx::proxy_pass_header,
+  Optional[String] $fastcgi                            = undef,
+  Optional[String] $fastcgi_index                      = undef,
+  Optional[Hash] $fastcgi_param                        = undef,
+  String $fastcgi_params                               = &quot;${::nginx::conf_dir}/fastcgi.conf&quot;,
+  Optional[String] $fastcgi_script                     = undef,
+  Optional[String] $fastcgi_split_path                 = undef,
+  Optional[String] $uwsgi                              = undef,
+  Optional[Hash] $uwsgi_param                          = undef,
+  String $uwsgi_params                                 = &quot;${nginx::config::conf_dir}/uwsgi_params&quot;,
+  Optional[String] $uwsgi_read_timeout                 = undef,
+  Boolean $ssl                                         = false,
+  Boolean $ssl_only                                    = false,
+  Optional[String] $location_alias                     = undef,
+  Optional[Enum[&#39;any&#39;, &#39;all&#39;]] $location_satisfy       = undef,
+  Optional[Array] $location_allow                      = undef,
+  Optional[Array] $location_deny                       = undef,
+  Optional[Boolean ] $stub_status                      = undef,
+  Optional[Variant[String, Array]] $raw_prepend        = undef,
+  Optional[Variant[String, Array]] $raw_append         = undef,
+  Optional[Hash] $location_custom_cfg                  = undef,
+  Optional[Hash] $location_cfg_prepend                 = undef,
+  Optional[Hash] $location_cfg_append                  = undef,
+  Optional[Hash] $location_custom_cfg_prepend          = undef,
+  Optional[Hash] $location_custom_cfg_append           = undef,
+  Optional[Array] $include                             = undef,
+  Optional[Array] $try_files                           = undef,
+  Optional[String] $proxy_cache                        = undef,
+  Optional[String] $proxy_cache_key                    = undef,
+  Optional[String] $proxy_cache_use_stale              = undef,
+  Optional[Enum[&#39;on&#39;, &#39;off&#39;]] $proxy_cache_lock        = undef,
+  Optional[Variant[Array, String]] $proxy_cache_valid  = undef,
+  Optional[Variant[Array, String]] $proxy_cache_bypass = undef,
+  Optional[String] $proxy_method                       = undef,
+  Optional[String] $proxy_http_version                 = undef,
+  Optional[String] $proxy_set_body                     = undef,
+  Optional[Enum[&#39;on&#39;, &#39;off&#39;]] $proxy_buffering         = undef,
+  Optional[String] $auth_basic                         = undef,
+  Optional[String] $auth_basic_user_file               = undef,
+  Optional[String] $auth_request                       = undef,
+  Array $rewrite_rules                                 = [],
+  Integer[401,599] $priority                           = 500,
+  Boolean $mp4                                         = false,
+  Boolean $flv                                         = false,
+  Optional[String] $expires                            = undef,
+) {
+
+  if ! defined(Class[&#39;nginx&#39;]) {
+    fail(&#39;You must include the nginx base class before using any defined resources&#39;)
+  }
+
+  $root_group = $::nginx::root_group
+
+  File {
+    owner  =&gt; &#39;root&#39;,
+    group  =&gt; $root_group,
+    mode   =&gt; &#39;0644&#39;,
+    notify =&gt; Class[&#39;::nginx::service&#39;],
+  }
+
+  # # Shared Variables
+  $ensure_real = $ensure ? {
+    &#39;absent&#39; =&gt; absent,
+    default  =&gt; file,
+  }
+
+  if ($www_root and $proxy) {
+    fail(&quot;Cannot define both directory and proxy in ${server}:${title}&quot;)
+  }
+
+  # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
+  # fastcgi_script is deprecated
+  if ($fastcgi_script != undef) {
+    warning(&#39;The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!&#39;)
+  }
+
+  $server_sanitized = regsubst($server, &#39; &#39;, &#39;_&#39;, &#39;G&#39;)
+  if $::nginx::confd_only {
+    $server_dir = &quot;${::nginx::conf_dir}/conf.d&quot;
+  } else {
+    $server_dir = &quot;${::nginx::conf_dir}/sites-available&quot;
+  }
+
+  $config_file = &quot;${server_dir}/${server_sanitized}.conf&quot;
+
+  # Only try to manage these files if they&#39;re the default one (as you presumably
+  # usually don&#39;t want the default template if you&#39;re using a custom file.
+
+  if  (
+    $ensure == present              and
+    $fastcgi != undef               and
+    !defined(File[$fastcgi_params]) and
+    $fastcgi_params == &quot;${::nginx::conf_dir}/fastcgi.conf&quot;
+      ) {
+    file { $fastcgi_params:
+      ensure  =&gt; present,
+      mode    =&gt; &#39;0644&#39;,
+      content =&gt; template(&#39;nginx/server/fastcgi.conf.erb&#39;),
+    }
+  }
+
+  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == &quot;${::nginx::conf_dir}/uwsgi_params&quot; {
+    file { $uwsgi_params:
+      ensure  =&gt; present,
+      mode    =&gt; &#39;0644&#39;,
+      content =&gt; template(&#39;nginx/server/uwsgi_params.erb&#39;),
+    }
+  }
+
+  if $ensure == present {
+    ## Create stubs for server File Fragment Pattern
+    $location_md5 = md5($location)
+    if ($ssl_only != true) {
+      concat::fragment { &quot;${server_sanitized}-${priority}-${location_md5}&quot;:
+        target  =&gt; $config_file,
+        content =&gt; template(&#39;nginx/server/location.erb&#39;),
+        order   =&gt; $priority,
+      }
+    }
+
+    ## Only create SSL Specific locations if $ssl is true.
+    if ($ssl == true or $ssl_only == true) {
+      $ssl_priority = $priority + 300
+
+      concat::fragment { &quot;${server_sanitized}-${ssl_priority}-${location_md5}-ssl&quot;:
+        target  =&gt; $config_file,
+        content =&gt; template(&#39;nginx/server/location.erb&#39;),
+        order   =&gt; $ssl_priority,
+      }
+    }
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: nginx::config
+  
+    &mdash; Documentation by YARD 0.9.10
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::nginx::config";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (n)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">nginx::config</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: nginx::config</h1>
+<div class="box_info">
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/config.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    <p>Class: nginx::config</p>
+
+<p>This module manages NGINX bootstrap and configuration</p>
+
+<p>Parameters:</p>
+
+<p>There are no default parameters for this class.</p>
+
+<p>Actions:</p>
+
+<p>Requires:</p>
+
+<p>Sample Usage:</p>
+
+<p>This class file is not called directly</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/config.pp', line 16</span>
+
+class nginx::config {
+
+  assert_private()
+
+  $client_body_temp_path          = $::nginx::client_body_temp_path
+  $confd_only                     = $::nginx::confd_only
+  $confd_purge                    = $::nginx::confd_purge
+  $conf_dir                       = $::nginx::conf_dir
+  $daemon                         = $::nginx::daemon
+  $daemon_user                    = $::nginx::daemon_user
+  $daemon_group                   = $::nginx::daemon_group
+  $global_owner                   = $::nginx::global_owner
+  $global_group                   = $::nginx::global_group
+  $global_mode                    = $::nginx::global_mode
+  $log_dir                        = $::nginx::log_dir
+  $log_group                      = $::nginx::log_group
+  $log_mode                       = $::nginx::log_mode
+  $http_access_log                = $::nginx::http_access_log
+  $http_format_log                = $::nginx::http_format_log
+  $nginx_error_log                = $::nginx::nginx_error_log
+  $nginx_error_log_severity       = $::nginx::nginx_error_log_severity
+  $pid                            = $::nginx::pid
+  $proxy_temp_path                = $::nginx::proxy_temp_path
+  $root_group                     = $::nginx::root_group
+  $run_dir                        = $::nginx::run_dir
+  $sites_available_owner          = $::nginx::sites_available_owner
+  $sites_available_group          = $::nginx::sites_available_group
+  $sites_available_mode           = $::nginx::sites_available_mode
+  $super_user                     = $::nginx::super_user
+  $temp_dir                       = $::nginx::temp_dir
+  $server_purge                   = $::nginx::server_purge
+  $accept_mutex                   = $::nginx::accept_mutex
+  $accept_mutex_delay             = $::nginx::accept_mutex_delay
+  $client_body_buffer_size        = $::nginx::client_body_buffer_size
+  $client_max_body_size           = $::nginx::client_max_body_size
+  $client_body_timeout            = $::nginx::client_body_timeout
+  $send_timeout                   = $::nginx::send_timeout
+  $lingering_timeout              = $::nginx::lingering_timeout
+  $events_use                     = $::nginx::events_use
+  $fastcgi_cache_inactive         = $::nginx::fastcgi_cache_inactive
+  $fastcgi_cache_key              = $::nginx::fastcgi_cache_key
+  $fastcgi_cache_keys_zone        = $::nginx::fastcgi_cache_keys_zone
+  $fastcgi_cache_levels           = $::nginx::fastcgi_cache_levels
+  $fastcgi_cache_max_size         = $::nginx::fastcgi_cache_max_size
+  $fastcgi_cache_path             = $::nginx::fastcgi_cache_path
+  $fastcgi_cache_use_stale        = $::nginx::fastcgi_cache_use_stale
+  $gzip                           = $::nginx::gzip
+  $gzip_buffers                   = $::nginx::gzip_buffers
+  $gzip_comp_level                = $::nginx::gzip_comp_level
+  $gzip_disable                   = $::nginx::gzip_disable
+  $gzip_min_length                = $::nginx::gzip_min_length
+  $gzip_http_version              = $::nginx::gzip_http_version
+  $gzip_proxied                   = $::nginx::gzip_proxied
+  $gzip_types                     = $::nginx::gzip_types
+  $gzip_vary                      = $::nginx::gzip_vary
+  $http_raw_prepend               = $::nginx::http_raw_prepend
+  $http_raw_append                = $::nginx::http_raw_append
+  $http_cfg_prepend               = $::nginx::http_cfg_prepend
+  $http_cfg_append                = $::nginx::http_cfg_append
+  $http_tcp_nodelay               = $::nginx::http_tcp_nodelay
+  $http_tcp_nopush                = $::nginx::http_tcp_nopush
+  $keepalive_timeout              = $::nginx::keepalive_timeout
+  $keepalive_requests             = $::nginx::keepalive_requests
+  $log_format                     = $::nginx::log_format
+  $mail                           = $::nginx::mail
+  $stream                         = $::nginx::stream
+  $multi_accept                   = $::nginx::multi_accept
+  $names_hash_bucket_size         = $::nginx::names_hash_bucket_size
+  $names_hash_max_size            = $::nginx::names_hash_max_size
+  $nginx_cfg_prepend              = $::nginx::nginx_cfg_prepend
+  $proxy_buffers                  = $::nginx::proxy_buffers
+  $proxy_buffer_size              = $::nginx::proxy_buffer_size
+  $proxy_cache_inactive           = $::nginx::proxy_cache_inactive
+  $proxy_cache_keys_zone          = $::nginx::proxy_cache_keys_zone
+  $proxy_cache_levels             = $::nginx::proxy_cache_levels
+  $proxy_cache_max_size           = $::nginx::proxy_cache_max_size
+  $proxy_cache_path               = $::nginx::proxy_cache_path
+  $proxy_cache_loader_files       = $::nginx::proxy_cache_loader_files
+  $proxy_cache_loader_sleep       = $::nginx::proxy_cache_loader_sleep
+  $proxy_cache_loader_threshold   = $::nginx::proxy_cache_loader_threshold
+  $proxy_use_temp_path            = $::nginx::proxy_use_temp_path
+  $proxy_connect_timeout          = $::nginx::proxy_connect_timeout
+  $proxy_headers_hash_bucket_size = $::nginx::proxy_headers_hash_bucket_size
+  $proxy_http_version             = $::nginx::proxy_http_version
+  $proxy_read_timeout             = $::nginx::proxy_read_timeout
+  $proxy_redirect                 = $::nginx::proxy_redirect
+  $proxy_send_timeout             = $::nginx::proxy_send_timeout
+  $proxy_set_header               = $::nginx::proxy_set_header
+  $proxy_hide_header              = $::nginx::proxy_hide_header
+  $proxy_pass_header              = $::nginx::proxy_pass_header
+  $sendfile                       = $::nginx::sendfile
+  $server_tokens                  = $::nginx::server_tokens
+  $spdy                           = $::nginx::spdy
+  $http2                          = $::nginx::http2
+  $ssl_stapling                   = $::nginx::ssl_stapling
+  $types_hash_bucket_size         = $::nginx::types_hash_bucket_size
+  $types_hash_max_size            = $::nginx::types_hash_max_size
+  $worker_connections             = $::nginx::worker_connections
+  $worker_processes               = $::nginx::worker_processes
+  $worker_rlimit_nofile           = $::nginx::worker_rlimit_nofile
+  $ssl_prefer_server_ciphers      = $::nginx::ssl_prefer_server_ciphers
+  $ssl_protocols                  = $::nginx::ssl_protocols
+  $ssl_ciphers                    = $::nginx::ssl_ciphers
+
+  # Non-configurable settings
+  $conf_template                  = &#39;nginx/conf.d/nginx.conf.erb&#39;
+  $proxy_conf_template            = undef
+
+  File {
+    owner =&gt; $global_owner,
+    group =&gt; $global_group,
+    mode  =&gt; $global_mode,
+  }
+
+  file { $conf_dir:
+    ensure =&gt; directory,
+  }
+
+  file { &quot;${conf_dir}/conf.stream.d&quot;:
+    ensure =&gt; directory,
+  }
+
+  file { &quot;${conf_dir}/conf.d&quot;:
+    ensure =&gt; directory,
+  }
+  if $confd_purge {
+    # Err on the side of caution - make sure *both* $server_purge and
+    # $confd_purge are set if $confd_only is set, before purging files
+    # ${conf_dir}/conf.d
+    if (($confd_only and $server_purge) or !$confd_only) {
+      File[&quot;${conf_dir}/conf.d&quot;] {
+        purge   =&gt; true,
+        recurse =&gt; true,
+        notify  =&gt; Class[&#39;::nginx::service&#39;],
+      }
+      File[&quot;${conf_dir}/conf.stream.d&quot;] {
+        purge   =&gt; true,
+        recurse =&gt; true,
+        notify  =&gt; Class[&#39;::nginx::service&#39;],
+      }
+    }
+  }
+
+  file { &quot;${conf_dir}/conf.mail.d&quot;:
+    ensure =&gt; directory,
+  }
+  if $confd_purge == true {
+    File[&quot;${conf_dir}/conf.mail.d&quot;] {
+      purge   =&gt; true,
+      recurse =&gt; true,
+    }
+  }
+
+  file {$run_dir:
+    ensure =&gt; directory,
+  }
+
+  file { $log_dir:
+    ensure =&gt; directory,
+    mode   =&gt; $log_mode,
+    owner  =&gt; $daemon_user,
+    group  =&gt; $log_group,
+  }
+
+  file {$client_body_temp_path:
+    ensure =&gt; directory,
+    owner  =&gt; $daemon_user,
+  }
+
+
+  file {$proxy_temp_path:
+    ensure =&gt; directory,
+    owner  =&gt; $daemon_user,
+  }
+
+  unless $confd_only {
+    file { &quot;${conf_dir}/sites-available&quot;:
+      ensure =&gt; directory,
+      owner  =&gt; $sites_available_owner,
+      group  =&gt; $sites_available_group,
+      mode   =&gt; $sites_available_mode,
+    }
+    file { &quot;${conf_dir}/sites-enabled&quot;:
+      ensure =&gt; directory,
+    }
+    if $server_purge {
+      File[&quot;${conf_dir}/sites-available&quot;] {
+        purge   =&gt; true,
+        recurse =&gt; true,
+      }
+      File[&quot;${conf_dir}/sites-enabled&quot;] {
+        purge   =&gt; true,
+        recurse =&gt; true,
+      }
+    }
+    # No real reason not to make these even if $stream is not enabled.
+    file { &quot;${conf_dir}/streams-enabled&quot;:
+      ensure =&gt; directory,
+      owner  =&gt; $sites_available_owner,
+      group  =&gt; $sites_available_group,
+      mode   =&gt; $sites_available_mode,
+    }
+    file { &quot;${conf_dir}/streams-available&quot;:
+      ensure =&gt; directory,
+    }
+    if $server_purge {
+      File[&quot;${conf_dir}/streams-enabled&quot;] {
+        purge   =&gt; true,
+        recurse =&gt; true,
+      }
+    }
+  }
+
+  file { &quot;${conf_dir}/nginx.conf&quot;:
+    ensure  =&gt; file,
+    content =&gt; template($conf_template),
+  }
+
+  file { &quot;${temp_dir}/nginx.d&quot;:
+    ensure  =&gt; absent,
+    purge   =&gt; true,
+    recurse =&gt; true,
+    force   =&gt; true,
+  }
+
+  file { &quot;${temp_dir}/nginx.mail.d&quot;:
+    ensure  =&gt; absent,
+    purge   =&gt; true,
+    recurse =&gt; true,
+    force   =&gt; true,
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
