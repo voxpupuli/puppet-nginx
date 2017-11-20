@@ -40,7 +40,7 @@ class nginx::package::debian {
           location => "https://nginx.org/packages/${distro}",
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
-          release  => pick($release, $::lsbdistcodename),
+          release  => $release,
         }
       }
       'nginx-mainline': {
@@ -48,7 +48,7 @@ class nginx::package::debian {
           location => "https://nginx.org/packages/mainline/${distro}",
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
-          release  => pick($release, $::lsbdistcodename),
+          release  => $release,
         }
       }
       'passenger': {
