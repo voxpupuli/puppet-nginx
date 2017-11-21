@@ -40,7 +40,7 @@ class nginx::service(
   if $service_manage {
     case $::osfamily {
       'OpenBSD': {
-        service { 'nginx':
+        service { 'puppet_nginx':
           ensure     => $service_ensure_real,
           name       => $service_name,
           enable     => $service_enable,
@@ -50,7 +50,7 @@ class nginx::service(
         }
       }
       default: {
-        service { 'nginx':
+        service { 'puppet_nginx':
           ensure     => $service_ensure_real,
           name       => $service_name,
           enable     => $service_enable,
@@ -63,7 +63,7 @@ class nginx::service(
 
   # Allow overriding of 'restart' of Service resource; not used by default
   if $service_restart {
-    Service['nginx'] {
+    Service['puppet_nginx'] {
       restart => $service_restart,
     }
   }
