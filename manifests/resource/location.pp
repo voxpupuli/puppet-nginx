@@ -218,6 +218,11 @@ define nginx::resource::location (
   Boolean $mp4                                         = false,
   Boolean $flv                                         = false,
   Optional[String] $expires                            = undef,
+  $format_log                                          = 'combined',
+  $error_level                                         = 'error',
+  Optional[Variant[Array, String]] $access_log         = undef,
+  Optional[Enum['on', 'off']] $log_not_found           = undef,
+  Optional[Variant[Array, String]] $error_log          = undef
 ) {
 
   if ! defined(Class['nginx']) {
