@@ -78,8 +78,16 @@
     log_not_found <%= @log_not_found %>;
 <% end -%>
 <% if @access_log -%>
-    access_log <%= @access_log %>;
+    <% if @access_log == 'off' -%>
+    access_log off;
+    <% else -%>
+    access_log <%= @access_log %> <%= @format_log %>;
+    <% end -%>
 <% end -%>
 <% if @error_log -%>
-    error_log <%= @error_log %>;
+    <% if @error_log == 'off' -%>
+    error_log off;
+    <% else -%>
+    error_log <%= @error_log %> <%= @error_level %>;
+    <% end -%>
 <% end -%>
