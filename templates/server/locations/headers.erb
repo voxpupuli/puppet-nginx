@@ -1,0 +1,3 @@
+<%- @add_header.keys.sort.each do |key| -%>
+    add_header "<%= key %>" "<%= @add_header[key] %>";
+<%- end -%>
