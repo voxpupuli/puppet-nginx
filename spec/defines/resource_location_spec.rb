@@ -871,6 +871,18 @@ describe 'nginx::resource::location' do
               match: %r{\s+access_log\s+/var/log/nginx/specific-location.log combined;}
             },
             {
+              title: 'override access_log with an array',
+              attr: 'access_log',
+              value: [
+                '/var/log/nginx/specific-location.log',
+                'syslog:10.0.0.1'
+              ],
+              match: [
+                %r{\s+access_log\s+/var/log/nginx/specific-location.log combined;},
+                %r{\s+access_log\s+syslog:10\.0\.0\.1 combined;}
+              ]
+            },
+            {
               title: 'enabling logging errors not found ',
               attr: 'log_not_found',
               value: 'off',
@@ -893,6 +905,18 @@ describe 'nginx::resource::location' do
               attr: 'error_log',
               value: '/my-error_log',
               match: %r{\s+error_log\s+/my-error_log error;}
+            },
+            {
+              title: 'overriding error_log with an array',
+              attr: 'error_log',
+              value: [
+                '/my-error_log',
+                'syslog:10.0.0.1'
+              ],
+              match: [
+                %r{\s+error_log\s+/my-error_log error;},
+                %r{\s+error_log\s+syslog:10\.0\.0\.1 error;}
+              ]
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

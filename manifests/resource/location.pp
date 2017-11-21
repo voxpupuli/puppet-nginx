@@ -221,9 +221,9 @@ define nginx::resource::location (
   Optional[String] $expires                            = undef,
   $format_log                                          = 'combined',
   $error_level                                         = 'error',
-  Optional[String] $access_log                         = undef,
+  Optional[Variant[Array, String]] $access_log         = undef,
   Optional[Enum['on', 'off']] $log_not_found           = undef,
-  Optional[String] $error_log                          = undef
+  Optional[Variant[Array, String]] $error_log          = undef
 ) {
 
   if ! defined(Class['nginx']) {
