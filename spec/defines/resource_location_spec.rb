@@ -748,6 +748,36 @@ describe 'nginx::resource::location' do
               match: %r{^\s+proxy_cache_use_stale\s+value;}
             },
             {
+              title: 'should set proxy_cache_bypass with a string',
+              attr: 'proxy_cache_bypass',
+              value: '$pragma',
+              match: %r{^\s+proxy_cache_bypass\s+\$pragma;}
+            },
+            {
+              title: 'should set proxy_cache_bypass with an array',
+              attr: 'proxy_cache_bypass',
+              value: [
+                '$pragma',
+                '$cookie'
+              ],
+              match: [
+                %r{^\s+proxy_cache_bypass\s+\$pragma;},
+                %r{^\s+proxy_cache_bypass\s+\$cookie;}
+              ]
+            },
+            {
+              title: 'should set proxy_cache_lock with a string',
+              attr: 'proxy_cache_lock',
+              value: 'on',
+              match: %r{^\s+proxy_cache_lock\s+on;}
+            },
+            {
+              title: 'should set proxy_cache_lock with a string',
+              attr: 'proxy_cache_lock',
+              value: 'off',
+              match: %r{^\s+proxy_cache_lock\s+off;}
+            },
+            {
               title: 'should set proxy_pass',
               attr: 'proxy',
               value: 'value',

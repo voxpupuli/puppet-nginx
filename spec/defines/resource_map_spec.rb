@@ -53,6 +53,32 @@ describe 'nginx::resource::map' do
               match: '  hostnames;'
             },
             {
+              title: 'should not contain includes',
+              attr: 'include_files',
+              value: [],
+              notmatch: '  include ;'
+            },
+            {
+              title: 'should contain includes',
+              attr: 'include_files',
+              value: ['/etc/includes/includes.map'],
+              match: '  include /etc/includes/includes.map;'
+            },
+            {
+              title: 'should contain multiple includes',
+              attr: 'include_files',
+              value: [
+                '/etc/includes/A.map',
+                '/etc/includes/B.map',
+                '/etc/includes/C.map'
+              ],
+              match: [
+                '  include /etc/includes/A.map;',
+                '  include /etc/includes/B.map;',
+                '  include /etc/includes/C.map;'
+              ]
+            },
+            {
               title: 'should set default',
               attr: 'default',
               value: 'pool_a',
