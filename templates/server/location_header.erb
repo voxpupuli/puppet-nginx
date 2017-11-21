@@ -80,3 +80,6 @@
 <% if @access_log -%>
     access_log <%= @access_log %>;
 <% end -%>
+<% if @error_log -%>
+    error_log <%= @error_log %>;
+<% end -%>

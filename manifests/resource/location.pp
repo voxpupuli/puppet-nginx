@@ -104,6 +104,7 @@
 #     used for flv streaming. Default: false
 #   [*expires*]         - Setup expires time for locations content
 #   [*access_log*]      - enable or disable the logging in access_log
+#   [*error_log*]       - override the error_log for this location
 #   [*log_not_found*]   - enable or disable the logging of not found errors in error_log
 #
 #
@@ -218,6 +219,9 @@ define nginx::resource::location (
   Boolean $mp4                                         = false,
   Boolean $flv                                         = false,
   Optional[String] $expires                            = undef,
+  Optional[String] $access_log                         = undef,
+  Optional[Enum['on', 'off']] $log_not_found           = undef,
+  Optional[String] $error_log                          = undef
 ) {
 
   if ! defined(Class['nginx']) {

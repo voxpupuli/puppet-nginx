@@ -851,7 +851,43 @@ describe 'nginx::resource::location' do
               attr: 'proxy_buffering',
               value: 'on',
               match: %r{\s+proxy_buffering\s+on;}
-            }
+            },
+            {
+              title: 'access_log undef',
+              attr: 'access_log',
+              value: :undef,
+              notmatch: %r{\s+access_log\s+.+;}
+            },
+            {
+              title: 'disabling access_log ',
+              attr: 'access_log',
+              value: 'off',
+              match: %r{\s+access_log\s+off;}
+            },
+            {
+              title: 'disabling access_log ',
+              attr: 'access_log',
+              value: '/var/log/nginx/specific-location.log',
+              match: %r{\s+access_log\s+/var/log/nginx/specific-location.log;}
+            },
+            {
+              title: 'enabling logging erros not found ',
+              attr: 'log_not_found',
+              value: 'off',
+              match: %r{\s+log_not_found\s+off;}
+            },
+            {
+              title: 'disabling logging erros not found ',
+              attr: 'log_not_found',
+              value: 'on',
+              match: %r{\s+log_not_found\s+on;}
+            },
+            {
+              title: 'overriding error_log ',
+              attr: 'error_log',
+              value: '/my-error_log crit',
+              match: %r{\s+error_log\s+/my-error_log crit;}
+            },
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
               let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
