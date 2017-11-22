@@ -211,7 +211,7 @@ describe 'nginx' do
             }
           end
 
-          it { is_expected.to contain_service('nginx').with_name('nginx14') }
+          it { is_expected.to contain_service('nginx14') }
         end
 
         describe 'when service_manage => false' do
