@@ -1,5 +1,6 @@
 <%= scope.function_template(['nginx/server/location_header.erb']) -%>
 <%= scope.function_template(['nginx/server/locations/alias.erb']) -%>
+<%= scope.function_template(['nginx/server/locations/headers.erb']) -%>
 <%= scope.function_template(['nginx/server/locations/stub_status.erb']) -%>
 <% if @fastcgi or @uwsgi or @proxy -%>
 <%= scope.function_template(['nginx/server/locations/proxy.erb']) -%>
