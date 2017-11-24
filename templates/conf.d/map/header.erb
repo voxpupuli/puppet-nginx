@@ -1,0 +1,8 @@
+# MANAGED BY PUPPET
+map <%= @string %> $<%= @name %> {
+<% if @hostnames -%>
+  hostnames;
+<% end -%>
+<% if @default -%>
+  default <%= @default %>;
+<% end -%>
