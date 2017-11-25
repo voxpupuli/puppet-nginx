@@ -73,7 +73,7 @@ define nginx::resource::map::entry (
     fail("Map ${map} has \$mappings defined, cannot use entry.")
   }
 
-  concat::fragment { "${::nginx::conf_dir}/conf.d/${key}":
+  concat::fragment { "${::nginx::conf_dir}/conf.d/${map}_${key}":
     target => "${::nginx::conf_dir}/conf.d/${map}-map.conf",
     content => "  ${key} ${value};\n",
     order => "5_${order}"
