@@ -14,6 +14,7 @@
 #   [*server*]                  - Hostname or IP of the upstream member server
 #   [*port*]                    - Port of the listening service on the upstream member
 #   [*upstream_fail_timeout*]   - Set the fail_timeout for the upstream. Default is 10 seconds
+#   [*upstream_max_fails*]      - Set the max_fails for the upstream member. Default is to use nginx default value which is 1.
 #
 #
 # Examples:
@@ -39,7 +40,8 @@ define nginx::resource::upstream::member (
   $server,
   Enum['present', 'absent'] $ensure = 'present',
   Integer $port                     = 80,
-  $upstream_fail_timeout  = '10s',
+  $upstream_fail_timeout            = '10s',
+  $upstream_max_fails               = undef,
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
