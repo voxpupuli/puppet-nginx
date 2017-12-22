@@ -46,8 +46,8 @@ define nginx::resource::upstream (
   Enum['present', 'absent'] $ensure         = 'present',
   Optional[Hash] $upstream_cfg_append       = undef,
   Optional[Hash] $upstream_cfg_prepend      = undef,
-  $upstream_fail_timeout                    = '10s',
-  $upstream_max_fails                       = undef,
+  Optional[String] $upstream_fail_timeout   = '10s',
+  Optional[String] $upstream_max_fails      = undef,
   Enum['http', 'stream'] $upstream_context  = 'http',
 ) {
 
