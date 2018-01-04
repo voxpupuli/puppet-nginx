@@ -4,29 +4,12 @@ dist: trusty
 language: ruby
 cache: bundler
 before_install:
-  - bundle -v
-  - rm Gemfile.lock || true
-  - gem update --system
-  - gem update bundler
-  - gem --version
-  - bundle -v
+  - rm -f Gemfile.lock
 script:
   - 'bundle exec rake $CHECK'
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.4.2
-    bundler_args: --without development release
-    dist: trusty
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-14.04 CHECK=beaker
-    services: docker
-    sudo: required
-  - rvm: 2.4.2
-    bundler_args: --without development release
-    dist: trusty
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7 CHECK=beaker
-    services: docker
-    sudo: required
   - rvm: 2.1.9
     bundler_args: --without system_tests development release
     env: PUPPET_VERSION="~> 4.0" CHECK=test PARALLEL_TEST_PROCESSORS=16
@@ -39,6 +22,18 @@ matrix:
   - rvm: 2.4.2
     bundler_args: --without system_tests development release
     env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
+  - rvm: 2.4.2
+    bundler_args: --without development release
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-14.04 CHECK=beaker
+    services: docker
+    sudo: required
+  - rvm: 2.4.2
+    bundler_args: --without development release
+    dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7 CHECK=beaker
+    services: docker
+    sudo: required
 branches:
   only:
   - master
