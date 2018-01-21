@@ -224,7 +224,7 @@ define nginx::resource::location (
   $error_level                                         = 'error',
   Optional[Variant[Array, String]] $access_log         = undef,
   Optional[Enum['on', 'off']] $log_not_found           = undef,
-  Optional[Variant[Array, String]] $error_log          = undef
+  Optional[Variant[Array, String]] $error_log          = undef,
   Hash $add_header                                     = {},
 ) {
 
