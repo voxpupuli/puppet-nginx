@@ -128,7 +128,9 @@ server {
 <% end -%>
 <% if @index_files and @index_files.count > 0 and not @ssl_only -%>
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
-
+<% end -%>
+<% if defined? @autoindex -%>
+    autoindex <%= @autoindex %>;
 <% end -%>
 <% if defined? @log_by_lua -%>
   log_by_lua '<%= @log_by_lua %>';
