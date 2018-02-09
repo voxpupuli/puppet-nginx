@@ -122,6 +122,7 @@ class nginx (
   ],
   Array $proxy_hide_header                                   = [],
   Array $proxy_pass_header                                   = [],
+  Array $proxy_ignore_header                                 = [],
   $sendfile                                                  = 'on',
   String $server_tokens                                      = 'on',
   $spdy                                                      = 'off',

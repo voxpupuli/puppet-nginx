@@ -30,9 +30,13 @@
 #     value of 90 seconds
 #   [*proxy_connect_timeout*] - Override the default the proxy connect timeout
 #     value of 90 seconds
+#   [*proxy_send_timeout*]   - Override the default the proxy send timeout
+#     value of 90 seconds
 #   [*proxy_set_header*]     - Array of server headers to set
 #   [*proxy_hide_header*]    - Array of server headers to hide
 #   [*proxy_pass_header*]    - Array of server headers to pass
+#   [*proxy_ignore_header*]  - Array of server headers to ignore
+#   [*proxy_next_upstream*]  - Specify cases a request should be passed to the next server in the upstream.
 #   [*fastcgi*]              - location of fastcgi (host:port)
 #   [*fastcgi_param*]        - Set additional custom fastcgi_params
 #   [*fastcgi_params*]       - optional alternative fastcgi_params file to use
@@ -170,9 +174,12 @@ define nginx::resource::location (
   Optional[String] $proxy_redirect                     = $::nginx::proxy_redirect,
   String $proxy_read_timeout                           = $::nginx::proxy_read_timeout,
   String $proxy_connect_timeout                        = $::nginx::proxy_connect_timeout,
+  String $proxy_send_timeout                           = $::nginx::proxy_send_timeout,
   Array $proxy_set_header                              = $::nginx::proxy_set_header,
   Array $proxy_hide_header                             = $::nginx::proxy_hide_header,
   Array $proxy_pass_header                             = $::nginx::proxy_pass_header,
+  Array $proxy_ignore_header                           = $::nginx::proxy_ignore_header,
+  Optional[String] $proxy_next_upstream                = undef,
   Optional[String] $fastcgi                            = undef,
   Optional[String] $fastcgi_index                      = undef,
   Optional[Hash] $fastcgi_param                        = undef,

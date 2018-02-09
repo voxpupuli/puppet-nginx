@@ -2,6 +2,7 @@
     proxy_pass            <%= @proxy %>;
     proxy_read_timeout    <%= @proxy_read_timeout %>;
     proxy_connect_timeout <%= @proxy_connect_timeout %>;
+    proxy_send_timeout    <%= @proxy_send_timeout %>;
 <% if @proxy_redirect -%>
     proxy_redirect        <%= @proxy_redirect %>;
 <% end -%>
@@ -25,6 +26,11 @@
 <% unless @proxy_hide_header.nil? -%>
     <%- @proxy_hide_header.each do |header| -%>
     proxy_hide_header      <%= header %>;
+    <%- end -%>
+<% end -%>
+<% unless @proxy_ignore_header.nil? -%>
+    <%- @proxy_ignore_header.each do |header| -%>
+    proxy_ignore_headers      <%= header %>;
     <%- end -%>
 <% end -%>
 <% unless @proxy_pass_header.nil? -%>
@@ -53,5 +59,8 @@
 <% end -%>
 <% if @proxy_cache_lock -%>
     proxy_cache_lock         <%= @proxy_cache_lock %>;
+<% end -%>
+<% if @proxy_next_upstream -%>
+    proxy_next_upstream      <%= @proxy_next_upstream %>;
 <% end -%>
 <% end -%>
