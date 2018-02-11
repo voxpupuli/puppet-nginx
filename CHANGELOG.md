@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v0.10.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.10.0) (2018-02-09)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.9.0...v0.10.0)
+
+**Implemented enhancements:**
+
+- Add more per-location proxy options: proxy\_send\_timeout, proxy\_ignore… [\#1169](https://github.com/voxpupuli/puppet-nginx/pull/1169) ([merclangrat](https://github.com/merclangrat))
+- Add add\_header parameter to location [\#1160](https://github.com/voxpupuli/puppet-nginx/pull/1160) ([alexjfisher](https://github.com/alexjfisher))
+- Use $service\_name for service resource title. [\#1159](https://github.com/voxpupuli/puppet-nginx/pull/1159) ([fnoop](https://github.com/fnoop))
+
+**Fixed bugs:**
+
+- Fix syntax error in ERB template for fastcgi location. [\#1168](https://github.com/voxpupuli/puppet-nginx/pull/1168) ([rpasing](https://github.com/rpasing))
+
+**Closed issues:**
+
+- duplicating proxy\_cache\_path value [\#1175](https://github.com/voxpupuli/puppet-nginx/issues/1175)
+- allow/deny and auth\_basic\_user\_file should be in the location [\#1172](https://github.com/voxpupuli/puppet-nginx/issues/1172)
+- Service resource name conflicts with system service [\#1158](https://github.com/voxpupuli/puppet-nginx/issues/1158)
+
+**Merged pull requests:**
+
+- add missing autoindex parameter in template of server resource [\#1174](https://github.com/voxpupuli/puppet-nginx/pull/1174) ([joekohlsdorf](https://github.com/joekohlsdorf))
+- Compatibility with puppetlabs-apt 4.4.0 [\#1163](https://github.com/voxpupuli/puppet-nginx/pull/1163) ([ekohl](https://github.com/ekohl))
+- replace validate\_\* with datatypes in resource::map [\#1157](https://github.com/voxpupuli/puppet-nginx/pull/1157) ([bastelfreak](https://github.com/bastelfreak))
+- Remove EOL operatingsystems [\#1153](https://github.com/voxpupuli/puppet-nginx/pull/1153) ([ekohl](https://github.com/ekohl))
+- adding support for proxy\_cache\_bypass and proxy\_cache\_lock [\#1150](https://github.com/voxpupuli/puppet-nginx/pull/1150) ([ceonizm](https://github.com/ceonizm))
+- adding support for include directive in map [\#1149](https://github.com/voxpupuli/puppet-nginx/pull/1149) ([ceonizm](https://github.com/ceonizm))
+- release 0.9.0 [\#1148](https://github.com/voxpupuli/puppet-nginx/pull/1148) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v0.9.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.9.0) (2017-11-11)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.8.0...v0.9.0)
@@ -106,7 +136,6 @@ These should not affect the functionality of the module.
 
 **Implemented enhancements:**
 
-- Fix deprecated apt::source usage [\#995](https://github.com/voxpupuli/puppet-nginx/issues/995)
 - Allow default ssl\_dhparam to be set in base class [\#1096](https://github.com/voxpupuli/puppet-nginx/pull/1096) ([alexjfisher](https://github.com/alexjfisher))
 - Allow index\_files =\> undef in resource::server class [\#1094](https://github.com/voxpupuli/puppet-nginx/pull/1094) ([walkamongus](https://github.com/walkamongus))
 - Add http\_raw\_prepend and http\_raw\_append parameters [\#1093](https://github.com/voxpupuli/puppet-nginx/pull/1093) ([walkamongus](https://github.com/walkamongus))
@@ -137,6 +166,7 @@ These should not affect the functionality of the module.
 - uninitialized constant Puppet::Type::Concat\_file error after upgrade from 0.5.0 to 0.6.0 [\#1008](https://github.com/voxpupuli/puppet-nginx/issues/1008)
 - $location\_sanitized variable present in code but unused [\#1006](https://github.com/voxpupuli/puppet-nginx/issues/1006)
 - fastcgi\_params file set to permission 770 by default [\#1002](https://github.com/voxpupuli/puppet-nginx/issues/1002)
+- Fix deprecated apt::source usage [\#995](https://github.com/voxpupuli/puppet-nginx/issues/995)
 - Add Oracle as one of Redhat operating systems for params file [\#988](https://github.com/voxpupuli/puppet-nginx/issues/988)
 - Adding a simple vhost not as simple as it seems [\#887](https://github.com/voxpupuli/puppet-nginx/issues/887)
 
@@ -509,11 +539,11 @@ These should not affect the functionality of the module.
 - Http2 support [\#703](https://github.com/voxpupuli/puppet-nginx/pull/703) ([jhooyberghs](https://github.com/jhooyberghs))
 - Replaced restart by reload [\#702](https://github.com/voxpupuli/puppet-nginx/pull/702) ([matfra](https://github.com/matfra))
 - Update vhost proxy\_set\_header defaults to match location [\#700](https://github.com/voxpupuli/puppet-nginx/pull/700) ([alext](https://github.com/alext))
-- Adding a QuickStart Guide to the NGINX Module [\#699](https://github.com/voxpupuli/puppet-nginx/pull/699) ([chad-thompson](https://github.com/chad-thompson))
+- Adding a QuickStart Guide to the NGINX Module [\#699](https://github.com/voxpupuli/puppet-nginx/pull/699) ([chadothompson](https://github.com/chadothompson))
 - Adding support for stream configuration [\#697](https://github.com/voxpupuli/puppet-nginx/pull/697) ([hopperd](https://github.com/hopperd))
 - Convert $priority to integer before comparison [\#689](https://github.com/voxpupuli/puppet-nginx/pull/689) ([erikanderson](https://github.com/erikanderson))
 - iterate server\_name when rewrite\_www\_to\_non\_www is used [\#683](https://github.com/voxpupuli/puppet-nginx/pull/683) ([kronos-pbrideau](https://github.com/kronos-pbrideau))
-- adding a max\_fails parameter to upstream member\[s\] [\#675](https://github.com/voxpupuli/puppet-nginx/pull/675) ([svigneux](https://github.com/svigneux))
+- adding a max\_fails parameter to upstream member\[s\] [\#675](https://github.com/voxpupuli/puppet-nginx/pull/675) ([vigx](https://github.com/vigx))
 - Add 'ensure' parameter to resource::upstream::member. [\#673](https://github.com/voxpupuli/puppet-nginx/pull/673) ([kwolf](https://github.com/kwolf))
 - Update non-hiera usage \(see \#536\) [\#669](https://github.com/voxpupuli/puppet-nginx/pull/669) ([Hufschmidt](https://github.com/Hufschmidt))
 - Don't qualified call to defined resource type [\#666](https://github.com/voxpupuli/puppet-nginx/pull/666) ([PierreR](https://github.com/PierreR))
@@ -1185,4 +1215,4 @@ These should not affect the functionality of the module.
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
