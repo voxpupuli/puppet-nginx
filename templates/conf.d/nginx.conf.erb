@@ -96,6 +96,10 @@ http {
   lingering_timeout   <%= @lingering_timeout %>;
   tcp_nodelay         <%= @http_tcp_nodelay %>;
 
+<% if defined? @etag -%>
+  etag <%= @etag %>;
+<% end -%>
+
 <% if @gzip == 'on' -%>
   gzip              on;
 <% if @gzip_buffers -%>
