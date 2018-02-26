@@ -65,6 +65,7 @@ class nginx (
   $client_body_timeout                                       = '60s',
   $send_timeout                                              = '60s',
   $lingering_timeout                                         = '5s',
+  Optional[Enum['on', 'off']] $etag                          = undef,
   Optional[String] $events_use                               = undef,
   String $fastcgi_cache_inactive                             = '20m',
   Optional[String] $fastcgi_cache_key                        = undef,

@@ -479,6 +479,12 @@ describe 'nginx' do
                 notmatch: %r{multi_accept}
               },
               {
+                title: 'should set etag',
+                attr: 'etag',
+                value: 'off',
+                match: '  etag off;'
+              },
+              {
                 title: 'should set events_use',
                 attr: 'events_use',
                 value: 'eventport',
