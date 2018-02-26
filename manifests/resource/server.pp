@@ -24,7 +24,8 @@
 #   [*autoindex*]                  - Set it on 'on' or 'off 'to activate/deactivate autoindex directory listing. Undef by default.
 #   [*proxy*]                      - Proxy server(s) for the root location to connect to.  Accepts a single value, can be used in
 #     conjunction with nginx::resource::upstream
-#   [*proxy_read_timeout*]         - Override the default the proxy read timeout value of 90 seconds
+#   [*proxy_read_timeout*]         - Override the default proxy read timeout value of 90 seconds
+#   [*proxy_send_timeout*]         - Override the default proxy send timeout value of 90 seconds
 #   [*proxy_redirect*]             - Override the default proxy_redirect value of off.
 #   [*proxy_buffering*]            - If defined, sets the proxy_buffering to the passed value.
 #   [*resolver*]                   - Array: Configures name servers used to resolve names of upstream servers into addresses.
@@ -181,6 +182,7 @@ define nginx::resource::server (
   Optional[String] $proxy                                                        = undef,
   Optional[String]$proxy_redirect                                                = undef,
   String $proxy_read_timeout                                                     = $::nginx::proxy_read_timeout,
+  String $proxy_send_timeout                                                     = $::nginx::proxy_send_timeout,
   $proxy_connect_timeout                                                         = $::nginx::proxy_connect_timeout,
   Array[String] $proxy_set_header                                                = $::nginx::proxy_set_header,
   Array[String] $proxy_hide_header                                               = $::nginx::proxy_hide_header,
@@ -348,6 +350,7 @@ define nginx::resource::server (
       proxy                       => $proxy,
       proxy_redirect              => $proxy_redirect,
       proxy_read_timeout          => $proxy_read_timeout,
+      proxy_send_timeout          => $proxy_send_timeout,
       proxy_connect_timeout       => $proxy_connect_timeout,
       proxy_cache                 => $proxy_cache,
       proxy_cache_key             => $proxy_cache_key,
