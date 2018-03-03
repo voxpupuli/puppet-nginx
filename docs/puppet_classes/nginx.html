@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: nginx
+  
+    &mdash; Documentation by YARD 0.9.10
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::nginx";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (n)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">nginx</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: nginx</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>::nginx::params</dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/init.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    <p>Class: nginx</p>
+
+<p>This module manages NGINX.</p>
+
+<p>Parameters:</p>
+
+<p>Actions:</p>
+
+<p>Requires:
+ puppetlabs-stdlib - <a href="https://github.com/puppetlabs/puppetlabs-stdlib">https://github.com/puppetlabs/puppetlabs-stdlib</a></p>
+
+<p>Packaged NGINX</p>
+
+<ul>
+<li>RHEL: EPEL or custom package</li>
+<li>Debian/Ubuntu: Default Install or custom package</li>
+<li>SuSE: Default Install or custom package</li>
+</ul>
+
+<p>stdlib</p>
+
+<ul>
+<li>puppetlabs-stdlib module &gt;= 0.1.6</li>
+</ul>
+
+<p>Sample Usage:</p>
+
+<p>The module works with sensible defaults:</p>
+
+<p>node default {
+  include nginx
+}</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>client_body_temp_path</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::client_body_temp_path</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>confd_only</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>confd_purge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_dir</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::conf_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>daemon</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['on', 'off']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>daemon_user</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::daemon_user</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>daemon_group</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>global_owner</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::global_owner</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>global_group</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::global_group</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>global_mode</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::global_mode</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_dir</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::log_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_group</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::log_group</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_mode</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;0750&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_access_log</span>
+      
+      
+        <span class='type'>(<tt>Variant[String, Array[String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&quot;${log_dir}/${::nginx::params::http_access_log_file}&quot;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_format_log</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_error_log</span>
+      
+      
+        <span class='type'>(<tt>Variant[String, Array[String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&quot;${log_dir}/${::nginx::params::nginx_error_log_file}&quot;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_error_log_severity</span>
+      
+      
+        <span class='type'>(<tt>Nginx::ErrorLogSeverity</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;error&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pid</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::pid</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_temp_path</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::proxy_temp_path</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>root_group</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::root_group</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>run_dir</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::run_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sites_available_owner</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::sites_available_owner</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sites_available_group</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::sites_available_group</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sites_available_mode</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::sites_available_mode</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>super_user</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::super_user</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>temp_dir</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::temp_dir</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_purge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_template</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;nginx/conf.d/nginx.conf.erb&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>accept_mutex</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>accept_mutex_delay</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;500ms&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>client_body_buffer_size</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;128k&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>client_max_body_size</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;10m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>client_body_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;60s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>send_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;60s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lingering_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;5s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>events_use</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_inactive</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;20m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_key</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_keys_zone</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;d3:100m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_levels</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;1&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_max_size</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;500m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_path</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>fastcgi_cache_use_stale</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_buffers</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_comp_level</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_disable</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;msie6&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_min_length</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>20</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_http_version</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1.1</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_proxied</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_types</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>gzip_vary</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_cfg_prepend</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Hash, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_cfg_append</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Hash, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_raw_prepend</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Array[String], String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_raw_append</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Array[String], String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_tcp_nodelay</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_tcp_nopush</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>keepalive_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;65s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>keepalive_requests</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;100&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>log_format</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mail</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>stream</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>multi_accept</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>names_hash_bucket_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>64</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>names_hash_max_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>512</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_cfg_prepend</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_buffers</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;32 4k&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_buffer_size</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;8k&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_inactive</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;20m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_keys_zone</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;d2:100m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_levels</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;1&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_max_size</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;500m&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_path</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Hash, String]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_loader_files</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_loader_sleep</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_cache_loader_threshold</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_use_temp_path</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['on', 'off']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_connect_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;90s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_headers_hash_bucket_size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>64</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_http_version</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_read_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;90s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_redirect</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_send_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;90s&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_set_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[
+    &#39;Host $host&#39;,
+    &#39;X-Real-IP $remote_addr&#39;,
+    &#39;X-Forwarded-For $proxy_add_x_forwarded_for&#39;,
+    &#39;Proxy &quot;&quot;&#39;,
+  ]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_hide_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_pass_header</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sendfile</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_tokens</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>spdy</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http2</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_stapling</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>types_hash_bucket_size</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;512&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>types_hash_max_size</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;1024&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>worker_connections</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1024</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_prefer_server_ciphers</span>
+      
+      
+        <span class='type'>(<tt>Enum['on', 'off']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;on&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>worker_processes</span>
+      
+      
+        <span class='type'>(<tt>Variant[Integer, Enum['auto']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>worker_rlimit_nofile</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1024</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_protocols</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;TLSv1 TLSv1.1 TLSv1.2&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_ciphers</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ssl_dhparam</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Unixpath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_ensure</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>present</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_name</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::package_name</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_source</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;nginx&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_flavor</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_repo</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$::nginx::params::manage_repo</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>passenger_package_ensure</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_ensure</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>running</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_flags</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_restart</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_name</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_manage</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>geo_mappings</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>string_mappings</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_locations</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_locations_defaults</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_mailhosts</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_mailhosts_defaults</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_streamhosts</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_upstreams</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_servers</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>nginx_servers_defaults</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 27</span>
+
+class nginx (
+  ### START Nginx Configuration ###
+  $client_body_temp_path                                     = $::nginx::params::client_body_temp_path,
+  Boolean $confd_only                                        = false,
+  Boolean $confd_purge                                       = false,
+  $conf_dir                                                  = $::nginx::params::conf_dir,
+  Optional[Enum[&#39;on&#39;, &#39;off&#39;]] $daemon                        = undef,
+  $daemon_user                                               = $::nginx::params::daemon_user,
+  $daemon_group                                              = undef,
+  $global_owner                                              = $::nginx::params::global_owner,
+  $global_group                                              = $::nginx::params::global_group,
+  $global_mode                                               = $::nginx::params::global_mode,
+  $log_dir                                                   = $::nginx::params::log_dir,
+  $log_group                                                 = $::nginx::params::log_group,
+  $log_mode                                                  = &#39;0750&#39;,
+  Variant[String, Array[String]] $http_access_log            = &quot;${log_dir}/${::nginx::params::http_access_log_file}&quot;,
+  $http_format_log                                           = undef,
+  Variant[String, Array[String]] $nginx_error_log            = &quot;${log_dir}/${::nginx::params::nginx_error_log_file}&quot;,
+  Nginx::ErrorLogSeverity $nginx_error_log_severity          = &#39;error&#39;,
+  $pid                                                       = $::nginx::params::pid,
+  $proxy_temp_path                                           = $::nginx::params::proxy_temp_path,
+  $root_group                                                = $::nginx::params::root_group,
+  $run_dir                                                   = $::nginx::params::run_dir,
+  $sites_available_owner                                     = $::nginx::params::sites_available_owner,
+  $sites_available_group                                     = $::nginx::params::sites_available_group,
+  $sites_available_mode                                      = $::nginx::params::sites_available_mode,
+  Boolean $super_user                                        = $::nginx::params::super_user,
+  $temp_dir                                                  = $::nginx::params::temp_dir,
+  Boolean $server_purge                                      = false,
+
+  # Primary Templates
+  $conf_template                                             = &#39;nginx/conf.d/nginx.conf.erb&#39;,
+
+  ### START Nginx Configuration ###
+  $accept_mutex                                              = &#39;on&#39;,
+  $accept_mutex_delay                                        = &#39;500ms&#39;,
+  $client_body_buffer_size                                   = &#39;128k&#39;,
+  String $client_max_body_size                               = &#39;10m&#39;,
+  $client_body_timeout                                       = &#39;60s&#39;,
+  $send_timeout                                              = &#39;60s&#39;,
+  $lingering_timeout                                         = &#39;5s&#39;,
+  Optional[String] $events_use                               = undef,
+  String $fastcgi_cache_inactive                             = &#39;20m&#39;,
+  Optional[String] $fastcgi_cache_key                        = undef,
+  String $fastcgi_cache_keys_zone                            = &#39;d3:100m&#39;,
+  String $fastcgi_cache_levels                               = &#39;1&#39;,
+  String $fastcgi_cache_max_size                             = &#39;500m&#39;,
+  Optional[String] $fastcgi_cache_path                       = undef,
+  Optional[String] $fastcgi_cache_use_stale                  = undef,
+  $gzip                                                      = &#39;on&#39;,
+  $gzip_buffers                                              = undef,
+  $gzip_comp_level                                           = 1,
+  $gzip_disable                                              = &#39;msie6&#39;,
+  $gzip_min_length                                           = 20,
+  $gzip_http_version                                         = 1.1,
+  $gzip_proxied                                              = &#39;off&#39;,
+  $gzip_types                                                = undef,
+  $gzip_vary                                                 = &#39;off&#39;,
+  Optional[Variant[Hash, Array]] $http_cfg_prepend           = undef,
+  Optional[Variant[Hash, Array]] $http_cfg_append            = undef,
+  Optional[Variant[Array[String], String]] $http_raw_prepend = undef,
+  Optional[Variant[Array[String], String]] $http_raw_append  = undef,
+  $http_tcp_nodelay                                          = &#39;on&#39;,
+  $http_tcp_nopush                                           = &#39;off&#39;,
+  $keepalive_timeout                                         = &#39;65s&#39;,
+  $keepalive_requests                                        = &#39;100&#39;,
+  $log_format                                                = {},
+  Boolean $mail                                              = false,
+  Boolean $stream                                            = false,
+  String $multi_accept                                       = &#39;off&#39;,
+  Integer $names_hash_bucket_size                            = 64,
+  Integer $names_hash_max_size                               = 512,
+  $nginx_cfg_prepend                                         = false,
+  String $proxy_buffers                                      = &#39;32 4k&#39;,
+  String $proxy_buffer_size                                  = &#39;8k&#39;,
+  String $proxy_cache_inactive                               = &#39;20m&#39;,
+  String $proxy_cache_keys_zone                              = &#39;d2:100m&#39;,
+  String $proxy_cache_levels                                 = &#39;1&#39;,
+  String $proxy_cache_max_size                               = &#39;500m&#39;,
+  Optional[Variant[Hash, String]] $proxy_cache_path          = undef,
+  Optional[Integer] $proxy_cache_loader_files                = undef,
+  Optional[String] $proxy_cache_loader_sleep                 = undef,
+  Optional[String] $proxy_cache_loader_threshold             = undef,
+  Optional[Enum[&#39;on&#39;, &#39;off&#39;]] $proxy_use_temp_path           = undef,
+  $proxy_connect_timeout                                     = &#39;90s&#39;,
+  Integer $proxy_headers_hash_bucket_size                    = 64,
+  Optional[String] $proxy_http_version                       = undef,
+  $proxy_read_timeout                                        = &#39;90s&#39;,
+  $proxy_redirect                                            = undef,
+  $proxy_send_timeout                                        = &#39;90s&#39;,
+  Array $proxy_set_header                                    = [
+    &#39;Host $host&#39;,
+    &#39;X-Real-IP $remote_addr&#39;,
+    &#39;X-Forwarded-For $proxy_add_x_forwarded_for&#39;,
+    &#39;Proxy &quot;&quot;&#39;,
+  ],
+  Array $proxy_hide_header                                   = [],
+  Array $proxy_pass_header                                   = [],
+  $sendfile                                                  = &#39;on&#39;,
+  String $server_tokens                                      = &#39;on&#39;,
+  $spdy                                                      = &#39;off&#39;,
+  $http2                                                     = &#39;off&#39;,
+  $ssl_stapling                                              = &#39;off&#39;,
+  $types_hash_bucket_size                                    = &#39;512&#39;,
+  $types_hash_max_size                                       = &#39;1024&#39;,
+  Integer $worker_connections                                = 1024,
+  Enum[&#39;on&#39;, &#39;off&#39;] $ssl_prefer_server_ciphers               = &#39;on&#39;,
+  Variant[Integer, Enum[&#39;auto&#39;]] $worker_processes           = 1,
+  Integer $worker_rlimit_nofile                              = 1024,
+  $ssl_protocols                                             = &#39;TLSv1 TLSv1.1 TLSv1.2&#39;,
+  $ssl_ciphers                                               = &#39;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&#39;, # lint:ignore:140chars
+  Optional[Stdlib::Unixpath] $ssl_dhparam                    = undef,
+
+  ### START Package Configuration ###
+  $package_ensure                                            = present,
+  $package_name                                              = $::nginx::params::package_name,
+  $package_source                                            = &#39;nginx&#39;,
+  $package_flavor                                            = undef,
+  $manage_repo                                               = $::nginx::params::manage_repo,
+  $passenger_package_ensure                                  = &#39;present&#39;,
+  ### END Package Configuration ###
+
+  ### START Service Configuation ###
+  $service_ensure                                            = running,
+  $service_flags                                             = undef,
+  $service_restart                                           = undef,
+  $service_name                                              = undef,
+  $service_manage                                            = true,
+  ### END Service Configuration ###
+
+  ### START Hiera Lookups ###
+  $geo_mappings                                              = {},
+  $string_mappings                                           = {},
+  $nginx_locations                                           = {},
+  $nginx_locations_defaults                                  = {},
+  $nginx_mailhosts                                           = {},
+  $nginx_mailhosts_defaults                                  = {},
+  $nginx_streamhosts                                         = {},
+  $nginx_upstreams                                           = {},
+  $nginx_servers                                             = {},
+  $nginx_servers_defaults                                    = {},
+  ### END Hiera Lookups ###
+) inherits ::nginx::params {
+
+  contain &#39;::nginx::package&#39;
+  contain &#39;::nginx::config&#39;
+  contain &#39;::nginx::service&#39;
+
+  create_resources(&#39;nginx::resource::upstream&#39;, $nginx_upstreams)
+  create_resources(&#39;nginx::resource::server&#39;, $nginx_servers, $nginx_servers_defaults)
+  create_resources(&#39;nginx::resource::location&#39;, $nginx_locations, $nginx_locations_defaults)
+  create_resources(&#39;nginx::resource::mailhost&#39;, $nginx_mailhosts, $nginx_mailhosts_defaults)
+  create_resources(&#39;nginx::resource::streamhost&#39;, $nginx_streamhosts)
+  create_resources(&#39;nginx::resource::map&#39;, $string_mappings)
+  create_resources(&#39;nginx::resource::geo&#39;, $geo_mappings)
+
+  # Allow the end user to establish relationships to the &quot;main&quot; class
+  # and preserve the relationship to the implementation classes through
+  # a transitive relationship to the composite class.
+  Class[&#39;::nginx::package&#39;] -&gt; Class[&#39;::nginx::config&#39;] ~&gt; Class[&#39;::nginx::service&#39;]
+  Class[&#39;::nginx::package&#39;] ~&gt; Class[&#39;::nginx::service&#39;]
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
