@@ -20,9 +20,10 @@ class nginx::params {
   case $::osfamily {
     'ArchLinux': {
       $_module_os_overrides = {
-        'pid'         => false,
-        'daemon_user' => 'http',
-        'log_group'   => 'log',
+        'pid'          => false,
+        'daemon_user'  => 'http',
+        'log_group'    => 'log',
+        'package_name' => 'nginx-mainline',
       }
     }
     'Debian': {
