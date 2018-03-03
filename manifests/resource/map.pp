@@ -179,7 +179,7 @@ define nginx::resource::map (
 
     concat::fragment { "${::nginx::conf_dir}/conf.d/${name}-footer":
       target => "${::nginx::conf_dir}/conf.d/${name}-map.conf",
-      content => template('nginx/conf.d/map/footer.erb'),
+      content => "}",
       order => '9'
     }
   }

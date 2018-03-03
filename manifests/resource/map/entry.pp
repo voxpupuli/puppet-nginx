@@ -62,7 +62,7 @@ define nginx::resource::map::entry (
   String $map,
   String $key,
   String $value,
-  String $order                = $key
+  String $order = $key
 ) {
 
   if ! defined(Nginx::Resource::Map[$map]) {
