@@ -34,6 +34,12 @@ matrix:
   - rvm: 2.4.3
     bundler_args: --without development release
     dist: trusty
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/ubuntu-16.04 CHECK=beaker
+    services: docker
+    sudo: required
+  - rvm: 2.4.3
+    bundler_args: --without development release
+    dist: trusty
     env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=docker/centos-7 CHECK=beaker
     services: docker
     sudo: required
