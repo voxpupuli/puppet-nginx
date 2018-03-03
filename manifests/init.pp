@@ -145,6 +145,7 @@ class nginx (
   $package_source                                            = 'nginx',
   $package_flavor                                            = undef,
   $manage_repo                                               = $::nginx::params::manage_repo,
+  Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
   ### END Package Configuration ###
 
