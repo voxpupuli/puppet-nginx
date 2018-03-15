@@ -615,10 +615,16 @@ describe 'nginx' do
                 match: '  access_log /var/log/nginx/access.log mycustomformat;'
               },
               {
-                title: 'should set sendfile',
+                title: 'should set sendfile on',
                 attr: 'sendfile',
                 value: 'on',
                 match: '  sendfile on;'
+              },
+              {
+                title: 'should set sendfile off',
+                attr: 'sendfile',
+                value: 'off',
+                match: '  sendfile    off;'
               },
               {
                 title: 'should not set sendfile',
@@ -866,7 +872,7 @@ describe 'nginx' do
               {
                 title: 'should not set proxy_http_version',
                 attr: 'proxy_http_version',
-                value: nil,
+                value: :undef,
                 notmatch: 'proxy_http_version'
               },
               {

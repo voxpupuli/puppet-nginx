@@ -218,14 +218,14 @@ describe 'nginx::resource::server' do
             {
               title: 'should set the client_body_timeout',
               attr: 'client_body_timeout',
-              value: 'value',
-              match: %r{^\s+client_body_timeout\s+value;}
+              value: '10s',
+              match: %r{^\s+client_body_timeout\s+10s;}
             },
             {
               title: 'should set the client_header_timeout',
               attr: 'client_header_timeout',
-              value: 'value',
-              match: %r{^\s+client_header_timeout\s+value;}
+              value: '10s',
+              match: %r{^\s+client_header_timeout\s+10s;}
             },
             {
               title: 'should set the gzip_types',
@@ -694,25 +694,25 @@ describe 'nginx::resource::server' do
             {
               title: 'should set SPDY',
               attr: 'spdy',
-              value: 'on',
+              value: true,
               match: %r{\s+listen\s+\*:443 ssl spdy;}
             },
             {
               title: 'should not set SPDY',
               attr: 'spdy',
-              value: 'off',
+              value: false,
               match: %r{\s+listen\s+\*:443 ssl;}
             },
             {
               title: 'should set HTTP2',
               attr: 'http2',
-              value: 'on',
+              value: true,
               match: %r{\s+listen\s+\*:443 ssl http2;}
             },
             {
               title: 'should not set HTTP2',
               attr: 'http2',
-              value: 'off',
+              value: false,
               match: %r{\s+listen\s+\*:443 ssl;}
             },
             {
@@ -886,14 +886,14 @@ describe 'nginx::resource::server' do
             {
               title: 'should set the client_body_timeout',
               attr: 'client_body_timeout',
-              value: 'value',
-              match: %r{^\s+client_body_timeout\s+value;}
+              value: '10s',
+              match: %r{^\s+client_body_timeout\s+10s;}
             },
             {
               title: 'should set the client_header_timeout',
               attr: 'client_header_timeout',
-              value: 'value',
-              match: %r{^\s+client_header_timeout\s+value;}
+              value: '10s',
+              match: %r{^\s+client_header_timeout\s+10s;}
             },
             {
               title: 'should set the gzip_types',
@@ -1244,7 +1244,7 @@ describe 'nginx::resource::server' do
           end
 
           context 'SSL cert and key are both set to false' do
-            let(:params) { { ssl: true, ssl_cert: false, ssl_key: false } }
+            let(:params) { { ssl: true, ssl_cert: :undef, ssl_key: :undef } }
 
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate}) }
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate_key}) }
