@@ -35,11 +35,11 @@
 #   }
 #
 define nginx::resource::upstream::member (
-  $upstream,
-  $server,
-  Enum['present', 'absent'] $ensure = 'present',
-  Integer $port                     = 80,
-  $upstream_fail_timeout  = '10s',
+  String[1] $upstream,
+  Optional[Array[String[1]]] $server,
+  Enum['present', 'absent'] $ensure               = 'present',
+  Stdlib::Port $port                              = 80,
+  String[Nginx::Duration] $upstream_fail_timeout  = '10s',
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')

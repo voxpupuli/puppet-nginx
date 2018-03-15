@@ -18,7 +18,7 @@ worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% end -%>
 
 <% if @pid -%>
-pid        <%= @pid %>;
+pid <%= @pid %>;
 <% end -%>
 <% if @nginx_error_log.is_a?(Array) -%>
   <%- @nginx_error_log.each do |log_item| -%>
@@ -82,12 +82,13 @@ http {
   access_log  <%= @http_access_log %><% if @http_format_log %> <%= @http_format_log%><% end %>;
 <% end -%>
 
-<% if @sendfile == 'on' -%>
-  sendfile    on;
-  <%- if @http_tcp_nopush == 'on' -%>
-  tcp_nopush on;
-  <%- end -%>
+<% if @sendfile -%>
+  sendfile    <%= @sendfile %>;
 <% end -%>
+<%- if @http_tcp_nopush -%>
+  tcp_nopush <%= @http_tcp_nopush %>;
+<% end -%>
+
   server_tokens <%= @server_tokens %>;
 
   types_hash_max_size <%= @types_hash_max_size %>;

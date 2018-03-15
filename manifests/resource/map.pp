@@ -73,11 +73,11 @@
 
 define nginx::resource::map (
   String[2] $string,
-  Variant[Array, Hash] $mappings,
-  Optional[String] $default         = undef,
-  Enum['absent', 'present'] $ensure = 'present',
-  Array[String] $include_files      = [],
-  Boolean $hostnames                = false
+  Variant[Array[Hash[String[1],String]], Hash[String[1],String]] $mappings,
+  Optional[String[1]] $default           = undef,
+  Enum['absent', 'present'] $ensure      = 'present',
+  Array[String[1]] $include_files        = [],
+  Boolean $hostnames                     = false
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')

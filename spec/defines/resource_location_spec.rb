@@ -187,7 +187,7 @@ describe 'nginx::resource::location' do
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
-              let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
+              let(:default_params) { { location: 'location', proxy: 'http://proxy_value', server: 'server1' } }
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
@@ -264,7 +264,7 @@ describe 'nginx::resource::location' do
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
-              let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
+              let(:default_params) { { location: 'location', proxy: 'http://proxy_value', server: 'server1' } }
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
@@ -817,26 +817,26 @@ describe 'nginx::resource::location' do
             {
               title: 'should set proxy_pass',
               attr: 'proxy',
-              value: 'value',
-              match: %r{^\s+proxy_pass\s+value;}
+              value: 'http://proxy_value',
+              match: %r{^\s+proxy_pass\s+http\:\/\/proxy_value;}
             },
             {
               title: 'should set proxy_read_timeout',
               attr: 'proxy_read_timeout',
-              value: 'value',
-              match: %r{\s+proxy_read_timeout\s+value;}
+              value: '30s',
+              match: %r{\s+proxy_read_timeout\s+30s;}
             },
             {
               title: 'should set proxy_connect_timeout',
               attr: 'proxy_connect_timeout',
-              value: 'value',
-              match: %r{\s+proxy_connect_timeout\s+value;}
+              value: '30s',
+              match: %r{\s+proxy_connect_timeout\s+30s;}
             },
             {
               title: 'should set proxy_read_timeout',
               attr: 'proxy_read_timeout',
-              value: 'value',
-              match: %r{\s+proxy_read_timeout\s+value;}
+              value: '30s',
+              match: %r{\s+proxy_read_timeout\s+30s;}
             },
             {
               title: 'should set proxy headers',
@@ -868,8 +868,8 @@ describe 'nginx::resource::location' do
             {
               title: 'should set proxy_http_version',
               attr: 'proxy_http_version',
-              value: 'value',
-              match: %r{\s+proxy_http_version\s+value;}
+              value: '1.1',
+              match: %r{\s+proxy_http_version\s+1.1;}
             },
             {
               title: 'should set proxy_method',
@@ -891,7 +891,7 @@ describe 'nginx::resource::location' do
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
-              let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }
+              let(:default_params) { { location: 'location', proxy: 'http://proxy_value', server: 'server1' } }
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest(params[:location].to_s)) }
@@ -917,7 +917,7 @@ describe 'nginx::resource::location' do
             let :params do
               {
                 location: 'location',
-                proxy: 'proxy_value',
+                proxy: 'http://proxy_value',
                 server: 'server1',
                 proxy_cache: 'true',
                 proxy_cache_valid: '10m'

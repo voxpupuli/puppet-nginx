@@ -4,10 +4,10 @@
 server {
   <%- if @listen_ip.is_a?(Array) then -%>
     <%- @listen_ip.each do |ip| -%>
-  listen       <%= ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 %> http2<% end %><% if @spdy %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
     <%- end -%>
   <%- else -%>
-  listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 %> http2<% end %><% if @spdy %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
 <%= scope.function_template(["nginx/server/server_ssl_ipv6_listen.erb"]) %>
   server_name  www.<%= s.gsub(/^www\./, '') %>;
@@ -22,10 +22,10 @@ server {
 server {
   <%- if @listen_ip.is_a?(Array) then -%>
     <%- @listen_ip.each do |ip| -%>
-  listen       <%= ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 %> http2<% end %><% if @spdy  %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
     <%- end -%>
   <%- else -%>
-  listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 == 'on' %> http2<% end %><% if @spdy == 'on' %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= @listen_ip %>:<%= @ssl_port %> <% if @ssl_listen_option %>ssl<% end %><% if @http2 %> http2<% end %><% if @spdy %> spdy<% end %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
 <%= scope.function_template(["nginx/server/server_ssl_ipv6_listen.erb"]) %>
   server_name  <%= @rewrite_www_to_non_www ? @server_name.join("  ").gsub(/(^| )(www\.)?(?=[a-z0-9])/, '') : @server_name.join(" ") %>;

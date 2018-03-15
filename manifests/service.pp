@@ -14,11 +14,11 @@
 #
 # This class file is not called directly
 class nginx::service(
-  $service_restart = $nginx::service_restart,
-  $service_ensure  = $nginx::service_ensure,
-  $service_name    = $nginx::service_name,
-  $service_flags   = $nginx::service_flags,
-  $service_manage  = $nginx::service_manage,
+  Optional[String[1]] $service_restart                          = $::nginx::service_restart,
+  Enum['running', 'absent', 'stopped', 'undef'] $service_ensure = $::nginx::service_ensure,
+  String[1] $service_name                                       = $::nginx::service_name,
+  Optional[String[1]] $service_flags                            = $::nginx::service_flags,
+  Boolean $service_manage                                       = $::nginx::service_manage,
 ) {
 
   assert_private()
