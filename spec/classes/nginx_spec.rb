@@ -165,6 +165,10 @@ describe 'nginx' do
             it { is_expected.not_to contain_apt__source('nginx') }
             it { is_expected.not_to contain_package('passenger') }
           end
+        when 'Archlinux'
+          context 'using defaults' do
+            it { is_expected.to contain_package('nginx-mainline') }
+          end
         else
           it { is_expected.to contain_package('nginx') }
         end
