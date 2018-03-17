@@ -561,6 +561,12 @@ describe 'nginx::resource::server' do
               match: %r{\s+ssl_dhparam\s+/tmp/dhparam;}
             },
             {
+              title: 'should set ssl_ecdh_curve',
+              attr: 'ssl_ecdh_curve',
+              value: 'secp521r1',
+              match: %r{\s+ssl_ecdh_curve\s+secp521r1;}
+            },
+            {
               title: 'should set the SSL stapling file',
               attr: 'ssl_stapling_file',
               value: '/tmp/stapling_file',
