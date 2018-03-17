@@ -24,7 +24,7 @@ class nginx::package {
 
   assert_private()
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'redhat': {
       contain ::nginx::package::redhat
     }
