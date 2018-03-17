@@ -20,10 +20,10 @@
 #
 #   Exporting the resource on a upstream member server:
 #
-#   @@nginx::resource::upstream::member { $::fqdn:
+#   @@nginx::resource::upstream::member { $trusted['certname']:
 #     ensure    => present,
 #     upstream  => 'proxypass',
-#     server    => $::ipaddress,
+#     server    => $facts['networking']['ip'],
 #     port      => 3000,
 #   }
 #

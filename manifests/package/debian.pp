@@ -22,7 +22,7 @@ class nginx::package::debian {
   $passenger_package_ensure = $::nginx::passenger_package_ensure
   $manage_repo              = $::nginx::manage_repo
 
-  $distro = downcase($::operatingsystem)
+  $distro = downcase($facts['os']['name'])
 
   package { 'nginx':
     ensure => $package_ensure,

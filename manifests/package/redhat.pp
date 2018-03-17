@@ -25,7 +25,7 @@ class nginx::package::redhat {
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not
   #on RHEL or CentOS and $manage_repo is set manually to 'true'.
-  $_os = $::operatingsystem? {
+  $_os = $facts['os']['name'] ? {
     'centos' => 'centos',
     default  => 'rhel'
   }
@@ -34,7 +34,7 @@ class nginx::package::redhat {
     case $package_source {
       'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "http://nginx.org/packages/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
@@ -51,7 +51,7 @@ class nginx::package::redhat {
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/mainline/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "http://nginx.org/packages/mainline/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
@@ -67,9 +67,9 @@ class nginx::package::redhat {
 
       }
       'passenger': {
-        if ($::operatingsystem in ['RedHat', 'CentOS']) and ($::operatingsystemmajrelease in ['6', '7']) {
+        if ($facts['os']['name'] in ['RedHat', 'CentOS']) and ($facts['os']['release']['major'] in ['6', '7']) {
           yumrepo { 'passenger':
-            baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${::operatingsystemmajrelease}/\$basearch",
+            baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
             descr         => 'passenger repo',
             enabled       => '1',
             gpgcheck      => '0',
@@ -90,7 +90,7 @@ class nginx::package::redhat {
           }
 
         } else {
-          fail("${::operatingsystem} version ${::operatingsystemmajrelease} is unsupported with \$package_source 'passenger'")
+          fail("${facts['os']['name']} version ${facts['os']['release']['major']} is unsupported with \$package_source 'passenger'")
         }
       }
       default: {
