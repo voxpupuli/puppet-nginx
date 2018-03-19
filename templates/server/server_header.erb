@@ -130,7 +130,7 @@ server {
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
 <% if defined? @autoindex -%>
-    autoindex <%= @autoindex %>;
+  autoindex <%= @autoindex %>;
 <% end -%>
 <% if defined? @log_by_lua -%>
   log_by_lua '<%= @log_by_lua %>';

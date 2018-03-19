@@ -336,7 +336,7 @@ describe 'nginx::resource::server' do
               title: 'should set autoindex',
               attr: 'autoindex',
               value: 'on',
-              match: '    autoindex on;'
+              match: '  autoindex on;'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
