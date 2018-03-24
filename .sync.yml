@@ -7,5 +7,6 @@
   - set: centos7-64
   - set: debian8-64
   - set: debian9-64
+  - set: archlinux-4
 spec/spec_helper.rb:
   mock_with: ':rspec'
