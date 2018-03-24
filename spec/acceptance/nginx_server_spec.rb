@@ -15,6 +15,7 @@ describe 'nginx::resource::server define:' do
       "
 
       apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
