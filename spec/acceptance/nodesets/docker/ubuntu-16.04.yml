@@ -10,8 +10,10 @@ HOSTS:
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
+      - 'systemctl mask getty@tty1.service getty-static.service'
       - 'apt-get install -y net-tools wget locales apt-transport-https'
       - 'locale-gen en_US.UTF-8'
+      - 'echo LANG=en_US.UTF-8 > /etc/default/locale'
 CONFIG:
   trace_limit: 200
   masterless: true
