@@ -9,7 +9,12 @@ describe 'nginx class:' do
   when 'Debian'
     pkg_cmd = 'dpkg -s nginx | grep ^Maintainer'
     pkg_remove_cmd = 'apt-get -y remove nginx nginx-common'
-    pkg_match = %r{Phusion}
+    pkg_match = case fact('operatingsystemmajrelease')
+                when '9'
+                  %r{Debian Nginx Maintainers}
+                else
+                  %r{Phusion}
+                end
   end
 
   context 'default parameters' do
@@ -52,7 +57,7 @@ describe 'nginx class:' do
         end
       end
 
-      if fact('osfamily') == 'Debian'
+      if fact('os.family') == 'Debian' && fact('os.release.major') == '8'
         describe package('nginx-extras') do
           it { is_expected.to be_installed }
         end
