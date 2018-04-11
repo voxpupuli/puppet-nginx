@@ -40,9 +40,24 @@ you must set an environment variable such as:
 
     export PUPPET_VERSION="~> 4.2.0"
 
-Install the dependencies like so...
+You can install all needed gems for spec tests into the modules directory by
+running:
 
-    bundle install
+```sh
+bundle install --path .vendor/ --without development --without system_tests --without release
+```
+
+If you also want to run acceptance tests:
+
+```sh
+bundle install --path .vendor/ --without development --with system_tests --without release
+```
+
+Our all in one solution if you don't know if you need to install or update gems:
+
+```sh
+bundle install --path .vendor/ --without development --with system_tests --without release; bundle update; bundle clean
+```
 
 ## Syntax and style
 
