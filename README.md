@@ -174,7 +174,7 @@ nginx::nginx_cfg_prepend:
 nginx::nginx_streamhosts:
   'syslog':
     ensure:                 'present'
-    listen_port:            '514'
+    listen_port:            514
     listen_options:         'udp'
     proxy:                  'syslog'
     proxy_read_timeout:     '1'
