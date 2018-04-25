@@ -579,6 +579,12 @@ describe 'nginx::resource::server' do
               match: %r{\s+ssl_trusted_certificate\s+/tmp/trusted_certificate;}
             },
             {
+              title: 'should set ssl_verify_depth',
+              attr: 'ssl_verify_depth',
+              value: 2,
+              match: %r{^\s+ssl_verify_depth\s+2;}
+            },
+            {
               title: 'should set the SSL cache',
               attr: 'ssl_cache',
               value: 'shared:SSL:1m',

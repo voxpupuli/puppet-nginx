@@ -67,6 +67,7 @@
 #   [*ssl_session_ticket_key*]     - String: Sets a file with the secret key used to encrypt and decrypt TLS session tickets.
 #   [*ssl_trusted_cert*]           - String: Specifies a file with trusted CA certificates in the PEM format used to verify client
 #     certificates and OCSP responses if ssl_stapling is enabled.
+#   [*ssl_verify_depth*]           - Integer: Sets the verification depth in the client certificates chain.
 #   [*spdy*]                       - Toggles SPDY protocol.
 #   [*http2*]                      - Toggles HTTP/2 protocol.
 #   [*server_name*]                - List of servernames for which this server will respond. Default [$name].
@@ -179,6 +180,7 @@ define nginx::resource::server (
   Optional[String] $ssl_session_tickets                                          = undef,
   Optional[String] $ssl_session_ticket_key                                       = undef,
   Optional[String] $ssl_trusted_cert                                             = undef,
+  Optional[Integer] $ssl_verify_depth                                            = undef,
   String $spdy                                                                   = $::nginx::spdy,
   $http2                                                                         = $::nginx::http2,
   Optional[String] $proxy                                                        = undef,
