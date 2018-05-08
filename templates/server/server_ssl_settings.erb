@@ -49,4 +49,7 @@
   <%- if defined? @ssl_trusted_cert -%>
   ssl_trusted_certificate   <%= @ssl_trusted_cert %>;
   <%- end -%>
+  <%- if @ssl_verify_depth -%>
+  ssl_verify_depth          <%= @ssl_verify_depth %>;
+  <%- end -%>
 <% end -%>
