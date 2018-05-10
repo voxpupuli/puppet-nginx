@@ -168,6 +168,7 @@ class nginx (
   $nginx_upstreams                                           = {},
   $nginx_servers                                             = {},
   $nginx_servers_defaults                                    = {},
+  Boolean $purge_passenger_repo                              = true,
   ### END Hiera Lookups ###
 ) inherits nginx::params {
 
