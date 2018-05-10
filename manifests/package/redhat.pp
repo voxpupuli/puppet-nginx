@@ -15,12 +15,12 @@
 # This class file is not called directly
 class nginx::package::redhat {
 
-  $package_name             = $::nginx::package_name
-  $package_source           = $::nginx::package_source
-  $package_ensure           = $::nginx::package_ensure
-  $package_flavor           = $::nginx::package_flavor
-  $passenger_package_ensure = $::nginx::passenger_package_ensure
-  $manage_repo              = $::nginx::manage_repo
+  $package_name             = $nginx::package_name
+  $package_source           = $nginx::package_source
+  $package_ensure           = $nginx::package_ensure
+  $package_flavor           = $nginx::package_flavor
+  $passenger_package_ensure = $nginx::passenger_package_ensure
+  $manage_repo              = $nginx::manage_repo
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not

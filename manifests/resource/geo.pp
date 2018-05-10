@@ -67,8 +67,8 @@ define nginx::resource::geo (
     fail('You must include the nginx base class before using any defined resources')
   }
 
-  $root_group = $::nginx::root_group
-  $conf_dir   = "${::nginx::conf_dir}/conf.d"
+  $root_group = $nginx::root_group
+  $conf_dir   = "${nginx::conf_dir}/conf.d"
 
   $ensure_real = $ensure ? {
     'absent' => 'absent',
@@ -84,7 +84,7 @@ define nginx::resource::geo (
   file { "${conf_dir}/${name}-geo.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/geo.erb'),
-    notify  => Class['::nginx::service'],
+    notify  => Class['nginx::service'],
     require => File[$conf_dir],
   }
 }

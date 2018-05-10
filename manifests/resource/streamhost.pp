@@ -56,14 +56,14 @@ define nginx::resource::streamhost (
   Integer $ipv6_listen_port               = 80,
   String $ipv6_listen_options             = 'default ipv6only=on',
   $proxy                                  = undef,
-  String $proxy_read_timeout              = $::nginx::proxy_read_timeout,
-  $proxy_connect_timeout                  = $::nginx::proxy_connect_timeout,
+  String $proxy_read_timeout              = $nginx::proxy_read_timeout,
+  $proxy_connect_timeout                  = $nginx::proxy_connect_timeout,
   Array $resolver                         = [],
   $raw_prepend                            = undef,
   $raw_append                             = undef,
-  String $owner                           = $::nginx::global_owner,
-  String $group                           = $::nginx::global_group,
-  String $mode                            = $::nginx::global_mode,
+  String $owner                           = $nginx::global_owner,
+  String $group                           = $nginx::global_group,
+  String $mode                            = $nginx::global_mode,
 ) {
 
   if ! defined(Class['nginx']) {
@@ -71,11 +71,11 @@ define nginx::resource::streamhost (
   }
 
   # Variables
-  if $::nginx::confd_only {
-    $streamhost_dir = "${::nginx::conf_dir}/conf.stream.d"
+  if $nginx::confd_only {
+    $streamhost_dir = "${nginx::conf_dir}/conf.stream.d"
   } else {
-    $streamhost_dir = "${::nginx::conf_dir}/streams-available"
-    $streamhost_enable_dir = "${::nginx::conf_dir}/streams-enabled"
+    $streamhost_dir = "${nginx::conf_dir}/streams-available"
+    $streamhost_enable_dir = "${nginx::conf_dir}/streams-enabled"
     $streamhost_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',
@@ -90,7 +90,7 @@ define nginx::resource::streamhost (
       'absent' => absent,
       default  => 'file',
     },
-    notify => Class['::nginx::service'],
+    notify => Class['nginx::service'],
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -106,7 +106,7 @@ define nginx::resource::streamhost (
     owner   => $owner,
     group   => $group,
     mode    => $mode,
-    notify  => Class['::nginx::service'],
+    notify  => Class['nginx::service'],
     require => File[$streamhost_dir],
   }
 
@@ -116,13 +116,13 @@ define nginx::resource::streamhost (
     order   => '001',
   }
 
-  unless $::nginx::confd_only {
+  unless $nginx::confd_only {
     file{ "${name_sanitized}.conf symlink":
       ensure  => $streamhost_symlink_ensure,
       path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
       require => [Concat[$config_file], File[$streamhost_enable_dir]],
-      notify  => Class['::nginx::service'],
+      notify  => Class['nginx::service'],
     }
   }
 }

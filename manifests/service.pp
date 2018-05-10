@@ -14,11 +14,11 @@
 #
 # This class file is not called directly
 class nginx::service(
-  $service_restart = $::nginx::service_restart,
-  $service_ensure  = $::nginx::service_ensure,
-  $service_name    = $::nginx::service_name,
-  $service_flags   = $::nginx::service_flags,
-  $service_manage  = $::nginx::service_manage,
+  $service_restart = $nginx::service_restart,
+  $service_ensure  = $nginx::service_ensure,
+  $service_name    = $nginx::service_name,
+  $service_flags   = $nginx::service_flags,
+  $service_manage  = $nginx::service_manage,
 ) {
 
   assert_private()

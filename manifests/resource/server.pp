@@ -160,16 +160,16 @@ define nginx::resource::server (
   Optional[Variant[String, Boolean]] $ssl_cert                                   = undef,
   Optional[String] $ssl_client_cert                                              = undef,
   String $ssl_verify_client                                                      = 'on',
-  Optional[String] $ssl_dhparam                                                  = $::nginx::ssl_dhparam,
+  Optional[String] $ssl_dhparam                                                  = $nginx::ssl_dhparam,
   Optional[String] $ssl_ecdh_curve                                               = undef,
   Boolean $ssl_redirect                                                          = false,
   Optional[Integer] $ssl_redirect_port                                           = undef,
   Optional[Variant[String, Boolean]] $ssl_key                                    = undef,
   Integer $ssl_port                                                              = 443,
-  Enum['on', 'off'] $ssl_prefer_server_ciphers                                   = $::nginx::ssl_prefer_server_ciphers,
-  String $ssl_protocols                                                          = $::nginx::ssl_protocols,
+  Enum['on', 'off'] $ssl_prefer_server_ciphers                                   = $nginx::ssl_prefer_server_ciphers,
+  String $ssl_protocols                                                          = $nginx::ssl_protocols,
   $ssl_buffer_size                                                               = undef,
-  String $ssl_ciphers                                                            = $::nginx::ssl_ciphers,
+  String $ssl_ciphers                                                            = $nginx::ssl_ciphers,
   String $ssl_cache                                                              = 'shared:SSL:10m',
   Optional[String] $ssl_crl                                                      = undef,
   Boolean $ssl_stapling                                                          = false,
@@ -181,16 +181,16 @@ define nginx::resource::server (
   Optional[String] $ssl_session_ticket_key                                       = undef,
   Optional[String] $ssl_trusted_cert                                             = undef,
   Optional[Integer] $ssl_verify_depth                                            = undef,
-  String $spdy                                                                   = $::nginx::spdy,
-  $http2                                                                         = $::nginx::http2,
+  String $spdy                                                                   = $nginx::spdy,
+  $http2                                                                         = $nginx::http2,
   Optional[String] $proxy                                                        = undef,
   Optional[String]$proxy_redirect                                                = undef,
-  String $proxy_read_timeout                                                     = $::nginx::proxy_read_timeout,
-  String $proxy_send_timeout                                                     = $::nginx::proxy_send_timeout,
-  $proxy_connect_timeout                                                         = $::nginx::proxy_connect_timeout,
-  Array[String] $proxy_set_header                                                = $::nginx::proxy_set_header,
-  Array[String] $proxy_hide_header                                               = $::nginx::proxy_hide_header,
-  Array[String] $proxy_pass_header                                               = $::nginx::proxy_pass_header,
+  String $proxy_read_timeout                                                     = $nginx::proxy_read_timeout,
+  String $proxy_send_timeout                                                     = $nginx::proxy_send_timeout,
+  $proxy_connect_timeout                                                         = $nginx::proxy_connect_timeout,
+  Array[String] $proxy_set_header                                                = $nginx::proxy_set_header,
+  Array[String] $proxy_hide_header                                               = $nginx::proxy_hide_header,
+  Array[String] $proxy_pass_header                                               = $nginx::proxy_pass_header,
   Optional[String] $proxy_cache                                                  = undef,
   Optional[String] $proxy_cache_key                                              = undef,
   Optional[String] $proxy_cache_use_stale                                        = undef,
@@ -253,9 +253,9 @@ define nginx::resource::server (
   $string_mappings                                                               = {},
   $geo_mappings                                                                  = {},
   Optional[String] $gzip_types                                                   = undef,
-  String $owner                                                                  = $::nginx::global_owner,
-  String $group                                                                  = $::nginx::global_group,
-  String $mode                                                                   = $::nginx::global_mode,
+  String $owner                                                                  = $nginx::global_owner,
+  String $group                                                                  = $nginx::global_group,
+  String $mode                                                                   = $nginx::global_mode,
   Boolean $maintenance                                                           = false,
   String $maintenance_value                                                      = 'return 503',
   $error_pages                                                                   = undef,
@@ -268,11 +268,11 @@ define nginx::resource::server (
   }
 
   # Variables
-  if $::nginx::confd_only {
-    $server_dir = "${::nginx::conf_dir}/conf.d"
+  if $nginx::confd_only {
+    $server_dir = "${nginx::conf_dir}/conf.d"
   } else {
-    $server_dir = "${::nginx::conf_dir}/sites-available"
-    $server_enable_dir = "${::nginx::conf_dir}/sites-enabled"
+    $server_dir = "${nginx::conf_dir}/sites-available"
+    $server_enable_dir = "${nginx::conf_dir}/sites-enabled"
     $server_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',
@@ -446,7 +446,7 @@ define nginx::resource::server (
     }
   }
 
-  unless $::nginx::confd_only {
+  unless $nginx::confd_only {
     file{ "${name_sanitized}.conf symlink":
       ensure  => $server_symlink_ensure,
       path    => "${server_enable_dir}/${name_sanitized}.conf",
