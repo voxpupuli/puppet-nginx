@@ -1,37 +1,3 @@
-# Changelog
-
-All notable changes to this project will be documented in this file.
-Each new release typically also includes the latest modulesync defaults.
-These should not affect the functionality of the module.
-
-## [v0.12.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.12.0) (2018-05-11)
-
-[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.11.0...v0.12.0)
-
-**Implemented enhancements:**
-
-- Add Debian 9 support [\#1200](https://github.com/voxpupuli/puppet-nginx/pull/1200) ([bastelfreak](https://github.com/bastelfreak))
-- Fix indent of autoindex param in server template [\#1195](https://github.com/voxpupuli/puppet-nginx/pull/1195) ([jdmulloy](https://github.com/jdmulloy))
-
-**Fixed bugs:**
-
-- allow people to not purge passenger yumrepo [\#1212](https://github.com/voxpupuli/puppet-nginx/pull/1212) ([bastelfreak](https://github.com/bastelfreak))
-
-**Closed issues:**
-
-- No such file or directory @ dir\_s\_mkdir [\#1202](https://github.com/voxpupuli/puppet-nginx/issues/1202)
-
-**Merged pull requests:**
-
-- increase spec test coverage [\#1214](https://github.com/voxpupuli/puppet-nginx/pull/1214) ([bastelfreak](https://github.com/bastelfreak))
-- migrate vars from topscope to relative scope [\#1213](https://github.com/voxpupuli/puppet-nginx/pull/1213) ([bastelfreak](https://github.com/bastelfreak))
-- Support setting `ssl\_verify\_depth` in nginx::resource::server [\#1210](https://github.com/voxpupuli/puppet-nginx/pull/1210) ([tdevelioglu](https://github.com/tdevelioglu))
-- Update minimum version of puppetlabs/stdlib to 4.22.0 [\#1207](https://github.com/voxpupuli/puppet-nginx/pull/1207) ([JacobHenner](https://github.com/JacobHenner))
-- Update readme: listen\_port is integer for Hiera [\#1205](https://github.com/voxpupuli/puppet-nginx/pull/1205) ([AranVinkItility](https://github.com/AranVinkItility))
-- bump puppet version dependency to \>= 4.10.0 \< 6.0.0 [\#1203](https://github.com/voxpupuli/puppet-nginx/pull/1203) ([bastelfreak](https://github.com/bastelfreak))
-- cleanup spec\_helper\_acceptance [\#1199](https://github.com/voxpupuli/puppet-nginx/pull/1199) ([bastelfreak](https://github.com/bastelfreak))
-- add acceptance test to verify default values [\#1198](https://github.com/voxpupuli/puppet-nginx/pull/1198) ([bastelfreak](https://github.com/bastelfreak))
-
 ## [v0.11.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.11.0) (2018-03-17)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.10.0...v0.11.0)
@@ -1261,7 +1227,6 @@ These should not affect the functionality of the module.
 ## [v0.0.1](https://github.com/voxpupuli/puppet-nginx/tree/v0.0.1) (2011-06-07)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/5d496f29e82632d391ec7b644026f585be94fec8...v0.0.1)
-
 
 
 
