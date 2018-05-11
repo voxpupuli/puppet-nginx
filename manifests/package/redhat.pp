@@ -21,6 +21,7 @@ class nginx::package::redhat {
   $package_flavor           = $nginx::package_flavor
   $passenger_package_ensure = $nginx::passenger_package_ensure
   $manage_repo              = $nginx::manage_repo
+  $purge_passenger_repo     = $nginx::purge_passenger_repo
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not
@@ -43,11 +44,12 @@ class nginx::package::redhat {
           before   => Package['nginx'],
         }
 
-        yumrepo { 'passenger':
-          ensure => absent,
-          before => Package['nginx'],
+        if $purge_passenger_repo {
+          yumrepo { 'passenger':
+            ensure => absent,
+            before => Package['nginx'],
+          }
         }
-
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
@@ -60,11 +62,12 @@ class nginx::package::redhat {
           before   => Package['nginx'],
         }
 
-        yumrepo { 'passenger':
-          ensure => absent,
-          before => Package['nginx'],
+        if $purge_passenger_repo {
+          yumrepo { 'passenger':
+            ensure => absent,
+            before => Package['nginx'],
+          }
         }
-
       }
       'passenger': {
         if ($facts['os']['name'] in ['RedHat', 'CentOS']) and ($facts['os']['release']['major'] in ['6', '7']) {
