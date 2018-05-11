@@ -60,6 +60,24 @@ describe 'nginx' do
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
           end
 
+          context 'using default repo without passenger' do
+            let(:params) { { purge_passenger_repo: false } }
+
+            it { is_expected.to contain_package('nginx') }
+            it do
+              is_expected.to contain_yumrepo('nginx-release').with(
+                'baseurl'  => "http://nginx.org/packages/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'descr'    => 'nginx repo',
+                'enabled'  => '1',
+                'gpgcheck' => '1',
+                'priority' => '1',
+                'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
+              )
+            end
+
+            it { is_expected.not_to contain_yumrepo('passenger') }
+          end
+
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
 
