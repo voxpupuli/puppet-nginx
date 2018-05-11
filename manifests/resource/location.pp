@@ -171,14 +171,14 @@ define nginx::resource::location (
     'index.htm',
     'index.php'],
   Optional[String] $proxy                              = undef,
-  Optional[String] $proxy_redirect                     = $::nginx::proxy_redirect,
-  String $proxy_read_timeout                           = $::nginx::proxy_read_timeout,
-  String $proxy_connect_timeout                        = $::nginx::proxy_connect_timeout,
-  String $proxy_send_timeout                           = $::nginx::proxy_send_timeout,
-  Array $proxy_set_header                              = $::nginx::proxy_set_header,
-  Array $proxy_hide_header                             = $::nginx::proxy_hide_header,
-  Array $proxy_pass_header                             = $::nginx::proxy_pass_header,
-  Array $proxy_ignore_header                           = $::nginx::proxy_ignore_header,
+  Optional[String] $proxy_redirect                     = $nginx::proxy_redirect,
+  String $proxy_read_timeout                           = $nginx::proxy_read_timeout,
+  String $proxy_connect_timeout                        = $nginx::proxy_connect_timeout,
+  String $proxy_send_timeout                           = $nginx::proxy_send_timeout,
+  Array $proxy_set_header                              = $nginx::proxy_set_header,
+  Array $proxy_hide_header                             = $nginx::proxy_hide_header,
+  Array $proxy_pass_header                             = $nginx::proxy_pass_header,
+  Array $proxy_ignore_header                           = $nginx::proxy_ignore_header,
   Optional[String] $proxy_next_upstream                = undef,
   Optional[String] $fastcgi                            = undef,
   Optional[String] $fastcgi_index                      = undef,
@@ -231,7 +231,7 @@ define nginx::resource::location (
     fail('You must include the nginx base class before using any defined resources')
   }
 
-  $root_group = $::nginx::root_group
+  $root_group = $nginx::root_group
 
   File {
     owner  => 'root',
@@ -257,10 +257,10 @@ define nginx::resource::location (
   }
 
   $server_sanitized = regsubst($server, ' ', '_', 'G')
-  if $::nginx::confd_only {
-    $server_dir = "${::nginx::conf_dir}/conf.d"
+  if $nginx::confd_only {
+    $server_dir = "${nginx::conf_dir}/conf.d"
   } else {
-    $server_dir = "${::nginx::conf_dir}/sites-available"
+    $server_dir = "${nginx::conf_dir}/sites-available"
   }
 
   $config_file = "${server_dir}/${server_sanitized}.conf"
@@ -272,7 +272,7 @@ define nginx::resource::location (
     $ensure == present              and
     $fastcgi != undef               and
     !defined(File[$fastcgi_params]) and
-    $fastcgi_params == "${::nginx::conf_dir}/fastcgi.conf"
+    $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf"
       ) {
     file { $fastcgi_params:
       ensure  => present,

@@ -83,8 +83,8 @@ define nginx::resource::map (
     fail('You must include the nginx base class before using any defined resources')
   }
 
-  $root_group = $::nginx::root_group
-  $conf_dir   = "${::nginx::conf_dir}/conf.d"
+  $root_group = $nginx::root_group
+  $conf_dir   = "${nginx::conf_dir}/conf.d"
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -97,10 +97,10 @@ define nginx::resource::map (
     mode  => '0644',
   }
 
-  file { "${::nginx::conf_dir}/conf.d/${name}-map.conf":
+  file { "${nginx::conf_dir}/conf.d/${name}-map.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
-    notify  => Class['::nginx::service'],
+    notify  => Class['nginx::service'],
     require => File[$conf_dir],
   }
 }

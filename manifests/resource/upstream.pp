@@ -67,7 +67,7 @@ define nginx::resource::upstream (
     default  => 'conf.d',
   }
 
-  $conf_dir = "${::nginx::config::conf_dir}/${conf_dir_real}"
+  $conf_dir = "${nginx::config::conf_dir}/${conf_dir_real}"
 
   Concat {
     owner => 'root',
@@ -75,7 +75,7 @@ define nginx::resource::upstream (
     mode  => '0644',
   }
 
-  concat { "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
+  concat { "${nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
     ensure  => $ensure_real,
     notify  => Class['::nginx::service'],
     require => File[$conf_dir],
@@ -83,7 +83,7 @@ define nginx::resource::upstream (
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
-    target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '10',
     content => template('nginx/upstream/upstream_header.erb'),
   }
@@ -91,21 +91,21 @@ define nginx::resource::upstream (
   if $members != undef {
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
-      target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+      target  => "${nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
       order   => '50',
       content => template('nginx/upstream/upstream_members.erb'),
     }
   } else {
     # Collect exported members:
     if $members_tag {
-      ::Nginx::Resource::Upstream::Member <<| upstream == $name and tag == $members_tag |>>
+      Nginx::Resource::Upstream::Member <<| upstream == $name and tag == $members_tag |>>
     } else {
-      ::Nginx::Resource::Upstream::Member <<| upstream == $name |>>
+      Nginx::Resource::Upstream::Member <<| upstream == $name |>>
     }
   }
 
   concat::fragment { "${name}_upstream_footer":
-    target  => "${::nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${nginx::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '90',
     content => template('nginx/upstream/upstream_footer.erb'),
   }
