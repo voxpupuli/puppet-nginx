@@ -40,7 +40,7 @@ group :development do
 end
 
 group :system_tests do
-  gem 'winrm',                         :require => false
+  gem 'winrm',                              :require => false
   if beaker_version = ENV['BEAKER_VERSION']
     gem 'beaker', *location_for(beaker_version)
   else
@@ -51,9 +51,10 @@ group :system_tests do
   else
     gem 'beaker-rspec',  :require => false
   end
-  gem 'serverspec',                    :require => false
-  gem 'beaker-puppet_install_helper',  :require => false
-  gem 'beaker-module_install_helper',  :require => false
+  gem 'serverspec',                         :require => false
+  gem 'beaker-hostgenerator', '>= 1.1.10',  :require => false
+  gem 'beaker-puppet_install_helper',       :require => false
+  gem 'beaker-module_install_helper',       :require => false
 end
 
 group :release do
