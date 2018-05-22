@@ -1,4 +1,11 @@
 # MANAGED BY PUPPET
+<% @dynamic_modules.each do |mod_item| -%>
+  <%- if mod_item =~ /^\/.*/ -%>
+load_module "<%= mod_item -%>";
+  <%- else -%>
+load_module "modules/<%= mod_item -%>.so";
+  <%- end -%>
+<%- end -%>
 <% if @daemon -%>
 daemon <%= @daemon %>;
 <% end -%>

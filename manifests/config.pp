@@ -24,6 +24,7 @@ class nginx::config {
   $daemon                         = $nginx::daemon
   $daemon_user                    = $nginx::daemon_user
   $daemon_group                   = $nginx::daemon_group
+  $dynamic_modules                = $nginx::dynamic_modules
   $global_owner                   = $nginx::global_owner
   $global_group                   = $nginx::global_group
   $global_mode                    = $nginx::global_mode

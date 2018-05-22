@@ -33,6 +33,7 @@ class nginx (
   Optional[Enum['on', 'off']] $daemon                        = undef,
   $daemon_user                                               = $nginx::params::daemon_user,
   $daemon_group                                              = undef,
+  Array[String] $dynamic_modules                             = [],
   $global_owner                                              = $nginx::params::global_owner,
   $global_group                                              = $nginx::params::global_group,
   $global_mode                                               = $nginx::params::global_mode,

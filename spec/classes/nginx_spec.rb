@@ -360,6 +360,12 @@ describe 'nginx' do
           describe 'nginx.conf template content' do
             [
               {
+                title: 'should not set load_module',
+                attr: 'dynamic_modules',
+                value: :undef,
+                notmatch: %r{load_module}
+              },
+              {
                 title: 'should not set user',
                 attr: 'super_user',
                 value: false,
@@ -908,6 +914,26 @@ describe 'nginx' do
                 end
               end
             end
+          end
+
+          context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
+            let(:params) do
+              {
+                dynamic_modules: ['ngx_http_geoip_module']
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{load_module "modules/ngx_http_geoip_module.so";}) }
+          end
+
+          context 'when dynamic_modules is "[\'/path/to/module/ngx_http_geoip_module.so\']" ' do
+            let(:params) do
+              {
+                dynamic_modules: ['/path/to/module/ngx_http_geoip_module.so']
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{load_module "/path/to/module/ngx_http_geoip_module.so";}) }
           end
 
           context 'when proxy_cache_path is /path/to/proxy.cache and loader_files is 1000' do
