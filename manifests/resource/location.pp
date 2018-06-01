@@ -5,7 +5,7 @@
 # Parameters:
 #   [*ensure*]               - Enables or disables the specified location
 #     (present|absent)
-#   [*internal*]             - Indicates whether or not this loation can be
+#   [*internal*]             - Indicates whether or not this location can be
 #     used for internal requests only. Default: false
 #   [*server*]                - Defines the default server for this location
 #     entry to include with
