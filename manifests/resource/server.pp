@@ -127,6 +127,7 @@
 #   [*error_pages*]                - Hash: setup errors pages, hash key is the http code and hash value the page
 #   [*locations*]                  - Hash of servers resources used by this server
 #   [*locations_defaults*]         - Hash of location default settings
+#   [*add_listen_directive*]       - Boolean to determine if we should add 'ssl on;' to the vhost or not. defaults to true for nginx 1.14 and older, otherwise false
 # Actions:
 #
 # Requires:
@@ -260,7 +261,8 @@ define nginx::resource::server (
   String $maintenance_value                                                      = 'return 503',
   $error_pages                                                                   = undef,
   Hash $locations                                                                = {},
-  Hash $locations_defaults                                                       = {}
+  Hash $locations_defaults                                                       = {},
+  Boolean $add_listen_directive                                                  = $nginx::add_listen_directive,
 ) {
 
   if ! defined(Class['nginx']) {
