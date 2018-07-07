@@ -425,6 +425,49 @@ describe 'nginx::resource::server' do
         end
 
         describe 'server_ssl_header template content' do
+          context 'without a value for the nginx_version fact do' do
+            let :facts do
+              facts[:nginx_version] ? facts.delete(:nginx_version) : facts
+            end
+            let :params do
+              default_params.merge(
+                ssl: true,
+                ssl_key: 'dummy.key',
+                ssl_cert: 'dummy.crt'
+              )
+            end
+
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
+          end
+          context 'with fact nginx_version=1.14.1' do
+            let :facts do
+              facts.merge(nginx_version: '1.14.1')
+            end
+            let :params do
+              default_params.merge(
+                ssl: true,
+                ssl_key: 'dummy.key',
+                ssl_cert: 'dummy.crt'
+              )
+            end
+
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
+          end
+
+          context 'with fact nginx_version=1.15.1' do
+            let :facts do
+              facts.merge(nginx_version: '1.15.1')
+            end
+            let :params do
+              default_params.merge(
+                ssl: true,
+                ssl_key: 'dummy.key',
+                ssl_cert: 'dummy.crt'
+              )
+            end
+
+            it { is_expected.not_to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
+          end
           [
             {
               title: 'should not contain www to non-www rewrite',
