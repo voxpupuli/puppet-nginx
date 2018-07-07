@@ -152,6 +152,7 @@ class nginx (
 
   ### START Service Configuation ###
   $service_ensure                                            = running,
+  $service_enable                                            = true,
   $service_flags                                             = undef,
   $service_restart                                           = undef,
   $service_name                                              = 'nginx',

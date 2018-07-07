@@ -196,6 +196,7 @@ describe 'nginx' do
         let :params do
           {
             service_ensure: 'running',
+            service_enable: true,
             service_name: 'nginx',
             service_manage: true
           }
@@ -219,6 +220,7 @@ describe 'nginx' do
             {
               service_restart: 'a restart command',
               service_ensure: 'running',
+              service_enable: true,
               service_name: 'nginx'
             }
           end
