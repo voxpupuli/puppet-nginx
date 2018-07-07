@@ -7,8 +7,7 @@
 [![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
 [![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/nginx.svg)](https://forge.puppetlabs.com/puppet/nginx)
 
-This module was migrated from James Fryman <james@frymanet.com> and
-Matthew Haughton <matt@3flex.com.au> to Vox Pupuli.
+This module was migrated from James Fryman <james@frymanet.com> to Vox Pupuli.
 
 ## INSTALLING OR UPGRADING
 
