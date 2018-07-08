@@ -25,6 +25,9 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @absolute_redirect -%>
+  absolute_redirect <%= @absolute_redirect %>;
+<% end -%>
 <% if @auth_basic -%>
     auth_basic           "<%= @auth_basic %>";
 <% end -%>

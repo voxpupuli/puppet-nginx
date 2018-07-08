@@ -174,6 +174,18 @@ describe 'nginx::resource::server' do
               match: %r{\s+server_name\s+www.rspec.example.com;}
             },
             {
+              title: 'should not set absolute_redirect',
+              attr: 'absolute_redirect',
+              value: :undef,
+              notmatch: %r{absolute_redirect}
+            },
+            {
+              title: 'should set absolute_redirect off',
+              attr: 'absolute_redirect',
+              value: 'off',
+              match: '  absolute_redirect off;'
+            },
+            {
               title: 'should set auth_basic',
               attr: 'auth_basic',
               value: 'value',
@@ -619,6 +631,18 @@ describe 'nginx::resource::server' do
               attr: 'ssl_prefer_server_ciphers',
               value: 'off',
               match: %r{\s+ssl_prefer_server_ciphers\s+off;}
+            },
+            {
+              title: 'should not set absolute_redirect',
+              attr: 'absolute_redirect',
+              value: :undef,
+              notmatch: %r{absolute_redirect}
+            },
+            {
+              title: 'should set absolute_redirect off',
+              attr: 'absolute_redirect',
+              value: 'off',
+              match: '  absolute_redirect off;'
             },
             {
               title: 'should set auth_basic',

@@ -66,6 +66,9 @@ server {
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 
 <% end -%>
+<% if @absolute_redirect -%>
+  absolute_redirect <%= @absolute_redirect %>;
+<% end -%>
 <% if @access_log.is_a?(Array) -%>
   <%- @access_log.each do |log_item| -%>
   access_log            <%= log_item %> <%= @format_log %>;

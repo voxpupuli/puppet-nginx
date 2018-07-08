@@ -45,6 +45,7 @@ class nginx::config {
   $super_user                     = $nginx::super_user
   $temp_dir                       = $nginx::temp_dir
   $server_purge                   = $nginx::server_purge
+  $absolute_redirect              = $nginx::absolute_redirect
   $accept_mutex                   = $nginx::accept_mutex
   $accept_mutex_delay             = $nginx::accept_mutex_delay
   $client_body_buffer_size        = $nginx::client_body_buffer_size

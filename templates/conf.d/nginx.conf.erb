@@ -74,6 +74,9 @@ http {
 <% end -%>
 <% end -%>
 
+<% if @absolute_redirect -%>
+  absolute_redirect <%= @absolute_redirect %>;
+<% end -%>
 <% if @http_access_log.is_a?(Array) -%>
   <%- @http_access_log.each do |log_item| -%>
   access_log  <%= log_item %><% if @http_format_log %> <%= @http_format_log%><% end %>;
