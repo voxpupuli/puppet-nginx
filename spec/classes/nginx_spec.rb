@@ -455,6 +455,18 @@ describe 'nginx' do
                 notmatch: %r{pid}
               },
               {
+                title: 'should not set absolute_redirect',
+                attr: 'absolute_redirect',
+                value: :undef,
+                notmatch: %r{absolute_redirect}
+              },
+              {
+                title: 'should set absolute_redirect off',
+                attr: 'absolute_redirect',
+                value: 'off',
+                match: '  absolute_redirect off;'
+              },
+              {
                 title: 'should set accept_mutex on',
                 attr: 'accept_mutex',
                 value: 'on',

@@ -84,6 +84,7 @@
 #   [*proxy_method*]               - If defined, overrides the HTTP method of the request to be passed to the backend.
 #   [*proxy_http_version*]         - Sets the proxy http version
 #   [*proxy_set_body*]             - If defined, sets the body passed to the backend.
+#   [*absolute_redirect*]          - Enables or disables the absolute redirect functionality of nginx
 #   [*auth_basic*]                 - This directive includes testing name and password with HTTP Basic Authentication.
 #   [*auth_basic_user_file*]       - This directive sets the htpasswd filename for the authentication realm.
 #   [*auth_request*]               - This allows you to specify a custom auth endpoint
@@ -225,6 +226,7 @@ define nginx::resource::server (
   Optional[Hash] $location_custom_cfg_prepend                                    = undef,
   Optional[Hash] $location_custom_cfg_append                                     = undef,
   Optional[Array[String]] $try_files                                             = undef,
+  Optional[Enum['on', 'off']] $absolute_redirect                                 = undef,
   Optional[String] $auth_basic                                                   = undef,
   Optional[String] $auth_basic_user_file                                         = undef,
   Optional[String] $auth_request                                                 = undef,

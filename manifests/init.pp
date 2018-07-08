@@ -59,6 +59,7 @@ class nginx (
   $conf_template                                             = 'nginx/conf.d/nginx.conf.erb',
 
   ### START Nginx Configuration ###
+  Optional[Enum['on', 'off']] $absolute_redirect             = undef,
   $accept_mutex                                              = 'on',
   $accept_mutex_delay                                        = '500ms',
   $client_body_buffer_size                                   = '128k',
