@@ -35,12 +35,12 @@ class nginx::package::redhat {
     case $package_source {
       'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/${_os}/${facts['os']['release']['major']}/\$basearch/",
+          baseurl  => "https://nginx.org/packages/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
           priority => '1',
-          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          gpgkey   => 'https://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
 
@@ -53,12 +53,12 @@ class nginx::package::redhat {
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/mainline/${_os}/${facts['os']['release']['major']}/\$basearch/",
+          baseurl  => "https://nginx.org/packages/mainline/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
           priority => '1',
-          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          gpgkey   => 'https://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
 
