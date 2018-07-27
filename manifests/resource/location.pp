@@ -184,7 +184,7 @@ define nginx::resource::location (
   Optional[String] $fastcgi                            = undef,
   Optional[String] $fastcgi_index                      = undef,
   Optional[Hash] $fastcgi_param                        = undef,
-  String $fastcgi_params                               = "${::nginx::conf_dir}/fastcgi.conf",
+  String $fastcgi_params                               = "${nginx::conf_dir}/fastcgi.conf",
   Optional[String] $fastcgi_script                     = undef,
   Optional[String] $fastcgi_split_path                 = undef,
   Optional[String] $uwsgi                              = undef,
@@ -283,7 +283,7 @@ define nginx::resource::location (
     }
   }
 
-  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${::nginx::conf_dir}/uwsgi_params" {
+  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0644',

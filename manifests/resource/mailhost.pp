@@ -135,7 +135,7 @@ define nginx::resource::mailhost (
     mode  => '0644',
   }
 
-  $config_dir  = "${::nginx::conf_dir}/conf.mail.d"
+  $config_dir  = "${nginx::conf_dir}/conf.mail.d"
   $config_file = "${config_dir}/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled

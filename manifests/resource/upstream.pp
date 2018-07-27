@@ -55,7 +55,7 @@ define nginx::resource::upstream (
     fail('You must include the nginx base class before using any defined resources')
   }
 
-  $root_group = $::nginx::root_group
+  $root_group = $nginx::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,
