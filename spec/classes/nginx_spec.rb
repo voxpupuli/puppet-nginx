@@ -319,6 +319,14 @@ describe 'nginx' do
             )
           end
           it do
+            is_expected.to contain_file('/etc/nginx/mime.types').with(
+              ensure: 'file',
+              owner: 'root',
+              group: 'root',
+              mode: '0644'
+            )
+          end
+          it do
             is_expected.to contain_file('/tmp/nginx.d').with(
               ensure: 'absent',
               purge: true,
@@ -928,6 +936,21 @@ describe 'nginx' do
                 end
               end
             end
+          end
+
+          context 'when mime.types is "[\'text/css css\']"' do
+            let(:params) do
+              {
+                mime_types: { 'text/css' => 'css' }
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{text/css css;}) }
+          end
+
+          context 'when mime.types is default' do
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{text/css css;}) }
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
           end
 
           context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
