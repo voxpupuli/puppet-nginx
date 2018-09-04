@@ -207,7 +207,7 @@ define nginx::resource::server (
   Optional[String] $fastcgi                                                      = undef,
   Optional[String] $fastcgi_index                                                = undef,
   $fastcgi_param                                                                 = undef,
-  String $fastcgi_params                                                         = "${::nginx::conf_dir}/fastcgi.conf",
+  String $fastcgi_params                                                         = "${nginx::conf_dir}/fastcgi.conf",
   Optional[String] $fastcgi_script                                               = undef,
   Optional[String] $uwsgi                                                        = undef,
   String $uwsgi_params                                                           = "${nginx::config::conf_dir}/uwsgi_params",
@@ -403,7 +403,7 @@ define nginx::resource::server (
   # Only try to manage these files if they're the default one (as you presumably
   # usually don't want the default template if you're using a custom file.
 
-  if $fastcgi != undef and !defined(File[$fastcgi_params]) and $fastcgi_params == "${::nginx::conf_dir}/fastcgi.conf" {
+  if $fastcgi != undef and !defined(File[$fastcgi_params]) and $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf" {
     file { $fastcgi_params:
       ensure  => present,
       mode    => '0644',
@@ -411,7 +411,7 @@ define nginx::resource::server (
     }
   }
 
-  if $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${::nginx::conf_dir}/uwsgi_params" {
+  if $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
       ensure  => present,
       mode    => '0644',
