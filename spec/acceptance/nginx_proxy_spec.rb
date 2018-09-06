@@ -6,11 +6,20 @@ describe 'nginx::resource::upstream define:' do
     class { 'nginx': }
     nginx::resource::upstream { 'puppet_rack_app':
       ensure  => present,
-      members => [
-        'localhost:3000',
-        'localhost:3001',
-        'localhost:3002',
-      ],
+      members => {
+        'localhost:3000' => {
+          server => 'localhost',
+          port   => 3000,
+        },
+        'localhost:3001' => {
+          server => 'localhost',
+          port   => 3001,
+        },
+        'localhost:3002' => {
+          server => 'localhost',
+          port   => 3002,
+        },
+      },
     }
     nginx::resource::server { 'rack.puppetlabs.com':
       ensure => present,
@@ -23,10 +32,10 @@ describe 'nginx::resource::upstream define:' do
 
   describe file('/etc/nginx/conf.d/puppet_rack_app-upstream.conf') do
     it { is_expected.to be_file }
-    it { is_expected.to contain 'server     localhost:3000' }
-    it { is_expected.to contain 'server     localhost:3001' }
-    it { is_expected.to contain 'server     localhost:3002' }
-    it { is_expected.not_to contain 'server     localhost:3003' }
+    it { is_expected.to contain 'server localhost:3000' }
+    it { is_expected.to contain 'server localhost:3001' }
+    it { is_expected.to contain 'server localhost:3002' }
+    it { is_expected.not_to contain 'server localhost:3003' }
   end
 
   describe file('/etc/nginx/sites-available/rack.puppetlabs.com.conf') do

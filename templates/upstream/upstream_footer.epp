@@ -1,0 +1,85 @@
+<%- | Hash                                $cfg_append         = {},
+      Optional[String[1]]                 $hash               = undef,
+      Boolean                             $ip_hash            = false,
+      Optional[Integer[1]]                $keepalive          = undef,
+      Optional[Integer[1]]                $keepalive_requests = undef,
+      Optional[Nginx::Time]               $keepalive_timeout  = undef,
+      Boolean                             $least_conn         = false,
+      Optional[Nginx::UpstreamLeastTime]  $least_time         = undef,
+      Boolean                             $ntlm               = false,
+      Optional[Integer]                   $queue_max          = undef,
+      Optional[Nginx::Time]               $queue_timeout      = undef,
+      Optional[String[1]]                 $random             = undef,
+      Optional[Stdlib::Unixpath]          $statefile          = undef,
+      Optional[Nginx::UpstreamSticky]     $sticky             = undef,
+      Optional[Nginx::UpstreamZone]       $zone               = undef,
+| -%>
+<% if $hash { -%>
+  hash <%= $hash %>;
+<% } -%>
+<% if $ip_hash { -%>
+  ip_hash;
+<% } -%>
+<% if $least_conn { -%>
+  least_conn;
+<% } -%>
+<% if $least_time { -%>
+  least_time <%= $least_time %>;
+<% } -%>
+<% if $ntlm { -%>
+  ntlm;
+<% } -%>
+<% if $random { -%>
+  random <%= $random %>;
+<% } -%>
+<% if $statefile { -%>
+  state <%= $statefile %>;
+<% } -%>
+<% if $sticky { -%>
+  <%- $sticky.each |$type,$values| { -%>
+    <%- if $type != 'route' { -%>
+  sticky <%= $type %><% $values.each |$key,$value| { %> <%= $key %><% if $value != true { %>=<%= $value %><% } %><% } %>;
+    <%- } else { -%>
+  sticky <%= $type %> <%= $values %>;
+    <%- } -%>
+  <%- } -%>
+<% } -%>
+<% if $zone { -%>
+  zone <%= $zone %>;
+<% } -%>
+<% if $keepalive { -%>
+  keepalive <%= $keepalive %>;
+<% } -%>
+<% if $keepalive_requests { -%>
+  keepalive_requests <%= $keepalive_requests %>;
+<% } -%>
+<% if $keepalive_timeout { -%>
+  keepalive_timeout <%= $keepalive_timeout %>;
+<% } -%>
+<% if $queue_max { -%>
+  queue <%= $queue_max %><% if $queue_timeout { %> timeout=<%= $queue_timeout %><% } %>;
+<% } -%>
+<% if $cfg_append { -%>
+  <%- $cfg_append.each |$key,$value| { -%>
+    <%- if $value =~ Hash { -%>
+      <%- $value.each |$subkey,$subvalue| { -%>
+        <%- if $subvalue =~ Array { -%>
+          <%- Array($subvalue).each |$asubvalue| { -%>
+  <%= $key %> <%= $subkey %> <%= $asubvalue %>;
+          <%- } -%>
+        <%- } else { -%>
+  <%= $key %> <%= $subkey %> <%= $subvalue %>;
+        <%- } -%>
+      <%- } -%>
+    <%- } else { -%>
+      <%- if $value =~ Array { -%>
+        <%- $value.each |$asubvalue| { -%>
+  <%= $key %> <%= $asubvalue %>;
+        <%- } -%>
+      <%- } else { -%>
+  <%= $key %> <%= $value %>;
+      <%- } -%>
+    <%- } -%>
+  <%- } -%>
+<% } -%>
+}
