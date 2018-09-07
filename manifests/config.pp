@@ -82,6 +82,7 @@ class nginx::config {
   $log_format                     = $nginx::log_format
   $mail                           = $nginx::mail
   $stream                         = $nginx::stream
+  $mime_types                     = $nginx::mime_types
   $multi_accept                   = $nginx::multi_accept
   $names_hash_bucket_size         = $nginx::names_hash_bucket_size
   $names_hash_max_size            = $nginx::names_hash_max_size
@@ -122,6 +123,7 @@ class nginx::config {
 
   # Non-configurable settings
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb'
+  $mime_template                  = 'nginx/conf.d/mime.types.epp'
   $proxy_conf_template            = undef
 
   File {
@@ -232,6 +234,11 @@ class nginx::config {
   file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
+  }
+
+  file { "${conf_dir}/mime.types":
+    ensure  => file,
+    content => epp($mime_template),
   }
 
   file { "${temp_dir}/nginx.d":

@@ -1,0 +1,6 @@
+# MANAGED BY PUPPET
+types {
+<% $nginx::mime_types.each |$key, $value| { %>
+    <%= $key %> <%= $value %>;
+<% } %>
+}
