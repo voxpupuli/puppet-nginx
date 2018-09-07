@@ -1,18 +1,4 @@
-# Class: nginx::service
-#
 # This module manages NGINX service management and server rebuild
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
 class nginx::service(
   $service_restart = $nginx::service_restart,
   $service_ensure  = $nginx::service_ensure,

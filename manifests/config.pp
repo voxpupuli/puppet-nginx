@@ -1,18 +1,4 @@
-# Class: nginx::config
-#
 # This module manages NGINX bootstrap and configuration
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
 class nginx::config {
 
   assert_private()

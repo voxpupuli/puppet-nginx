@@ -1,20 +1,4 @@
-# define: nginx::resource::map
-#
 # This definition creates a new mapping entry for NGINX
-#
-# Parameters:
-#   [*ensure*]     - Enables or disables the specified location (present|absent)
-#   [*default*]    - Sets the resulting value if the source values fails to
-#                    match any of the variants.
-#   [*string*]     - Source string or variable to provide mapping for
-#   [*mappings*]   - Hash of map lookup keys and resultant values
-#   [*hostnames*]  - Indicates that source values can be hostnames with a
-#                    prefix or suffix mask.
-#   [*include_files*]   - An array of external files to include
-#
-# Actions:
-#
-# Requires:
 #
 # Sample Usage:
 #
@@ -69,8 +53,19 @@
 #          value: 'sf-pool-1'
 #        - key: '*.nyc.example.com'
 #          value: 'ny-pool-1'
-
-
+#
+# @param string
+#  Source string or variable to provide mapping for
+# @param mappings
+#  Hash of map lookup keys and resultant values
+# @param default
+#  Sets the resulting value if the source values fails to
+# @param ensure
+#  Enables or disables the specified location (present|absent)
+# @param include_files
+#  An array of external files to include
+# @param hostnames
+#  Indicates that source values can be hostnames with a
 define nginx::resource::map (
   String[2] $string,
   Variant[Array, Hash] $mappings,

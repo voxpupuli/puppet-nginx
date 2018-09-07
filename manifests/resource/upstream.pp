@@ -1,19 +1,4 @@
-# define: nginx::resource::upstream
-#
 # This definition creates a new upstream proxy entry for NGINX
-#
-# Parameters:
-#   [*members*]               - Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
-#                               If omitted, individual members should be defined with nginx::resource::upstream::member
-#   [*ensure*]                - Enables or disables the specified location (present|absent)
-#   [*upstream_cfg_append*]   - Hash of custom directives to put after other directives in upstream
-#   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
-#   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
-#   [*upstream_max_fails*]    - Set the max_fails for the upstream. Default is to use nginx default value which is 1.
-#
-# Actions:
-#
-# Requires:
 #
 # Sample Usage:
 #  nginx::resource::upstream { 'proxypass':
@@ -40,6 +25,21 @@
 #    ],
 #    upstream_cfg_prepend => $my_config,
 #  }
+#
+# @param members
+#  Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
+# @param members_tag
+# @param ensure
+#  Enables or disables the specified location (present|absent)
+# @param upstream_cfg_append
+#  Hash of custom directives to put after other directives in upstream
+# @param upstream_cfg_prepend
+#  It expects a hash with custom directives to put before anything else inside upstream
+# @param upstream_fail_timeout
+#  Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
+# @param upstream_max_fails
+#  Set the max_fails for the upstream. Default is to use nginx default value which is 1.
+# @param upstream_context
 define nginx::resource::upstream (
   Optional[Array] $members                  = undef,
   $members_tag                              = undef,

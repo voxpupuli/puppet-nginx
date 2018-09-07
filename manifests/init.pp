@@ -1,29 +1,136 @@
-# Class: nginx
-#
 # This module manages NGINX.
 #
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
-#
-#  Packaged NGINX
-#    - RHEL: EPEL or custom package
-#    - Debian/Ubuntu: Default Install or custom package
-#    - SuSE: Default Install or custom package
-#
-#  stdlib
-#    - puppetlabs-stdlib module >= 0.1.6
-#
-# Sample Usage:
-#
-# The module works with sensible defaults:
-#
-# node default {
-#   include nginx
-# }
+# @param client_body_temp_path
+# @param confd_only
+# @param confd_purge
+# @param conf_dir
+# @param daemon
+# @param daemon_user
+# @param daemon_group
+# @param dynamic_modules
+# @param global_owner
+# @param global_group
+# @param global_mode
+# @param log_dir
+# @param log_group
+# @param log_mode
+# @param http_access_log
+# @param http_format_log
+# @param nginx_error_log
+# @param nginx_error_log_severity
+# @param pid
+# @param proxy_temp_path
+# @param root_group
+# @param run_dir
+# @param sites_available_owner
+# @param sites_available_group
+# @param sites_available_mode
+# @param super_user
+# @param temp_dir
+# @param server_purge
+# @param conf_template
+# @param absolute_redirect
+# @param accept_mutex
+# @param accept_mutex_delay
+# @param client_body_buffer_size
+# @param client_max_body_size
+# @param client_body_timeout
+# @param send_timeout
+# @param lingering_timeout
+# @param etag
+# @param events_use
+# @param fastcgi_cache_inactive
+# @param fastcgi_cache_key
+# @param fastcgi_cache_keys_zone
+# @param fastcgi_cache_levels
+# @param fastcgi_cache_max_size
+# @param fastcgi_cache_path
+# @param fastcgi_cache_use_stale
+# @param gzip
+# @param gzip_buffers
+# @param gzip_comp_level
+# @param gzip_disable
+# @param gzip_min_length
+# @param gzip_http_version
+# @param gzip_proxied
+# @param gzip_types
+# @param gzip_vary
+# @param http_cfg_prepend
+# @param http_cfg_append
+# @param http_raw_prepend
+# @param http_raw_append
+# @param http_tcp_nodelay
+# @param http_tcp_nopush
+# @param keepalive_timeout
+# @param keepalive_requests
+# @param log_format
+# @param mail
+# @param stream
+# @param multi_accept
+# @param names_hash_bucket_size
+# @param names_hash_max_size
+# @param nginx_cfg_prepend
+# @param proxy_buffers
+# @param proxy_buffer_size
+# @param proxy_cache_inactive
+# @param proxy_cache_keys_zone
+# @param proxy_cache_levels
+# @param proxy_cache_max_size
+# @param proxy_cache_path
+# @param proxy_cache_loader_files
+# @param proxy_cache_loader_sleep
+# @param proxy_cache_loader_threshold
+# @param proxy_use_temp_path
+# @param proxy_connect_timeout
+# @param proxy_headers_hash_bucket_size
+# @param proxy_http_version
+# @param proxy_read_timeout
+# @param proxy_redirect
+# @param proxy_send_timeout
+# @param proxy_set_header
+# @param proxy_hide_header
+# @param proxy_pass_header
+# @param proxy_ignore_header
+# @param sendfile
+# @param server_tokens
+# @param spdy
+# @param http2
+# @param ssl_stapling
+# @param types_hash_bucket_size
+# @param types_hash_max_size
+# @param worker_connections
+# @param ssl_prefer_server_ciphers
+# @param worker_processes
+# @param worker_rlimit_nofile
+# @param ssl_protocols
+# @param ssl_ciphers
+# @param ssl_dhparam
+# @param package_ensure
+# @param package_name
+# @param package_source
+# @param package_flavor
+# @param manage_repo
+# @param mime_types
+# @param repo_release
+# @param passenger_package_ensure
+# @param service_ensure
+# @param service_enable
+# @param service_flags
+# @param service_restart
+# @param service_name
+# @param service_manage
+# @param geo_mappings
+# @param string_mappings
+# @param nginx_locations
+# @param nginx_locations_defaults
+# @param nginx_mailhosts
+# @param nginx_mailhosts_defaults
+# @param nginx_streamhosts
+# @param nginx_upstreams
+# @param nginx_servers
+# @param nginx_servers_defaults
+# @param purge_passenger_repo
+# @param add_listen_directive
 class nginx (
   ### START Nginx Configuration ###
   $client_body_temp_path                                     = $nginx::params::client_body_temp_path,

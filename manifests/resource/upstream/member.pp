@@ -1,20 +1,9 @@
-# Define: nginx::resources::upstream::member
-#
 # Creates an upstream member inside the upstream block. Export this resource
 # in all upstream member servers and collect them on the NGINX server.
 #
 #
 # Requirements:
 #   Requires storeconfigs on the Puppet Master to export and collect resources
-#
-#
-# Parameters:
-#   [*ensure*]                  - Enables or disables the specified member (present|absent)
-#   [*upstream*]                - The name of the upstream resource
-#   [*server*]                  - Hostname or IP of the upstream member server
-#   [*port*]                    - Port of the listening service on the upstream member
-#   [*upstream_fail_timeout*]   - Set the fail_timeout for the upstream. Default is 10 seconds
-#
 #
 # Examples:
 #
@@ -34,6 +23,16 @@
 #     ensure    => present,
 #   }
 #
+# @param upstream
+#  The name of the upstream resource
+# @param server
+#  Hostname or IP of the upstream member server
+# @param ensure
+#  Enables or disables the specified member (present|absent)
+# @param port
+#  Port of the listening service on the upstream member
+# @param upstream_fail_timeout
+#  Set the fail_timeout for the upstream. Default is 10 seconds
 define nginx::resource::upstream::member (
   $upstream,
   $server,
