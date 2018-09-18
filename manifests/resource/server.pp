@@ -112,7 +112,7 @@
 #     in which case it will be omitted in this server stanza (and default to nginx.conf setting)
 #   [*passenger_cgi_param*]        - Allows one to define additional CGI environment variables to pass to the backend application
 #   [*passenger_set_header*]       - Allows one to set headers to pass to the backend application (Passenger 5.0+)
-#   [*passenger_env_var*]          - Allows one to set environemnt variables to pass to the backend application (Passenger 5.0+)
+#   [*passenger_env_var*]          - Allows one to set environment variables to pass to the backend application (Passenger 5.0+)
 #   [*passenger_pre_start*]        - Allows setting a URL to pre-warm the host. Per Passenger docs, the "domain part of the URL" must match
 #     a value of server_name. If this is an array, multiple URLs can be specified.
 #   [*log_by_lua*]                 - Run the Lua source code inlined as the <lua-script-str> at the log request processing phase. This does
