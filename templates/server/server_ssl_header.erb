@@ -146,6 +146,14 @@ server {
 <% end -%>
 <% if @add_header -%>
   <%- @add_header.keys.sort.each do |key| -%>
+    <%- if @add_header[key] -%>
+      <%- if @add_header[key].is_a?(Hash) -%>
+        <%- @add_header[key].each do |sk, sv| -%>
+  add_header              "<%= key %>" <% if sk != '' %>"<%= sk %>"<% end %> <%= sv %>;
+        <%- end -%>
+      <%- else -%>
   add_header              "<%= key %>" "<%= @add_header[key] %>";
+      <%- end -%>
+    <%- end -%>
   <%- end -%>
 <% end -%>
