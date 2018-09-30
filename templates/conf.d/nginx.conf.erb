@@ -20,13 +20,6 @@ worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% if @pid -%>
 pid        <%= @pid %>;
 <% end -%>
-<% if @nginx_error_log.is_a?(Array) -%>
-  <%- @nginx_error_log.each do |log_item| -%>
-error_log  <%= log_item %> <%= @nginx_error_log_severity %>;
-  <%- end -%>
-<% else -%>
-error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
-<% end -%>
 <% if @nginx_cfg_prepend -%>
 
 <%- field_width = @nginx_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
@@ -83,6 +76,13 @@ http {
   <%- end -%>
 <% else -%>
   access_log  <%= @http_access_log %><% if @http_format_log %> <%= @http_format_log%><% end %>;
+<% end -%>
+<% if @nginx_error_log.is_a?(Array) -%>
+  <%- @nginx_error_log.each do |log_item| -%>
+  error_log  <%= log_item %> <%= @nginx_error_log_severity %>;
+  <%- end -%>
+<% else -%>
+  error_log  <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
 <% end -%>
 
 <% if @sendfile == 'on' -%>
