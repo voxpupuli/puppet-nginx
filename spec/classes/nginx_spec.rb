@@ -433,22 +433,22 @@ describe 'nginx' do
                 title: 'should set error_log',
                 attr: 'nginx_error_log',
                 value: '/path/to/error.log',
-                match: 'error_log  /path/to/error.log error;'
+                match: '  error_log  /path/to/error.log error;'
               },
               {
                 title: 'should set multiple error_logs',
                 attr: 'nginx_error_log',
                 value: ['/path/to/error.log', 'syslog:server=localhost'],
                 match: [
-                  'error_log  /path/to/error.log error;',
-                  'error_log  syslog:server=localhost error;'
+                  '  error_log  /path/to/error.log error;',
+                  '  error_log  syslog:server=localhost error;'
                 ]
               },
               {
                 title: 'should set error_log severity level',
                 attr: 'nginx_error_log_severity',
                 value: 'warn',
-                match: 'error_log  /var/log/nginx/error.log warn;'
+                match: '  error_log  /var/log/nginx/error.log warn;'
               },
               {
                 title: 'should set pid',
