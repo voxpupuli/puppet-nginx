@@ -570,7 +570,7 @@ describe 'nginx' do
               {
                 title: 'should not set sendfile',
                 attr: 'sendfile',
-                value: false,
+                value: 'off',
                 notmatch: %r{sendfile}
               },
               {
