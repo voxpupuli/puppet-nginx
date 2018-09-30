@@ -29,6 +29,7 @@ class nginx::config {
   $global_group                   = $nginx::global_group
   $global_mode                    = $nginx::global_mode
   $log_dir                        = $nginx::log_dir
+  $log_user                       = $nginx::log_user
   $log_group                      = $nginx::log_group
   $log_mode                       = $nginx::log_mode
   $http_access_log                = $nginx::http_access_log
@@ -178,7 +179,7 @@ class nginx::config {
   file { $log_dir:
     ensure => directory,
     mode   => $log_mode,
-    owner  => $daemon_user,
+    owner  => $log_user,
     group  => $log_group,
   }
 
