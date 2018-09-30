@@ -7,13 +7,15 @@ class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {
-    'conf_dir'    => '/etc/nginx',
-    'daemon_user' => 'nginx',
-    'pid'         => '/var/run/nginx.pid',
-    'root_group'  => 'root',
-    'log_dir'     => '/var/log/nginx',
-    'log_group'   => 'root',
-    'run_dir'     => '/var/nginx',
+    'conf_dir'     => '/etc/nginx',
+    'daemon_user'  => 'nginx',
+    'pid'          => '/var/run/nginx.pid',
+    'root_group'   => 'root',
+    'log_dir'      => '/var/log/nginx',
+    'log_user'     => 'nginx',
+    'log_group'    => 'root',
+    'log_mode'     => '0755',
+    'run_dir'      => '/var/nginx',
     'package_name' => 'nginx',
     'manage_repo'  => false,
     'mime_types'   => {
@@ -109,12 +111,16 @@ class nginx::params {
         $_module_os_overrides = {
           'manage_repo' => true,
           'daemon_user' => 'www-data',
+          'log_user'    => 'root',
           'log_group'   => 'adm',
+          'log_mode'    => '0755',
         }
       } else {
         $_module_os_overrides = {
           'daemon_user' => 'www-data',
+          'log_user'    => 'root',
           'log_group'   => 'adm',
+          'log_mode'    => '0755',
         }
       }
     }
@@ -178,7 +184,9 @@ class nginx::params {
   ### Referenced Variables
   $conf_dir              = $_module_parameters['conf_dir']
   $log_dir               = $_module_parameters['log_dir']
+  $log_user              = $_module_parameters['log_user']
   $log_group             = $_module_parameters['log_group']
+  $log_mode              = $_module_parameters['log_mode']
   $run_dir               = $_module_parameters['run_dir']
   $temp_dir              = '/tmp'
   $pid                   = $_module_parameters['pid']
