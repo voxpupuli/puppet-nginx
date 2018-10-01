@@ -182,15 +182,18 @@ class nginx::config {
     group  => $log_group,
   }
 
-  file {$client_body_temp_path:
-    ensure => directory,
-    owner  => $daemon_user,
+  if $client_body_temp_path {
+    file {$client_body_temp_path:
+      ensure => directory,
+      owner  => $daemon_user,
+    }
   }
 
-
-  file {$proxy_temp_path:
-    ensure => directory,
-    owner  => $daemon_user,
+  if $proxy_temp_path {
+    file {$proxy_temp_path:
+      ensure => directory,
+      owner  => $daemon_user,
+    }
   }
 
   unless $confd_only {
