@@ -404,17 +404,20 @@ describe 'nginx::resource::location' do
             let(:params) do
               default_params.merge(
                 'add_header' => {
-                  'X-Frame-Options' => 'SAMEORIGIN',
-                  'X-Powered-By'    => 'Puppet'
+                  'header 1' => 'test value 1',
+                  'header 2' => { 'test value 2' => 'tv2' },
+                  'header 3' => { '' => '\'test value 3\' tv3' }
                 }
               )
             end
 
-            it 'contains both add_header lines' do
+            it 'contains 3 add_header lines' do
               is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
-                with_content(%r{^\s+add_header\s+"X-Frame-Options"\s+"SAMEORIGIN";$})
+                with_content(%r{^\s+add_header\s+"header 1"\s+"test value 1";$})
               is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
-                with_content(%r{^\s+add_header\s+"X-Powered-By"\s+"Puppet";$})
+                with_content(%r{^\s+add_header\s+"header 2"\s+"test value 2" tv2;$})
+              is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
+                with_content(%r{^\s+add_header\s+"header 3"\s+'test value 3' tv3;$})
             end
           end
         end
