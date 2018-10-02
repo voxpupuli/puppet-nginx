@@ -93,6 +93,9 @@
 #   [*proxy_set_body*]        - If defined, sets the body passed to the backend.
 #   [*proxy_buffering*]       - If defined, sets the proxy_buffering to the passed
 #     value.
+#   [*proxy_max_temp_file_size*] - Sets the maximum size of the temporary buffer file.
+#   [*proxy_busy_buffers_size*] - Sets the total size of buffers that can be
+#     busy sending a response to the client while the response is not yet fully read.
 #   [*absolute_redirect*]     - Enables or disables the absolute redirect functionality of nginx
 #   [*auth_basic*]            - This directive includes testing name and password
 #     with HTTP Basic Authentication.
@@ -224,6 +227,8 @@ define nginx::resource::location (
   Optional[String] $proxy_http_version                 = undef,
   Optional[String] $proxy_set_body                     = undef,
   Optional[Enum['on', 'off']] $proxy_buffering         = undef,
+  Optional[Nginx::Size] $proxy_max_temp_file_size      = undef,
+  Optional[Nginx::Size] $proxy_busy_buffers_size       = undef,
   Optional[Enum['on', 'off']] $absolute_redirect       = undef,
   Optional[String] $auth_basic                         = undef,
   Optional[String] $auth_basic_user_file               = undef,

@@ -854,6 +854,18 @@ describe 'nginx' do
                 attr: 'proxy_temp_path',
                 value: '/path/to/proxy_temp',
                 match: '  proxy_temp_path         /path/to/proxy_temp;'
+              },
+              {
+                title: 'should set proxy_max_temp_file_size',
+                attr: 'proxy_max_temp_file_size',
+                value: '1024m',
+                match: '  proxy_max_temp_file_size 1024m;'
+              },
+              {
+                title: 'should set proxy_busy_buffers_size',
+                attr: 'proxy_busy_buffers_size',
+                value: '16k',
+                match: '  proxy_busy_buffers_size 16k;'
               }
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do

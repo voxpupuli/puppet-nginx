@@ -28,6 +28,9 @@
 #   [*proxy_send_timeout*]         - Override the default proxy send timeout value of 90 seconds
 #   [*proxy_redirect*]             - Override the default proxy_redirect value of off.
 #   [*proxy_buffering*]            - If defined, sets the proxy_buffering to the passed value.
+#   [*proxy_max_temp_file_size*]   - Sets the maximum size of the temporary buffer file.
+#   [*proxy_busy_buffers_size*]    - Sets the total size of buffers that can be
+#     busy sending a response to the client while the response is not yet fully read.
 #   [*resolver*]                   - Array: Configures name servers used to resolve names of upstream servers into addresses.
 #   [*fastcgi*]                    - location of fastcgi (host:port)
 #   [*fastcgi_param*]              - Set additional custom fastcgi_params
@@ -203,6 +206,8 @@ define nginx::resource::server (
   Optional[String] $proxy_http_version                                           = undef,
   Optional[String] $proxy_set_body                                               = undef,
   Optional[String] $proxy_buffering                                              = undef,
+  Optional[Nginx::Size] $proxy_max_temp_file_size                                = undef,
+  Optional[Nginx::Size] $proxy_busy_buffers_size                                 = undef,
   Array $resolver                                                                = [],
   Optional[String] $fastcgi                                                      = undef,
   Optional[String] $fastcgi_index                                                = undef,
@@ -373,6 +378,8 @@ define nginx::resource::server (
       proxy_set_body              => $proxy_set_body,
       proxy_cache_bypass          => $proxy_cache_bypass,
       proxy_buffering             => $proxy_buffering,
+      proxy_busy_buffers_size     => $proxy_busy_buffers_size,
+      proxy_max_temp_file_size    => $proxy_max_temp_file_size,
       fastcgi                     => $fastcgi,
       fastcgi_index               => $fastcgi_index,
       fastcgi_param               => $fastcgi_param,
