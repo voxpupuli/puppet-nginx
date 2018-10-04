@@ -18,11 +18,11 @@ matrix:
     env: PUPPET_VERSION="~> 5.0" CHECK=test
   - rvm: 2.5.1
     bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 5.0" CHECK=test_with_coveralls
-  - rvm: 2.4.4
-    bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 5.0" CHECK=rubocop
+    env: PUPPET_VERSION="~> 6.0" CHECK=test_with_coveralls
   - rvm: 2.5.1
+    bundler_args: --without system_tests development release
+    env: PUPPET_VERSION="~> 6.0" CHECK=rubocop
+  - rvm: 2.4.4
     bundler_args: --without system_tests development release
     env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
   - rvm: 2.5.1
