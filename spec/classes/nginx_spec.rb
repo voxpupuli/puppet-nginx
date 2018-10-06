@@ -433,22 +433,22 @@ describe 'nginx' do
                 title: 'should set error_log',
                 attr: 'nginx_error_log',
                 value: '/path/to/error.log',
-                match: 'error_log  /path/to/error.log error;'
+                match: '  error_log /path/to/error.log error;'
               },
               {
                 title: 'should set multiple error_logs',
                 attr: 'nginx_error_log',
                 value: ['/path/to/error.log', 'syslog:server=localhost'],
                 match: [
-                  'error_log  /path/to/error.log error;',
-                  'error_log  syslog:server=localhost error;'
+                  '  error_log /path/to/error.log error;',
+                  '  error_log syslog:server=localhost error;'
                 ]
               },
               {
                 title: 'should set error_log severity level',
                 attr: 'nginx_error_log_severity',
                 value: 'warn',
-                match: 'error_log  /var/log/nginx/error.log warn;'
+                match: '  error_log /var/log/nginx/error.log warn;'
               },
               {
                 title: 'should set pid',
@@ -544,28 +544,28 @@ describe 'nginx' do
                 title: 'should set access_log',
                 attr: 'http_access_log',
                 value: '/path/to/access.log',
-                match: '  access_log  /path/to/access.log;'
+                match: '  access_log /path/to/access.log;'
               },
               {
                 title: 'should set multiple access_logs',
                 attr: 'http_access_log',
                 value: ['/path/to/access.log', 'syslog:server=localhost'],
                 match: [
-                  '  access_log  /path/to/access.log;',
-                  '  access_log  syslog:server=localhost;'
+                  '  access_log /path/to/access.log;',
+                  '  access_log syslog:server=localhost;'
                 ]
               },
               {
                 title: 'should set custom log format',
                 attr: 'http_format_log',
                 value: 'mycustomformat',
-                match: '  access_log  /var/log/nginx/access.log mycustomformat;'
+                match: '  access_log /var/log/nginx/access.log mycustomformat;'
               },
               {
                 title: 'should set sendfile',
                 attr: 'sendfile',
                 value: 'on',
-                match: '  sendfile    on;'
+                match: '  sendfile on;'
               },
               {
                 title: 'should not set sendfile',
@@ -1183,12 +1183,12 @@ describe 'nginx' do
             it { is_expected.to contain_file('/foo/bar').with(ensure: 'directory') }
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
-                %r{access_log  /foo/bar/access.log;}
+                %r{access_log /foo/bar/access.log;}
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
-                %r{error_log  /foo/bar/error.log error;}
+                %r{error_log /foo/bar/error.log error;}
               )
             end
           end
