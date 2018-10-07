@@ -160,6 +160,7 @@ class nginx::params {
         'daemon_user' => 'www',
         'root_group'  => 'wheel',
         'log_dir'     => '/var/www/logs',
+        'log_user'    => 'www',
         'log_group'   => 'wheel',
         'run_dir'     => '/var/www',
       }
