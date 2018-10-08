@@ -1,11 +1,11 @@
-<%- @add_header.keys.sort.each do |key| -%>
-    <%- if @add_header[key] -%>
-      <%- if @add_header[key].is_a?(Hash) -%>
-        <%- @add_header[key].each do |sk, sv| -%>
-    add_header "<%= key %>" <% if sk != '' %>"<%= sk %>"<% end %> <%= sv %>;
+<%- @add_header.sort.each do |header, value| -%>
+    <%- if value -%>
+      <%- if value.is_a?(Hash) -%>
+        <%- value.each do |sk, sv| -%>
+    add_header "<%= header %>" <% if sk != '' %>"<%= sk %>"<% end %> <%= sv %>;
         <%- end -%>
       <%- else -%>
-    add_header "<%= key %>" "<%= @add_header[key] %>";
+    add_header "<%= header %>" "<%= value %>";
       <%- end -%>
     <%- end -%>
 <%- end -%>
