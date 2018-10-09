@@ -29,7 +29,7 @@ This module manages NGINX configuration.
 ### Install and bootstrap an NGINX instance
 
 ```puppet
-class { 'nginx': }
+include nginx
 ```
 
 ### A simple reverse proxy
