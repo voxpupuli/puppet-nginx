@@ -101,6 +101,7 @@ class nginx::params {
       $_module_os_overrides = {
         'pid'          => false,
         'daemon_user'  => 'http',
+        'log_user'     => 'http',
         'log_group'    => 'log',
         'package_name' => 'nginx-mainline',
       }
