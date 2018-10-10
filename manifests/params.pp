@@ -165,6 +165,16 @@ class nginx::params {
         'run_dir'     => '/var/www',
       }
     }
+    'AIX': {
+      $_module_os_overrides = {
+        'daemon_user' => 'nginx',
+        'root_group'  => 'system',
+        'conf_dir'    => '/opt/freeware/etc/nginx/',
+        'log_dir'     => '/opt/freeware/var/log/nginx/',
+        'log_group'   => 'system',
+        'run_dir'     => '/opt/freeware/share/nginx/html',
+      }
+    }
     default: {
       ## For cases not covered in $::osfamily
       case $facts['os']['name'] {
