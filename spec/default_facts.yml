@@ -8,7 +8,6 @@
 # Hint if using with rspec-puppet-facts ("on_supported_os.each"):
 #   if a same named fact exists in facterdb it will be overridden.
 ---
-concat_basedir: "/tmp"
 ipaddress: "172.16.254.254"
 is_pe: false
 macaddress: "AA:AA:AA:AA:AA:AA"
