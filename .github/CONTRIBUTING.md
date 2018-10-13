@@ -16,8 +16,9 @@ By participating in this project you agree to abide by its terms.
    runs the tests for us. You can also execute them locally. This is explained
    in a later section.
 
-1. Checkout the docs we use to review a module. They provide some guidance for
-   new code that might help you before you submit a pull request.
+1. Checkout [our docs](https://voxpupuli.org/docs/#reviewing-a-module-pr) we
+   use to review a module and the [official styleguide](https://puppet.com/docs/puppet/6.0/style_guide.html).
+   They provide some guidance for new code that might help you before you submit a pull request.
 
 1. Add a test for your change. Only refactoring and documentation
    changes require no new tests. If you are adding functionality
