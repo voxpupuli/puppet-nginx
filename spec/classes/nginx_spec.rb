@@ -562,6 +562,48 @@ describe 'nginx' do
                 match: '  access_log /var/log/nginx/access.log mycustomformat;'
               },
               {
+                title: 'should not set resolver',
+                attr: 'resolver',
+                value: :undef,
+                notmatch: %r{resolver}
+              },
+              {
+                title: 'should set resolver',
+                attr: 'resolver',
+                value: { 'addresses' => ['127.0.0.1'] },
+                match: %r{^\s+resolver 127.0.0.1;}
+              },
+              {
+                title: 'should set resolver with setting for ipv6',
+                attr: 'resolver',
+                value: { 'addresses' => ['127.0.0.1'], 'ipv6' => 'on' },
+                match: %r{^\s+resolver 127.0.0.1 ipv6=on;}
+              },
+              {
+                title: 'should set resolver with setting for valid',
+                attr: 'resolver',
+                value: { 'addresses' => ['127.0.0.1'], 'valid' => '30s' },
+                match: %r{^\s+resolver 127.0.0.1 valid=30s;}
+              },
+              {
+                title: 'should set resolver with port',
+                attr: 'resolver',
+                value: { 'addresses' => [['127.0.0.1', 53]] },
+                match: %r{^\s+resolver 127.0.0.1:53;}
+              },
+              {
+                title: 'should set multiple resolvers',
+                attr: 'resolver',
+                value: { 'addresses' => ['127.0.0.1', 'resolver.example.com'] },
+                match: %r{^\s+resolver 127.0.0.1 resolver.example.com;}
+              },
+              {
+                title: 'should set mixed resolvers with port',
+                attr: 'resolver',
+                value: { 'addresses' => ['127.0.0.1', ['127.0.0.2', 53]] },
+                match: %r{^\s+resolver 127.0.0.1 127.0.0.2:53;}
+              },
+              {
                 title: 'should set sendfile',
                 attr: 'sendfile',
                 value: 'on',

@@ -127,6 +127,7 @@ class nginx (
   Array $proxy_hide_header                                   = [],
   Array $proxy_pass_header                                   = [],
   Array $proxy_ignore_header                                 = [],
+  Optional[Nginx::Resolver] $resolver                        = undef,
   Enum['on', 'off'] $sendfile                                = 'on',
   Enum['on', 'off'] $server_tokens                           = 'on',
   Enum['on', 'off'] $spdy                                    = 'off',
