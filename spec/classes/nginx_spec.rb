@@ -9,7 +9,7 @@ describe 'nginx' do
 
       let :params do
         {
-          nginx_upstreams: { 'upstream1' => { 'members' => ['localhost:3000'] } },
+          nginx_upstreams: { 'upstream1' => { 'members' => { 'localhost' => { 'port' => 3000 } } } },
           nginx_servers: { 'test2.local' => { 'www_root' => '/' } },
           nginx_servers_defaults: { 'listen_options' => 'default_server' },
           nginx_locations: { 'test2.local' => { 'server' => 'test2.local', 'www_root' => '/' } },

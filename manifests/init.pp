@@ -171,6 +171,7 @@ class nginx (
   $nginx_mailhosts_defaults                                  = {},
   $nginx_streamhosts                                         = {},
   $nginx_upstreams                                           = {},
+  Nginx::UpstreamMemberDefaults $nginx_upstream_defaults     = {},
   $nginx_servers                                             = {},
   $nginx_servers_defaults                                    = {},
   Boolean $purge_passenger_repo                              = true,
@@ -182,7 +183,7 @@ class nginx (
   contain 'nginx::config'
   contain 'nginx::service'
 
-  create_resources('nginx::resource::upstream', $nginx_upstreams)
+  create_resources('nginx::resource::upstream', $nginx_upstreams, $nginx_upstream_defaults)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
   create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
