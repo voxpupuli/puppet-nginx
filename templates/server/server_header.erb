@@ -115,11 +115,7 @@ server {
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
-<% if @add_header -%>
-  <%- @add_header.keys.sort.each do |key| -%>
-  add_header              "<%= key %>" "<%= @add_header[key] %>";
-  <%- end -%>
-<% end -%>
+<%= scope.function_template(["nginx/server/locations/headers.erb"]) %>
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
