@@ -893,6 +893,18 @@ describe 'nginx' do
             it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
           end
 
+          context 'when mime.types is "[\'custom/file customfile\']" and mime.types.preserve.defaults is true' do
+            let(:params) do
+              {
+                mime_types: { 'custom/file' => 'customfile' },
+                mime_types_preserve_defaults: true
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{custom/file customfile;}) }
+          end
+
           context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
             let(:params) do
               {

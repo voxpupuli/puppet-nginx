@@ -149,6 +149,7 @@ class nginx (
   $package_flavor                                            = undef,
   Boolean $manage_repo                                       = $nginx::params::manage_repo,
   Hash[String[1], String[1]] $mime_types                     = $nginx::params::mime_types,
+  Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
   ### END Package Configuration ###
