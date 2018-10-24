@@ -28,7 +28,8 @@ group :test do
   gem 'coveralls',                                                  :require => false
   gem 'simplecov-console',                                          :require => false
   gem 'rack', '~> 1.0',                                             :require => false if RUBY_VERSION < '2.2.2'
-  gem 'parallel_tests',                                             :require => false
+  gem 'parallel_tests', '2.24.0',                                   :require => false if RUBY_VERSION < '2.2.0'
+  gem 'parallel_tests',                                             :require => false if RUBY_VERSION >= '2.2.0'
 end
 
 group :development do
