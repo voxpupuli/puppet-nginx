@@ -78,7 +78,7 @@ class nginx::package::redhat {
             gpgcheck      => '0',
             repo_gpgcheck => '1',
             priority      => '1',
-            gpgkey        => 'https://packagecloud.io/gpg.key',
+            gpgkey        => 'https://packagecloud.io/phusion/passenger/gpgkey',
             before        => Package['nginx'],
           }
 
