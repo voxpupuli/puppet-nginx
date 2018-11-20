@@ -103,7 +103,7 @@ describe 'nginx' do
                 'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:operatingsystemmajrelease]}/$basearch",
                 'gpgcheck'      => '0',
                 'repo_gpgcheck' => '1',
-                'gpgkey'        => 'https://packagecloud.io/gpg.key'
+                'gpgkey'        => 'https://packagecloud.io/phusion/passenger/gpgkey'
               )
             end
             it do
