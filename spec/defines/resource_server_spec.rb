@@ -437,28 +437,19 @@ describe 'nginx::resource::server' do
         end
 
         describe 'server_ssl_header template content' do
-         [    
-             {    
-               title: 'should set autoindex',
-               attr: 'autoindex',
-               value: 'on',
-               match: '  autoindex on;'
-             }    
-           ].each do |param|
-            context 'without a value for the nginx_version fact do' do
-               let :facts do
-                 facts[:nginx_version] ? facts.delete(:nginx_version) : facts
-               end  
-               let :params do
-                default_params.merge(
-                   ssl: true,
-                   ssl_key: 'dummy.key',
-                   ssl_cert: 'dummy.crt'
-                 )    
-               end  
- 
-               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
-            end  
+          context 'without a value for the nginx_version fact do' do
+             let :facts do
+               facts[:nginx_version] ? facts.delete(:nginx_version) : facts
+             end
+             let :params do
+              default_params.merge(
+                 ssl: true,
+                 ssl_key: 'dummy.key',
+                 ssl_cert: 'dummy.crt'
+               )
+             end
+
+             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
           end
           context 'with fact nginx_version=1.14.1' do
             let :facts do
@@ -853,6 +844,12 @@ describe 'nginx::resource::server' do
               attr: 'index_files',
               value: [],
               notmatch: %r{\s+index\s+}
+            },
+            {
+              title: 'should set autoindex',
+              attr: 'autoindex',
+              value: 'on',
+              match: '  autoindex on;'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
