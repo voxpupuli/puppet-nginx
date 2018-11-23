@@ -446,7 +446,7 @@ describe 'nginx::resource::server' do
                 ssl: true,
                 ssl_key: 'dummy.key',
                 ssl_cert: 'dummy.crt'
-             )
+              )
             end
 
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
