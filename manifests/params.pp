@@ -112,14 +112,14 @@ class nginx::params {
         $_module_os_overrides = {
           'manage_repo' => true,
           'daemon_user' => 'www-data',
-          'log_user'    => 'root',
+          'log_user'    => 'www-data',
           'log_group'   => 'adm',
           'log_mode'    => '0755',
         }
       } else {
         $_module_os_overrides = {
           'daemon_user' => 'www-data',
-          'log_user'    => 'root',
+          'log_user'    => 'www-data',
           'log_group'   => 'adm',
           'log_mode'    => '0755',
         }
