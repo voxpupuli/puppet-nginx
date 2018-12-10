@@ -334,7 +334,7 @@ describe 'nginx::resource::upstream' do
               },
               {
                 value: { member1: { service: 'member1.backend' } },
-                match: 'member1:80 service=member1.backend;'
+                match: 'member1 service=member1.backend;'
               },
               {
                 value: { member1: { slow_start: '20s' } },
