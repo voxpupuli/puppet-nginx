@@ -38,7 +38,9 @@
 <% if $sticky { -%>
   <%- $sticky.each |$type,$values| { -%>
     <%- if $type != 'route' { -%>
-  sticky <%= $type %><% $values.each |$key,$value| { %> <%= $key %><% if $value != true { %>=<%= $value %><% } %><% } %>;
+  sticky <%= $type %><%- $values.each |$key,$value| { -%>
+      <%- if $type == 'cookie' and $key == 'name'{ %> <%= $value %><% } else { %> <%= $key %><%- if $value != true { %>=<%= $value %><% } } -%>
+      <%- } -%>;
     <%- } else { -%>
   sticky <%= $type %> <%= $values %>;
     <%- } -%>
