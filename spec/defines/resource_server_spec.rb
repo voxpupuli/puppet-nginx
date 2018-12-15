@@ -844,6 +844,12 @@ describe 'nginx::resource::server' do
               attr: 'index_files',
               value: [],
               notmatch: %r{\s+index\s+}
+            },
+            {
+              title: 'should set autoindex',
+              attr: 'autoindex',
+              value: 'on',
+              match: '  autoindex on;'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

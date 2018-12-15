@@ -64,7 +64,9 @@ server {
 <% end -%>
 <% if @index_files and @index_files.count > 0 -%>
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
-
+<% end -%>
+<% if defined? @autoindex -%>
+  autoindex <%= @autoindex %>;
 <% end -%>
 <% if @absolute_redirect -%>
   absolute_redirect <%= @absolute_redirect %>;
