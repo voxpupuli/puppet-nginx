@@ -134,7 +134,7 @@ define nginx::resource::upstream (
     }),
   }
 
-  if $members != undef {
+  if ! empty($members) {
     $members.each |$member,$values| {
       $member_values = merge($member_defaults,$values,{'upstream' => $name,'context' => $context})
 
