@@ -109,6 +109,21 @@ To run a specific spec test set the `SPEC` variable:
 bundle exec rake spec SPEC=spec/foo_spec.rb
 ```
 
+### Unit tests in docker
+
+Some people don't want to run the dependencies locally or don't want to install
+ruby. We ship a Dockerfile that enables you to run all unit tests and linting.
+You only need to run:
+
+```sh
+docker build .
+```
+
+Please ensure that a docker daemon is running and that your user has the
+permission to talk to it. You can specify a remote docker host by setting the
+`DOCKER_HOST` environment variable. it will copy the content of the module into
+the docker image. So it will not work if a Gemfile.lock exists.
+
 ## Integration tests
 
 The unit tests just check the code runs, not that it does exactly what
