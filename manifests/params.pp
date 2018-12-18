@@ -154,7 +154,7 @@ class nginx::params {
       case $facts['os']['name'] {
         'SmartOS': {
           $_module_os_overrides = {
-            'conf_dir'    => '/usr/local/etc/nginx',
+            'conf_dir'    => '/opt/local/etc/nginx',
             'daemon_user' => 'www',
             'log_user'    => 'www',
             'log_group'   => 'root',
