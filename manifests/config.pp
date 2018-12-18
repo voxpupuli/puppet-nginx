@@ -209,6 +209,9 @@ class nginx::config {
     }
     file { "${conf_dir}/sites-enabled":
       ensure => directory,
+      owner  => $sites_available_owner,
+      group  => $sites_available_group,
+      mode   => $sites_available_mode,
     }
     if $server_purge {
       File["${conf_dir}/sites-available"] {
@@ -229,6 +232,9 @@ class nginx::config {
     }
     file { "${conf_dir}/streams-available":
       ensure => directory,
+      owner  => $sites_available_owner,
+      group  => $sites_available_group,
+      mode   => $sites_available_mode,
     }
     if $server_purge {
       File["${conf_dir}/streams-enabled"] {
