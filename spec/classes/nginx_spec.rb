@@ -574,10 +574,16 @@ describe 'nginx' do
                 match: %r{^\s+resolver 127.0.0.1;}
               },
               {
+                title: 'should set resolver with ipv6 address',
+                attr: 'resolver',
+                value: { 'addresses' => ['FF01::101'] },
+                match: %r{^\s+resolver \[FF01::101\];}
+              },
+              {
                 title: 'should set resolver with setting for ipv6',
                 attr: 'resolver',
-                value: { 'addresses' => ['127.0.0.1'], 'ipv6' => 'on' },
-                match: %r{^\s+resolver 127.0.0.1 ipv6=on;}
+                value: { 'addresses' => ['127.0.0.1'], 'ipv6' => 'off' },
+                match: %r{^\s+resolver 127.0.0.1 ipv6=off;}
               },
               {
                 title: 'should set resolver with setting for valid',
@@ -591,6 +597,13 @@ describe 'nginx' do
                 value: { 'addresses' => [['127.0.0.1', 53]] },
                 match: %r{^\s+resolver 127.0.0.1:53;}
               },
+
+              {
+                title: 'should set resolver with ipv6 address with port',
+                attr: 'resolver',
+                value: { 'addresses' => [['FF01::101', 5353]] },
+                match: %r{^\s+resolver \[FF01::101\]:5353;}
+              },
               {
                 title: 'should set multiple resolvers',
                 attr: 'resolver',
@@ -600,8 +613,8 @@ describe 'nginx' do
               {
                 title: 'should set mixed resolvers with port',
                 attr: 'resolver',
-                value: { 'addresses' => ['127.0.0.1', ['127.0.0.2', 53]] },
-                match: %r{^\s+resolver 127.0.0.1 127.0.0.2:53;}
+                value: { 'addresses' => ['::1', ['127.0.0.1', 54]] },
+                match: %r{^\s+resolver \[::1\] 127.0.0.1:54;}
               },
               {
                 title: 'should set sendfile',

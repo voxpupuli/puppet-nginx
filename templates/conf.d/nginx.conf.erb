@@ -92,7 +92,9 @@ http {
   <%- end -%>
 <% end -%>
 <% if @resolver -%>
-  resolver<% @resolver['addresses'].each do |address,port| %> <%= address %><% if port %>:<%= port %><% end %><% end %><% if @resolver['valid'] %> valid=<%= @resolver['valid'] %><% end %><% if @resolver['ipv6'] %> ipv6=<%= @resolver['ipv6'] %><% end %>;
+  resolver<% @resolver['addresses'].each do |address,port| %> <% if address =~ /:/ %>[<%= address %>]<% else %><%= address %><% end %><% if port %>:<%= port %><% end %><% end -%>
+<% if @resolver['valid'] %> valid=<%= @resolver['valid'] %><% end -%>
+<% if @resolver['ipv6'] %> ipv6=<%= @resolver['ipv6'] %><% end %>;
 <% end -%>
   server_tokens <%= @server_tokens %>;
 
