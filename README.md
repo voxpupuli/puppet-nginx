@@ -54,18 +54,21 @@ nginx::resource::server { 'www.puppetlabs.com':
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
   members => {
-    'localhost:3000':
-      server => 'localhost'
-      port   => 3000
-      weight => 1
-    'localhost:3001':
-      server => 'localhost'
-      port   => 3001
-      weight => 1
-    'localhost:3002':
-      server => 'localhost'
-      port   => 3002
-      weight => 2
+    'localhost:3000' => {
+      server => 'localhost',
+      port   => 3000,
+      weight => 1,
+    },
+    'localhost:3001' => {
+      server => 'localhost',
+      port   => 3001,
+      weight => 1,
+    },
+    'localhost:3002': => {
+      server => 'localhost',
+      port   => 3002,
+      weight => 2,
+      },
   },
 }
 
@@ -100,11 +103,11 @@ The datatype Array for members of a nginx::resource::upstream is replaced by a H
 
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
-  members => [
+  members => {
     'localhost:3000',
     'localhost:3001',
     'localhost:3002',
-  ],
+  },
 }
 ```
 
@@ -113,15 +116,18 @@ From now on, the configuration must look like this:
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
   members => {
-    'localhost:3000':
-      server => 'localhost'
-      port   => 3000
-    'localhost:3001':
-      server => 'localhost'
-      port   => 3001
-    'localhost:3002':
-      server => 'localhost'
-      port   => 3002
+    'localhost:3000' => {
+      server => 'localhost',
+      port   => 3000,
+    },
+    'localhost:3001' => {
+      server => 'localhost',
+      port   => 3001,
+    },
+    'localhost:3002' => {
+      server => 'localhost',
+      port   => 3002,
+    },
   },
 }
 ```
