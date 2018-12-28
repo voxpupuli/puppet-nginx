@@ -93,6 +93,7 @@ class nginx::config {
   $nginx_cfg_prepend              = $nginx::nginx_cfg_prepend
   $proxy_buffers                  = $nginx::proxy_buffers
   $proxy_buffer_size              = $nginx::proxy_buffer_size
+  $proxy_busy_buffers_size        = $nginx::proxy_busy_buffers_size
   $proxy_cache_inactive           = $nginx::proxy_cache_inactive
   $proxy_cache_keys_zone          = $nginx::proxy_cache_keys_zone
   $proxy_cache_levels             = $nginx::proxy_cache_levels
@@ -105,6 +106,7 @@ class nginx::config {
   $proxy_connect_timeout          = $nginx::proxy_connect_timeout
   $proxy_headers_hash_bucket_size = $nginx::proxy_headers_hash_bucket_size
   $proxy_http_version             = $nginx::proxy_http_version
+  $proxy_max_temp_file_size       = $nginx::proxy_max_temp_file_size
   $proxy_read_timeout             = $nginx::proxy_read_timeout
   $proxy_redirect                 = $nginx::proxy_redirect
   $proxy_send_timeout             = $nginx::proxy_send_timeout

@@ -920,6 +920,18 @@ describe 'nginx::resource::location' do
               attr: 'proxy_buffering',
               value: 'on',
               match: %r{\s+proxy_buffering\s+on;}
+            },
+            {
+              title: 'should set proxy_max_temp_file_size',
+              attr: 'proxy_max_temp_file_size',
+              value: '1024m',
+              match: %r{\s+proxy_max_temp_file_size\s+1024m;}
+            },
+            {
+              title: 'should set proxy_busy_buffers_size',
+              attr: 'proxy_busy_buffers_size',
+              value: '16k',
+              match: %r{\s+proxy_busy_buffers_size\s+16k;}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
