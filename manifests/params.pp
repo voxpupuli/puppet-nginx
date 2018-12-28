@@ -151,9 +151,21 @@ class nginx::params {
       }
     }
     'Solaris': {
-      $_module_os_overrides = {
-        'daemon_user'  => 'webservd',
-        'package_name' => undef,
+      case $facts['os']['name'] {
+        'SmartOS': {
+          $_module_os_overrides = {
+            'conf_dir'    => '/opt/local/etc/nginx',
+            'daemon_user' => 'www',
+            'log_user'    => 'www',
+            'log_group'   => 'root',
+          }
+        }
+        default: {
+          $_module_os_overrides = {
+            'daemon_user'  => 'webservd',
+            'package_name' => undef,
+          }
+        }
       }
     }
     'OpenBSD': {
@@ -179,12 +191,6 @@ class nginx::params {
     default: {
       ## For cases not covered in $::osfamily
       case $facts['os']['name'] {
-        'SmartOS': {
-          $_module_os_overrides = {
-            'conf_dir'    => '/usr/local/etc/nginx',
-            'daemon_user' => 'www',
-          }
-        }
         default: { $_module_os_overrides = {} }
       }
     }
