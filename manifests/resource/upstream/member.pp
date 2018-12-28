@@ -75,7 +75,7 @@ define nginx::resource::upstream::member (
     default  => "${nginx::config::conf_dir}/conf.d",
   }
 
-  $_server = ($server =~ Pattern[/^unix:\/([^\/\0]+\/*)*$/]) ? {
+  $_server = ($server =~ Pattern[/^unix:\/([^\/\0]+\/*)*$/] or $service != undef) ? {
     true  => $server,
     false => "${server}:${port}",
   }
