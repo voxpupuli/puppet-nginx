@@ -464,6 +464,18 @@ describe 'nginx::resource::server' do
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{  ssl on;}) }
             end
+
+            context 'with ssl cert and key definitions' do
+              let(:pre_condition) do
+                <<-PUPPET
+                file { ['/tmp/dummy.key', '/tmp/dummy.crt']: }
+                include nginx
+                PUPPET
+              end
+
+              it { is_expected.to contain_file('/tmp/dummy.key').with_path('/tmp/dummy.key') }
+              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").that_requires(['File[/tmp/dummy.key]', 'File[/tmp/dummy.crt]']) }
+            end
           end
 
           [
