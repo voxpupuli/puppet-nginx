@@ -360,7 +360,7 @@ describe 'nginx' do
             it do
               is_expected.to contain_file('/var/log/nginx').with(
                 ensure: 'directory',
-                owner: 'root',
+                owner: 'www-data',
                 group: 'adm',
                 mode: '0755'
               )
