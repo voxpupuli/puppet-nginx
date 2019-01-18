@@ -38,6 +38,11 @@ describe 'nginx::resource::upstream define:' do
           backup       => true,
           comment      => 'Appserver 03',
         },
+        'appserver_v6' => {
+          server       => '2001:db8::6',
+          port         => 80,
+          comment      => 'Appserver with IPv6 address',
+        },
       },
       zone               => 'production 64k',
     }
@@ -78,6 +83,7 @@ describe 'nginx::resource::upstream define:' do
     it { is_expected.to contain '  server 10.10.10.1:80 weight=2 max_conns=10 max_fails=10 fail_timeout=10s; # Appserver 01' }
     it { is_expected.to contain '  server 10.10.10.2:80 weight=3 max_conns=15 max_fails=15 fail_timeout=15s; # Appserver 02' }
     it { is_expected.to contain '  server 10.10.10.3:80 max_conns=20 max_fails=20 fail_timeout=20s backup; # Appserver 03' }
+    it { is_expected.to contain '  server [2001:db8::6]:80 max_conns=20 max_fails=20 fail_timeout=20s; # Appserver with IPv6 address' }
     it { is_expected.to contain '  ip_hash;' }
     it { is_expected.to contain '  zone production 64k;' }
     it { is_expected.to contain '  keepalive 16;' }
