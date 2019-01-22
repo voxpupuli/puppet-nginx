@@ -9,7 +9,7 @@ describe 'nginx' do
 
       let :params do
         {
-          nginx_upstreams: { 'upstream1' => { 'members' => ['localhost:3000'] } },
+          nginx_upstreams: { 'upstream1' => { 'members' => { 'localhost' => { 'port' => 3000 } } } },
           nginx_servers: { 'test2.local' => { 'www_root' => '/' } },
           nginx_servers_defaults: { 'listen_options' => 'default_server' },
           nginx_locations: { 'test2.local' => { 'server' => 'test2.local', 'www_root' => '/' } },
@@ -103,7 +103,7 @@ describe 'nginx' do
                 'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:operatingsystemmajrelease]}/$basearch",
                 'gpgcheck'      => '0',
                 'repo_gpgcheck' => '1',
-                'gpgkey'        => 'https://packagecloud.io/gpg.key'
+                'gpgkey'        => 'https://packagecloud.io/phusion/passenger/gpgkey'
               )
             end
             it do
@@ -646,70 +646,10 @@ describe 'nginx' do
                 match: '  tcp_nopush on;'
               },
               {
-                title: 'should set gzip',
-                attr: 'gzip',
-                value: 'on',
-                match: '  gzip              on;'
-              },
-              {
                 title: 'should not set gzip',
                 attr: 'gzip',
                 value: 'off',
                 notmatch: %r{gzip}
-              },
-              {
-                title: 'should set gzip_buffers',
-                attr: 'gzip_buffers',
-                value: '32 4k',
-                match: '  gzip_buffers      32 4k;'
-              },
-              {
-                title: 'should set gzip_comp_level',
-                attr: 'gzip_comp_level',
-                value: 5,
-                match: '  gzip_comp_level   5;'
-              },
-              {
-                title: 'should set gzip_disable',
-                attr: 'gzip_disable',
-                value: 'MSIE [1-6]\.(?!.*SV1)',
-                match: '  gzip_disable      MSIE [1-6]\.(?!.*SV1);'
-              },
-              {
-                title: 'should set gzip_min_length',
-                attr: 'gzip_min_length',
-                value: '10',
-                match: '  gzip_min_length   10;'
-              },
-              {
-                title: 'should set gzip_http_version',
-                attr: 'gzip_http_version',
-                value: '1.0',
-                match: '  gzip_http_version 1.0;'
-              },
-              {
-                title: 'should set gzip_proxied',
-                attr: 'gzip_proxied',
-                value: 'any',
-                match: '  gzip_proxied      any;'
-              },
-              {
-                title: 'should set gzip_types (array)',
-                attr: 'gzip_types',
-                value: ['text/plain', 'text/html'],
-                match: '  gzip_types        text/plain text/html;'
-              },
-              {
-                title: 'should set gzip_types (string)',
-                attr: 'gzip_types',
-                value: ['text/plain'],
-                match: '  gzip_types        text/plain;'
-              },
-              {
-                title: 'should set gzip_vary',
-                attr: 'gzip_vary',
-                value: 'on',
-                match: '  gzip_vary         on;'
               },
               {
                 title: 'should set proxy_cache_path',
@@ -914,6 +854,18 @@ describe 'nginx' do
                 attr: 'proxy_temp_path',
                 value: '/path/to/proxy_temp',
                 match: '  proxy_temp_path         /path/to/proxy_temp;'
+              },
+              {
+                title: 'should set proxy_max_temp_file_size',
+                attr: 'proxy_max_temp_file_size',
+                value: '1024m',
+                match: '  proxy_max_temp_file_size 1024m;'
+              },
+              {
+                title: 'should set proxy_busy_buffers_size',
+                attr: 'proxy_busy_buffers_size',
+                value: '16k',
+                match: '  proxy_busy_buffers_size 16k;'
               }
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do
@@ -951,6 +903,18 @@ describe 'nginx' do
           context 'when mime.types is default' do
             it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{text/css css;}) }
             it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
+          end
+
+          context 'when mime.types is "[\'custom/file customfile\']" and mime.types.preserve.defaults is true' do
+            let(:params) do
+              {
+                mime_types: { 'custom/file' => 'customfile' },
+                mime_types_preserve_defaults: true
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{custom/file customfile;}) }
           end
 
           context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
@@ -1197,6 +1161,91 @@ describe 'nginx' do
             let(:params) { { log_mode: '0771' } }
 
             it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
+          end
+
+          context 'when gzip is non-default (on) test gzip defaults' do
+            let(:params) { { gzip: 'on' } }
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip              on;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_comp_level   1;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_disable      msie6;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_min_length   20;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_http_version 1.1;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_vary         off;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_proxied      off;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip_types (array)' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_types: ['text/plain', 'text/html']
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_types        text/plain text/html;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip types (string)' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_types: 'text/plain'
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_types        text/plain;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip buffers' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_buffers: '32 4k'
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_buffers      32 4k;}
+              )
+            end
           end
         end
       end

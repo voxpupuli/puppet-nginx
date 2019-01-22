@@ -16,8 +16,9 @@ By participating in this project you agree to abide by its terms.
    runs the tests for us. You can also execute them locally. This is explained
    in a later section.
 
-1. Checkout the docs we use to review a module. They provide some guidance for
-   new code that might help you before you submit a pull request.
+1. Checkout [our docs](https://voxpupuli.org/docs/#reviewing-a-module-pr) we
+   use to review a module and the [official styleguide](https://puppet.com/docs/puppet/6.0/style_guide.html).
+   They provide some guidance for new code that might help you before you submit a pull request.
 
 1. Add a test for your change. Only refactoring and documentation
    changes require no new tests. If you are adding functionality
@@ -107,6 +108,21 @@ To run a specific spec test set the `SPEC` variable:
 ```sh
 bundle exec rake spec SPEC=spec/foo_spec.rb
 ```
+
+### Unit tests in docker
+
+Some people don't want to run the dependencies locally or don't want to install
+ruby. We ship a Dockerfile that enables you to run all unit tests and linting.
+You only need to run:
+
+```sh
+docker build .
+```
+
+Please ensure that a docker daemon is running and that your user has the
+permission to talk to it. You can specify a remote docker host by setting the
+`DOCKER_HOST` environment variable. it will copy the content of the module into
+the docker image. So it will not work if a Gemfile.lock exists.
 
 ## Integration tests
 

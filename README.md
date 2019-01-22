@@ -29,7 +29,7 @@ This module manages NGINX configuration.
 ### Install and bootstrap an NGINX instance
 
 ```puppet
-class { 'nginx': }
+include nginx
 ```
 
 ### A simple reverse proxy
@@ -53,11 +53,23 @@ nginx::resource::server { 'www.puppetlabs.com':
 
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
-  members => [
-    'localhost:3000',
-    'localhost:3001',
-    'localhost:3002',
-  ],
+  members => {
+    'localhost:3000' => {
+      server => 'localhost',
+      port   => 3000,
+      weight => 1,
+    },
+    'localhost:3001' => {
+      server => 'localhost',
+      port   => 3001,
+      weight => 1,
+    },
+    'localhost:3002': => {
+      server => 'localhost',
+      port   => 3002,
+      weight => 2,
+      },
+  },
 }
 
 nginx::resource::server { 'rack.puppetlabs.com':
@@ -82,6 +94,41 @@ nginx::resource::mailhost { 'domain1.example':
   ssl         => true,
   ssl_cert    => '/tmp/server.crt',
   ssl_key     => '/tmp/server.pem',
+}
+```
+
+### Convert upstream members from Array to Hash
+
+The datatype Array for members of a nginx::resource::upstream is replaced by a Hash. The following configuration is no longer valid:
+
+```puppet
+nginx::resource::upstream { 'puppet_rack_app':
+  members => {
+    'localhost:3000',
+    'localhost:3001',
+    'localhost:3002',
+  },
+}
+```
+
+From now on, the configuration must look like this:
+
+```puppet
+nginx::resource::upstream { 'puppet_rack_app':
+  members => {
+    'localhost:3000' => {
+      server => 'localhost',
+      port   => 3000,
+    },
+    'localhost:3001' => {
+      server => 'localhost',
+      port   => 3001,
+    },
+    'localhost:3002' => {
+      server => 'localhost',
+      port   => 3002,
+    },
+  },
 }
 ```
 
@@ -137,9 +184,15 @@ nginx::nginx_upstreams:
   'puppet_rack_app':
     ensure: present
     members:
-      - localhost:3000
-      - localhost:3001
-      - localhost:3002
+      'localhost:3000':
+        server: 'localhost'
+        port: 3000
+      'localhost:3001':
+        server: 'localhost'
+        port: 3001
+      'localhost:3002':
+        server: 'localhost'
+        port: 3002
 nginx::nginx_servers:
   'www.puppetlabs.com':
     www_root: '/var/www/www.puppetlabs.com'
@@ -185,9 +238,15 @@ nginx::nginx_upstreams:
   'syslog':
     upstream_context: 'stream'
     members:
-      - '10.0.0.1:514'
-      - '10.0.0.2:514'
-      - '10.0.0.3:514'
+      '10.0.0.1:514'
+        server: '10.0.0.1'
+        port: '514'
+      '10.0.0.2:514'
+        server: '10.0.0.2'
+        port: '514'
+      '10.0.0.3:514'
+        server: '10.0.0.3'
+        port: '514'
 ```
 
 ## Nginx with precompiled Passenger

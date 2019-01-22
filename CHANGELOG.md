@@ -4,6 +4,61 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v0.16.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.16.0) (2018-12-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.15.0...v0.16.0)
+
+**Implemented enhancements:**
+
+- Feature\_request: Add proxy\_max\_temp\_file\_size and proxy\_busy\_buffers\_size to parameter list [\#1176](https://github.com/voxpupuli/puppet-nginx/issues/1176)
+- Update smartos support [\#1290](https://github.com/voxpupuli/puppet-nginx/pull/1290) ([joelgarboden](https://github.com/joelgarboden))
+- Allow multiple servers per location [\#1278](https://github.com/voxpupuli/puppet-nginx/pull/1278) ([SaschaDoering](https://github.com/SaschaDoering))
+- Add autoindex to ssl\_header too [\#1275](https://github.com/voxpupuli/puppet-nginx/pull/1275) ([bc-bjoern](https://github.com/bc-bjoern))
+- allow adding custom mime types while still using the module defaults [\#1268](https://github.com/voxpupuli/puppet-nginx/pull/1268) ([bryangwilliam](https://github.com/bryangwilliam))
+- Introduce two new optional proxy parameters [\#1256](https://github.com/voxpupuli/puppet-nginx/pull/1256) ([ruriky](https://github.com/ruriky))
+
+**Fixed bugs:**
+
+- update location of passenger repo gpgkey [\#1277](https://github.com/voxpupuli/puppet-nginx/pull/1277) ([pauljflo](https://github.com/pauljflo))
+- Fix the condition for upstream members [\#1276](https://github.com/voxpupuli/puppet-nginx/pull/1276) ([SaschaDoering](https://github.com/SaschaDoering))
+
+**Closed issues:**
+
+- Error pages on location level \[help\] [\#1279](https://github.com/voxpupuli/puppet-nginx/issues/1279)
+-  "location" directive is not allowed here in /etc/nginx/sites-enabled/example.mydomain.com.conf:2 [\#1271](https://github.com/voxpupuli/puppet-nginx/issues/1271)
+- Nginx::Resource::Server: has no parameter named 'proxy\_send\_timeout' [\#1186](https://github.com/voxpupuli/puppet-nginx/issues/1186)
+
+**Merged pull requests:**
+
+- change rights for sites-enabled, streams-available [\#1289](https://github.com/voxpupuli/puppet-nginx/pull/1289) ([danwerspb](https://github.com/danwerspb))
+- Update documentation and examples associated with adding upstream parameters [\#1273](https://github.com/voxpupuli/puppet-nginx/pull/1273) ([alexskr](https://github.com/alexskr))
+
+## [v0.15.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.15.0) (2018-10-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.14.0...v0.15.0)
+
+**Breaking changes:**
+
+- Change gzip default to off and update tests [\#1266](https://github.com/voxpupuli/puppet-nginx/pull/1266) ([willrigling](https://github.com/willrigling))
+- Add parameters to upstream and upstreammembers [\#1233](https://github.com/voxpupuli/puppet-nginx/pull/1233) ([SaschaDoering](https://github.com/SaschaDoering))
+
+**Implemented enhancements:**
+
+- gzip is enabled by default [\#1085](https://github.com/voxpupuli/puppet-nginx/issues/1085)
+- Allow setting unquoted or custom flags on add\_headers [\#1249](https://github.com/voxpupuli/puppet-nginx/pull/1249) ([itbm](https://github.com/itbm))
+
+**Closed issues:**
+
+- introduction of $log\_user broke module on OpenBSD [\#1259](https://github.com/voxpupuli/puppet-nginx/issues/1259)
+- nginx::resource::upstream make consistent use of nginx::resource::upstream::member [\#1222](https://github.com/voxpupuli/puppet-nginx/issues/1222)
+
+**Merged pull requests:**
+
+- add default values for AIX servers [\#1263](https://github.com/voxpupuli/puppet-nginx/pull/1263) ([feltra](https://github.com/feltra))
+- Improve example of quick install in README [\#1262](https://github.com/voxpupuli/puppet-nginx/pull/1262) ([natemccurdy](https://github.com/natemccurdy))
+- Archlinux: Set default log user to http [\#1261](https://github.com/voxpupuli/puppet-nginx/pull/1261) ([mauricemeyer](https://github.com/mauricemeyer))
+- add the log\_user with proper value to OpenBSD override section. [\#1260](https://github.com/voxpupuli/puppet-nginx/pull/1260) ([buzzdeee](https://github.com/buzzdeee))
+
 ## [v0.14.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.14.0) (2018-10-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.13.0...v0.14.0)
@@ -14,6 +69,7 @@ These should not affect the functionality of the module.
 - Strip line endings in mime.types [\#1252](https://github.com/voxpupuli/puppet-nginx/pull/1252) ([ekohl](https://github.com/ekohl))
 - Propery handle ${client\_body,proxy}\_temp\_path [\#1251](https://github.com/voxpupuli/puppet-nginx/pull/1251) ([ekohl](https://github.com/ekohl))
 - Add mime.types file template and default values for it [\#1243](https://github.com/voxpupuli/puppet-nginx/pull/1243) ([martialblog](https://github.com/martialblog))
+- start one worker process per core [\#1238](https://github.com/voxpupuli/puppet-nginx/pull/1238) ([bastelfreak](https://github.com/bastelfreak))
 
 **Fixed bugs:**
 

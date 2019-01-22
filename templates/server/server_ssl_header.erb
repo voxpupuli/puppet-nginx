@@ -64,7 +64,9 @@ server {
 <% end -%>
 <% if @index_files and @index_files.count > 0 -%>
   index <% Array(@index_files).each do |i| %> <%= i %><% end %>;
-
+<% end -%>
+<% if defined? @autoindex -%>
+  autoindex <%= @autoindex %>;
 <% end -%>
 <% if @absolute_redirect -%>
   absolute_redirect <%= @absolute_redirect %>;
@@ -144,8 +146,4 @@ server {
 <% Array(@passenger_env_var).each do |key,value| -%>
   passenger_env_var  <%= key %> <%= value %>;
 <% end -%>
-<% if @add_header -%>
-  <%- @add_header.keys.sort.each do |key| -%>
-  add_header              "<%= key %>" "<%= @add_header[key] %>";
-  <%- end -%>
-<% end -%>
+<%= scope.function_template(["nginx/server/locations/headers.erb"]) %>

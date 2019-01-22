@@ -160,6 +160,12 @@ http {
 <% if @proxy_buffer_size -%>
   proxy_buffer_size       <%= @proxy_buffer_size %>;
 <% end -%>
+<% if @proxy_busy_buffers_size -%>
+  proxy_busy_buffers_size <%= @proxy_busy_buffers_size %>;
+<% end -%>
+<% if @proxy_max_temp_file_size -%>
+  proxy_max_temp_file_size <%= @proxy_max_temp_file_size %>;
+<% end -%>
 <% if @proxy_http_version -%>
   proxy_http_version      <%= @proxy_http_version %>;
 <% end -%>

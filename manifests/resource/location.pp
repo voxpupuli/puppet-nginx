@@ -7,11 +7,10 @@
 #     (present|absent)
 #   [*internal*]             - Indicates whether or not this location can be
 #     used for internal requests only. Default: false
-#   [*server*]                - Defines the default server for this location
-#     entry to include with
+#   [*server*]               - Defines a server or list of servers that include this location
 #   [*location*]             - Specifies the URI associated with this location
 #     entry
-#   [*location_satisfy*]    - Allows access if all (all) or at least one (any) of the auth modules allow access.
+#   [*location_satisfy*]     - Allows access if all (all) or at least one (any) of the auth modules allow access.
 #   [*location_allow*]       - Array: Locations to allow connections from.
 #   [*location_deny*]        - Array: Locations to deny connections from.
 #   [*www_root*]             - Specifies the location on disk for files to be
@@ -94,6 +93,9 @@
 #   [*proxy_set_body*]        - If defined, sets the body passed to the backend.
 #   [*proxy_buffering*]       - If defined, sets the proxy_buffering to the passed
 #     value.
+#   [*proxy_max_temp_file_size*] - Sets the maximum size of the temporary buffer file.
+#   [*proxy_busy_buffers_size*] - Sets the total size of buffers that can be
+#     busy sending a response to the client while the response is not yet fully read.
 #   [*absolute_redirect*]     - Enables or disables the absolute redirect functionality of nginx
 #   [*auth_basic*]            - This directive includes testing name and password
 #     with HTTP Basic Authentication.
@@ -121,6 +123,14 @@
 #    www_root => '/var/www/bob',
 #    location => '/bob',
 #    server   => 'test2.local',
+#  }
+#
+#  Use one location in multiple servers
+#  nginx::resource::location { 'test2.local-bob':
+#    ensure   => present,
+#    www_root => '/var/www/bob',
+#    location => '/bob',
+#    server   => ['test1.local','test2.local'],
 #  }
 #
 #  Custom config example to limit location on localhost,
@@ -161,10 +171,10 @@
 #  }
 
 define nginx::resource::location (
-  Enum['present', 'absent'] $ensure                    = present,
+  Enum['present', 'absent'] $ensure                    = 'present',
   Boolean $internal                                    = false,
   String $location                                     = $name,
-  String $server                                       = undef,
+  Variant[String[1],Array[String[1],1]] $server        = undef,
   Optional[String] $www_root                           = undef,
   Optional[String] $autoindex                          = undef,
   Array $index_files                                   = [
@@ -217,6 +227,8 @@ define nginx::resource::location (
   Optional[String] $proxy_http_version                 = undef,
   Optional[String] $proxy_set_body                     = undef,
   Optional[Enum['on', 'off']] $proxy_buffering         = undef,
+  Optional[Nginx::Size] $proxy_max_temp_file_size      = undef,
+  Optional[Nginx::Size] $proxy_busy_buffers_size       = undef,
   Optional[Enum['on', 'off']] $absolute_redirect       = undef,
   Optional[String] $auth_basic                         = undef,
   Optional[String] $auth_basic_user_file               = undef,
@@ -258,58 +270,59 @@ define nginx::resource::location (
     warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
-  $server_sanitized = regsubst($server, ' ', '_', 'G')
-  if $nginx::confd_only {
-    $server_dir = "${nginx::conf_dir}/conf.d"
-  } else {
-    $server_dir = "${nginx::conf_dir}/sites-available"
-  }
-
-  $config_file = "${server_dir}/${server_sanitized}.conf"
-
   # Only try to manage these files if they're the default one (as you presumably
   # usually don't want the default template if you're using a custom file.
 
-  if  (
-    $ensure == present              and
+  if (
+    $ensure == 'present'            and
     $fastcgi != undef               and
     !defined(File[$fastcgi_params]) and
     $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf"
-      ) {
+  ) {
     file { $fastcgi_params:
-      ensure  => present,
+      ensure  => 'present',
       mode    => '0644',
       content => template('nginx/server/fastcgi.conf.erb'),
     }
   }
 
-  if $ensure == present and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
+  if $ensure == 'present' and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
-      ensure  => present,
+      ensure  => 'present',
       mode    => '0644',
       content => template('nginx/server/uwsgi_params.erb'),
     }
   }
 
-  if $ensure == present {
-    ## Create stubs for server File Fragment Pattern
-    $location_md5 = md5($location)
-    if ($ssl_only != true) {
-      concat::fragment { "${server_sanitized}-${priority}-${location_md5}":
-        target  => $config_file,
-        content => template('nginx/server/location.erb'),
-        order   => $priority,
-      }
+  any2array($server).each |$s| {
+    $server_sanitized = regsubst($s, ' ', '_', 'G')
+    if $nginx::confd_only {
+      $server_dir = "${nginx::conf_dir}/conf.d"
+    } else {
+      $server_dir = "${nginx::conf_dir}/sites-available"
     }
 
-    ## Only create SSL Specific locations if $ssl is true.
-    if ($ssl == true or $ssl_only == true) {
-      $ssl_priority = $priority + 300
+    $config_file = "${server_dir}/${server_sanitized}.conf"
+    if $ensure == 'present' {
+      ## Create stubs for server File Fragment Pattern
+      $location_md5 = md5($location)
+      if ($ssl_only != true) {
+        concat::fragment { "${server_sanitized}-${priority}-${location_md5}":
+          target  => $config_file,
+          content => template('nginx/server/location.erb'),
+          order   => $priority,
+        }
+      }
 
-      concat::fragment { "${server_sanitized}-${ssl_priority}-${location_md5}-ssl":
-        target  => $config_file,
-        content => template('nginx/server/location.erb'),
-        order   => $ssl_priority,
+      ## Only create SSL Specific locations if $ssl is true.
+      if ($ssl == true or $ssl_only == true) {
+        $ssl_priority = $priority + 300
+
+        concat::fragment { "${server_sanitized}-${ssl_priority}-${location_md5}-ssl":
+          target  => $config_file,
+          content => template('nginx/server/location.erb'),
+          order   => $ssl_priority,
+        }
       }
     }
   }

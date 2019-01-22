@@ -78,7 +78,7 @@ class nginx (
   String $fastcgi_cache_max_size                             = '500m',
   Optional[String] $fastcgi_cache_path                       = undef,
   Optional[String] $fastcgi_cache_use_stale                  = undef,
-  Enum['on', 'off'] $gzip                                    = 'on',
+  Enum['on', 'off'] $gzip                                    = 'off',
   $gzip_buffers                                              = undef,
   $gzip_comp_level                                           = 1,
   $gzip_disable                                              = 'msie6',
@@ -129,6 +129,8 @@ class nginx (
   Array $proxy_hide_header                                   = [],
   Array $proxy_pass_header                                   = [],
   Array $proxy_ignore_header                                 = [],
+  Optional[Nginx::Size] $proxy_max_temp_file_size            = undef,
+  Optional[Nginx::Size] $proxy_busy_buffers_size             = undef,
   Enum['on', 'off'] $sendfile                                = 'on',
   Enum['on', 'off'] $server_tokens                           = 'on',
   Enum['on', 'off'] $spdy                                    = 'off',
@@ -151,6 +153,7 @@ class nginx (
   $package_flavor                                            = undef,
   Boolean $manage_repo                                       = $nginx::params::manage_repo,
   Hash[String[1], String[1]] $mime_types                     = $nginx::params::mime_types,
+  Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
   ### END Package Configuration ###
@@ -173,6 +176,7 @@ class nginx (
   $nginx_mailhosts_defaults                                  = {},
   $nginx_streamhosts                                         = {},
   $nginx_upstreams                                           = {},
+  Nginx::UpstreamMemberDefaults $nginx_upstream_defaults     = {},
   $nginx_servers                                             = {},
   $nginx_servers_defaults                                    = {},
   Boolean $purge_passenger_repo                              = true,
@@ -184,7 +188,7 @@ class nginx (
   contain 'nginx::config'
   contain 'nginx::service'
 
-  create_resources('nginx::resource::upstream', $nginx_upstreams)
+  create_resources('nginx::resource::upstream', $nginx_upstreams, $nginx_upstream_defaults)
   create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
   create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
   create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
