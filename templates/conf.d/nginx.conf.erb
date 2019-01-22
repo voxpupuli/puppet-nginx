@@ -217,7 +217,7 @@ http {
 
   include <%= @conf_dir %>/conf.d/*.conf;
 <% unless @confd_only -%>
-  include <%= @conf_dir %>/sites-enabled/*;
+  include <%= @conf_dir %><%= @sites_enabled_path %>;
 <% end -%>
 }
 <% if @mail -%>
@@ -230,7 +230,7 @@ stream {
   <%-# conf.stream.d gets included either way if $stream is enabled -%>
   include <%= @conf_dir %>/conf.stream.d/*.conf;
 <% unless @confd_only -%>
-  include <%= @conf_dir %>/streams-enabled/*;
+  include <%= @conf_dir %><%= @streams_enabled_path %>;
 <% end -%>
 }
 <% end -%>
