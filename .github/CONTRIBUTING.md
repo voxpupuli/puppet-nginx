@@ -51,19 +51,19 @@ You can install all needed gems for spec tests into the modules directory by
 running:
 
 ```sh
-bundle install --path .vendor/ --without development --without system_tests --without release
+bundle install --path .vendor/ --without development system_tests release
 ```
 
 If you also want to run acceptance tests:
 
 ```sh
-bundle install --path .vendor/ --without development --with system_tests --without release
+bundle install --path .vendor/ --with system_tests --without development release
 ```
 
 Our all in one solution if you don't know if you need to install or update gems:
 
 ```sh
-bundle install --path .vendor/ --without development --with system_tests --without release; bundle update; bundle clean
+bundle install --path .vendor/ --with system_tests --without development release; bundle update; bundle clean
 ```
 
 ## Syntax and style
