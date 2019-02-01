@@ -180,7 +180,7 @@ class nginx (
   Hash $nginx_streamhosts                                 = {},
   Hash $nginx_streamhosts_defaults                        = {},
   Hash $nginx_upstreams                                   = {},
-  Nginx::UpstreamMemberDefaults $nginx_upstreams_defaults = {},
+  Nginx::UpstreamDefaults $nginx_upstreams_defaults       = {},
   Boolean $purge_passenger_repo                           = true,
   Boolean $add_listen_directive                           = $nginx::params::add_listen_directive,
 
