@@ -38,7 +38,7 @@ Setting up a simple static webserver is straightforward, but is usually not the 
     server => 'www.myhost.com'
    }
 ```
-This will proxy any requests made to `http://www.myhost.com/blog` to the URL `http://192.168.99.1/`.  Pay special attention to the use of `/` at the end of the URL we are proxying to - that will allow your query parameters or subfolder structure on your secondary webserver to remain intact.  
+This will proxy any requests made to `http://www.myhost.com/blog` to the URL `http://192.168.99.1/`.  Pay special attention to the use of `/` at the end of the URL we are proxying to - that will allow your query parameters or subfolder structure on your secondary webserver to remain intact.
 
 ### Defining Backend Resources
 
@@ -52,7 +52,7 @@ We can expand on these simple proxies by defining *upstream* resources for our w
   }
   ```
   This will define an upstream resource with our server IP of `192.168.99.1`.  To use the upstream in our previous proxy, modify the location block as follows:
-  
+
   ```
     nginx::resource::location{'/blog':
     proxy => 'http://upstream_app/' ,
@@ -87,7 +87,7 @@ Combining our configurations above into a single manifest, our code block looks 
     server => 'www.myhost.com',
 
   }
-```  
+```
 
 In summary, this Puppet code block will:
 * Install the latest version of nginx from the 'mainline' nginx distribution.
