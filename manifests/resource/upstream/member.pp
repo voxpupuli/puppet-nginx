@@ -75,9 +75,10 @@ define nginx::resource::upstream::member (
     default  => "${nginx::config::conf_dir}/conf.d",
   }
 
-  $_server = ($server =~ Pattern[/^unix:\/([^\/\0]+\/*)*$/]) ? {
-    true  => $server,
-    false => "${server}:${port}",
+  $_server = $server ? {
+    Pattern[/^unix:\/([^\/\0]+\/*)*$/] => $server,
+    Stdlib::IP::Address::V6            => "[${server}]:${port}", #lint:ignore:unquoted_string_in_selector
+    default                            => "${server}:${port}",
   }
 
   concat::fragment { "${upstream}_upstream_member_${name}":
