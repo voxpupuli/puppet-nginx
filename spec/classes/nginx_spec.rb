@@ -152,6 +152,16 @@ describe 'nginx' do
             end
           end
 
+          context 'repo_source' do
+            let(:params) { { repo_source: 'https://example.com/nginx' } }
+
+            it do
+              is_expected.to contain_apt__source('nginx').with(
+                'location' => 'https://example.com/nginx'
+              )
+            end
+          end
+
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
 
