@@ -134,6 +134,8 @@ class nginx (
   Enum['on', 'off'] $spdy                                    = 'off',
   Enum['on', 'off'] $http2                                   = 'off',
   Enum['on', 'off'] $ssl_stapling                            = 'off',
+  Stdlib::Absolutepath $snippets_dir                         = $nginx::params::snippets_dir,
+  Boolean $manage_snippets_dir                               = true,
   $types_hash_bucket_size                                    = '512',
   $types_hash_max_size                                       = '1024',
   Integer $worker_connections                                = 1024,
