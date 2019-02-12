@@ -75,7 +75,7 @@ define nginx::resource::upstream::member (
     default  => "${nginx::config::conf_dir}/conf.d",
   }
 
-  $real_server = $server ? {
+  $_server = $server ? {
     Pattern[/^unix:\/([^\/\0]+\/*)*$/] => $server,
     Stdlib::IP::Address::V6            => "[${server}]:${port}", #lint:ignore:unquoted_string_in_selector
     default                            => "${server}:${port}",
@@ -85,7 +85,7 @@ define nginx::resource::upstream::member (
     target  => "${conf_dir}/${upstream}-upstream.conf",
     order   => 40,
     content => epp('nginx/upstream/upstream_member.epp', {
-      real_server    => $real_server,
+      server         => $_server,
       backup         => $backup,
       comment        => $comment,
       fail_timeout   => $fail_timeout,
