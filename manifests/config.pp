@@ -181,6 +181,12 @@ class nginx::config {
     ensure => directory,
   }
 
+  if $nginx::manage_snippets_dir {
+    file { $nginx::snippets_dir:
+      ensure => directory,
+    }
+  }
+
   file { $log_dir:
     ensure => directory,
     mode   => $log_mode,

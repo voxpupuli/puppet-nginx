@@ -22,6 +22,7 @@ class nginx::package::debian {
   $passenger_package_ensure = $nginx::passenger_package_ensure
   $manage_repo              = $nginx::manage_repo
   $release                  = $nginx::repo_release
+  $repo_source              = $nginx::repo_source
 
   $distro = downcase($facts['os']['name'])
 
@@ -36,24 +37,36 @@ class nginx::package::debian {
 
     case $package_source {
       'nginx', 'nginx-stable': {
+        $stable_repo_source = $repo_source ? {
+          undef => "https://nginx.org/packages/${distro}",
+          default => $repo_source,
+        }
         apt::source { 'nginx':
-          location => "https://nginx.org/packages/${distro}",
+          location => $stable_repo_source,
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
           release  => $release,
         }
       }
       'nginx-mainline': {
+        $mainline_repo_source = $repo_source ? {
+          undef => "https://nginx.org/packages/mainline/${distro}",
+          default => $repo_source,
+        }
         apt::source { 'nginx':
-          location => "https://nginx.org/packages/mainline/${distro}",
+          location => $mainline_repo_source,
           repos    => 'nginx',
           key      => {'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62'},
           release  => $release,
         }
       }
       'passenger': {
+        $passenger_repo_source = $repo_source ? {
+          undef => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          default => $repo_source,
+        }
         apt::source { 'nginx':
-          location => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+          location => $passenger_repo_source,
           repos    => 'main',
           key      => {'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7'},
         }

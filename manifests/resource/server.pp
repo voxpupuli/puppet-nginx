@@ -445,7 +445,8 @@ define nginx::resource::server (
   if $ssl {
     # Access and error logs are named differently in ssl template
 
-    concat::fragment { "${name_sanitized}-ssl-header":
+    File <| title == $ssl_cert or path == $ssl_cert or title == $ssl_key or path == $ssl_key |>
+    -> concat::fragment { "${name_sanitized}-ssl-header":
       target  => $config_file,
       content => template('nginx/server/server_ssl_header.erb'),
       order   => '700',

@@ -131,6 +131,7 @@ class nginx::params {
         'daemon_user' => 'www',
         'root_group'  => 'wheel',
         'log_group'   => 'wheel',
+        'log_user'    => 'root',
       }
     }
     'Gentoo': {
@@ -201,6 +202,7 @@ class nginx::params {
 
   ### Referenced Variables
   $conf_dir              = $_module_parameters['conf_dir']
+  $snippets_dir          = "${conf_dir}/snippets"
   $log_dir               = $_module_parameters['log_dir']
   $log_user              = $_module_parameters['log_user']
   $log_group             = $_module_parameters['log_group']

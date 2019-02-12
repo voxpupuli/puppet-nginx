@@ -134,6 +134,8 @@ class nginx (
   Enum['on', 'off'] $spdy                                    = 'off',
   Enum['on', 'off'] $http2                                   = 'off',
   Enum['on', 'off'] $ssl_stapling                            = 'off',
+  Stdlib::Absolutepath $snippets_dir                         = $nginx::params::snippets_dir,
+  Boolean $manage_snippets_dir                               = true,
   $types_hash_bucket_size                                    = '512',
   $types_hash_max_size                                       = '1024',
   Integer $worker_connections                                = 1024,
@@ -154,6 +156,7 @@ class nginx (
   Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
+  Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
@@ -166,19 +169,23 @@ class nginx (
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
-  $geo_mappings                                              = {},
-  $string_mappings                                           = {},
-  $nginx_locations                                           = {},
-  $nginx_locations_defaults                                  = {},
-  $nginx_mailhosts                                           = {},
-  $nginx_mailhosts_defaults                                  = {},
-  $nginx_streamhosts                                         = {},
-  $nginx_upstreams                                           = {},
-  Nginx::UpstreamMemberDefaults $nginx_upstream_defaults     = {},
-  $nginx_servers                                             = {},
-  $nginx_servers_defaults                                    = {},
-  Boolean $purge_passenger_repo                              = true,
-  Boolean $add_listen_directive                              = $nginx::params::add_listen_directive,
+  Hash $geo_mappings                                      = {},
+  Hash $geo_mappings_defaults                             = {},
+  Hash $string_mappings                                   = {},
+  Hash $string_mappings_defaults                          = {},
+  Hash $nginx_locations                                   = {},
+  Hash $nginx_locations_defaults                          = {},
+  Hash $nginx_mailhosts                                   = {},
+  Hash $nginx_mailhosts_defaults                          = {},
+  Hash $nginx_servers                                     = {},
+  Hash $nginx_servers_defaults                            = {},
+  Hash $nginx_streamhosts                                 = {},
+  Hash $nginx_streamhosts_defaults                        = {},
+  Hash $nginx_upstreams                                   = {},
+  Nginx::UpstreamDefaults $nginx_upstreams_defaults       = {},
+  Boolean $purge_passenger_repo                           = true,
+  Boolean $add_listen_directive                           = $nginx::params::add_listen_directive,
+
   ### END Hiera Lookups ###
 ) inherits nginx::params {
 
@@ -186,13 +193,13 @@ class nginx (
   contain 'nginx::config'
   contain 'nginx::service'
 
-  create_resources('nginx::resource::upstream', $nginx_upstreams, $nginx_upstream_defaults)
-  create_resources('nginx::resource::server', $nginx_servers, $nginx_servers_defaults)
-  create_resources('nginx::resource::location', $nginx_locations, $nginx_locations_defaults)
-  create_resources('nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults)
-  create_resources('nginx::resource::streamhost', $nginx_streamhosts)
-  create_resources('nginx::resource::map', $string_mappings)
-  create_resources('nginx::resource::geo', $geo_mappings)
+  create_resources( 'nginx::resource::geo', $geo_mappings, $geo_mappings_defaults )
+  create_resources( 'nginx::resource::location', $nginx_locations, $nginx_locations_defaults )
+  create_resources( 'nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults )
+  create_resources( 'nginx::resource::map', $string_mappings, $string_mappings_defaults )
+  create_resources( 'nginx::resource::server', $nginx_servers, $nginx_servers_defaults )
+  create_resources( 'nginx::resource::streamhost', $nginx_streamhosts, $nginx_streamhosts_defaults )
+  create_resources( 'nginx::resource::upstream', $nginx_upstreams, $nginx_upstreams_defaults )
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through

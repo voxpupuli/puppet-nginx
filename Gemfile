@@ -22,14 +22,12 @@ group :test do
   gem 'puppet-lint-variable_contains_upcase',                       :require => false
   gem 'metadata-json-lint',                                         :require => false
   gem 'redcarpet',                                                  :require => false
-  gem 'rubocop', '~> 0.49.1',                                       :require => false if RUBY_VERSION >= '2.3.0'
-  gem 'rubocop-rspec', '~> 1.15.0',                                 :require => false if RUBY_VERSION >= '2.3.0'
+  gem 'rubocop', '~> 0.49.1',                                       :require => false
+  gem 'rubocop-rspec', '~> 1.15.0',                                 :require => false
   gem 'mocha', '~> 1.4.0',                                          :require => false
   gem 'coveralls',                                                  :require => false
   gem 'simplecov-console',                                          :require => false
-  gem 'rack', '~> 1.0',                                             :require => false if RUBY_VERSION < '2.2.2'
-  gem 'parallel_tests', '2.24.0',                                   :require => false if RUBY_VERSION < '2.2.0'
-  gem 'parallel_tests',                                             :require => false if RUBY_VERSION >= '2.2.0'
+  gem 'parallel_tests',                                             :require => false
 end
 
 group :development do
@@ -57,13 +55,13 @@ group :system_tests do
   gem 'beaker-puppet',                      :require => false
   gem 'beaker-puppet_install_helper',       :require => false
   gem 'beaker-module_install_helper',       :require => false
-  gem 'rbnacl', '>= 4',                     :require => false if RUBY_VERSION >= '2.2.6'
-  gem 'rbnacl-libsodium',                   :require => false if RUBY_VERSION >= '2.2.6'
+  gem 'rbnacl', '>= 4',                     :require => false
+  gem 'rbnacl-libsodium',                   :require => false
   gem 'bcrypt_pbkdf',                       :require => false
 end
 
 group :release do
-  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/github-changelog-generator/github-changelog-generator' if RUBY_VERSION >= '2.2.2'
+  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/github-changelog-generator/github-changelog-generator'
   gem 'puppet-blacksmith',           :require => false
   gem 'voxpupuli-release',           :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem'
   gem 'puppet-strings', '>= 1.0',    :require => false
@@ -77,7 +75,7 @@ else
   gem 'facter', :require => false, :groups => [:test]
 end
 
-ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 5.0' : puppetversion = ENV['PUPPET_VERSION'].to_s
+ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 6.0' : puppetversion = ENV['PUPPET_VERSION'].to_s
 gem 'puppet', puppetversion, :require => false, :groups => [:test]
 
 # vim: syntax=ruby

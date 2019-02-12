@@ -296,6 +296,14 @@ describe 'nginx::resource::upstream' do
                 match: '127.0.0.1:8080;'
               },
               {
+                value: { member1: { server: '2001:db8::1' } },
+                match: '[2001:db8::1]:80;'
+              },
+              {
+                value: { member1: { server: '2001:db8::1', port: 8080 } },
+                match: '[2001:db8::1]:8080;'
+              },
+              {
                 value: { member1: { weight: 20 } },
                 match: 'member1:80 weight=20;'
               },

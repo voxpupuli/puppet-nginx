@@ -4,32 +4,53 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v0.16.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.16.0) (2018-12-28)
+## [v0.16.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.16.0) (2019-02-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.15.0...v0.16.0)
+
+**Breaking changes:**
+
+- modulesync 2.5.1 and drop Puppet 4 [\#1308](https://github.com/voxpupuli/puppet-nginx/pull/1308) ([bastelfreak](https://github.com/bastelfreak))
+- Add hiera defaults configuration options for all resources; rename $nginx\_upstream\_defaults to $nginx\_upstreams\_defaults [\#1080](https://github.com/voxpupuli/puppet-nginx/pull/1080) ([mvisonneau](https://github.com/mvisonneau))
 
 **Implemented enhancements:**
 
 - Feature\_request: Add proxy\_max\_temp\_file\_size and proxy\_busy\_buffers\_size to parameter list [\#1176](https://github.com/voxpupuli/puppet-nginx/issues/1176)
+- Feature request: assign nginx location to multiple servers [\#1135](https://github.com/voxpupuli/puppet-nginx/issues/1135)
+- Same location on multiple vhosts [\#644](https://github.com/voxpupuli/puppet-nginx/issues/644)
+- add repo\_source for custom Debian repo [\#1298](https://github.com/voxpupuli/puppet-nginx/pull/1298) ([elfranne](https://github.com/elfranne))
+- Automatically require SSL cert files in the server [\#1296](https://github.com/voxpupuli/puppet-nginx/pull/1296) ([ekohl](https://github.com/ekohl))
 - Update smartos support [\#1290](https://github.com/voxpupuli/puppet-nginx/pull/1290) ([joelgarboden](https://github.com/joelgarboden))
 - Allow multiple servers per location [\#1278](https://github.com/voxpupuli/puppet-nginx/pull/1278) ([SaschaDoering](https://github.com/SaschaDoering))
 - Add autoindex to ssl\_header too [\#1275](https://github.com/voxpupuli/puppet-nginx/pull/1275) ([bc-bjoern](https://github.com/bc-bjoern))
 - allow adding custom mime types while still using the module defaults [\#1268](https://github.com/voxpupuli/puppet-nginx/pull/1268) ([bryangwilliam](https://github.com/bryangwilliam))
 - Introduce two new optional proxy parameters [\#1256](https://github.com/voxpupuli/puppet-nginx/pull/1256) ([ruriky](https://github.com/ruriky))
+- initial support for snippets [\#1231](https://github.com/voxpupuli/puppet-nginx/pull/1231) ([bryangwilliam](https://github.com/bryangwilliam))
 
 **Fixed bugs:**
 
+- overwrite FreeBSD and DragonFlyBSD log\_user [\#1312](https://github.com/voxpupuli/puppet-nginx/pull/1312) ([olevole](https://github.com/olevole))
+- Fix `$nginx\_upstreams\_defaults` type [\#1309](https://github.com/voxpupuli/puppet-nginx/pull/1309) ([saz](https://github.com/saz))
+- enable ensure switch on streams-available/\* files [\#1306](https://github.com/voxpupuli/puppet-nginx/pull/1306) ([aleksmark](https://github.com/aleksmark))
+- Fix IPv6 adresses in upstream members [\#1300](https://github.com/voxpupuli/puppet-nginx/pull/1300) ([silkeh](https://github.com/silkeh))
+- dont deploy "ssl on" on nginx 1.15 or newer \(for mailhost\) [\#1281](https://github.com/voxpupuli/puppet-nginx/pull/1281) ([rhykw](https://github.com/rhykw))
 - update location of passenger repo gpgkey [\#1277](https://github.com/voxpupuli/puppet-nginx/pull/1277) ([pauljflo](https://github.com/pauljflo))
 - Fix the condition for upstream members [\#1276](https://github.com/voxpupuli/puppet-nginx/pull/1276) ([SaschaDoering](https://github.com/SaschaDoering))
 
 **Closed issues:**
 
+- Streamhost resource does not remove the file [\#1304](https://github.com/voxpupuli/puppet-nginx/issues/1304)
+- IPv6 upstream members produce invalid configuration [\#1299](https://github.com/voxpupuli/puppet-nginx/issues/1299)
+- Is there a way to only create an entry if the cert exists? [\#1295](https://github.com/voxpupuli/puppet-nginx/issues/1295)
+- \[warn\] the "ssl" directive is deprecated, use the "listen ... ssl" directive instead \(mailhost\) [\#1284](https://github.com/voxpupuli/puppet-nginx/issues/1284)
 - Error pages on location level \[help\] [\#1279](https://github.com/voxpupuli/puppet-nginx/issues/1279)
 -  "location" directive is not allowed here in /etc/nginx/sites-enabled/example.mydomain.com.conf:2 [\#1271](https://github.com/voxpupuli/puppet-nginx/issues/1271)
 - Nginx::Resource::Server: has no parameter named 'proxy\_send\_timeout' [\#1186](https://github.com/voxpupuli/puppet-nginx/issues/1186)
 
 **Merged pull requests:**
 
+- simplify travis helper [\#1311](https://github.com/voxpupuli/puppet-nginx/pull/1311) ([bastelfreak](https://github.com/bastelfreak))
+- Param server might also be a default upstream param [\#1310](https://github.com/voxpupuli/puppet-nginx/pull/1310) ([saz](https://github.com/saz))
 - change rights for sites-enabled, streams-available [\#1289](https://github.com/voxpupuli/puppet-nginx/pull/1289) ([danwerspb](https://github.com/danwerspb))
 - Update documentation and examples associated with adding upstream parameters [\#1273](https://github.com/voxpupuli/puppet-nginx/pull/1273) ([alexskr](https://github.com/alexskr))
 
