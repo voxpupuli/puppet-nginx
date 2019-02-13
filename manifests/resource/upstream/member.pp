@@ -85,7 +85,7 @@ define nginx::resource::upstream::member (
     target  => "${conf_dir}/${upstream}-upstream.conf",
     order   => 40,
     content => epp('nginx/upstream/upstream_member.epp', {
-      _server        => $_server,
+      server         => $_server,
       backup         => $backup,
       comment        => $comment,
       fail_timeout   => $fail_timeout,

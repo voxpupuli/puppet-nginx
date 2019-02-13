@@ -1,5 +1,5 @@
 type Nginx::UpstreamMember = Struct[{
-  server         => Optional[Nginx::UpstreamMemberServer], 
+  server         => Optional[Nginx::UpstreamMemberServer],
   port           => Optional[Stdlib::Port],
   weight         => Optional[Integer[1]],
   max_conns      => Optional[Integer[1]],
