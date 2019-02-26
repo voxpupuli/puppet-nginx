@@ -113,6 +113,9 @@ http {
 <% if @gzip_static == 'on' -%>
   gzip_static       on;
 <% end -%>
+<% if @gzip_static == 'always' -%>
+  gzip_static       always;
+<% end -%>
 <% if @gzip == 'on' -%>
   gzip              on;
 <% if @gzip_buffers -%>
