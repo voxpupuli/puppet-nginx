@@ -104,6 +104,7 @@ class nginx (
   $gzip_proxied                                              = 'off',
   $gzip_types                                                = undef,
   Enum['on', 'off'] $gzip_vary                               = 'off',
+  Optional[Enum['on', 'off', 'always']] $gzip_static         = undef,
   Optional[Variant[Hash, Array]] $http_cfg_prepend           = undef,
   Optional[Variant[Hash, Array]] $http_cfg_append            = undef,
   Optional[Variant[Array[String], String]] $http_raw_prepend = undef,

@@ -1470,6 +1470,20 @@ describe 'nginx' do
               )
             end
           end
+
+          context 'when gzip_static is non-default set gzip_static' do
+            let(:params) do
+              {
+                gzip_static: 'on'
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_static       on;}
+              )
+            end
+          end
         end
       end
     end
