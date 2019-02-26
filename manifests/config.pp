@@ -72,6 +72,7 @@ class nginx::config {
   $gzip_proxied                   = $nginx::gzip_proxied
   $gzip_types                     = $nginx::gzip_types
   $gzip_vary                      = $nginx::gzip_vary
+  $gzip_static                      = $nginx::gzip_static
   $http_raw_prepend               = $nginx::http_raw_prepend
   $http_raw_append                = $nginx::http_raw_append
   $http_cfg_prepend               = $nginx::http_cfg_prepend

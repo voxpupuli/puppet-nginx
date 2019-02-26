@@ -110,6 +110,9 @@ http {
   etag <%= @etag %>;
 
 <% end -%>
+<% if @gzip_static == 'on' -%>
+  gzip_static       on;
+<% end -%>
 <% if @gzip == 'on' -%>
   gzip              on;
 <% if @gzip_buffers -%>
