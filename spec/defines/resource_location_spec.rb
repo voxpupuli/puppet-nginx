@@ -451,6 +451,21 @@ describe 'nginx::resource::location' do
           end
         end
 
+        describe 'server_location_gzip template content' do
+          let :params do
+            {
+              location: 'location',
+              server: 'server1',
+              gzip_static: 'on'
+            }
+          end
+
+          it 'contain gzip_static if set' do
+            is_expected.to contain_concat__fragment('server1-500-' + Digest::MD5.hexdigest('location')).
+              with_content(%r{^\s+gzip_static\s+on;$})
+          end
+        end
+
         describe 'server_location_directory template content' do
           let :default_params do
             {

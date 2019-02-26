@@ -234,6 +234,18 @@ describe 'nginx::resource::server' do
               match: %r{^\s+gzip_types\s+value;}
             },
             {
+              title: 'should not set the gzip_static',
+              attr: 'gzip_static',
+              value: :undef,
+              notmatch: 'gzip_static'
+            },
+            {
+              title: 'should set the gzip_static',
+              attr: 'gzip_static',
+              value: 'on',
+              match: %r{^\s+gzip_static\s+on;}
+            },
+            {
               title: 'should contain raw_prepend directives',
               attr: 'raw_prepend',
               value: [

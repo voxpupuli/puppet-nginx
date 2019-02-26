@@ -122,6 +122,7 @@
 #     used for flv streaming. Default: false
 #   [*expires*]         - Setup expires time for locations content
 #   [*add_header*]      - Hash: Adds headers to the location block.  If any are specified, locations will no longer inherit headers from the parent server context
+#   [*gzip_static*]     - Defines gzip_static, nginx default is off
 #   [*access_log*]      - disable or override the logging in access_log (log format can be set with $format_log)
 #   [*error_log*]       - override the error_log for this location
 #   [*log_not_found*]   - enable or disable the logging of not found errors in error_log
@@ -259,6 +260,7 @@ define nginx::resource::location (
   Boolean $flv                                                     = false,
   Optional[String] $expires                                        = undef,
   Hash $add_header                                                 = {},
+  Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
   $format_log                                                      = 'combined',
   $error_level                                                     = 'error',
   Optional[Enum['on', 'off']] $log_not_found                       = undef,
@@ -266,7 +268,7 @@ define nginx::resource::location (
   Optional[Variant[Array, String]] $error_log                      = undef
 ) {
 
-  if !defined(Class['nginx']) {
+  if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
 
@@ -292,8 +294,7 @@ define nginx::resource::location (
   # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
   # fastcgi_script is deprecated
   if ($fastcgi_script != undef) {
-    warning(
-      'The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
+    warning('The $fastcgi_script parameter is deprecated; please use $fastcgi_param instead to define custom fastcgi_params!')
   }
 
   # Only try to manage these files if they're the default one (as you presumably
