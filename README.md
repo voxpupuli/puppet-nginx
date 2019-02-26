@@ -236,7 +236,7 @@ nginx::nginx_streamhosts:
 
 nginx::nginx_upstreams:
   'syslog':
-    upstream_context: 'stream'
+    context: 'stream'
     members:
       '10.0.0.1:514'
         server: '10.0.0.1'
