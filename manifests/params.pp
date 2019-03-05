@@ -107,7 +107,7 @@ class nginx::params {
       }
     }
     'Debian': {
-      if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial'])
+      if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial', 'bionic'])
       or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['6', '7', '8', '9']) {
         $_module_os_overrides = {
           'manage_repo' => true,
