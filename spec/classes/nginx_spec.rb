@@ -974,9 +974,15 @@ describe 'nginx' do
           context 'when conf_dir is /path/to/nginx' do
             let(:params) { { conf_dir: '/path/to/nginx' } }
 
-            it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       /path/to/nginx/mime\.types;}) }
+            it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       mime\.types;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/conf\.d/\*\.conf;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/sites-enabled/\*;}) }
+          end
+
+          context 'when mime_types_path is /path/to/mime.types' do
+            let(:params) { { mime_types_path: '/path/to/mime.types' } }
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{include       /path/to/mime\.types;}) }
           end
 
           context 'when confd_purge true' do
