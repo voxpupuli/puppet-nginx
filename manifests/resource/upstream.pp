@@ -36,7 +36,7 @@
 #    members => {
 #      'localhost:3001' => {
 #        server => 'localhost',
-#        port   => 3000,
+#        port   => 3001,
 #      },
 #      'localhost:3002' => {
 #        server => 'localhost',
@@ -56,7 +56,7 @@
 #    members   => {
 #      'localhost:3001' => {
 #        server => 'localhost',
-#        port   => 3000,
+#        port   => 3001,
 #      },
 #      'localhost:3002' => {
 #        server => 'localhost',
