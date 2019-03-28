@@ -96,6 +96,7 @@ class nginx (
   $keepalive_requests                                        = '100',
   $log_format                                                = {},
   Boolean $mail                                              = false,
+  Variant[String, Boolean] $mime_types_path                  = 'mime.types',
   Boolean $stream                                            = false,
   String $multi_accept                                       = 'off',
   Integer $names_hash_bucket_size                            = 64,

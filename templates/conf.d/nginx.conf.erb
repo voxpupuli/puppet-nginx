@@ -59,7 +59,9 @@ http {
   <%- end -%>
   <%- end -%>
 <% end -%>
-  include       <%= @conf_dir %>/mime.types;
+<% if @mime_types_path.is_a? String and @mime_types_path.empty? == false -%>
+  include       <%= @mime_types_path %>;
+<% end -%>
   default_type  application/octet-stream;
 <% if @log_format -%>
 <% @log_format.sort_by{|k,v| k}.each do |key,value| -%>

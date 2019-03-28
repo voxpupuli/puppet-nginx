@@ -82,6 +82,7 @@ class nginx::config {
   $keepalive_requests             = $nginx::keepalive_requests
   $log_format                     = $nginx::log_format
   $mail                           = $nginx::mail
+  $mime_types_path                = $nginx::mime_types_path
   $stream                         = $nginx::stream
   $mime_types                     = $nginx::mime_types_preserve_defaults ? {
     true    => merge($nginx::params::mime_types,$nginx::mime_types),
