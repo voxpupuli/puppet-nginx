@@ -4,6 +4,6 @@
 # managed by the nginx class.
 node default {
   notify { 'before': }
-  -> class { '::nginx': }
+  -> class { 'nginx': }
   -> notify { 'last': }
 }
