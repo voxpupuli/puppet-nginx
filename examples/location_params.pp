@@ -1,6 +1,6 @@
-include ::nginx
+include nginx
 
-::nginx::resource::location { 'www.test.com-params':
+nginx::resource::location { 'www.test.com-params':
     ensure        => present,
     location      => '/some/url',
     server        => 'www.test.com',
