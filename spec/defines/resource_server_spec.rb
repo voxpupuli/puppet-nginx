@@ -370,6 +370,64 @@ describe 'nginx::resource::server' do
               end
             end
           end
+
+          context 'with a naked domain title' do
+            let(:title) { 'rspec.example.com' }
+
+            [
+              {
+                title: 'should not contain non-www to www rewrite',
+                attr: 'rewrite_non_www_to_www',
+                value: false,
+                notmatch: %r{
+                ^
+                \s+server_name\s+rspec\.example\.com;\n
+                \s+return\s+301\s+http://www\.rspec\.example\.com\$request_uri;
+                }x
+              },
+              {
+                title: 'should contain non-www to www rewrite',
+                attr: 'rewrite_non_www_to_www',
+                value: true,
+                match: %r{
+                ^
+                \s+server_name\s+rspec\.example\.com;\n
+                \s+return\s+301\s+http://www\.rspec\.example\.com\$request_uri;
+                }x
+              },
+              {
+                title: 'should rewrite non-www servername to www',
+                attr: 'rewrite_non_www_to_www',
+                value: true,
+                match: %r{\s+server_name\s+www.rspec.example.com;}
+              },
+              {
+                title: 'should not rewrite non-www servername to www',
+                attr: 'rewrite_non_www_to_www',
+                value: false,
+                notmatch: %r{\s+server_name\s+www.rspec.example.com;}
+              }
+            ].each do |param|
+              context "when #{param[:attr]} is #{param[:value]}" do
+                let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
+
+                it { is_expected.to contain_concat__fragment("#{title}-header") }
+                it param[:title] do
+                  matches = Array(param[:match])
+
+                  if matches.all? { |m| m.is_a? Regexp }
+                    matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  else
+                    lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
+                    expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+                  end
+                  Array(param[:notmatch]).each do |item|
+                    is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+                  end
+                end
+              end
+            end
+          end
         end
 
         describe 'server_footer template content' do
@@ -413,6 +471,40 @@ describe 'nginx::resource::server' do
                 '}'
               ],
               match: %r{^\s+if \(a\) \{\n\s++b;\n\s+\}}
+            }
+          ].each do |param|
+            context "when #{param[:attr]} is #{param[:value]}" do
+              let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
+
+              it { is_expected.to contain_concat__fragment("#{title}-footer") }
+              it param[:title] do
+                matches = Array(param[:match])
+
+                if matches.all? { |m| m.is_a? Regexp }
+                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
+                else
+                  lines = catalogue.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
+                  expect(lines & Array(param[:match])).to eq(Array(param[:match]))
+                end
+                Array(param[:notmatch]).each do |item|
+                  is_expected.to contain_concat__fragment("#{title}-footer").without_content(item)
+                end
+              end
+            end
+          end
+        end
+
+        context 'with a naked domain title' do
+          [
+            {
+              title: 'should not contain non-www to www rewrite',
+              attr: 'rewrite_non_www_to_www',
+              value: false,
+              notmatch: %r{
+              ^
+              \s+server_name\s+rspec\.example\.com;\n
+              \s+return\s+301\s+https://www\.rspec\.example\.com\$request_uri;
+              }x
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
