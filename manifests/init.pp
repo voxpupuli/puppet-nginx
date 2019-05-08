@@ -24,6 +24,14 @@
 # node default {
 #   include nginx
 # }
+#
+# @param nginx_version
+#   The version of nginx installed (or being installed).
+#   Unfortunately, different versions of nginx may need configuring
+#   differently.  The default is derived from the version of nginx
+#   already installed.  If the fact is unavailable, it defaults to '1.6.0'.
+#   You may need to set this manually to get a working and idempotent
+#   configuration.
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,
@@ -185,7 +193,7 @@ class nginx (
   Hash $nginx_upstreams                                   = {},
   Nginx::UpstreamDefaults $nginx_upstreams_defaults       = {},
   Boolean $purge_passenger_repo                           = true,
-  Boolean $add_listen_directive                           = $nginx::params::add_listen_directive,
+  String[1] $nginx_version                                = pick(fact('nginx_version'), '1.6.0'),
 
   ### END Hiera Lookups ###
 ) inherits nginx::params {

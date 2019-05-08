@@ -1,4 +1,4 @@
-<% if @add_listen_directive -%>
+<% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) < 0 -%>
   ssl on;
 <% end -%>
 <% if @ssl_cert -%>
