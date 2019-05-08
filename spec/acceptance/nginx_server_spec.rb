@@ -69,7 +69,8 @@ describe 'nginx::resource::server define:' do
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
       it { is_expected.to be_file }
-      it { is_expected.to contain 'ssl on;' }
+      it { is_expected.not_to contain 'ssl on;' } # As of nginx 1.15 (1.16 stable), this will not be set.
+      it { is_expected.to contain 'listen       *:443 ssl;' }
     end
 
     describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
