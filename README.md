@@ -144,6 +144,13 @@ To create only a HTTPS server, set `ssl => true` and also set `listen_port` to t
 same value as `ssl_port`. Setting these to the same value disables the HTTP server.
 The resulting server will be listening on `ssl_port`.
 
+### Idempotency with nginx 1.15.0 and later
+
+By default, this module might configure the deprecated `ssl on` directive.  When
+you next run puppet, this will be removed since the `nginx_version` fact will now
+be available. To avoid this idempotency issue, you can manually set the base
+class's `nginx_version` parameter.
+
 ### Locations
 
 Locations require specific settings depending on whether they should be included
