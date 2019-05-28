@@ -15,6 +15,10 @@
     {
       "name": "puppetlabs/concat",
       "version_requirement": ">= 3.0.0 < 6.0.0"
+    },
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 3.0.0"
     }
   ],
   "requirements": [
