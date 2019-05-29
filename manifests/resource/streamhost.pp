@@ -8,8 +8,7 @@
 #   [*listen_ip*]           - Default IP Address for NGINX to listen with this
 #     streamhost on. Defaults to all interfaces (*)
 #   [*listen_port*]         - Default IP Port for NGINX to listen with this
-#     streamhost on. Defaults to TCP 80. It can be a port or a port range
-#     (eg. '8081-8085').
+#     streamhost on. Defaults to TCP 80.
 #   [*listen_port_range*]   - From Nginx 1.15.10, support for port 
 #     ranges was added (eg. '8081-8085').
 #   [*listen_options*]      - Extra options for listen directive like
