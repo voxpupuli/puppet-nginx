@@ -326,7 +326,7 @@ define nginx::resource::server (
   if $listen_port_range != undef {
     $port = $listen_port_range
   }
-  else{
+  else {
     $port = $listen_port
   }
 
