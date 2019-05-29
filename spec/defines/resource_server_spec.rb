@@ -128,13 +128,13 @@ describe 'nginx::resource::server' do
             {
               title: 'should set the IPv6 listen port',
               attr: 'ipv6_listen_port_range',
-              value: 45-50,
+              value: '45-50',
               match: %r{\s+listen\s+\[::\]:45-50 default ipv6only=on;}
             },
             {
               title: 'should set the IPv4 listen port range',
               attr: 'listen_port_range',
-              value: 45-50,
+              value: '45-50',
               match: %r{\s+listen\s+\*:45-50;}
             },
             {
