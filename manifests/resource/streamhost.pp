@@ -73,7 +73,7 @@ define nginx::resource::streamhost (
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
-  
+
   if $listen_port_range != undef {
     $port = $listen_port_range
   }
