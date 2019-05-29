@@ -2,9 +2,9 @@
   <%- if @ipv6_enable -%>
     <%- if @ipv6_listen_ip.is_a?(Array) then -%>
       <%- @ipv6_listen_ip.each do |ipv6| -%>
-  listen [<%= ipv6 %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
+  listen [<%= ipv6 %>]:<%= @ipv6_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
       <%- end -%>
     <%- else -%>
-  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
+  listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
     <%- end -%>
   <%- end -%>
