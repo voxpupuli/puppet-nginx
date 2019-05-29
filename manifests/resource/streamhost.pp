@@ -21,6 +21,8 @@
 #     this streamhost on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this
 #     streamhost on. Defaults to TCP 80
+#   [*ipv6_listen_port_range*]   - From Nginx 1.15.10, support for port 
+#     ranges was added (eg. '8081-8085').
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
 #     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
@@ -50,24 +52,25 @@
 #    ensure   => present,
 #  }
 define nginx::resource::streamhost (
-  Enum['absent', 'present'] $ensure             = 'present',
-  Variant[Array, String] $listen_ip             = '*',
-  Integer $listen_port                          = 80,
-  Optional[Nginx::PortRange] $listen_port_range = undef,
-  Optional[String] $listen_options              = undef,
-  Boolean $ipv6_enable                          = false,
-  Variant[Array, String] $ipv6_listen_ip        = '::',
-  Integer $ipv6_listen_port                     = 80,
-  String $ipv6_listen_options                   = 'default ipv6only=on',
-  $proxy                                        = undef,
-  String $proxy_read_timeout                    = $nginx::proxy_read_timeout,
-  $proxy_connect_timeout                        = $nginx::proxy_connect_timeout,
-  Array $resolver                               = [],
-  $raw_prepend                                  = undef,
-  $raw_append                                   = undef,
-  String $owner                                 = $nginx::global_owner,
-  String $group                                 = $nginx::global_group,
-  String $mode                                  = $nginx::global_mode,
+  Enum['absent', 'present'] $ensure                  = 'present',
+  Variant[Array, String] $listen_ip                  = '*',
+  Integer $listen_port                               = 80,
+  Optional[Nginx::PortRange] $listen_port_range      = undef,
+  Optional[String] $listen_options                   = undef,
+  Boolean $ipv6_enable                               = false,
+  Variant[Array, String] $ipv6_listen_ip             = '::',
+  Integer $ipv6_listen_port                          = 80,
+  Optional[Nginx::PortRange] $ipv6_listen_port_range = undef,
+  String $ipv6_listen_options                        = 'default ipv6only=on',
+  $proxy                                             = undef,
+  String $proxy_read_timeout                         = $nginx::proxy_read_timeout,
+  $proxy_connect_timeout                             = $nginx::proxy_connect_timeout,
+  Array $resolver                                    = [],
+  $raw_prepend                                       = undef,
+  $raw_append                                        = undef,
+  String $owner                                      = $nginx::global_owner,
+  String $group                                      = $nginx::global_group,
+  String $mode                                       = $nginx::global_mode,
 ) {
 
   if ! defined(Class['nginx']) {
