@@ -321,7 +321,7 @@ define nginx::resource::server (
       fail('nginx: ssl_key must be set to false or to a fully qualified path')
     }
   }
-  
+
   # If port range is defined, ignore any other $listen_port defined
   if $listen_port_range != undef {
     $port = $listen_port_range
@@ -329,7 +329,7 @@ define nginx::resource::server (
   else{
     $port = $listen_port
   }
-  
+
   if $ipv6_enable == true{
     if $ipv6_listen_port_range != undef {
       $ipv6_port = $ipv6_listen_port_range
