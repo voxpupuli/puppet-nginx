@@ -485,7 +485,7 @@ describe 'nginx::resource::mailhost' do
               title: 'should set the IPv4 SSL listen port',
               attr: 'ssl_port',
               value: 45,
-              match: '  listen                *:45 ssl;'
+              match: '  listen                *:45;'
             },
             {
               title: 'should enable IPv6',
@@ -597,6 +597,41 @@ describe 'nginx::resource::mailhost' do
                   lines = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
+              end
+            end
+          end
+          context 'on nginx 1.16' do
+            let(:params) do
+              {
+                listen_port: 25,
+                ssl_port: 587,
+                ipv6_enable: true,
+                ssl: true,
+                ssl_protocols: 'default-protocols',
+                ssl_ciphers: 'default-ciphers',
+                ssl_cert: 'dummy.crt',
+                ssl_key: 'dummy.key'
+              }
+            end
+
+            context 'when version comes from fact' do
+              let(:facts) do
+                facts.merge(nginx_version: '1.16.0')
+              end
+
+              let(:pre_condition) { ['include ::nginx'] }
+
+              it 'has `ssl` at end of listen directive' do
+                content = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content]
+                expect(content).to include('listen                *:587 ssl;')
+              end
+            end
+            context 'when version comes from parameter' do
+              let(:pre_condition) { ['class { "nginx": nginx_version => "1.16.0"}'] }
+
+              it 'also has `ssl` at end of listen directive' do
+                content = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content]
+                expect(content).to include('listen                *:587 ssl;')
               end
             end
           end
