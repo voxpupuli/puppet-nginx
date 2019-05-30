@@ -247,13 +247,13 @@ nginx::nginx_upstreams:
     members:
       '10.0.0.1:514':
         server: '10.0.0.1'
-        port: '514'
+        port: 514
       '10.0.0.2:514':
         server: '10.0.0.2'
-        port: '514'
+        port: 514
       '10.0.0.3:514':
         server: '10.0.0.3'
-        port: '514'
+        port: 514
 ```
 
 ## Nginx with precompiled Passenger
