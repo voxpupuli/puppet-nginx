@@ -226,6 +226,9 @@ nginx::nginx_mailhosts:
 ### A stream syslog UDP proxy
 
 ```yaml
+
+nginx::stream: true
+
 nginx::nginx_cfg_prepend:
   include:
     - '/etc/nginx/modules-enabled/*.conf'
