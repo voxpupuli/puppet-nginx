@@ -243,6 +243,7 @@ class nginx::params {
   $sites_available_owner   = 'root'
   $sites_available_group   = $_module_parameters['root_group']
   $sites_available_mode    = '0644'
+  $stream_access_log_file  = 'stream-access.log'
   $super_user              = true
   ### END Referenced Variables
 }
