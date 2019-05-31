@@ -326,5 +326,20 @@ stream {
 <% unless @confd_only -%>
   include <%= @conf_dir %>/streams-enabled/*;
 <% end -%>
+
+<% if @stream_log_format -%>
+<% @stream_log_format.sort_by{|k,v| k}.each do |key,value| -%>
+  stream_log_format <%= key %> '<%= value %>';
+<% end -%>
+<% end -%>
+
+<% if @stream_access_log.is_a?(Array) -%>
+  <%- @stream_access_log.each do |log_item| -%>
+  access_log <%= log_item %><% if @stream_format_log %> <%= @stream_format_log%><% end %>;
+  <%- end -%>
+<% else -%>
+  access_log <%= @stream_access_log %><% if @stream_format_log %> <%= @stream_format_log%><% end %>;
+<% end -%>
+
 }
 <% end -%>

@@ -222,6 +222,7 @@ class nginx::params {
   $global_group            = $_module_parameters['root_group']
   $global_mode             = '0644'
   $http_access_log_file    = 'access.log'
+  $stream_access_log_file  = 'stream-access.log'
   $manage_repo             = $_module_parameters['manage_repo']
   $mime_types              = $_module_parameters['mime_types']
   $nginx_error_log_file    = 'error.log'
