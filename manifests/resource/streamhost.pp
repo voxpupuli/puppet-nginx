@@ -20,7 +20,7 @@
 #     this streamhost on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this
 #     streamhost on. Defaults to TCP 80
-#   [*ipv6_listen_port_range*]   - From Nginx 1.15.10, support for port 
+#   [*ipv6_listen_port_range*] - From Nginx 1.15.10, support for port 
 #     ranges was added (eg. '8081-8085').
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
