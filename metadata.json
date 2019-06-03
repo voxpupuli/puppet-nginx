@@ -9,12 +9,12 @@
   "issues_url": "https://github.com/voxpupuli/puppet-nginx/issues",
   "dependencies": [
     {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 5.0.0 < 7.0.0"
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 4.1.0 < 7.0.0"
     },
     {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">= 3.0.0 < 6.0.0"
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ],
   "requirements": [
