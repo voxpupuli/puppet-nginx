@@ -321,16 +321,29 @@ define nginx::resource::server (
   }
 
   # If port range is defined, ignore any other $listen_port defined
-  if $listen_port_range != undef {
+  if versioncmp(fact('nginx_version'), '1.15.10') < 0 {
+    $port_range_support = false
+  }
+  else{
+    $port_range_support = true
+  }
+
+  if ($listen_port_range != undef) and ($port_range_support == true) {
     $port = $listen_port_range
   }
-  else {
+  elsif ($listen_port_range != undef) and ($port_range_support == false) {
+    fail('nginx: this version of nginx does not support port ranges (must be >= 1.15.10)')
+  }
+  else{
     $port = $listen_port
   }
 
   if $ipv6_enable == true{
-    if $ipv6_listen_port_range != undef {
+    if ($ipv6_listen_port_range != undef) and ($port_range_support == true) {
       $ipv6_port = $ipv6_listen_port_range
+    }
+    elsif ($ipv6_listen_port_range != undef) and ($port_range_support == false) {
+      fail('nginx: this version of nginx does not support port ranges (must be >= 1.15.10)')
     }
     else {
       $ipv6_port = $ipv6_listen_port
