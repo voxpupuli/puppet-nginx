@@ -9,7 +9,7 @@
 #     streamhost on. Defaults to all interfaces (*)
 #   [*listen_port*]         - Default IP Port for NGINX to listen with this
 #     streamhost on. Defaults to TCP 80.
-#   [*listen_port_range*]   - From Nginx 1.15.10, support for port 
+#   [*listen_port_range*]   - From Nginx 1.15.10, support for port
 #     ranges was added (eg. '8081-8085').
 #   [*listen_options*]      - Extra options for listen directive like
 #     'default' to catchall. Undef by default.
@@ -20,7 +20,7 @@
 #     this streamhost on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this
 #     streamhost on. Defaults to TCP 80
-#   [*ipv6_listen_port_range*] - From Nginx 1.15.10, support for port 
+#   [*ipv6_listen_port_range*] - From Nginx 1.15.10, support for port
 #     ranges was added (eg. '8081-8085').
 #   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
 #     to catchall. Template will allways add ipv6only=on. While issue
@@ -77,32 +77,17 @@ define nginx::resource::streamhost (
   }
 
   # If port range is defined, ignore any other $listen_port defined
-  if versioncmp(fact('nginx_version'), '1.15.10') < 0 {
-    $port_range_support = false
-  }
-  else{
-    $port_range_support = true
-  }
-
-  if ($listen_port_range != undef) and ($port_range_support == true) {
-    $port = $listen_port_range
-  }
-  elsif ($listen_port_range != undef) and ($port_range_support == false) {
-    fail('nginx: this version of nginx does not support port ranges (must be >= 1.15.10)')
-  }
-  else {
+  if versioncmp($facts['nginx_version'], '1.15.10') < 0 {
     $port = $listen_port
-  }
 
-  if $ipv6_enable == true{
-    if ($ipv6_listen_port_range != undef) and ($port_range_support == true)  {
-      $ipv6_port = $ipv6_listen_port_range
-    }
-    elsif ($ipv6_listen_port_range != undef) and ($port_range_support == false) {
-      fail('nginx: this version of nginx does not support port ranges (must be >= 1.15.10)')
-    }
-    else {
+    if $ipv6_enable == true {
       $ipv6_port = $ipv6_listen_port
+    }
+  } else {
+    $port = pick_default($listen_port_range, $listen_port)
+
+    if $ipv6_enable == true {
+      $ipv6_port = pick_default($ipv6_listen_port_range, $ipv6_listen_port)
     }
   }
 
