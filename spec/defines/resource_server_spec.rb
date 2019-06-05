@@ -458,13 +458,6 @@ describe 'nginx::resource::server' do
               )
             end
 
-            context 'without a value for the nginx_version fact do' do
-              let :facts do
-                facts[:nginx_version] ? facts.delete(:nginx_version) : facts
-              end
-
-              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
-            end
             context 'with fact nginx_version=1.14.1' do
               let(:facts) { facts.merge(nginx_version: '1.14.1') }
 
