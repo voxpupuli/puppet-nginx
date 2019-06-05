@@ -136,6 +136,7 @@ describe 'nginx::resource::streamhost' do
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
+              let(:facts) { facts.merge(nginx_version: '1.15.0') }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
               it param[:title] do
