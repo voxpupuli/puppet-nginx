@@ -226,6 +226,9 @@ nginx::nginx_mailhosts:
 ### A stream syslog UDP proxy
 
 ```yaml
+
+nginx::stream: true
+
 nginx::nginx_cfg_prepend:
   include:
     - '/etc/nginx/modules-enabled/*.conf'
@@ -245,15 +248,15 @@ nginx::nginx_upstreams:
   'syslog':
     context: 'stream'
     members:
-      '10.0.0.1:514'
+      '10.0.0.1:514':
         server: '10.0.0.1'
-        port: '514'
-      '10.0.0.2:514'
+        port: 514
+      '10.0.0.2:514':
         server: '10.0.0.2'
-        port: '514'
-      '10.0.0.3:514'
+        port: 514
+      '10.0.0.3:514':
         server: '10.0.0.3'
-        port: '514'
+        port: 514
 ```
 
 ## Nginx with precompiled Passenger
