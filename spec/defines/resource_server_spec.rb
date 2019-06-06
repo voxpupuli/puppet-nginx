@@ -126,7 +126,7 @@ describe 'nginx::resource::server' do
               match: %r{\s+listen\s+\[::\]:45 default ipv6only=on;}
             },
             {
-              title: 'should set the IPv6 listen port',
+              title: 'should set the IPv6 listen port range',
               attr: 'ipv6_listen_port_range',
               value: '45-50',
               match: %r{\s+listen\s+\[::\]:45-50 default ipv6only=on;}
