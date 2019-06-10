@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v1.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v1.0.0) (2019-06-10)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.16.0...v1.0.0)
+
+**Breaking changes:**
+
+- Replace `add\_listen\_directive` with `nginx\_version` [\#1330](https://github.com/voxpupuli/puppet-nginx/pull/1330) ([alexjfisher](https://github.com/alexjfisher))
+
+**Implemented enhancements:**
+
+- Add rewrite\_non\_www\_to\_www option [\#1326](https://github.com/voxpupuli/puppet-nginx/pull/1326) ([simmerz](https://github.com/simmerz))
+
+**Fixed bugs:**
+
+- Allow puppetlabs/concat 6.x [\#1334](https://github.com/voxpupuli/puppet-nginx/pull/1334) ([dhoppe](https://github.com/dhoppe))
+
+**Closed issues:**
+
+- Support for Ubuntu 18.04? [\#1307](https://github.com/voxpupuli/puppet-nginx/issues/1307)
+
+**Merged pull requests:**
+
+- fixing some documentation for setting up UDP streams [\#1333](https://github.com/voxpupuli/puppet-nginx/pull/1333) ([martinrw](https://github.com/martinrw))
+- Allow `puppetlabs/stdlib` 6.x [\#1329](https://github.com/voxpupuli/puppet-nginx/pull/1329) ([alexjfisher](https://github.com/alexjfisher))
+- Modulesync 2.6.1 with local changes [\#1323](https://github.com/voxpupuli/puppet-nginx/pull/1323) ([ekohl](https://github.com/ekohl))
+- Fix port typo in example [\#1322](https://github.com/voxpupuli/puppet-nginx/pull/1322) ([dkess](https://github.com/dkess))
+- Allow setting a custom path for mime.types [\#1321](https://github.com/voxpupuli/puppet-nginx/pull/1321) ([jacksgt](https://github.com/jacksgt))
+- add ubuntu1804 as supported OS [\#1319](https://github.com/voxpupuli/puppet-nginx/pull/1319) ([Dan33l](https://github.com/Dan33l))
+- Fix `upstream\_context` parameter in README [\#1317](https://github.com/voxpupuli/puppet-nginx/pull/1317) ([alexjfisher](https://github.com/alexjfisher))
+- Fixed variable name and code style [\#1314](https://github.com/voxpupuli/puppet-nginx/pull/1314) ([aleksmark](https://github.com/aleksmark))
+
 ## [v0.16.0](https://github.com/voxpupuli/puppet-nginx/tree/v0.16.0) (2019-02-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v0.15.0...v0.16.0)
