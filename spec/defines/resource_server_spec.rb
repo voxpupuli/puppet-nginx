@@ -61,6 +61,18 @@ describe 'nginx::resource::server' do
           end
         end
 
+        describe 'with both $rewrite_www_to_non_www and $rewrite_non_www_to_www enabled' do
+          let(:params) do
+            default_params.merge(rewrite_non_www_to_www: true, rewrite_www_to_non_www: true)
+          end
+
+          it do
+            is_expected.to compile.and_raise_error(
+              %r{You must not set both \$rewrite_www_to_non_www and \$rewrite_non_www_to_www to true}
+            )
+          end
+        end
+
         describe 'server_header template content' do
           [
             {

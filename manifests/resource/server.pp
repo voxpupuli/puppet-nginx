@@ -279,6 +279,10 @@ define nginx::resource::server (
     fail('You must include the nginx base class before using any defined resources')
   }
 
+  if $rewrite_www_to_non_www == true and $rewrite_non_www_to_www == true {
+    fail('You must not set both $rewrite_www_to_non_www and $rewrite_non_www_to_www to true')
+  }
+
   # Variables
   if $nginx::confd_only {
     $server_dir = "${nginx::conf_dir}/conf.d"
