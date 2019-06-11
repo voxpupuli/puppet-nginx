@@ -201,32 +201,32 @@ class nginx::params {
   ### END Operating System Configuration
 
   ### Referenced Variables
-  $conf_dir              = $_module_parameters['conf_dir']
-  $snippets_dir          = "${conf_dir}/snippets"
-  $log_dir               = $_module_parameters['log_dir']
-  $log_user              = $_module_parameters['log_user']
-  $log_group             = $_module_parameters['log_group']
-  $log_mode              = $_module_parameters['log_mode']
-  $run_dir               = $_module_parameters['run_dir']
-  $temp_dir              = '/tmp'
-  $pid                   = $_module_parameters['pid']
+  $conf_dir               = $_module_parameters['conf_dir']
+  $snippets_dir           = "${conf_dir}/snippets"
+  $log_dir                = $_module_parameters['log_dir']
+  $log_user               = $_module_parameters['log_user']
+  $log_group              = $_module_parameters['log_group']
+  $log_mode               = $_module_parameters['log_mode']
+  $run_dir                = $_module_parameters['run_dir']
+  $temp_dir               = '/tmp'
+  $pid                    = $_module_parameters['pid']
 
-  $client_body_temp_path = "${run_dir}/client_body_temp"
-  $daemon_user           = $_module_parameters['daemon_user']
-  $global_owner          = 'root'
-  $global_group          = $_module_parameters['root_group']
-  $global_mode           = '0644'
-  $http_access_log_file  = 'access.log'
-  $stream_access_log_file= 'stream-access.log'
-  $manage_repo           = $_module_parameters['manage_repo']
-  $mime_types            = $_module_parameters['mime_types']
-  $nginx_error_log_file  = 'error.log'
-  $root_group            = $_module_parameters['root_group']
-  $package_name          = $_module_parameters['package_name']
-  $proxy_temp_path       = "${run_dir}/proxy_temp"
-  $sites_available_owner = 'root'
-  $sites_available_group = $_module_parameters['root_group']
-  $sites_available_mode  = '0644'
-  $super_user            = true
+  $client_body_temp_path  = "${run_dir}/client_body_temp"
+  $daemon_user            = $_module_parameters['daemon_user']
+  $global_owner           = 'root'
+  $global_group           = $_module_parameters['root_group']
+  $global_mode            = '0644'
+  $http_access_log_file   = 'access.log'
+  $stream_access_log_file = 'stream-access.log'
+  $manage_repo            = $_module_parameters['manage_repo']
+  $mime_types             = $_module_parameters['mime_types']
+  $nginx_error_log_file   = 'error.log'
+  $root_group             = $_module_parameters['root_group']
+  $package_name           = $_module_parameters['package_name']
+  $proxy_temp_path        = "${run_dir}/proxy_temp"
+  $sites_available_owner  = 'root'
+  $sites_available_group  = $_module_parameters['root_group']
+  $sites_available_mode   = '0644'
+  $super_user             = true
   ### END Referenced Variables
 }
