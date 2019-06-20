@@ -314,7 +314,7 @@ stream {
 
 <% if @stream_log_format -%>
   <% @stream_log_format.sort_by{|k,v| k}.each do |key,value| -%>
-  stream_log_format <%= key %> '<%= value %>';
+  log_format <%= key %> '<%= value %>';
   <% end -%>
 <% end -%>
 
