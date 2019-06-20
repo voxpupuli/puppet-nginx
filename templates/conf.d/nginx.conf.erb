@@ -328,9 +328,9 @@ stream {
 <% end -%>
 
 <% if @stream_log_format -%>
-<% @stream_log_format.sort_by{|k,v| k}.each do |key,value| -%>
-  stream_log_format <%= key %> '<%= value %>';
-<% end -%>
+  <% @stream_log_format.sort_by{|k,v| k}.each do |key,value| -%>
+  log_format <%= key %> '<%= value %>';
+  <% end -%>
 <% end -%>
 
 <% if @stream_access_log.is_a?(Array) -%>
