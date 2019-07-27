@@ -51,19 +51,34 @@ You can install all needed gems for spec tests into the modules directory by
 running:
 
 ```sh
-bundle install --path .vendor/ --without development system_tests release
+bundle install --path .vendor/ --without development system_tests release --jobs "$(nproc)"
 ```
 
 If you also want to run acceptance tests:
 
 ```sh
-bundle install --path .vendor/ --with system_tests --without development release
+bundle install --path .vendor/ --with system_tests --without development release --jobs "$(nproc)"
 ```
 
 Our all in one solution if you don't know if you need to install or update gems:
 
 ```sh
-bundle install --path .vendor/ --with system_tests --without development release; bundle update; bundle clean
+bundle install --path .vendor/ --with system_tests --without development release --jobs "$(nproc)"; bundle update; bundle clean
+```
+
+As an alternative to the `--jobs "$(nproc)` parameter, you can set an
+environment variable:
+
+```sh
+BUNDLE_JOBS="$(nproc)"
+```
+
+### Note for OS X users
+
+`nproc` isn't a valid command unter OS x. As an alternative, you can do:
+
+```sh
+--jobs "$(sysctl -n hw.ncpu)"
 ```
 
 ## Syntax and style
@@ -160,7 +175,7 @@ created virtual machines will be in `.vagrant/beaker_vagrant_files`.
 Beaker also supports docker containers. We also use that in our automated CI
 pipeline at [travis-ci](http://travis-ci.org). To use that instead of Vagrant:
 
-```
+```sh
 PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64{hypervisor=docker} BEAKER_destroy=yes bundle exec rake beaker
 ```
 

@@ -15,7 +15,7 @@ RUN bundle install --without system_tests development release --path=${BUNDLE_PA
 COPY . .
 
 RUN bundle install
-RUN bundle exec release_checks
+RUN bundle exec rake release_checks
 
 # Container should not saved
 RUN exit 1
