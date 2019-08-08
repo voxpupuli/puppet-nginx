@@ -233,7 +233,7 @@ class nginx::params {
   $nginx_error_log_file   = 'error.log'
   $root_group             = $_module_parameters['root_group']
   $package_name           = $_module_parameters['package_name']
-  $passanger_package_name = $_module_parameters['passenger_package_name']
+  $passenger_package_name = $_module_parameters['passenger_package_name']
   $proxy_temp_path        = "${run_dir}/proxy_temp"
   $sites_available_owner  = 'root'
   $sites_available_group  = $_module_parameters['root_group']
