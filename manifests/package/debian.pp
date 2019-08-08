@@ -20,6 +20,7 @@ class nginx::package::debian {
   $package_ensure           = $nginx::package_ensure
   $package_flavor           = $nginx::package_flavor
   $passenger_package_ensure = $nginx::passenger_package_ensure
+  $passenger_package_name   = $nginx::passenger_package_name
   $manage_repo              = $nginx::manage_repo
   $release                  = $nginx::repo_release
   $repo_source              = $nginx::repo_source
@@ -71,19 +72,9 @@ class nginx::package::debian {
           key      => {'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7'},
         }
 
-        # From Ubuntu 18.04/Debian 9 libnginx-mod-http-passenger is needed
-        # libnginx-mod-http-passenger will install passenger as a dependency
-        if ( ($::operatingsystem == 'Ubuntu') and ($facts['os']['release']['major'] >='18')) or
-           ( ($::operatingsystem == 'Debian') and ($facts['os']['release']['major'] >='9')) {
-              package { 'libnginx-mod-http-passenger':
-                ensure  => $passenger_package_ensure,
-                require => Exec['apt_update'],
-              }
-        } else {
-            package { 'passenger':
-              ensure  => $passenger_package_ensure,
-              require => Exec['apt_update'],
-            }
+        package { $passenger_package_name:
+          ensure  => $passenger_package_ensure,
+          require => Exec['apt_update'],
         }
 
         if $package_name != 'nginx-extras' {
