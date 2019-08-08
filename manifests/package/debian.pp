@@ -71,9 +71,19 @@ class nginx::package::debian {
           key      => {'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7'},
         }
 
-        package { 'passenger':
-          ensure  => $passenger_package_ensure,
-          require => Exec['apt_update'],
+        # From Ubuntu 18.04/Debian 9 libnginx-mod-http-passenger is needed
+        # libnginx-mod-http-passenger will install passenger as a dependency
+        if ( ($::operatingsystem == 'Ubuntu') and ($facts['os']['release']['major'] >='18')) or
+           ( ($::operatingsystem == 'Debian') and ($facts['os']['release']['major'] >='9')) {
+              package { 'libnginx-mod-http-passenger':
+                ensure  => $passenger_package_ensure,
+                require => Exec['apt_update'],
+              }
+        } else {
+            package { 'passenger':
+              ensure  => $passenger_package_ensure,
+              require => Exec['apt_update'],
+            }
         }
 
         if $package_name != 'nginx-extras' {
