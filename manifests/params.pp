@@ -7,18 +7,19 @@ class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {
-    'conf_dir'     => '/etc/nginx',
-    'daemon_user'  => 'nginx',
-    'pid'          => '/var/run/nginx.pid',
-    'root_group'   => 'root',
-    'log_dir'      => '/var/log/nginx',
-    'log_user'     => 'nginx',
-    'log_group'    => 'root',
-    'log_mode'     => '0750',
-    'run_dir'      => '/var/nginx',
-    'package_name' => 'nginx',
-    'manage_repo'  => false,
-    'mime_types'   => {
+    'conf_dir'               => '/etc/nginx',
+    'daemon_user'            => 'nginx',
+    'pid'                    => '/var/run/nginx.pid',
+    'root_group'             => 'root',
+    'log_dir'                => '/var/log/nginx',
+    'log_user'               => 'nginx',
+    'log_group'              => 'root',
+    'log_mode'               => '0750',
+    'run_dir'                => '/var/nginx',
+    'package_name'           => 'nginx',
+    'passenger_package_name' => 'passenger',
+    'manage_repo'            => false,
+    'mime_types'             => {
       'text/html'                                                                 => 'html htm shtml',
       'text/css'                                                                  => 'css',
       'text/xml'                                                                  => 'xml',
@@ -107,9 +108,19 @@ class nginx::params {
       }
     }
     'Debian': {
-      # $facts['os']['distro']['codename'] is not yet well established, so we stick with the legact lsb facts for now
-      if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial', 'bionic']) # lint:ignore:legacy_facts
-      or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['6', '7', '8', '9', '10']) {
+      if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['bionic'])
+      or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['9', '10']) {
+        $_module_os_overrides = {
+          'manage_repo'            => true,
+          'daemon_user'            => 'www-data',
+          'log_user'               => 'root',
+          'log_group'              => 'adm',
+          'log_mode'               => '0755',
+          'run_dir'                => '/run/nginx',
+          'passenger_package_name' => 'libnginx-mod-http-passenger',
+        }
+      } elsif ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial'])
+      or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['6', '7', '8']) {
         $_module_os_overrides = {
           'manage_repo' => true,
           'daemon_user' => 'www-data',

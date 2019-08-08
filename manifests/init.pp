@@ -166,6 +166,7 @@ class nginx (
   Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
+  $passenger_package_name                                    = $nginx::params::passenger_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
   ### END Package Configuration ###
 
