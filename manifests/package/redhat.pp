@@ -47,7 +47,7 @@ class nginx::package::redhat {
         }
 
         if $purge_passenger_repo {
-          yumrepo { 'passenger':
+          yumrepo { $passenger_package_name:
             ensure => absent,
             before => Package['nginx'],
           }
@@ -65,7 +65,7 @@ class nginx::package::redhat {
         }
 
         if $purge_passenger_repo {
-          yumrepo { 'passenger':
+          yumrepo { $passenger_package_name:
             ensure => absent,
             before => Package['nginx'],
           }
