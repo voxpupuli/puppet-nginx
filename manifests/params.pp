@@ -7,19 +7,20 @@ class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {
-    'conf_dir'               => '/etc/nginx',
-    'daemon_user'            => 'nginx',
-    'pid'                    => '/var/run/nginx.pid',
-    'root_group'             => 'root',
-    'log_dir'                => '/var/log/nginx',
-    'log_user'               => 'nginx',
-    'log_group'              => 'root',
-    'log_mode'               => '0750',
-    'run_dir'                => '/var/nginx',
-    'package_name'           => 'nginx',
-    'passenger_package_name' => 'passenger',
-    'manage_repo'            => false,
-    'mime_types'             => {
+    'conf_dir'                => '/etc/nginx',
+    'daemon_user'             => 'nginx',
+    'pid'                     => '/var/run/nginx.pid',
+    'root_group'              => 'root',
+    'log_dir'                 => '/var/log/nginx',
+    'log_user'                => 'nginx',
+    'log_group'               => 'root',
+    'log_mode'                => '0750',
+    'run_dir'                 => '/var/nginx',
+    'package_name'            => 'nginx',
+    'passenger_package_name'  => 'passenger',
+    'manage_repo'             => false,
+    'include_modules_enabled' => false,
+    'mime_types'              => {
       'text/html'                                                                 => 'html htm shtml',
       'text/css'                                                                  => 'css',
       'text/xml'                                                                  => 'xml',
@@ -111,12 +112,13 @@ class nginx::params {
       if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['bionic'])
       or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['9']) {
         $_module_os_overrides = {
-          'manage_repo'            => true,
-          'daemon_user'            => 'www-data',
-          'log_user'               => 'root',
-          'log_group'              => 'adm',
-          'log_mode'               => '0755',
-          'passenger_package_name' => 'libnginx-mod-http-passenger',
+          'manage_repo'             => true,
+          'daemon_user'             => 'www-data',
+          'log_user'                => 'root',
+          'log_group'               => 'adm',
+          'log_mode'                => '0755',
+          'passenger_package_name'  => 'libnginx-mod-http-passenger',
+          'include_modules_enabled' => true,
         }
       } elsif ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial'])
       or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['6', '7', '8']) {
@@ -212,32 +214,33 @@ class nginx::params {
   ### END Operating System Configuration
 
   ### Referenced Variables
-  $conf_dir               = $_module_parameters['conf_dir']
-  $snippets_dir           = "${conf_dir}/snippets"
-  $log_dir                = $_module_parameters['log_dir']
-  $log_user               = $_module_parameters['log_user']
-  $log_group              = $_module_parameters['log_group']
-  $log_mode               = $_module_parameters['log_mode']
-  $run_dir                = $_module_parameters['run_dir']
-  $temp_dir               = '/tmp'
-  $pid                    = $_module_parameters['pid']
+  $conf_dir                = $_module_parameters['conf_dir']
+  $snippets_dir            = "${conf_dir}/snippets"
+  $log_dir                 = $_module_parameters['log_dir']
+  $log_user                = $_module_parameters['log_user']
+  $log_group               = $_module_parameters['log_group']
+  $log_mode                = $_module_parameters['log_mode']
+  $run_dir                 = $_module_parameters['run_dir']
+  $temp_dir                = '/tmp'
+  $pid                     = $_module_parameters['pid']
+  $include_modules_enabled = $_module_parameters['include_modules_enabled']
 
-  $client_body_temp_path  = "${run_dir}/client_body_temp"
-  $daemon_user            = $_module_parameters['daemon_user']
-  $global_owner           = 'root'
-  $global_group           = $_module_parameters['root_group']
-  $global_mode            = '0644'
-  $http_access_log_file   = 'access.log'
-  $manage_repo            = $_module_parameters['manage_repo']
-  $mime_types             = $_module_parameters['mime_types']
-  $nginx_error_log_file   = 'error.log'
-  $root_group             = $_module_parameters['root_group']
-  $package_name           = $_module_parameters['package_name']
-  $passenger_package_name = $_module_parameters['passenger_package_name']
-  $proxy_temp_path        = "${run_dir}/proxy_temp"
-  $sites_available_owner  = 'root'
-  $sites_available_group  = $_module_parameters['root_group']
-  $sites_available_mode   = '0644'
-  $super_user             = true
+  $client_body_temp_path   = "${run_dir}/client_body_temp"
+  $daemon_user             = $_module_parameters['daemon_user']
+  $global_owner            = 'root'
+  $global_group            = $_module_parameters['root_group']
+  $global_mode             = '0644'
+  $http_access_log_file    = 'access.log'
+  $manage_repo             = $_module_parameters['manage_repo']
+  $mime_types              = $_module_parameters['mime_types']
+  $nginx_error_log_file    = 'error.log'
+  $root_group              = $_module_parameters['root_group']
+  $package_name            = $_module_parameters['package_name']
+  $passenger_package_name  = $_module_parameters['passenger_package_name']
+  $proxy_temp_path         = "${run_dir}/proxy_temp"
+  $sites_available_owner   = 'root'
+  $sites_available_group   = $_module_parameters['root_group']
+  $sites_available_mode    = '0644'
+  $super_user              = true
   ### END Referenced Variables
 }

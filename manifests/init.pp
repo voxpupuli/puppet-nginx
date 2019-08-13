@@ -63,6 +63,7 @@ class nginx (
   Boolean $super_user                                        = $nginx::params::super_user,
   $temp_dir                                                  = $nginx::params::temp_dir,
   Boolean $server_purge                                      = false,
+  Boolean $include_modules_enabled                           = $nginx::params::include_modules_enabled,
 
   # Primary Templates
   $conf_template                                             = 'nginx/conf.d/nginx.conf.erb',

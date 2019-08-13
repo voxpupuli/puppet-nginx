@@ -127,6 +127,7 @@ class nginx::config {
   $ssl_prefer_server_ciphers      = $nginx::ssl_prefer_server_ciphers
   $ssl_protocols                  = $nginx::ssl_protocols
   $ssl_ciphers                    = $nginx::ssl_ciphers
+  $include_modules_enabled        = $nginx::include_modules_enabled
 
   # Non-configurable settings
   $conf_template                  = 'nginx/conf.d/nginx.conf.erb'
