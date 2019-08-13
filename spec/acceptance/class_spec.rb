@@ -8,7 +8,7 @@ describe 'nginx class:' do
     pkg_match = %r{passenger}
   when 'Debian'
     pkg_cmd = 'dpkg -s nginx | grep ^Maintainer'
-    pkg_remove_cmd = 'apt-get -y remove nginx nginx-common'
+    pkg_remove_cmd = 'apt-get -y purge nginx nginx-common'
     pkg_match = case fact('operatingsystemmajrelease')
                 when '9'
                   %r{Debian Nginx Maintainers}
