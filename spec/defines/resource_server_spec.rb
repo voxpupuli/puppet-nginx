@@ -361,6 +361,12 @@ describe 'nginx::resource::server' do
               attr: 'autoindex',
               value: 'on',
               match: '  autoindex on;'
+            },
+            {
+              title: 'should set autoindex_exact_size',
+              attr: 'autoindex_exact_size',
+              value: 'on',
+              match: '  autoindex_exact_size on;'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
@@ -952,6 +958,12 @@ describe 'nginx::resource::server' do
               attr: 'autoindex',
               value: 'on',
               match: '  autoindex on;'
+            },
+            {
+              title: 'should set autoindex_exact_size',
+              attr: 'autoindex_exact_size',
+              value: 'on',
+              match: '  autoindex_exact_size on;'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

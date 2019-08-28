@@ -143,6 +143,15 @@ server {
 <% if defined? @autoindex -%>
   autoindex <%= @autoindex %>;
 <% end -%>
+<% if defined? @autoindex_exact_size -%>
+  autoindex_exact_size <%= @autoindex_exact_size %>;
+<% end -%>
+<% if defined? @autoindex_format -%>
+  autoindex_format <%= @autoindex_format %>;
+<% end -%>
+<% if defined? @autoindex_localtime -%>
+  autoindex_localtime <%= @autoindex_localtime %>;
+<% end -%>
 <% if defined? @log_by_lua -%>
   log_by_lua '<%= @log_by_lua %>';
 <% end -%>

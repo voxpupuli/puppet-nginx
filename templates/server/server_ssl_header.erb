@@ -73,6 +73,15 @@ server {
 <% if defined? @autoindex -%>
   autoindex <%= @autoindex %>;
 <% end -%>
+<% if defined? @autoindex_exact_size -%>
+  autoindex_exact_size <%= @autoindex_exact_size %>;
+<% end -%>
+<% if defined? @autoindex_format -%>
+  autoindex_format <%= @autoindex_format %>;
+<% end -%>
+<% if defined? @autoindex_localtime -%>
+  autoindex_localtime <%= @autoindex_localtime %>;
+<% end -%>
 <% if @absolute_redirect -%>
   absolute_redirect <%= @absolute_redirect %>;
 <% end -%>

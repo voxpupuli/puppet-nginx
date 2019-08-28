@@ -22,6 +22,10 @@
 #   [*add_header*]                 - Hash: Adds headers to the HTTP response when response code is equal to 200, 204, 301, 302 or 304.
 #   [*index_files*]                - Default index files for NGINX to read when traversing a directory
 #   [*autoindex*]                  - Set it on 'on' or 'off 'to activate/deactivate autoindex directory listing. Undef by default.
+#   [*autoindex_exact_size*]       - Set it on 'on' or 'off' to activate/deactivate autoindex displaying exact filesize, or rounded to
+#     kilobytes, megabytes and gigabytes. Undef by default.
+#   [*autoindex_format*]           - Sets the format of a directory listing. Undef by default.
+#   [*autoindex_localtime*]        - Specifies whether times in the directory listing should be output in the local time zone or UTC.
 #   [*proxy*]                      - Proxy server(s) for the root location to connect to.  Accepts a single value, can be used in
 #     conjunction with nginx::resource::upstream
 #   [*proxy_read_timeout*]         - Override the default proxy read timeout value of 90 seconds
@@ -223,6 +227,9 @@ define nginx::resource::server (
     'index.htm',
     'index.php'],
   Optional[String] $autoindex                                                    = undef,
+  Optional[Enum['on', 'off']] $autoindex_exact_size                              = undef,
+  Optional[Enum['html', 'xml', 'json', 'jsonp']] $autoindex_format               = undef,
+  Optional[Enum['on', 'off']] $autoindex_localtime                               = undef,
   Array[String] $server_name                                                     = [$name],
   Optional[String] $www_root                                                     = undef,
   Boolean $rewrite_www_to_non_www                                                = false,
@@ -396,6 +403,9 @@ define nginx::resource::server (
       try_files                   => $try_files,
       www_root                    => $www_root,
       autoindex                   => $autoindex,
+      autoindex_exact_size        => $autoindex_exact_size,
+      autoindex_format            => $autoindex_format,
+      autoindex_localtime         => $autoindex_localtime,
       index_files                 => $index_files,
       location_custom_cfg         => $location_custom_cfg,
       location_cfg_prepend        => $location_cfg_prepend,
