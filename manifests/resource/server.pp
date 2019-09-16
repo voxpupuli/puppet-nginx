@@ -71,6 +71,7 @@
 #   [*ssl_trusted_cert*]           - String: Specifies a file with trusted CA certificates in the PEM format used to verify client
 #     certificates and OCSP responses if ssl_stapling is enabled.
 #   [*ssl_verify_depth*]           - Integer: Sets the verification depth in the client certificates chain.
+#   [*ssl_password_file*]          - String: File containing the password for the SSL Key file.
 #   [*spdy*]                       - Toggles SPDY protocol.
 #   [*http2*]                      - Toggles HTTP/2 protocol.
 #   [*server_name*]                - List of servernames for which this server will respond. Default [$name].
@@ -187,6 +188,7 @@ define nginx::resource::server (
   Optional[String] $ssl_session_ticket_key                                       = undef,
   Optional[String] $ssl_trusted_cert                                             = undef,
   Optional[Integer] $ssl_verify_depth                                            = undef,
+  Optional[String] $ssl_password_file                                            = undef,
   Enum['on', 'off'] $spdy                                                        = $nginx::spdy,
   Enum['on', 'off'] $http2                                                       = $nginx::http2,
   Optional[String] $proxy                                                        = undef,
