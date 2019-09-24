@@ -67,7 +67,11 @@ HLw/FDCzntkdq3G4em15CdFlO9BTY4HXiHU=
 
       # put the keys in a directory with the correct SELinux context
       on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/blah.cert'
+      on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/crypted.cert'
       on host, 'cp /tmp/blah.key /etc/pki/tls/private/blah.key'
+      on host, 'openssl rsa -in /tmp/blah.key -out /etc/pki/tls/private/crypted.key -passout pass:Sup3r_S3cr3t_Passw0rd'
+      on host, 'echo Sup3r_S3cr3t_Passw0rd >/etc/pki/tls/private/crypted.pass'
+      on host, 'chmod 0600 /etc/pki/tls/private/crypted.pass'
     end
   end
 end
