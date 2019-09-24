@@ -111,4 +111,52 @@ describe 'nginx::resource::server define:' do
       end
     end
   end
+
+  context 'should run successfully with encrypted ssl key' do
+    it 'configures a nginx SSL server' do
+      pp = "
+      class { 'nginx': }
+      nginx::resource::server { 'www.puppetlabs.com':
+        ensure            => present,
+        ssl               => true,
+        ssl_cert          => '/etc/pki/tls/certs/crypted.cert',
+        ssl_key           => '/etc/pki/tls/private/crypted.key',
+        ssl_password_file => '/etc/pki/tls/private/crypted.pass',
+        www_root          => '/var/www/www.puppetlabs.com',
+      }
+      host { 'www.puppetlabs.com': ip => '127.0.0.1', }
+      file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
+      file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
+      "
+
+      apply_manifest(pp, catch_failures: true)
+    end
+
+    describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
+      it { is_expected.to be_file }
+      it { is_expected.to_contain 'ssl_password_file         /etc/pki/tls/private/crypted.pass;'}
+    end
+
+    describe service('nginx') do
+      it { is_expected.to be_running }
+    end
+
+    describe port(443) do
+      it { is_expected.to be_listening }
+    end
+
+    it 'answers to https://www.puppetlabs.com with "Hello from www"' do
+      # use --insecure because it's a self-signed cert
+      shell('/usr/bin/curl --insecure https://www.puppetlabs.com:443') do |r|
+        expect(r.stdout).to eq("Hello from www\n")
+      end
+    end
+
+    it 'answers to https://www.puppetlabs.com without error' do
+      # use --insecure because it's a self-signed cert
+      shell('/usr/bin/curl --fail --insecure https://www.puppetlabs.com:443') do |r|
+        expect(r.exit_code).to eq(0)
+      end
+    end
+  end
 end
