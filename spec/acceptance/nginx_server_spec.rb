@@ -134,7 +134,7 @@ describe 'nginx::resource::server define:' do
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
       it { is_expected.to be_file }
-      it { is_expected.to_contain 'ssl_password_file         /etc/pki/tls/private/crypted.pass;' }
+      it { is_expected.to contain 'ssl_password_file         /etc/pki/tls/private/crypted.pass;' }
     end
 
     describe service('nginx') do
