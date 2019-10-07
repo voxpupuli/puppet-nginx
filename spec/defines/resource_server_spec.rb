@@ -1097,7 +1097,7 @@ describe 'nginx::resource::server' do
             let(:params) { { ssl_redirect: true } }
 
             it { is_expected.to contain_concat__fragment("#{title}-header").without_content(%r{^\s*index\s+}) }
-            it { is_expected.to contain_concat__fragment("#{title}-header").without_content(%r{^\s*location\s+}) }
+            it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{    return 301 https://\$host\$request_uri;}) }
           end
 
           context 'ssl_redirect with alternate port' do
