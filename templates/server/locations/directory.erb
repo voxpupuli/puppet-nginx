@@ -5,6 +5,15 @@
 
     autoindex <%= @autoindex %>;
 <% end -%>
+<% if defined? @autoindex_exact_size -%>
+    autoindex_exact_size <%= @autoindex_exact_size %>;
+<% end -%>
+<% if defined? @autoindex_format -%>
+    autoindex_format <%= @autoindex_format %>;
+<% end -%>
+<% if defined? @autoindex_localtime -%>
+    autoindex_localtime <%= @autoindex_localtime %>;
+<% end -%>
 <% if @index_files and @index_files.count > 0 -%>
     index    <% Array(@index_files).each do |i| %> <%= i %><% end %>;
 <% end -%>
