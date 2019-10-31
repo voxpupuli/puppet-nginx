@@ -299,26 +299,54 @@ describe 'nginx' do
             )
           end
           it do
-            is_expected.to contain_file('/var/nginx').with(
-              ensure: 'directory',
-              owner: 'root',
-              group: 'root',
-              mode: '0644'
-            )
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx').with(
+                ensure: 'directory',
+                owner: 'root',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx').with(
+                ensure: 'directory',
+                owner: 'root',
+                group: 'root',
+                mode: '0644'
+              )
+            end
           end
           it do
-            is_expected.to contain_file('/var/nginx/client_body_temp').with(
-              ensure: 'directory',
-              group: 'root',
-              mode: '0644'
-            )
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx/client_body_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx/client_body_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            end
           end
           it do
-            is_expected.to contain_file('/var/nginx/proxy_temp').with(
-              ensure: 'directory',
-              group: 'root',
-              mode: '0644'
-            )
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx/proxy_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx/proxy_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            end
           end
           it do
             is_expected.to contain_file('/etc/nginx/nginx.conf').with(
@@ -364,8 +392,8 @@ describe 'nginx' do
               )
             end
           when 'Debian'
-            it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
-            it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
+            it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
             it do
               is_expected.to contain_file('/var/log/nginx').with(
@@ -1146,8 +1174,14 @@ describe 'nginx' do
           context 'when daemon_user = www-data' do
             let(:params) { { daemon_user: 'www-data' } }
 
-            it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
-            it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            case facts[:osfamily]
+            when 'Debian'
+              it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
+              it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
+            else
+              it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
+              it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            end
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
           end
 
