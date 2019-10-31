@@ -77,6 +77,19 @@ begin
     metadata = JSON.load(File.read(metadata_json))
     config.project = metadata['name']
   end
+
+  # Workaround for https://github.com/github-changelog-generator/github-changelog-generator/issues/715
+  require 'rbconfig'
+  if RbConfig::CONFIG['host_os'] =~ /linux/
+    task :changelog do
+      puts 'Fixing line endings...'
+      changelog_file = File.join(__dir__, 'CHANGELOG.md')
+      changelog_txt = File.read(changelog_file)
+      new_contents = changelog_txt.gsub(%r{\r\n}, "\n")
+      File.open(changelog_file, "w") {|file| file.puts new_contents }
+    end
+  end
+
 rescue LoadError
 end
 # vim: syntax=ruby

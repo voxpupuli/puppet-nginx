@@ -140,7 +140,7 @@ define nginx::resource::mailhost (
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable and !$facts['ipaddress6']) {
+  if ($ipv6_enable and !$facts['networking']['ip6']) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
