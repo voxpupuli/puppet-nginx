@@ -67,6 +67,8 @@
 #   [*raw_append*]           - A single string, or an array of strings to
 #     append to the location directive (after custom_cfg directives). NOTE:
 #     YOU are responsible for a semicolon on each line that requires one.
+#   [*limit_zone*]           - Apply a limit_req_zone to the location. Expects a string indicating a
+#     previously defined limit_req_zone in the main nginx configuration
 #   [*location_custom_cfg*]  - Expects a hash with custom directives, cannot
 #     be used with other location types (proxy, fastcgi, root, or stub_status)
 #   [*location_cfg_prepend*] - Expects a hash with extra directives to put
@@ -214,6 +216,7 @@ define nginx::resource::location (
   Boolean $ssl                                                     = false,
   Boolean $ssl_only                                                = false,
   Optional[String] $location_alias                                 = undef,
+  Optional[String] $limit_zone                                     = undef,
   Optional[Enum['any', 'all']] $location_satisfy                   = undef,
   Optional[Array] $location_allow                                  = undef,
   Optional[Array] $location_deny                                   = undef,

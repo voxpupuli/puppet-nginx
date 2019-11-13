@@ -87,6 +87,16 @@ http {
   error_log <%= @nginx_error_log %> <%= @nginx_error_log_severity %>;
 <% end -%>
 
+<% if @limit_req_zone -%>
+  <% if @limit_req_zone.is_a?(Array) -%>
+    <%- @limit_req_zone.each do |limit_req_zone_item| -%>
+    limit_req_zone <%= limit_req_zone_item %>;
+    <%- end -%>
+  <% else -%>
+    limit_req_zone <%= @limit_req_zone %>;
+  <% end -%>
+<% end -%>
+
 <% if @sendfile == 'on' -%>
   sendfile on;
   <%- if @http_tcp_nopush == 'on' -%>
