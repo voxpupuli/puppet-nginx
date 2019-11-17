@@ -27,8 +27,9 @@ class nginx::package::redhat {
   #clone and provide the Red Hat-specific package. This comes into play when not
   #on RHEL or CentOS and $manage_repo is set manually to 'true'.
   $_os = $facts['os']['name'] ? {
-    'centos' => 'centos',
-    default  => 'rhel'
+    'centos'         => 'centos',
+    'VirtuozzoLinux' => 'centos',
+    default          => 'rhel'
   }
 
   if $manage_repo {
@@ -70,7 +71,7 @@ class nginx::package::redhat {
         }
       }
       'passenger': {
-        if ($facts['os']['name'] in ['RedHat', 'CentOS']) and ($facts['os']['release']['major'] in ['6', '7']) {
+        if ($facts['os']['name'] in ['RedHat', 'CentOS', 'VirtuozzoLinux']) and ($facts['os']['release']['major'] in ['6', '7']) {
           yumrepo { 'passenger':
             baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
             descr         => 'passenger repo',

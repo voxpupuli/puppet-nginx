@@ -43,7 +43,7 @@ describe 'nginx' do
             it { is_expected.to contain_package('nginx') }
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
@@ -66,7 +66,7 @@ describe 'nginx' do
             it { is_expected.to contain_package('nginx') }
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
@@ -83,7 +83,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl' => "https://nginx.org/packages/mainline/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
+                'baseurl' => "https://nginx.org/packages/mainline/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
               )
             end
             it do

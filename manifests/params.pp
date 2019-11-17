@@ -143,7 +143,7 @@ class nginx::params {
       }
     }
     'RedHat': {
-      if ($facts['os']['name'] in ['RedHat', 'CentOS', 'Oracle'] and $facts['os']['release']['major'] in ['6', '7']) {
+      if ($facts['os']['name'] in ['RedHat', 'CentOS', 'Oracle', 'virtuozzolinux'] and $facts['os']['release']['major'] in ['6', '7']) {
         $_module_os_overrides = {
           'manage_repo' => true,
           'log_group'   => 'nginx',
