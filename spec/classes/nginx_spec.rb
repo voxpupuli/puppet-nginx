@@ -489,6 +489,18 @@ describe 'nginx' do
                 match: '  error_log /var/log/nginx/error.log warn;'
               },
               {
+                title: 'should set limit_req_zone',
+                attr: 'limit_req_zone',
+                value: [
+                  '$binary_remote_addr zone=myzone1:10m rate=5r/s',
+                  '$binary_remote_addr zone=myzone2:10m rate=5r/s'
+                ],
+                match: [
+                  '  limit_req_zone $binary_remote_addr zone=myzone1:10m rate=5r/s;',
+                  '  limit_req_zone $binary_remote_addr zone=myzone2:10m rate=5r/s;'
+                ]
+              },
+              {
                 title: 'should set pid',
                 attr: 'pid',
                 value: '/path/to/pid',
