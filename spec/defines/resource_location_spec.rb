@@ -101,6 +101,12 @@ describe 'nginx::resource::location' do
               match: '    satisfy any;'
             },
             {
+              title: 'should set limit_zone',
+              attr: 'limit_zone',
+              value: 'myzone1',
+              match: '    limit_req zone=myzone1;'
+            },
+            {
               title: 'should set expires',
               attr: 'expires',
               value: '33d',
