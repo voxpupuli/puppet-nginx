@@ -105,6 +105,10 @@
 #   directives). NOTE: YOU are responsible for a semicolon on each line that requires one.
 #   [*raw_append*]                 - A single string, or an array of strings to append to the server directive (after cfg append
 #     directives). NOTE: YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_ssl_prepend*]            - A single string, or an array of strings to prepend to the server ssl directive (after cfg prepend
+#   directives). NOTE: YOU are responsible for a semicolon on each line that requires one.
+#   [*raw_ssl_append*]             - A single string, or an array of strings to append to the server ssl directive (after cfg append
+#     directives). NOTE: YOU are responsible for a semicolon on each line that requires one.
 #   [*location_raw_prepend*]       - A single string, or an array of strings to prepend to the location directive (after custom_cfg
 #     directives). NOTE: YOU are responsible for a semicolon on each line that requires one.
 #   [*location_raw_append*]        - A single string, or an array of strings to append to the location directive (after custom_cfg
@@ -222,7 +226,8 @@ define nginx::resource::server (
   String $fastcgi_params                                                         = "${nginx::conf_dir}/fastcgi.conf",
   Optional[String] $fastcgi_script                                               = undef,
   Optional[String] $uwsgi                                                        = undef,
-  String $uwsgi_params                                                           = "${nginx::config::conf_dir}/uwsgi_params",
+  String $uwsgi_params                                                           = "${nginx::config::conf_dir}
+    /uwsgi_params",
   Optional[String] $uwsgi_read_timeout                                           = undef,
   Array $index_files                                                             = [
     'index.html',
@@ -251,6 +256,8 @@ define nginx::resource::server (
   $client_max_body_size                                                          = undef,
   Optional[Variant[Array[String], String]] $raw_prepend                          = undef,
   Optional[Variant[Array[String], String]] $raw_append                           = undef,
+  Optional[Variant[Array[String], String]] $raw_ssl_prepend                      = undef,
+  Optional[Variant[Array[String], String]] $raw_ssl_append                       = undef,
   Optional[Variant[Array[String], String]] $location_raw_prepend                 = undef,
   Optional[Variant[Array[String], String]] $location_raw_append                  = undef,
   Optional[Hash] $server_cfg_prepend                                             = undef,
@@ -282,7 +289,7 @@ define nginx::resource::server (
   Hash $locations_defaults                                                       = {},
 ) {
 
-  if ! defined(Class['nginx']) {
+  if !defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
 
@@ -365,7 +372,7 @@ define nginx::resource::server (
   # ssl redirect and no ssl -> false
   if (!$ssl_redirect or $ssl) and $use_default_location {
     # Create the default location reference for the server
-    nginx::resource::location {"${name_sanitized}-default":
+    nginx::resource::location { "${name_sanitized}-default":
       ensure                      => $ensure,
       server                      => $name_sanitized,
       ssl                         => $ssl,
@@ -476,7 +483,7 @@ define nginx::resource::server (
   }
 
   unless $nginx::confd_only {
-    file{ "${name_sanitized}.conf symlink":
+    file { "${name_sanitized}.conf symlink":
       ensure  => $server_symlink_ensure,
       path    => "${server_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
