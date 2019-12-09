@@ -23,6 +23,7 @@ group :test do
   gem 'puppet-lint-absolute_classname-check',                       :require => false
   gem 'puppet-lint-topscope-variable-check',                        :require => false
   gem 'puppet-lint-legacy_facts-check',                             :require => false
+  gem 'puppet-lint-anchor-check',                                   :require => false
   gem 'metadata-json-lint',                                         :require => false
   gem 'redcarpet',                                                  :require => false
   gem 'rubocop', '~> 0.49.1',                                       :require => false
@@ -64,7 +65,7 @@ group :system_tests do
 end
 
 group :release do
-  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/github-changelog-generator/github-changelog-generator'
+  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/voxpupuli/github-changelog-generator', :branch => 'voxpupuli_essential_fixes'
   gem 'puppet-blacksmith',           :require => false
   gem 'voxpupuli-release',           :require => false
   gem 'puppet-strings', '>= 2.2',    :require => false
