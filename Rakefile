@@ -8,6 +8,7 @@ rescue LoadError
 end
 
 PuppetLint.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
+PuppetLint.configuration.stream_log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
 PuppetLint.configuration.absolute_classname_reverse = true
 
 exclude_paths = %w(
