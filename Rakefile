@@ -8,16 +8,6 @@ rescue LoadError
 end
 
 PuppetLint.configuration.log_format = '%{path}:%{line}:%{check}:%{KIND}:%{message}'
-PuppetLint.configuration.absolute_classname_reverse = true
-
-exclude_paths = %w(
-  pkg/**/*
-  vendor/**/*
-  .vendor/**/*
-  spec/**/*
-)
-PuppetLint.configuration.ignore_paths = exclude_paths
-PuppetSyntax.exclude_paths = exclude_paths
 
 desc 'Auto-correct puppet-lint offenses'
 task 'lint:auto_correct' do
