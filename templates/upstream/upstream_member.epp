@@ -3,7 +3,7 @@
       Optional[String[1]]             $comment          = undef,
       Optional[Nginx::Time]           $fail_timeout     = undef,
       Optional[Integer[1]]            $max_conns        = undef,
-      Optional[Integer[1]]            $max_fails        = undef,
+      Optional[Integer[0]]            $max_fails        = undef,
       Optional[String[1]]             $params_append    = undef,
       Optional[String[1]]             $params_prepend   = undef,
       Boolean                         $resolve          = false,

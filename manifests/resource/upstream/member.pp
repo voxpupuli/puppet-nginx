@@ -54,7 +54,7 @@ define nginx::resource::upstream::member (
   Stdlib::Port                            $port             = 80,
   Optional[Integer[1]]                    $weight           = undef,
   Optional[Integer[1]]                    $max_conns        = undef,
-  Optional[Integer[1]]                    $max_fails        = undef,
+  Optional[Integer[0]]                    $max_fails        = undef,
   Optional[Nginx::Time]                   $fail_timeout     = undef,
   Boolean                                 $backup           = false,
   Boolean                                 $resolve          = false,
