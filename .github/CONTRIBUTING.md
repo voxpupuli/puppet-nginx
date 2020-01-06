@@ -256,16 +256,17 @@ Beaker also supports docker containers. We also use that in our automated CI
 pipeline at [travis-ci](http://travis-ci.org). To use that instead of Vagrant:
 
 ```sh
-PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64{hypervisor=docker} BEAKER_destroy=yes bundle exec rake beaker
+PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian10-64{hypervisor=docker} BEAKER_destroy=yes bundle exec rake beaker
 ```
 
-You can replace the string `debian9` with any common operating system.
+You can replace the string `debian10` with any common operating system.
 The following strings are known to work:
 
 * ubuntu1604
 * ubuntu1804
 * debian8
 * debian9
+* debian10
 * centos6
 * centos7
 
