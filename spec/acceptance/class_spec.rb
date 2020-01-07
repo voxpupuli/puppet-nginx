@@ -10,7 +10,7 @@ describe 'nginx class:' do
     pkg_cmd = 'dpkg -s nginx | grep ^Maintainer'
     pkg_remove_cmd = 'apt-get -y remove nginx nginx-common'
     pkg_match = case fact('operatingsystemmajrelease')
-                when '9'
+                when '9', '10'
                   %r{Debian Nginx Maintainers}
                 when '18.04'
                   %r{Ubuntu Developers}
