@@ -1,6 +1,7 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 2.1
+# Puppet Server 5 defaults to jruby 1.7 so TargetRubyVersion must stay at 1.9 until we drop support for puppet 5
+  TargetRubyVersion: 1.9
   Include:
     - ./**/*.rb
   Exclude:

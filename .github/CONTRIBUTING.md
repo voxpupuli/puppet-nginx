@@ -269,6 +269,7 @@ The following strings are known to work:
 * debian10
 * centos6
 * centos7
+* centos8
 
 The easiest way to debug in a docker container is to open a shell:
 

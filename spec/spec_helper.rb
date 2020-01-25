@@ -48,10 +48,14 @@ RSpec.configure do |c|
   # Otherwise we need to match the correct facter version to the used puppet version.
   # as of 2019-10-31, puppet 5 ships facter 3.11 and puppet 6 ships facter 3.14
   # https://puppet.com/docs/puppet/5.5/about_agent.html
+  #
+  # The environment variable `PUPPET_VERSION` is available in our travis environment, but we cannot rely on it
+  # if somebody runs the tests locally. For that case we should fallback the the puppet gem version.
   c.default_facter_version = if ENV['FACTERDB_FACTS_VERSION']
                                ENV['FACTERDB_FACTS_VERSION']
                              else
-                               Gem::Dependency.new('', ENV['PUPPET_VERSION']).match?('', '5') ? '3.11.0' : '3.14.0'
+                               puppet_version = ENV['PUPPET_VERSION'] ? ENV['PUPPET_VERSION'] : Gem.loaded_specs['puppet'].version.to_s
+                               Gem::Dependency.new('', puppet_version).match?('', '5') ? '3.11.0' : '3.14.0'
                              end
 
   # Coverage generation
