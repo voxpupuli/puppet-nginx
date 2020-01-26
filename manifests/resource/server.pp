@@ -282,6 +282,8 @@ define nginx::resource::server (
   Hash $locations_defaults                                                       = {},
 ) {
 
+  $sites_dir = dirname($sites_enabled_path)
+
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
@@ -295,7 +297,7 @@ define nginx::resource::server (
     $server_dir = "${nginx::conf_dir}/conf.d"
   } else {
     $server_dir = "${nginx::conf_dir}/sites-available"
-    $server_enable_dir = "${nginx::conf_dir}/sites-enabled"
+    $server_enable_dir = "${nginx::conf_dir}/${sites_dir}"
     $server_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',

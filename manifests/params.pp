@@ -7,18 +7,20 @@ class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {
-    'conf_dir'     => '/etc/nginx',
-    'daemon_user'  => 'nginx',
-    'pid'          => '/var/run/nginx.pid',
-    'root_group'   => 'root',
-    'log_dir'      => '/var/log/nginx',
-    'log_user'     => 'nginx',
-    'log_group'    => 'root',
-    'log_mode'     => '0750',
-    'run_dir'      => '/var/nginx',
-    'package_name' => 'nginx',
-    'manage_repo'  => false,
-    'mime_types'   => {
+    'conf_dir'             => '/etc/nginx',
+    'daemon_user'          => 'nginx',
+    'pid'                  => '/var/run/nginx.pid',
+    'root_group'           => 'root',
+    'log_dir'              => '/var/log/nginx',
+    'log_user'             => 'nginx',
+    'log_group'            => 'root',
+    'log_mode'             => '0750',
+    'run_dir'              => '/var/nginx',
+    'package_name'         => 'nginx',
+    'manage_repo'          => false,
+    'sites_enabled_path'   => '/sites-enabled/*',
+    'streams_enabled_path' => '/streams-enabled/*',
+    'mime_types'           => {
       'text/html'                                                                 => 'html htm shtml',
       'text/css'                                                                  => 'css',
       'text/xml'                                                                  => 'xml',
@@ -95,6 +97,8 @@ class nginx::params {
       'video/x-ms-wmv'                                                            => 'wmv',
       'video/x-msvideo'                                                           => 'avi',
     },
+    'sites_enabled_dir'   => 'sites-enabled/*',
+    'streams_enabled_dir' => 'sites-enabled/*',
   }
   case $facts['os']['family'] {
     'ArchLinux': {

@@ -64,7 +64,9 @@ define nginx::resource::streamhost (
   String $owner                           = $nginx::global_owner,
   String $group                           = $nginx::global_group,
   String $mode                            = $nginx::global_mode,
+  $streams_enabled_path                   = $nginx::streams_enabled_path
 ) {
+  $streams_dir = dirname($streams_enabled_path)
 
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
@@ -75,7 +77,7 @@ define nginx::resource::streamhost (
     $streamhost_dir = "${nginx::conf_dir}/conf.stream.d"
   } else {
     $streamhost_dir = "${nginx::conf_dir}/streams-available"
-    $streamhost_enable_dir = "${nginx::conf_dir}/streams-enabled"
+    $streamhost_enable_dir = "${nginx::conf_dir}/${streams_dir}""
     $streamhost_symlink_ensure = $ensure ? {
       'absent' => absent,
       default  => 'link',

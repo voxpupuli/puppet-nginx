@@ -44,6 +44,7 @@ class nginx::config {
   $sites_available_owner          = $nginx::sites_available_owner
   $sites_available_group          = $nginx::sites_available_group
   $sites_available_mode           = $nginx::sites_available_mode
+  $sites_enabled_path             = $nginx::sites_enabled_path
   $super_user                     = $nginx::super_user
   $temp_dir                       = $nginx::temp_dir
   $server_purge                   = $nginx::server_purge
@@ -85,6 +86,7 @@ class nginx::config {
   $mail                           = $nginx::mail
   $mime_types_path                = $nginx::mime_types_path
   $stream                         = $nginx::stream
+  $streams_enabled_path           = $nginx::streams_enabled_path
   $mime_types                     = $nginx::mime_types_preserve_defaults ? {
     true    => merge($nginx::params::mime_types,$nginx::mime_types),
     default => $nginx::mime_types,
@@ -211,13 +213,15 @@ class nginx::config {
   }
 
   unless $confd_only {
+    $sites_enabled_dir   = dirname($sites_enabled_path)
+    $streams_enabled_dir = dirname($streams_enabled_path)
     file { "${conf_dir}/sites-available":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
-    file { "${conf_dir}/sites-enabled":
+    file { "${conf_dir}/${sites_enabled_dir}":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
@@ -228,13 +232,13 @@ class nginx::config {
         purge   => true,
         recurse => true,
       }
-      File["${conf_dir}/sites-enabled"] {
+      File["${conf_dir}/${sites_enabled_dir}"] {
         purge   => true,
         recurse => true,
       }
     }
     # No real reason not to make these even if $stream is not enabled.
-    file { "${conf_dir}/streams-enabled":
+    file { "${conf_dir}/${streams_enabled_dir}":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
@@ -247,7 +251,7 @@ class nginx::config {
       mode   => $sites_available_mode,
     }
     if $server_purge {
-      File["${conf_dir}/streams-enabled"] {
+      File["${conf_dir}/${streams_enabled_dir}"] {
         purge   => true,
         recurse => true,
       }
