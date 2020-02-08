@@ -1051,18 +1051,6 @@ describe 'nginx::resource::location' do
                 %r{\s+error_log\s+/my-error_log error;},
                 %r{\s+error_log\s+syslog:10\.0\.0\.1 error;}
               ]
-            },
-            {
-              title: 'should set proxy_max_temp_file_size',
-              attr: 'proxy_max_temp_file_size',
-              value: '1024m',
-              match: %r{\s+proxy_max_temp_file_size\s+1024m;}
-            },
-            {
-              title: 'should set proxy_busy_buffers_size',
-              attr: 'proxy_busy_buffers_size',
-              value: '16k',
-              match: %r{\s+proxy_busy_buffers_size\s+16k;}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
