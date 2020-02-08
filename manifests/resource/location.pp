@@ -187,7 +187,7 @@ define nginx::resource::location (
   Enum['present', 'absent'] $ensure                                = 'present',
   Boolean $internal                                                = false,
   String $location                                                 = $name,
-  Variant[String[1], Array[String[1], 1]] $server                  = undef,
+  Variant[String[1],Array[String[1],1]] $server                    = undef,
   Optional[String] $www_root                                       = undef,
   Optional[String] $autoindex                                      = undef,
   Optional[Enum['on', 'off']] $autoindex_exact_size                = undef,
@@ -251,7 +251,7 @@ define nginx::resource::location (
   Optional[String] $auth_basic_user_file                           = undef,
   Optional[String] $auth_request                                   = undef,
   Array $rewrite_rules                                             = [],
-  Integer[401, 599] $priority                                      = 500,
+  Integer[401,599] $priority                                       = 500,
   Boolean $mp4                                                     = false,
   Boolean $flv                                                     = false,
   Optional[String] $expires                                        = undef,
@@ -298,9 +298,9 @@ define nginx::resource::location (
 
   if (
     $ensure == 'present'            and
-      $fastcgi != undef               and
-      !defined(File[$fastcgi_params]) and
-      $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf"
+    $fastcgi != undef               and
+    !defined(File[$fastcgi_params]) and
+    $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf"
   ) {
     file { $fastcgi_params:
       ensure  => 'present',
