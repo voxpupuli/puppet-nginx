@@ -87,16 +87,16 @@ define nginx::resource::mailhost (
   String $ipv6_listen_options                    = 'default ipv6only=on',
   Boolean $ssl                                   = false,
   Optional[String] $ssl_cert                     = undef,
-  String $ssl_ciphers                            = $::nginx::ssl_ciphers,
+  String $ssl_ciphers                            = $nginx::ssl_ciphers,
   Optional[String] $ssl_client_cert              = undef,
   Optional[String] $ssl_crl                      = undef,
-  Optional[String] $ssl_dhparam                  = $::nginx::ssl_dhparam,
+  Optional[String] $ssl_dhparam                  = $nginx::ssl_dhparam,
   Optional[String] $ssl_ecdh_curve               = undef,
   Optional[String] $ssl_key                      = undef,
   Optional[String] $ssl_password_file            = undef,
   Optional[Integer] $ssl_port                    = undef,
-  Enum['on', 'off'] $ssl_prefer_server_ciphers   = $::nginx::ssl_prefer_server_ciphers,
-  String $ssl_protocols                          = $::nginx::ssl_protocols,
+  Enum['on', 'off'] $ssl_prefer_server_ciphers   = $nginx::ssl_prefer_server_ciphers,
+  String $ssl_protocols                          = $nginx::ssl_protocols,
   Optional[String] $ssl_session_cache            = undef,
   Optional[String] $ssl_session_ticket_key       = undef,
   Optional[String] $ssl_session_tickets          = undef,
@@ -127,7 +127,7 @@ define nginx::resource::mailhost (
     fail('You must include the nginx base class before using any defined resources')
   }
 
-  $root_group = $::nginx::root_group
+  $root_group = $nginx::root_group
 
   File {
     owner => 'root',
@@ -135,12 +135,12 @@ define nginx::resource::mailhost (
     mode  => '0644',
   }
 
-  $config_dir  = "${::nginx::conf_dir}/conf.mail.d"
+  $config_dir  = "${nginx::conf_dir}/conf.mail.d"
   $config_file = "${config_dir}/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable and !$facts['ipaddress6']) {
+  if ($ipv6_enable and !$facts['networking']['ip6']) {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 

@@ -20,10 +20,10 @@ server {
 <% end -%>
 <%- if @listen_ip.is_a?(Array) then -%>
   <%- @listen_ip.each do |ip| -%>
-  listen       <%= ip %>:<%= @ssl_port %>;
+  listen       <%= ip %>:<%= @ssl_port %><% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) >= 0 -%> ssl<% end -%>;
   <%- end -%>
 <%- else -%>
-  listen                <%= @listen_ip %>:<%= @ssl_port %>;
+  listen                <%= @listen_ip %>:<%= @ssl_port %><% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) >= 0 -%> ssl<% end -%>;
 <%- end -%>
 <%# check to see if ipv6 support exists in the kernel before applying -%>
 <%# FIXME this logic is duplicated all over the place -%>
@@ -38,7 +38,9 @@ server {
 <%- end -%>
 <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) -%>
 
+<% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) < 0 -%>
   ssl                   on;
+<% end -%>
   starttls              off;
 
 <%= scope.function_template(["nginx/mailhost/mailhost_ssl_settings.erb"]) -%>

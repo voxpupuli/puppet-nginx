@@ -14,35 +14,21 @@
 #
 # This class file is not called directly
 class nginx::service(
-  $service_restart = $::nginx::service_restart,
-  $service_ensure  = $::nginx::service_ensure,
-  $service_name    = $::nginx::service_name,
-  $service_flags   = $::nginx::service_flags,
-  $service_manage  = $::nginx::service_manage,
+  $service_restart = $nginx::service_restart,
+  $service_ensure  = $nginx::service_ensure,
+  $service_enable  = $nginx::service_enable,
+  $service_name    = $nginx::service_name,
+  $service_flags   = $nginx::service_flags,
+  $service_manage  = $nginx::service_manage,
 ) {
 
   assert_private()
 
-  $service_enable = $service_ensure ? {
-    'running' => true,
-    'absent'  => false,
-    'stopped' => false,
-    'undef'   => undef,
-    default   => true,
-  }
-
-  if $service_ensure == 'undef' {
-    $service_ensure_real = undef
-  } else {
-    $service_ensure_real = $service_ensure
-  }
-
   if $service_manage {
-    case $::osfamily {
+    case $facts['os']['name'] {
       'OpenBSD': {
-        service { 'nginx':
-          ensure     => $service_ensure_real,
-          name       => $service_name,
+        service { $service_name:
+          ensure     => $service_ensure,
           enable     => $service_enable,
           flags      => $service_flags,
           hasstatus  => true,
@@ -50,9 +36,8 @@ class nginx::service(
         }
       }
       default: {
-        service { 'nginx':
-          ensure     => $service_ensure_real,
-          name       => $service_name,
+        service { $service_name:
+          ensure     => $service_ensure,
           enable     => $service_enable,
           hasstatus  => true,
           hasrestart => true,
@@ -63,7 +48,7 @@ class nginx::service(
 
   # Allow overriding of 'restart' of Service resource; not used by default
   if $service_restart {
-    Service['nginx'] {
+    Service[$service_name] {
       restart => $service_restart,
     }
   }

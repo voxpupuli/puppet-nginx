@@ -38,7 +38,9 @@ server {
 <%- end -%>
 <%= scope.function_template(["nginx/mailhost/mailhost_common.erb"]) -%>
 
+<% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) < 0 -%>
   ssl                   off;
+<% end -%>
   starttls              <%= @starttls %>;
 
 <% if @starttls == 'on' || @starttls == 'only' %>

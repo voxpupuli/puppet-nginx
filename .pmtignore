@@ -18,3 +18,4 @@ Puppetfile.lock
 *.iml
 .*.sw?
 .yardoc/
+Dockerfile

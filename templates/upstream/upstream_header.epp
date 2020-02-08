@@ -1,0 +1,28 @@
+<%- | Hash      $cfg_prepend  = {},
+      String[1] $name,
+| -%>
+# MANAGED BY PUPPET
+upstream <%= $name %> {
+<% if $cfg_prepend { -%>
+  <%- $cfg_prepend.each |$key,$value| { -%>
+    <%- if $value =~ Hash { -%>
+      <%- $value.each |$subkey,$subvalue| { -%>
+        <%- if $subvalue =~ Array { -%>
+          <%- Array($subvalue).each |$asubvalue| { -%>
+  <%= $key %> <%= $subkey %> <%= $asubvalue %>;
+          <%- } -%>
+        <%- } else { -%>
+  <%= $key %> <%= $subkey %> <%= $subvalue %>;
+        <%- } -%>
+      <%- } -%>
+    <%- } else { -%>
+      <%- if $value =~ Array { -%>
+        <%- $value.each |$asubvalue| { -%>
+  <%= $key %> <%= $asubvalue %>;
+        <%- } -%>
+      <%- } else { -%>
+  <%= $key %> <%= $value %>;
+      <%- } -%>
+    <%- } -%>
+  <%- } -%>
+<% } -%>

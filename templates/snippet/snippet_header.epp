@@ -1,0 +1,5 @@
+<%- | String $raw_content,
+| -%>
+# MANAGED BY PUPPET
+
+<%= $raw_content %>

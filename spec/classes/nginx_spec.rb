@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe 'nginx' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do
+    context "on #{os} with Facter #{facts[:facterversion]} and Puppet #{facts[:puppetversion]}" do
       let(:facts) do
         facts
       end
 
       let :params do
         {
-          nginx_upstreams: { 'upstream1' => { 'members' => ['localhost:3000'] } },
+          nginx_upstreams: { 'upstream1' => { 'members' => { 'localhost' => { 'port' => 3000 } } } },
           nginx_servers: { 'test2.local' => { 'www_root' => '/' } },
           nginx_servers_defaults: { 'listen_options' => 'default_server' },
           nginx_locations: { 'test2.local' => { 'server' => 'test2.local', 'www_root' => '/' } },
@@ -43,12 +43,12 @@ describe 'nginx' do
             it { is_expected.to contain_package('nginx') }
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "http://nginx.org/packages/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
                 'priority' => '1',
-                'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
+                'gpgkey'   => 'https://nginx.org/keys/nginx_signing.key'
               )
             end
             it do
@@ -60,12 +60,30 @@ describe 'nginx' do
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
           end
 
+          context 'using default repo without passenger' do
+            let(:params) { { purge_passenger_repo: false } }
+
+            it { is_expected.to contain_package('nginx') }
+            it do
+              is_expected.to contain_yumrepo('nginx-release').with(
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'descr'    => 'nginx repo',
+                'enabled'  => '1',
+                'gpgcheck' => '1',
+                'priority' => '1',
+                'gpgkey'   => 'https://nginx.org/keys/nginx_signing.key'
+              )
+            end
+
+            it { is_expected.not_to contain_yumrepo('passenger') }
+          end
+
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl' => "http://nginx.org/packages/mainline/#{facts[:operatingsystem] == 'CentOS' ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
+                'baseurl' => "https://nginx.org/packages/mainline/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
               )
             end
             it do
@@ -85,7 +103,7 @@ describe 'nginx' do
                 'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:operatingsystemmajrelease]}/$basearch",
                 'gpgcheck'      => '0',
                 'repo_gpgcheck' => '1',
-                'gpgkey'        => 'https://packagecloud.io/gpg.key'
+                'gpgkey'        => 'https://packagecloud.io/phusion/passenger/gpgkey'
               )
             end
             it do
@@ -134,6 +152,16 @@ describe 'nginx' do
             end
           end
 
+          context 'repo_source' do
+            let(:params) { { repo_source: 'https://example.com/nginx' } }
+
+            it do
+              is_expected.to contain_apt__source('nginx').with(
+                'location' => 'https://example.com/nginx'
+              )
+            end
+          end
+
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
 
@@ -165,6 +193,10 @@ describe 'nginx' do
             it { is_expected.not_to contain_apt__source('nginx') }
             it { is_expected.not_to contain_package('passenger') }
           end
+        when 'Archlinux'
+          context 'using defaults' do
+            it { is_expected.to contain_package('nginx-mainline') }
+          end
         else
           it { is_expected.to contain_package('nginx') }
         end
@@ -174,6 +206,7 @@ describe 'nginx' do
         let :params do
           {
             service_ensure: 'running',
+            service_enable: true,
             service_name: 'nginx',
             service_manage: true
           }
@@ -197,6 +230,7 @@ describe 'nginx' do
             {
               service_restart: 'a restart command',
               service_ensure: 'running',
+              service_enable: true,
               service_name: 'nginx'
             }
           end
@@ -211,7 +245,7 @@ describe 'nginx' do
             }
           end
 
-          it { is_expected.to contain_service('nginx').with_name('nginx14') }
+          it { is_expected.to contain_service('nginx14') }
         end
 
         describe 'when service_manage => false' do
@@ -265,29 +299,65 @@ describe 'nginx' do
             )
           end
           it do
-            is_expected.to contain_file('/var/nginx').with(
-              ensure: 'directory',
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx').with(
+                ensure: 'directory',
+                owner: 'root',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx').with(
+                ensure: 'directory',
+                owner: 'root',
+                group: 'root',
+                mode: '0644'
+              )
+            end
+          end
+          it do
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx/client_body_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx/client_body_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            end
+          end
+          it do
+            case facts[:osfamily]
+            when 'Debian'
+              is_expected.to contain_file('/run/nginx/proxy_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            else
+              is_expected.to contain_file('/var/nginx/proxy_temp').with(
+                ensure: 'directory',
+                group: 'root',
+                mode: '0644'
+              )
+            end
+          end
+          it do
+            is_expected.to contain_file('/etc/nginx/nginx.conf').with(
+              ensure: 'file',
               owner: 'root',
               group: 'root',
               mode: '0644'
             )
           end
           it do
-            is_expected.to contain_file('/var/nginx/client_body_temp').with(
-              ensure: 'directory',
-              group: 'root',
-              mode: '0644'
-            )
-          end
-          it do
-            is_expected.to contain_file('/var/nginx/proxy_temp').with(
-              ensure: 'directory',
-              group: 'root',
-              mode: '0644'
-            )
-          end
-          it do
-            is_expected.to contain_file('/etc/nginx/nginx.conf').with(
+            is_expected.to contain_file('/etc/nginx/mime.types').with(
               ensure: 'file',
               owner: 'root',
               group: 'root',
@@ -322,21 +392,27 @@ describe 'nginx' do
               )
             end
           when 'Debian'
-            it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
-            it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
+            it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
             it do
               is_expected.to contain_file('/var/log/nginx').with(
                 ensure: 'directory',
-                owner: 'www-data',
+                owner: 'root',
                 group: 'adm',
-                mode: '0750'
+                mode: '0755'
               )
             end
           end
 
           describe 'nginx.conf template content' do
             [
+              {
+                title: 'should not set load_module',
+                attr: 'dynamic_modules',
+                value: :undef,
+                notmatch: %r{load_module}
+              },
               {
                 title: 'should not set user',
                 attr: 'super_user',
@@ -395,22 +471,34 @@ describe 'nginx' do
                 title: 'should set error_log',
                 attr: 'nginx_error_log',
                 value: '/path/to/error.log',
-                match: 'error_log  /path/to/error.log error;'
+                match: '  error_log /path/to/error.log error;'
               },
               {
                 title: 'should set multiple error_logs',
                 attr: 'nginx_error_log',
                 value: ['/path/to/error.log', 'syslog:server=localhost'],
                 match: [
-                  'error_log  /path/to/error.log error;',
-                  'error_log  syslog:server=localhost error;'
+                  '  error_log /path/to/error.log error;',
+                  '  error_log syslog:server=localhost error;'
                 ]
               },
               {
                 title: 'should set error_log severity level',
                 attr: 'nginx_error_log_severity',
                 value: 'warn',
-                match: 'error_log  /var/log/nginx/error.log warn;'
+                match: '  error_log /var/log/nginx/error.log warn;'
+              },
+              {
+                title: 'should set limit_req_zone',
+                attr: 'limit_req_zone',
+                value: [
+                  '$binary_remote_addr zone=myzone1:10m rate=5r/s',
+                  '$binary_remote_addr zone=myzone2:10m rate=5r/s'
+                ],
+                match: [
+                  '  limit_req_zone $binary_remote_addr zone=myzone1:10m rate=5r/s;',
+                  '  limit_req_zone $binary_remote_addr zone=myzone2:10m rate=5r/s;'
+                ]
               },
               {
                 title: 'should set pid',
@@ -423,6 +511,18 @@ describe 'nginx' do
                 attr: 'pid',
                 value: false,
                 notmatch: %r{pid}
+              },
+              {
+                title: 'should not set absolute_redirect',
+                attr: 'absolute_redirect',
+                value: :undef,
+                notmatch: %r{absolute_redirect}
+              },
+              {
+                title: 'should set absolute_redirect off',
+                attr: 'absolute_redirect',
+                value: 'off',
+                match: '  absolute_redirect off;'
               },
               {
                 title: 'should set accept_mutex on',
@@ -479,6 +579,12 @@ describe 'nginx' do
                 notmatch: %r{multi_accept}
               },
               {
+                title: 'should set etag',
+                attr: 'etag',
+                value: 'off',
+                match: '  etag off;'
+              },
+              {
                 title: 'should set events_use',
                 attr: 'events_use',
                 value: 'eventport',
@@ -488,33 +594,33 @@ describe 'nginx' do
                 title: 'should set access_log',
                 attr: 'http_access_log',
                 value: '/path/to/access.log',
-                match: '  access_log  /path/to/access.log;'
+                match: '  access_log /path/to/access.log;'
               },
               {
                 title: 'should set multiple access_logs',
                 attr: 'http_access_log',
                 value: ['/path/to/access.log', 'syslog:server=localhost'],
                 match: [
-                  '  access_log  /path/to/access.log;',
-                  '  access_log  syslog:server=localhost;'
+                  '  access_log /path/to/access.log;',
+                  '  access_log syslog:server=localhost;'
                 ]
               },
               {
                 title: 'should set custom log format',
                 attr: 'http_format_log',
                 value: 'mycustomformat',
-                match: '  access_log  /var/log/nginx/access.log mycustomformat;'
+                match: '  access_log /var/log/nginx/access.log mycustomformat;'
               },
               {
                 title: 'should set sendfile',
                 attr: 'sendfile',
                 value: 'on',
-                match: '  sendfile    on;'
+                match: '  sendfile on;'
               },
               {
                 title: 'should not set sendfile',
                 attr: 'sendfile',
-                value: false,
+                value: 'off',
                 notmatch: %r{sendfile}
               },
               {
@@ -590,70 +696,10 @@ describe 'nginx' do
                 match: '  tcp_nopush on;'
               },
               {
-                title: 'should set gzip',
-                attr: 'gzip',
-                value: 'on',
-                match: '  gzip              on;'
-              },
-              {
                 title: 'should not set gzip',
                 attr: 'gzip',
                 value: 'off',
                 notmatch: %r{gzip}
-              },
-              {
-                title: 'should set gzip_buffers',
-                attr: 'gzip_buffers',
-                value: '32 4k',
-                match: '  gzip_buffers      32 4k;'
-              },
-              {
-                title: 'should set gzip_comp_level',
-                attr: 'gzip_comp_level',
-                value: 5,
-                match: '  gzip_comp_level   5;'
-              },
-              {
-                title: 'should set gzip_disable',
-                attr: 'gzip_disable',
-                value: 'MSIE [1-6]\.(?!.*SV1)',
-                match: '  gzip_disable      MSIE [1-6]\.(?!.*SV1);'
-              },
-              {
-                title: 'should set gzip_min_length',
-                attr: 'gzip_min_length',
-                value: '10',
-                match: '  gzip_min_length   10;'
-              },
-              {
-                title: 'should set gzip_http_version',
-                attr: 'gzip_http_version',
-                value: '1.0',
-                match: '  gzip_http_version 1.0;'
-              },
-              {
-                title: 'should set gzip_proxied',
-                attr: 'gzip_proxied',
-                value: 'any',
-                match: '  gzip_proxied      any;'
-              },
-              {
-                title: 'should set gzip_types (array)',
-                attr: 'gzip_types',
-                value: ['text/plain', 'text/html'],
-                match: '  gzip_types        text/plain text/html;'
-              },
-              {
-                title: 'should set gzip_types (string)',
-                attr: 'gzip_types',
-                value: ['text/plain'],
-                match: '  gzip_types        text/plain;'
-              },
-              {
-                title: 'should set gzip_vary',
-                attr: 'gzip_vary',
-                value: 'on',
-                match: '  gzip_vary         on;'
               },
               {
                 title: 'should set proxy_cache_path',
@@ -858,6 +904,18 @@ describe 'nginx' do
                 attr: 'proxy_temp_path',
                 value: '/path/to/proxy_temp',
                 match: '  proxy_temp_path         /path/to/proxy_temp;'
+              },
+              {
+                title: 'should set proxy_max_temp_file_size',
+                attr: 'proxy_max_temp_file_size',
+                value: '1024m',
+                match: '  proxy_max_temp_file_size 1024m;'
+              },
+              {
+                title: 'should set proxy_busy_buffers_size',
+                attr: 'proxy_busy_buffers_size',
+                value: '16k',
+                match: '  proxy_busy_buffers_size 16k;'
               }
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do
@@ -880,6 +938,53 @@ describe 'nginx' do
                 end
               end
             end
+          end
+
+          context 'when mime.types is "[\'text/css css\']"' do
+            let(:params) do
+              {
+                mime_types: { 'text/css' => 'css' }
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{text/css css;}) }
+          end
+
+          context 'when mime.types is default' do
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{text/css css;}) }
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
+          end
+
+          context 'when mime.types is "[\'custom/file customfile\']" and mime.types.preserve.defaults is true' do
+            let(:params) do
+              {
+                mime_types: { 'custom/file' => 'customfile' },
+                mime_types_preserve_defaults: true
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
+            it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{custom/file customfile;}) }
+          end
+
+          context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
+            let(:params) do
+              {
+                dynamic_modules: ['ngx_http_geoip_module']
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{load_module "modules/ngx_http_geoip_module.so";}) }
+          end
+
+          context 'when dynamic_modules is "[\'/path/to/module/ngx_http_geoip_module.so\']" ' do
+            let(:params) do
+              {
+                dynamic_modules: ['/path/to/module/ngx_http_geoip_module.so']
+              }
+            end
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{load_module "/path/to/module/ngx_http_geoip_module.so";}) }
           end
 
           context 'when proxy_cache_path is /path/to/proxy.cache and loader_files is 1000' do
@@ -909,9 +1014,15 @@ describe 'nginx' do
           context 'when conf_dir is /path/to/nginx' do
             let(:params) { { conf_dir: '/path/to/nginx' } }
 
-            it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       /path/to/nginx/mime\.types;}) }
+            it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include       mime\.types;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/conf\.d/\*\.conf;}) }
             it { is_expected.to contain_file('/path/to/nginx/nginx.conf').with_content(%r{include /path/to/nginx/sites-enabled/\*;}) }
+          end
+
+          context 'when mime_types_path is /path/to/mime.types' do
+            let(:params) { { mime_types_path: '/path/to/mime.types' } }
+
+            it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{include       /path/to/mime\.types;}) }
           end
 
           context 'when confd_purge true' do
@@ -1075,8 +1186,14 @@ describe 'nginx' do
           context 'when daemon_user = www-data' do
             let(:params) { { daemon_user: 'www-data' } }
 
-            it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
-            it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            case facts[:osfamily]
+            when 'Debian'
+              it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
+              it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
+            else
+              it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
+              it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
+            end
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
           end
 
@@ -1092,12 +1209,12 @@ describe 'nginx' do
             it { is_expected.to contain_file('/foo/bar').with(ensure: 'directory') }
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
-                %r{access_log  /foo/bar/access.log;}
+                %r{access_log /foo/bar/access.log;}
               )
             end
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
-                %r{error_log  /foo/bar/error.log error;}
+                %r{error_log /foo/bar/error.log error;}
               )
             end
           end
@@ -1106,6 +1223,91 @@ describe 'nginx' do
             let(:params) { { log_mode: '0771' } }
 
             it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
+          end
+
+          context 'when gzip is non-default (on) test gzip defaults' do
+            let(:params) { { gzip: 'on' } }
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip              on;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_comp_level   1;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_disable      msie6;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_min_length   20;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_http_version 1.1;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_vary         off;}
+              )
+            end
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_proxied      off;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip_types (array)' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_types: ['text/plain', 'text/html']
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_types        text/plain text/html;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip types (string)' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_types: 'text/plain'
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_types        text/plain;}
+              )
+            end
+          end
+
+          context 'when gzip is non-default (on) set gzip buffers' do
+            let(:params) do
+              {
+                gzip: 'on',
+                gzip_buffers: '32 4k'
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{  gzip_buffers      32 4k;}
+              )
+            end
           end
         end
       end

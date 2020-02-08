@@ -15,67 +15,71 @@
 # This class file is not called directly
 class nginx::package::redhat {
 
-  $package_name             = $::nginx::package_name
-  $package_source           = $::nginx::package_source
-  $package_ensure           = $::nginx::package_ensure
-  $package_flavor           = $::nginx::package_flavor
-  $passenger_package_ensure = $::nginx::passenger_package_ensure
-  $manage_repo              = $::nginx::manage_repo
+  $package_name             = $nginx::package_name
+  $package_source           = $nginx::package_source
+  $package_ensure           = $nginx::package_ensure
+  $package_flavor           = $nginx::package_flavor
+  $passenger_package_ensure = $nginx::passenger_package_ensure
+  $manage_repo              = $nginx::manage_repo
+  $purge_passenger_repo     = $nginx::purge_passenger_repo
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not
   #on RHEL or CentOS and $manage_repo is set manually to 'true'.
-  $_os = $::operatingsystem? {
-    'centos' => 'centos',
-    default  => 'rhel'
+  $_os = $facts['os']['name'] ? {
+    'centos'         => 'centos',
+    'VirtuozzoLinux' => 'centos',
+    default          => 'rhel'
   }
 
   if $manage_repo {
     case $package_source {
       'nginx', 'nginx-stable': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "https://nginx.org/packages/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
           priority => '1',
-          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          gpgkey   => 'https://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
 
-        yumrepo { 'passenger':
-          ensure => absent,
-          before => Package['nginx'],
+        if $purge_passenger_repo {
+          yumrepo { 'passenger':
+            ensure => absent,
+            before => Package['nginx'],
+          }
         }
-
       }
       'nginx-mainline': {
         yumrepo { 'nginx-release':
-          baseurl  => "http://nginx.org/packages/mainline/${_os}/${::operatingsystemmajrelease}/\$basearch/",
+          baseurl  => "https://nginx.org/packages/mainline/${_os}/${facts['os']['release']['major']}/\$basearch/",
           descr    => 'nginx repo',
           enabled  => '1',
           gpgcheck => '1',
           priority => '1',
-          gpgkey   => 'http://nginx.org/keys/nginx_signing.key',
+          gpgkey   => 'https://nginx.org/keys/nginx_signing.key',
           before   => Package['nginx'],
         }
 
-        yumrepo { 'passenger':
-          ensure => absent,
-          before => Package['nginx'],
+        if $purge_passenger_repo {
+          yumrepo { 'passenger':
+            ensure => absent,
+            before => Package['nginx'],
+          }
         }
-
       }
       'passenger': {
-        if ($::operatingsystem in ['RedHat', 'CentOS']) and ($::operatingsystemmajrelease in ['6', '7']) {
+        if ($facts['os']['name'] in ['RedHat', 'CentOS', 'VirtuozzoLinux']) and ($facts['os']['release']['major'] in ['6', '7']) {
           yumrepo { 'passenger':
-            baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${::operatingsystemmajrelease}/\$basearch",
+            baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
             descr         => 'passenger repo',
             enabled       => '1',
             gpgcheck      => '0',
             repo_gpgcheck => '1',
             priority      => '1',
-            gpgkey        => 'https://packagecloud.io/gpg.key',
+            gpgkey        => 'https://packagecloud.io/phusion/passenger/gpgkey',
             before        => Package['nginx'],
           }
 
@@ -90,7 +94,7 @@ class nginx::package::redhat {
           }
 
         } else {
-          fail("${::operatingsystem} version ${::operatingsystemmajrelease} is unsupported with \$package_source 'passenger'")
+          fail("${facts['os']['name']} version ${facts['os']['release']['major']} is unsupported with \$package_source 'passenger'")
         }
       }
       default: {

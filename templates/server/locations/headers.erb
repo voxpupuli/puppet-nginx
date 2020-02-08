@@ -1,0 +1,11 @@
+<%- @add_header.sort.each do |header, value| -%>
+    <%- if value -%>
+      <%- if value.is_a?(Hash) -%>
+        <%- value.each do |sk, sv| -%>
+    add_header "<%= header %>" <% if sk != '' %>"<%= sk %>"<% end %> <%= sv %>;
+        <%- end -%>
+      <%- else -%>
+    add_header "<%= header %>" "<%= value %>";
+      <%- end -%>
+    <%- end -%>
+<%- end -%>

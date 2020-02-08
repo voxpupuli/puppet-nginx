@@ -15,21 +15,21 @@
 # This class file is not called directly
 class nginx::package {
 
-  $package_name             = $::nginx::package_name
-  $package_source           = $::nginx::package_source
-  $package_ensure           = $::nginx::package_ensure
-  $package_flavor           = $::nginx::package_flavor
-  $passenger_package_ensure = $::nginx::passenger_package_ensure
-  $manage_repo              = $::nginx::manage_repo
+  $package_name             = $nginx::package_name
+  $package_source           = $nginx::package_source
+  $package_ensure           = $nginx::package_ensure
+  $package_flavor           = $nginx::package_flavor
+  $passenger_package_ensure = $nginx::passenger_package_ensure
+  $manage_repo              = $nginx::manage_repo
 
   assert_private()
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'redhat': {
-      contain ::nginx::package::redhat
+      contain nginx::package::redhat
     }
     'debian': {
-      contain ::nginx::package::debian
+      contain nginx::package::debian
     }
     'Solaris': {
       # $package_name needs to be specified. SFEnginx,CSWnginx depending on

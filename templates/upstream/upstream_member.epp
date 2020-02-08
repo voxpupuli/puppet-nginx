@@ -1,0 +1,28 @@
+<%- | $server,
+      Boolean                         $backup           = false,
+      Optional[String[1]]             $comment          = undef,
+      Optional[Nginx::Time]           $fail_timeout     = undef,
+      Optional[Integer[1]]            $max_conns        = undef,
+      Optional[Integer[0]]            $max_fails        = undef,
+      Optional[String[1]]             $params_append    = undef,
+      Optional[String[1]]             $params_prepend   = undef,
+      Boolean                         $resolve          = false,
+      Optional[String[1]]             $route            = undef,
+      Optional[String[1]]             $service          = undef,
+      Optional[Nginx::Time]           $slow_start       = undef,
+      Optional[Enum['drain','down']]  $state            = undef,
+      Optional[Integer[1]]            $weight           = undef,
+| -%>
+  server <%= $server -%>
+<%- if $params_prepend { %> <%= $params_prepend %><% } -%>
+<%- if $state { %> <%= $state %><% } -%>
+<%- if $weight { %> weight=<%= $weight %><% } -%>
+<%- if $max_conns { %> max_conns=<%= $max_conns %><% } -%>
+<%- if $max_fails { %> max_fails=<%= $max_fails %><% } -%>
+<%- if $fail_timeout { %> fail_timeout=<%= $fail_timeout %><% } -%>
+<%- if $slow_start { %> slow_start=<%= $slow_start %><% } -%>
+<%- if $service { %> service=<%= $service %><% } -%>
+<%- if $route { %> route=<%= $route %><% } -%>
+<%- if $resolve { %> resolve<% } -%>
+<%- if $backup { %> backup<% } -%>
+<%- if $params_append { %> <%= $params_append %><% } %>;<% if $comment { %> # <%= $comment %><% } %>
