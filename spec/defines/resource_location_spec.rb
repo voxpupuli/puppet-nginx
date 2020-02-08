@@ -985,6 +985,84 @@ describe 'nginx::resource::location' do
               attr: 'proxy_busy_buffers_size',
               value: '16k',
               match: %r{\s+proxy_busy_buffers_size\s+16k;}
+            },
+            {
+              title: 'access_log undef',
+              attr: 'access_log',
+              value: :undef,
+              notmatch: %r{\s+access_log\s+.+;}
+            },
+            {
+              title: 'disabling access_log',
+              attr: 'access_log',
+              value: 'off',
+              match: %r{\s+access_log\s+off;}
+            },
+            {
+              title: 'override access_log ',
+              attr: 'access_log',
+              value: '/var/log/nginx/specific-location.log',
+              match: %r{\s+access_log\s+/var/log/nginx/specific-location.log combined;}
+            },
+            {
+              title: 'override access_log with an array',
+              attr: 'access_log',
+              value: [
+                '/var/log/nginx/specific-location.log',
+                'syslog:10.0.0.1'
+              ],
+              match: [
+                %r{\s+access_log\s+/var/log/nginx/specific-location.log combined;},
+                %r{\s+access_log\s+syslog:10\.0\.0\.1 combined;}
+              ]
+            },
+            {
+              title: 'disabling logging errors not found ',
+              attr: 'log_not_found',
+              value: 'off',
+              match: %r{\s+log_not_found\s+off;}
+            },
+            {
+              title: 'enabling logging errors not found ',
+              attr: 'log_not_found',
+              value: 'on',
+              match: %r{\s+log_not_found\s+on;}
+            },
+            {
+              title: 'disabling error_log ',
+              attr: 'error_log',
+              value: 'off',
+              match: %r{\s+error_log\s+off;}
+            },
+            {
+              title: 'overriding error_log ',
+              attr: 'error_log',
+              value: '/my-error_log',
+              match: %r{\s+error_log\s+/my-error_log error;}
+            },
+            {
+              title: 'overriding error_log with an array',
+              attr: 'error_log',
+              value: [
+                '/my-error_log',
+                'syslog:10.0.0.1'
+              ],
+              match: [
+                %r{\s+error_log\s+/my-error_log error;},
+                %r{\s+error_log\s+syslog:10\.0\.0\.1 error;}
+              ]
+            },
+            {
+              title: 'should set proxy_max_temp_file_size',
+              attr: 'proxy_max_temp_file_size',
+              value: '1024m',
+              match: %r{\s+proxy_max_temp_file_size\s+1024m;}
+            },
+            {
+              title: 'should set proxy_busy_buffers_size',
+              attr: 'proxy_busy_buffers_size',
+              value: '16k',
+              match: %r{\s+proxy_busy_buffers_size\s+16k;}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
