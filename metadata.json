@@ -9,6 +9,10 @@
   "issues_url": "https://github.com/voxpupuli/puppet-nginx/issues",
   "dependencies": [
     {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 7.2.0 < 8.0.0"
+    },
+    {
       "name": "puppetlabs/concat",
       "version_requirement": ">= 4.1.0 < 7.0.0"
     },
