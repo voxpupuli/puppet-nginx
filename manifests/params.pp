@@ -109,7 +109,7 @@ class nginx::params {
       }
     }
     'Debian': {
-      if ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['bionic'])
+      if ($facts['os']['name'] == 'ubuntu' and $facts['os']['distro']['codename'] in ['bionic'])
       or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['9', '10']) {
         $_module_os_overrides = {
           'manage_repo'             => true,
@@ -121,7 +121,7 @@ class nginx::params {
           'passenger_package_name'  => 'libnginx-mod-http-passenger',
           'include_modules_enabled' => true,
         }
-      } elsif ($facts['os']['name'] == 'ubuntu' and $facts['lsbdistcodename'] in ['lucid', 'precise', 'trusty', 'xenial'])
+      } elsif ($facts['os']['name'] == 'ubuntu' and $facts['os']['distro']['codename'] in ['lucid', 'precise', 'trusty', 'xenial'])
       or ($facts['os']['name'] == 'debian' and $facts['os']['release']['major'] in ['6', '7', '8']) {
         $_module_os_overrides = {
           'manage_repo' => true,
