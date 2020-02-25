@@ -25,6 +25,10 @@
 #   include nginx
 # }
 #
+# @param include_modules_enabled
+#   When set, nginx will include module configurations files installed in the
+#   /etc/nginx/modules-enabled directory.
+#
 # @param nginx_version
 #   The version of nginx installed (or being installed).
 #   Unfortunately, different versions of nginx may need configuring
