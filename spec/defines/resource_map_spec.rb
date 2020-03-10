@@ -54,19 +54,19 @@ describe 'nginx::resource::map' do
             },
             {
               title: 'should not contain includes',
-              attr: 'includes',
+              attr: 'include_files',
               value: [],
               notmatch: '  include ;'
             },
             {
               title: 'should contain includes',
-              attr: 'includes',
+              attr: 'include_files',
               value: ['/etc/includes/includes.map'],
               match: '  include /etc/includes/includes.map;'
             },
             {
               title: 'should contain multiple includes',
-              attr: 'includes',
+              attr: 'include_files',
               value: [
                 '/etc/includes/A.map',
                 '/etc/includes/B.map',
