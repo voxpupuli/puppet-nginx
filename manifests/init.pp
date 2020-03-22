@@ -25,6 +25,14 @@
 #   include nginx
 # }
 #
+# @param include_modules_enabled
+#   When set, nginx will include module configurations files installed in the
+#   /etc/nginx/modules-enabled directory.
+#
+# @param passenger_package_name
+#   The name of the package to install in order for the passenger module of
+#   nginx being usable.
+#
 # @param nginx_version
 #   The version of nginx installed (or being installed).
 #   Unfortunately, different versions of nginx may need configuring
@@ -64,6 +72,7 @@ class nginx (
   Boolean $super_user                                        = $nginx::params::super_user,
   $temp_dir                                                  = $nginx::params::temp_dir,
   Boolean $server_purge                                      = false,
+  Boolean $include_modules_enabled                           = $nginx::params::include_modules_enabled,
 
   # Primary Templates
   $conf_template                                             = 'nginx/conf.d/nginx.conf.erb',
@@ -166,6 +175,7 @@ class nginx (
   Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
   $passenger_package_ensure                                  = 'present',
+  String[1] $passenger_package_name                          = $nginx::params::passenger_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
   ### END Package Configuration ###
 

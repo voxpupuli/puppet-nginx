@@ -20,6 +20,7 @@ class nginx::package::debian {
   $package_ensure           = $nginx::package_ensure
   $package_flavor           = $nginx::package_flavor
   $passenger_package_ensure = $nginx::passenger_package_ensure
+  $passenger_package_name   = $nginx::passenger_package_name
   $manage_repo              = $nginx::manage_repo
   $release                  = $nginx::repo_release
   $repo_source              = $nginx::repo_source
@@ -71,7 +72,7 @@ class nginx::package::debian {
           key      => {'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7'},
         }
 
-        package { 'passenger':
+        package { $passenger_package_name:
           ensure  => $passenger_package_ensure,
           require => Exec['apt_update'],
         }
