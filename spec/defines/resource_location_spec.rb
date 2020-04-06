@@ -954,6 +954,12 @@ describe 'nginx::resource::location' do
               match: %r{\s+proxy_buffering\s+on;}
             },
             {
+              title: 'should set proxy_request_buffering',
+              attr: 'proxy_request_buffering',
+              value: 'on',
+              match: %r{\s+proxy_request_buffering\s+on;}
+            },
+            {
               title: 'should set proxy_max_temp_file_size',
               attr: 'proxy_max_temp_file_size',
               value: '1024m',
