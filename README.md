@@ -19,7 +19,9 @@ This module manages NGINX configuration.
 ### Requirements
 
 * Puppet 4.6.1 or later.  Puppet 3 was supported up until release 0.6.0.
-* apt is now a soft dependency. If your system uses apt, you'll need to configure an appropriate version of the apt module. Version 4.4.0 or higher is recommended because of the proper handling of `apt-transport-https`.
+* apt is now a soft dependency. If your system uses apt, you'll need to
+  configure an appropriate version of the apt module. Version 4.4.0 or higher is
+  recommended because of the proper handling of `apt-transport-https`.
 
 ### Additional Documentation
 
@@ -99,7 +101,8 @@ nginx::resource::mailhost { 'domain1.example':
 
 ### Convert upstream members from Array to Hash
 
-The datatype Array for members of a nginx::resource::upstream is replaced by a Hash. The following configuration is no longer valid:
+The datatype Array for members of a nginx::resource::upstream is replaced by a
+Hash. The following configuration is no longer valid:
 
 ```puppet
 nginx::resource::upstream { 'puppet_rack_app':
@@ -349,7 +352,9 @@ define web::nginx_ssl_with_redirect (
   nginx::resource::server { "${name}.${::domain}":
     ensure              => present,
     www_root            => "${full_web_path}/${name}/",
-    location_cfg_append => { 'rewrite' => '^ https://$server_name$request_uri? permanent' },
+    location_cfg_append => {
+      'rewrite' => '^ https://$server_name$request_uri? permanent'
+    }‚,
   }
 
   if !$www_root {
@@ -406,7 +411,7 @@ nginx::resource::location { "some_root":
 }
 ```
 
-# Call class web::nginx_ssl_with_redirect
+## Call class web::nginx_ssl_with_redirect
 
 ```puppet
 web::nginx_ssl_with_redirect { 'sub-domain-name':
