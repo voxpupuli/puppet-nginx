@@ -18,6 +18,9 @@
 <% if @proxy_buffering -%>
     proxy_buffering       <%= @proxy_buffering %>;
 <% end -%>
+<% if @proxy_request_buffering -%>
+    proxy_request_buffering <%= @proxy_request_buffering %>;
+<% end -%>
 <% if @proxy_busy_buffers_size -%>
     proxy_busy_buffers_size  <%= @proxy_busy_buffers_size %>;
 <% end -%>
