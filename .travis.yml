@@ -48,14 +48,6 @@ matrix:
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian8-64 BEAKER_HYPERVISOR=docker CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian8-64 BEAKER_HYPERVISOR=docker CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
     env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64 BEAKER_HYPERVISOR=docker CHECK=beaker
     services: docker
   - rvm: 2.5.3
