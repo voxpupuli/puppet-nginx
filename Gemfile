@@ -11,7 +11,7 @@ def location_for(place, fake_version = nil)
 end
 
 group :test do
-  gem 'voxpupuli-test', '>= 1.0.0',  :require => false
+  gem 'voxpupuli-test', '>= 1.4.0',  :require => false
   gem 'coveralls',                   :require => false
   gem 'simplecov-console',           :require => false
   gem 'rspec-puppet-facts',          :require => false, :git => 'https://github.com/mcanevet/rspec-puppet-facts', :ref => '9541292d4fc35db3be1badace673c1108154b571'
