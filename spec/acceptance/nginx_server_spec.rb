@@ -71,6 +71,7 @@ describe 'nginx::resource::server define:' do
       it { is_expected.to be_file }
       it { is_expected.not_to contain 'ssl on;' } # As of nginx 1.15 (1.16 stable), this will not be set.
       it { is_expected.to contain 'listen       *:443 ssl;' }
+      it { is_expected.not_to contain 'shared:SSL:10m;' }
     end
 
     describe file('/etc/nginx/sites-enabled/www.puppetlabs.com.conf') do
@@ -119,6 +120,7 @@ describe 'nginx::resource::server define:' do
       nginx::resource::server { 'www.puppetlabs.com':
         ensure            => present,
         ssl               => true,
+        ssl_cache         => 'shared:SSL:10m',
         ssl_cert          => '/etc/pki/tls/certs/crypted.cert',
         ssl_key           => '/etc/pki/tls/private/crypted.key',
         ssl_password_file => '/etc/pki/tls/private/crypted.pass',
@@ -134,6 +136,7 @@ describe 'nginx::resource::server define:' do
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
       it { is_expected.to be_file }
+      it { is_expected.to contain 'ssl_session_cache         shared:SSL:10m;' }
       it { is_expected.to contain 'ssl_password_file         /etc/pki/tls/private/crypted.pass;' }
     end
 

@@ -119,15 +119,29 @@ class nginx::config {
   $server_tokens                  = $nginx::server_tokens
   $spdy                           = $nginx::spdy
   $http2                          = $nginx::http2
+  $ssl_buffer_size                = $nginx::ssl_buffer_size
+  $ssl_ciphers                    = $nginx::ssl_ciphers
+  $ssl_crl                        = $nginx::ssl_crl
+  $ssl_dhparam                    = $nginx::ssl_dhparam
+  $ssl_ecdh_curve                 = $nginx::ssl_ecdh_curve
+  $ssl_session_cache              = $nginx::ssl_session_cache
+  $ssl_session_timeout            = $nginx::ssl_session_timeout
+  $ssl_session_tickets            = $nginx::ssl_session_tickets
+  $ssl_session_ticket_key         = $nginx::ssl_session_ticket_key
   $ssl_stapling                   = $nginx::ssl_stapling
+  $ssl_stapling_file              = $nginx::ssl_stapling_file
+  $ssl_stapling_responder         = $nginx::ssl_stapling_responder
+  $ssl_stapling_verify            = $nginx::ssl_stapling_verify
+  $ssl_trusted_certificate        = $nginx::ssl_trusted_certificate
+  $ssl_password_file              = $nginx::ssl_password_file
+  $ssl_prefer_server_ciphers      = $nginx::ssl_prefer_server_ciphers
+  $ssl_protocols                  = $nginx::ssl_protocols
+  $ssl_verify_depth               = $nginx::ssl_verify_depth
   $types_hash_bucket_size         = $nginx::types_hash_bucket_size
   $types_hash_max_size            = $nginx::types_hash_max_size
   $worker_connections             = $nginx::worker_connections
   $worker_processes               = $nginx::worker_processes
   $worker_rlimit_nofile           = $nginx::worker_rlimit_nofile
-  $ssl_prefer_server_ciphers      = $nginx::ssl_prefer_server_ciphers
-  $ssl_protocols                  = $nginx::ssl_protocols
-  $ssl_ciphers                    = $nginx::ssl_ciphers
   $include_modules_enabled        = $nginx::include_modules_enabled
 
   # Non-configurable settings

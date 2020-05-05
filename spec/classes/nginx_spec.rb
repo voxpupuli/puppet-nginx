@@ -921,6 +921,162 @@ describe 'nginx' do
                 attr: 'proxy_busy_buffers_size',
                 value: '16k',
                 match: '  proxy_busy_buffers_size 16k;'
+              },
+              {
+                title: 'should set ssl_stapling_verify',
+                attr: 'ssl_stapling_verify',
+                value: 'on',
+                match: '  ssl_stapling_verify       on;'
+              },
+              {
+                title: 'should set ssl_protocols',
+                attr: 'ssl_protocols',
+                value: 'TLSv1.2',
+                match: '  ssl_protocols             TLSv1.2;'
+              },
+              {
+                title: 'should set ssl_ciphers',
+                attr: 'ssl_ciphers',
+                value: 'ECDHE-ECDSA-CHACHA20-POLY1305',
+                match: '  ssl_ciphers               ECDHE-ECDSA-CHACHA20-POLY1305;'
+              },
+              {
+                title: 'should set ssl_dhparam',
+                attr: 'ssl_dhparam',
+                value: '/path/to/dhparam',
+                match: '  ssl_dhparam               /path/to/dhparam;'
+              },
+              {
+                title: 'should not set ssl_ecdh_curve',
+                attr: 'ssl_ecdh_curve',
+                value: :undef,
+                notmatch: 'ssl_ecdh_curve'
+              },
+              {
+                title: 'should set ssl_ecdh_curve',
+                attr: 'ssl_ecdh_curve',
+                value: 'prime256v1:secp384r1',
+                match: '  ssl_ecdh_curve            prime256v1:secp384r1;'
+              },
+              {
+                title: 'should set ssl_session_cache',
+                attr: 'ssl_session_cache',
+                value: 'shared:SSL:10m',
+                match: '  ssl_session_cache         shared:SSL:10m;'
+              },
+              {
+                title: 'should set ssl_session_timeout',
+                attr: 'ssl_session_timeout',
+                value: '5m',
+                match: '  ssl_session_timeout       5m;'
+              },
+              {
+                title: 'should not set ssl_session_tickets',
+                attr: 'ssl_session_tickets',
+                value: :undef,
+                notmatch: 'ssl_session_tickets'
+              },
+              {
+                title: 'should set ssl_session_tickets',
+                attr: 'ssl_session_tickets',
+                value: 'on',
+                match: '  ssl_session_tickets       on;'
+              },
+              {
+                title: 'should not set ssl_session_ticket_key',
+                attr: 'ssl_session_ticket_key',
+                value: :undef,
+                notmatch: 'ssl_session_ticket_key'
+              },
+              {
+                title: 'should set ssl_session_ticket_key',
+                attr: 'ssl_session_ticket_key',
+                value: '/path/to/ticket_key',
+                match: '  ssl_session_ticket_key    /path/to/ticket_key;'
+              },
+              {
+                title: 'should not set ssl_buffer_size',
+                attr: 'ssl_buffer_size',
+                value: :undef,
+                notmatch: 'ssl_buffer_size'
+              },
+              {
+                title: 'should set ssl_buffer_size',
+                attr: 'ssl_buffer_size',
+                value: '16k',
+                match: '  ssl_buffer_size           16k;'
+              },
+              {
+                title: 'should not set ssl_crl',
+                attr: 'ssl_crl',
+                value: :undef,
+                notmatch: 'ssl_crl'
+              },
+              {
+                title: 'should set ssl_crl',
+                attr: 'ssl_crl',
+                value: '/path/to/crl',
+                match: '  ssl_crl                   /path/to/crl;'
+              },
+              {
+                title: 'should not set ssl_stapling_file',
+                attr: 'ssl_stapling_file',
+                value: :undef,
+                notmatch: 'ssl_stapling_file'
+              },
+              {
+                title: 'should set ssl_stapling_file',
+                attr: 'ssl_stapling_file',
+                value: '/path/to/stapling_file',
+                match: '  ssl_stapling_file         /path/to/stapling_file;'
+              },
+              {
+                title: 'should not set ssl_stapling_responder',
+                attr: 'ssl_stapling_responder',
+                value: :undef,
+                notmatch: 'ssl_stapling_responder'
+              },
+              {
+                title: 'should set ssl_stapling_responder',
+                attr: 'ssl_stapling_responder',
+                value: 'http://stapling.responder/',
+                match: '  ssl_stapling_responder    http://stapling.responder/;'
+              },
+              {
+                title: 'should not set ssl_trusted_certificate',
+                attr: 'ssl_trusted_certificate',
+                value: :undef,
+                notmatch: 'ssl_trusted_certificate'
+              },
+              {
+                title: 'should set ssl_trusted_certificate',
+                attr: 'ssl_trusted_certificate',
+                value: '/path/to/trusted_cert',
+                match: '  ssl_trusted_certificate   /path/to/trusted_cert;'
+              },
+              {
+                title: 'should not set ssl_verify_depth',
+                attr: 'ssl_verify_depth',
+                value: :undef,
+                notmatch: 'ssl_verify_depth'
+              },
+              {
+                title: 'should set ssl_verify_depth',
+                attr: 'ssl_verify_depth',
+                value: 5,
+                match: '  ssl_verify_depth          5;'
+              },
+              {
+                title: 'should not set ssl_password_file',
+                attr: 'ssl_password_file',
+                value: :undef,
+                notmatch: 'ssl_password_file'
+              },
+              {
+                title: 'should set ssl_password_file',
+                attr: 'ssl_password_file',
+                value: '/path/to/password_file',
+                match: '  ssl_password_file         /path/to/password_file;'
               }
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do
