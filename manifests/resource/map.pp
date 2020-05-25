@@ -11,6 +11,7 @@
 #   [*hostnames*]  - Indicates that source values can be hostnames with a
 #                    prefix or suffix mask.
 #   [*include_files*]   - An array of external files to include
+#   [*context']    - Specify if mapping is for http or stream context
 #
 # Actions:
 #
@@ -77,14 +78,19 @@ define nginx::resource::map (
   Optional[String] $default         = undef,
   Enum['absent', 'present'] $ensure = 'present',
   Array[String] $include_files      = [],
-  Boolean $hostnames                = false
+  Boolean $hostnames                = false,
+  Enum['http', 'stream'] $context   = 'http',
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
 
   $root_group = $nginx::root_group
-  $conf_dir   = "${nginx::conf_dir}/conf.d"
+
+  $conf_dir   = $context ? {
+    'stream' => "${nginx::conf_dir}/conf.stream.d",
+    'http'   => "${nginx::conf_dir}/conf.d",
+  }
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -97,7 +103,7 @@ define nginx::resource::map (
     mode  => '0644',
   }
 
-  file { "${nginx::conf_dir}/conf.d/${name}-map.conf":
+  file { "${conf_dir}/${name}-map.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
     notify  => Class['nginx::service'],
