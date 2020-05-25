@@ -131,6 +131,7 @@
 #   [*log_by_lua_file*]            - Equivalent to log_by_lua, except that the file specified by <path-to-lua-script-file> contains the Lua
 #     code, or, as from the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
 #   [*gzip_types*]                 - Defines gzip_types, nginx default is text/html
+#   [*gzip_static*]                - Defines gzip_static, nginx default is off
 #   [*owner*]                      - Defines owner of the .conf file
 #   [*group*]                      - Defines group of the .conf file
 #   [*mode*]                       - Defines mode of the .conf file
@@ -274,6 +275,7 @@ define nginx::resource::server (
   $string_mappings                                                               = {},
   $geo_mappings                                                                  = {},
   Optional[String] $gzip_types                                                   = undef,
+  Optional[String] $gzip_static                                                  = undef,
   String $owner                                                                  = $nginx::global_owner,
   String $group                                                                  = $nginx::global_group,
   String $mode                                                                   = $nginx::global_mode,

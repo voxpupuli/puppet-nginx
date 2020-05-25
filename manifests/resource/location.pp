@@ -122,6 +122,7 @@
 #     used for flv streaming. Default: false
 #   [*expires*]         - Setup expires time for locations content
 #   [*add_header*]      - Hash: Adds headers to the location block.  If any are specified, locations will no longer inherit headers from the parent server context
+#   [*gzip_static*]     - Defines gzip_static, nginx default is off
 #
 #
 # Actions:
@@ -255,6 +256,7 @@ define nginx::resource::location (
   Boolean $flv                                                     = false,
   Optional[String] $expires                                        = undef,
   Hash $add_header                                                 = {},
+  Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
 ) {
 
   if ! defined(Class['nginx']) {
