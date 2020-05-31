@@ -126,6 +126,7 @@
 #   [*access_log*]      - disable or override the logging in access_log (log format can be set with $format_log)
 #   [*error_log*]       - override the error_log for this location
 #   [*log_not_found*]   - enable or disable the logging of not found errors in error_log
+
 #
 #
 # Actions:
@@ -265,6 +266,7 @@ define nginx::resource::location (
   Optional[Enum['on', 'off']] $log_not_found                       = undef,
   Optional[Variant[Array, String]] $access_log                     = undef,
   Optional[Variant[Array, String]] $error_log                      = undef
+
 ) {
 
   if ! defined(Class['nginx']) {
