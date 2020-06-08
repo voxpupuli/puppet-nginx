@@ -66,7 +66,7 @@ nginx::resource::upstream { 'puppet_rack_app':
       port   => 3001,
       weight => 1,
     },
-    'localhost:3002': => {
+    'localhost:3002' => {
       server => 'localhost',
       port   => 3002,
       weight => 2,
