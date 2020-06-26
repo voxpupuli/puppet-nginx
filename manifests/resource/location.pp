@@ -263,7 +263,7 @@ define nginx::resource::location (
   File {
     owner  => 'root',
     group  => $root_group,
-    mode   => '0644',
+    mode   => $nginx::global_mode,
     notify => Class['::nginx::service'],
   }
 
@@ -294,7 +294,7 @@ define nginx::resource::location (
   ) {
     file { $fastcgi_params:
       ensure  => 'present',
-      mode    => '0644',
+      mode    => $nginx::global_mode,
       content => template('nginx/server/fastcgi.conf.erb'),
     }
   }
@@ -302,7 +302,7 @@ define nginx::resource::location (
   if $ensure == 'present' and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
       ensure  => 'present',
-      mode    => '0644',
+      mode    => $nginx::global_mode,
       content => template('nginx/server/uwsgi_params.erb'),
     }
   }

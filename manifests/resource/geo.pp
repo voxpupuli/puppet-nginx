@@ -78,7 +78,7 @@ define nginx::resource::geo (
   File {
     owner => 'root',
     group => $root_group,
-    mode  => '0644',
+    mode  => $nginx::global_mode,
   }
 
   file { "${conf_dir}/${name}-geo.conf":
