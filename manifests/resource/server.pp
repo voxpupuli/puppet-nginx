@@ -435,7 +435,7 @@ define nginx::resource::server (
   if $fastcgi != undef and !defined(File[$fastcgi_params]) and $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf" {
     file { $fastcgi_params:
       ensure  => present,
-      mode    => '0644',
+      mode    => $nginx::global_mode,
       content => template('nginx/server/fastcgi.conf.erb'),
     }
   }
@@ -443,7 +443,7 @@ define nginx::resource::server (
   if $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
       ensure  => present,
-      mode    => '0644',
+      mode    => $nginx::global_mode,
       content => template('nginx/server/uwsgi_params.erb'),
     }
   }
