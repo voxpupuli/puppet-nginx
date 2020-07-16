@@ -30,6 +30,13 @@ describe 'nginx::resource::mailhost' do
           it { is_expected.not_to contain_concat__fragment("#{title}-ssl") }
         end
 
+        describe 'absent assumption' do
+          let(:params) { default_params.merge('ensure'.to_sym => 'absent') }
+
+          it { is_expected.to contain_class('nginx') }
+          it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with('ensure' => 'absent') }
+        end
+
         describe 'mailhost template content' do
           [
             {

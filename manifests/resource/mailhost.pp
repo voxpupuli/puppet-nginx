@@ -152,6 +152,7 @@ define nginx::resource::mailhost (
   }
 
   concat { $config_file:
+    ensure  => $ensure,
     owner   => 'root',
     group   => $root_group,
     mode    => $nginx::global_mode,
