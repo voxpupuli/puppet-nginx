@@ -40,10 +40,13 @@ events {
   <%- end -%>
   worker_connections <%= @worker_connections -%>;
   <%- if @multi_accept == 'on' -%>
-    multi_accept on;
+  multi_accept on;
   <%- end -%>
   <%- if @events_use -%>
-    use <%= @events_use %>;
+  use <%= @events_use %>;
+  <%- end -%>
+  <%- @debug_connections.each do |address| -%>
+  debug_connection <%= address %>;
   <%- end -%>
 }
 

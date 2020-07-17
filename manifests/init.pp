@@ -88,6 +88,7 @@ class nginx (
   $lingering_timeout                                         = '5s',
   Optional[Enum['on', 'off']] $etag                          = undef,
   Optional[String] $events_use                               = undef,
+  Array[Nginx::DebugConnection] $debug_connections           = [],
   String $fastcgi_cache_inactive                             = '20m',
   Optional[String] $fastcgi_cache_key                        = undef,
   String $fastcgi_cache_keys_zone                            = 'd3:100m',

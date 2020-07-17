@@ -56,6 +56,7 @@ class nginx::config {
   $lingering_timeout              = $nginx::lingering_timeout
   $etag                           = $nginx::etag
   $events_use                     = $nginx::events_use
+  $debug_connections              = $nginx::debug_connections
   $fastcgi_cache_inactive         = $nginx::fastcgi_cache_inactive
   $fastcgi_cache_key              = $nginx::fastcgi_cache_key
   $fastcgi_cache_keys_zone        = $nginx::fastcgi_cache_keys_zone
