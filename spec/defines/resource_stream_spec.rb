@@ -4,7 +4,7 @@ describe 'nginx::resource::streamhost' do
   on_supported_os.each do |os, facts|
     context "on #{os} with Facter #{facts[:facterversion]} and Puppet #{facts[:puppetversion]}" do
       let(:facts) do
-        facts
+        facts.merge(nginx_version: '1.15.10')
       end
       let :title do
         'www.rspec.example.com'
@@ -66,6 +66,12 @@ describe 'nginx::resource::streamhost' do
               match: %r{\s+listen\s+\*:45;}
             },
             {
+              title: 'should set the IPv4 listen port range',
+              attr: 'listen_port_range',
+              value: '45-50',
+              match: %r{\s+listen\s+\*:45-50;}
+            },
+            {
               title: 'should set the IPv4 listen options',
               attr: 'listen_options',
               value: 'spdy default',
@@ -94,6 +100,12 @@ describe 'nginx::resource::streamhost' do
               attr: 'ipv6_listen_port',
               value: 45,
               match: %r{\s+listen\s+\[::\]:45 default ipv6only=on;}
+            },
+            {
+              title: 'should set the IPv6 listen port range',
+              attr: 'ipv6_listen_port_range',
+              value: '45-50',
+              match: %r{\s+listen\s+\[::\]:45-50 default ipv6only=on;}
             },
             {
               title: 'should set the IPv6 listen options',

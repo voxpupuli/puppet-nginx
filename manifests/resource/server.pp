@@ -5,7 +5,8 @@
 # Parameters:
 #   [*ensure*]                     - Enables or disables the specified server (present|absent)
 #   [*listen_ip*]                  - Default IP Address for NGINX to listen with this server on. Defaults to all interfaces (*)
-#   [*listen_port*]                - Default IP Port for NGINX to listen with this server on. Defaults to TCP 80
+#   [*listen_port*]                - Default IP Port for NGINX to listen with this server on. Defaults to TCP 80. It can be a port or a port range (eg. '8081-8085').
+#   [*listen_port_range*]          - From Nginx 1.15.10, support for port ranges was added (eg. '8081-8085').
 #   [*listen_options*]             - Extra options for listen directive like 'default_server' to catchall. Undef by default.
 #   [*listen_unix_socket_enable*]  - BOOL value to enable/disable UNIX socket listening support (false|true).
 #   [*listen_unix_socket*]         - Default unix socket for NGINX to listen with this server on. Defaults to UNIX /var/run/nginx.sock
@@ -17,6 +18,7 @@
 #     exists on your system before enabling.
 #   [*ipv6_listen_ip*]             - Default IPv6 Address for NGINX to listen with this server on. Defaults to all interfaces (::)
 #   [*ipv6_listen_port*]           - Default IPv6 Port for NGINX to listen with this server on. Defaults to TCP 80
+#   [*ipv6_listen_port_range*]     - From Nginx 1.15.10, support for port ranges was added (eg. '8081-8085').
 #   [*ipv6_listen_options*]        - Extra options for listen directive like 'default' to catchall. Template will allways add ipv6only=on.
 #     While issue jfryman/puppet-nginx#30 is discussed, default value is 'default'.
 #   [*add_header*]                 - Hash: Adds headers to the HTTP response when response code is equal to 200, 204, 301, 302 or 304.
@@ -156,6 +158,7 @@ define nginx::resource::server (
   Enum['absent', 'present'] $ensure                                              = 'present',
   Variant[Array, String] $listen_ip                                              = '*',
   Integer $listen_port                                                           = 80,
+  Optional[Nginx::PortRange] $listen_port_range                                  = undef,
   Optional[String] $listen_options                                               = undef,
   Boolean $listen_unix_socket_enable                                             = false,
   Variant[Array[Stdlib::Absolutepath], Stdlib::Absolutepath] $listen_unix_socket = '/var/run/nginx.sock',
@@ -166,6 +169,7 @@ define nginx::resource::server (
   Boolean $ipv6_enable                                                           = false,
   Variant[Array, String] $ipv6_listen_ip                                         = '::',
   Integer $ipv6_listen_port                                                      = 80,
+  Optional[Nginx::PortRange] $ipv6_listen_port_range                             = undef,
   String $ipv6_listen_options                                                    = 'default ipv6only=on',
   Hash $add_header                                                               = {},
   Boolean $ssl                                                                   = false,
@@ -336,9 +340,24 @@ define nginx::resource::server (
     }
   }
 
+  # If port range is defined, ignore any other $listen_port defined
+  if versioncmp($facts['nginx_version'], '1.15.10') < 0 {
+    $port = $listen_port
+
+    if $ipv6_enable == true {
+      $ipv6_port = $ipv6_listen_port
+    }
+  } else {
+    $port = pick_default($listen_port_range, $listen_port)
+
+    if $ipv6_enable == true {
+      $ipv6_port = pick_default($ipv6_listen_port_range, $ipv6_listen_port)
+    }
+  }
+
   # Try to error in the case where the user sets ssl_port == listen_port but
   # doesn't set ssl = true
-  if !$ssl and $ssl_port == $listen_port {
+  if !$ssl and $ssl_port == $port {
     warning('nginx: ssl must be true if listen_port is the same as ssl_port')
   }
 
@@ -361,7 +380,7 @@ define nginx::resource::server (
 
   # Suppress unneeded stuff in non-SSL location block when certain conditions are
   # met.
-  $ssl_only = ($ssl and $ssl_port == $listen_port) or $ssl_redirect
+  $ssl_only = ($ssl and $ssl_port == $port) or $ssl_redirect
 
   # If we're redirecting to SSL, the default location block is useless, *unless*
   # SSL is enabled for this server
@@ -448,7 +467,7 @@ define nginx::resource::server (
     }
   }
 
-  if $listen_port != $ssl_port {
+  if $port != $ssl_port {
     concat::fragment { "${name_sanitized}-header":
       target  => $config_file,
       content => template('nginx/server/server_header.erb'),

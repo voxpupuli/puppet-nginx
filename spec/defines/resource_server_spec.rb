@@ -4,7 +4,7 @@ describe 'nginx::resource::server' do
   on_supported_os.each do |os, facts|
     context "on #{os} with Facter #{facts[:facterversion]} and Puppet #{facts[:puppetversion]}" do
       let(:facts) do
-        facts
+        facts.merge(nginx_version: '1.15.10')
       end
       let :title do
         'www.rspec.example.com'
@@ -136,6 +136,18 @@ describe 'nginx::resource::server' do
               attr: 'ipv6_listen_port',
               value: 45,
               match: %r{\s+listen\s+\[::\]:45 default ipv6only=on;}
+            },
+            {
+              title: 'should set the IPv6 listen port range',
+              attr: 'ipv6_listen_port_range',
+              value: '45-50',
+              match: %r{\s+listen\s+\[::\]:45-50 default ipv6only=on;}
+            },
+            {
+              title: 'should set the IPv4 listen port range',
+              attr: 'listen_port_range',
+              value: '45-50',
+              match: %r{\s+listen\s+\*:45-50;}
             },
             {
               title: 'should set the IPv6 listen options',
@@ -626,13 +638,6 @@ describe 'nginx::resource::server' do
               )
             end
 
-            context 'without a value for the nginx_version fact do' do
-              let :facts do
-                facts[:nginx_version] ? facts.delete(:nginx_version) : facts
-              end
-
-              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
-            end
             context 'with fact nginx_version=1.14.1' do
               let(:facts) { facts.merge(nginx_version: '1.14.1') }
 

@@ -4,10 +4,10 @@
 server {
   <%- if @listen_ip.is_a?(Array) then -%>
     <%- @listen_ip.each do |ip| -%>
-  listen       <%= ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= ip %>:<%= @port %><% if @listen_options %> <%= @listen_options %><% end %>;
     <%- end -%>
   <%- else -%>
-  listen       <%= @listen_ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen       <%= @listen_ip %>:<%= @port %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
   <%- if @listen_unix_socket_enable -%>
     <%- if @listen_unix_socket.is_a?(Array) then -%>
@@ -41,10 +41,10 @@ server {
 server {
 <%- if @listen_ip.is_a?(Array) then -%>
   <%- @listen_ip.each do |ip| -%>
-  listen <%= ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen <%= ip %>:<%= @port %><% if @listen_options %> <%= @listen_options %><% end %>;
   <%- end -%>
 <%- else -%>
-  listen <%= @listen_ip %>:<%= @listen_port %><% if @listen_options %> <%= @listen_options %><% end %>;
+  listen <%= @listen_ip %>:<%= @port %><% if @listen_options %> <%= @listen_options %><% end %>;
 <%- end -%>
 <%- if @listen_unix_socket_enable -%>
   <%- if @listen_unix_socket.is_a?(Array) then -%>
