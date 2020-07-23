@@ -94,8 +94,8 @@
 #     of off.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
 #     different replies.
-#   [*proxy_cache_lock*]           - This directive sets the locking mechanism for pouplating cache.
-#   [*proxy_cache_bypass*]         - Defines conditions which the response will not be cached
+#   [*proxy_cache_lock*]      - This directive sets the locking mechanism for pouplating cache.
+#   [*proxy_cache_bypass*]    - Defines conditions which the response will not be cached
 #   [*proxy_method*]          - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
 #   [*proxy_http_version*]    - Sets the proxy http version
