@@ -11,11 +11,9 @@ def location_for(place, fake_version = nil)
 end
 
 group :test do
-  gem 'voxpupuli-test', '< 2.0.0',   :require => false
-  gem 'coveralls',                   :require => false
-  gem 'simplecov-console',           :require => false
-  gem 'rspec-puppet-facts', '2.0.0', :require => false
-  gem 'facterdb', '1.4.0',           :require => false
+  gem 'voxpupuli-test', '~> 2.0',  :require => false
+  gem 'coveralls',                 :require => false
+  gem 'simplecov-console',         :require => false
 end
 
 group :development do
@@ -26,27 +24,7 @@ group :development do
 end
 
 group :system_tests do
-  gem 'winrm',                              :require => false
-  if beaker_version = ENV['BEAKER_VERSION']
-    gem 'beaker', *location_for(beaker_version)
-  else
-    gem 'beaker', '>= 4.2.0', :require => false
-  end
-  if beaker_rspec_version = ENV['BEAKER_RSPEC_VERSION']
-    gem 'beaker-rspec', *location_for(beaker_rspec_version)
-  else
-    gem 'beaker-rspec',  :require => false
-  end
-  gem 'serverspec',                         :require => false
-  gem 'beaker-hostgenerator', '>= 1.1.22',  :require => false
-  gem 'beaker-docker',                      :require => false
-  gem 'beaker-puppet',                      :require => false
-  gem 'beaker-puppet_install_helper',       :require => false
-  gem 'beaker-module_install_helper',       :require => false
-  gem 'rbnacl', '>= 4',                     :require => false
-  gem 'rbnacl-libsodium',                   :require => false
-  gem 'bcrypt_pbkdf',                       :require => false
-  gem 'ed25519',                            :require => false
+  gem 'voxpupuli-acceptance',  :require => false
 end
 
 group :release do
