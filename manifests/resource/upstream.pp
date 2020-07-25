@@ -94,7 +94,6 @@ define nginx::resource::upstream (
   Nginx::UpstreamCustomParameters     $cfg_append             = {},
   Nginx::UpstreamCustomParameters     $cfg_prepend            = {},
 ) {
-
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
@@ -129,14 +128,14 @@ define nginx::resource::upstream (
     target  => "${conf_dir}/${name}-upstream.conf",
     order   => '10',
     content => epp('nginx/upstream/upstream_header.epp', {
-      cfg_prepend => $cfg_prepend,
-      name        => $name,
+        cfg_prepend => $cfg_prepend,
+        name        => $name,
     }),
   }
 
   if ! empty($members) {
     $members.each |$member,$values| {
-      $member_values = merge($member_defaults,$values,{'upstream' => $name,'context' => $context})
+      $member_values = merge($member_defaults,$values,{ 'upstream' => $name,'context' => $context })
 
       if $context == 'stream' and $member_values['route'] {
         fail('The parameter "route" is not available for upstreams with context "stream"')
@@ -162,21 +161,21 @@ define nginx::resource::upstream (
     target  => "${conf_dir}/${name}-upstream.conf",
     order   => '90',
     content => epp('nginx/upstream/upstream_footer.epp', {
-      cfg_append         => $cfg_append,
-      hash               => $hash,
-      ip_hash            => $ip_hash,
-      keepalive          => $keepalive,
-      keepalive_requests => $keepalive_requests,
-      keepalive_timeout  => $keepalive_timeout,
-      least_conn         => $least_conn,
-      least_time         => $least_time,
-      ntlm               => $ntlm,
-      queue_max          => $queue_max,
-      queue_timeout      => $queue_timeout,
-      random             => $random,
-      statefile          => $statefile,
-      sticky             => $sticky,
-      zone               => $zone,
+        cfg_append         => $cfg_append,
+        hash               => $hash,
+        ip_hash            => $ip_hash,
+        keepalive          => $keepalive,
+        keepalive_requests => $keepalive_requests,
+        keepalive_timeout  => $keepalive_timeout,
+        least_conn         => $least_conn,
+        least_time         => $least_time,
+        ntlm               => $ntlm,
+        queue_max          => $queue_max,
+        queue_timeout      => $queue_timeout,
+        random             => $random,
+        statefile          => $statefile,
+        sticky             => $sticky,
+        zone               => $zone,
     }),
   }
 }

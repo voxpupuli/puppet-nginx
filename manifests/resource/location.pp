@@ -195,7 +195,8 @@ define nginx::resource::location (
   Array $index_files                                               = [
     'index.html',
     'index.htm',
-    'index.php'],
+    'index.php',
+  ],
   Optional[String] $proxy                                          = undef,
   Optional[String] $proxy_redirect                                 = $nginx::proxy_redirect,
   String $proxy_read_timeout                                       = $nginx::proxy_read_timeout,
@@ -223,7 +224,7 @@ define nginx::resource::location (
   Optional[Enum['any', 'all']] $location_satisfy                   = undef,
   Optional[Array] $location_allow                                  = undef,
   Optional[Array] $location_deny                                   = undef,
-  Optional[Boolean ] $stub_status                                  = undef,
+  Optional[Boolean] $stub_status                                   = undef,
   Optional[Variant[String, Array]] $raw_prepend                    = undef,
   Optional[Variant[String, Array]] $raw_append                     = undef,
   Optional[Hash] $location_custom_cfg                              = undef,
@@ -258,7 +259,6 @@ define nginx::resource::location (
   Hash $add_header                                                 = {},
   Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
 ) {
-
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
@@ -298,7 +298,7 @@ define nginx::resource::location (
     $fastcgi_params == "${nginx::conf_dir}/fastcgi.conf"
   ) {
     file { $fastcgi_params:
-      ensure  => 'present',
+      ensure  => 'file',
       mode    => $nginx::global_mode,
       content => template('nginx/server/fastcgi.conf.erb'),
     }
@@ -306,7 +306,7 @@ define nginx::resource::location (
 
   if $ensure == 'present' and $uwsgi != undef and !defined(File[$uwsgi_params]) and $uwsgi_params == "${nginx::conf_dir}/uwsgi_params" {
     file { $uwsgi_params:
-      ensure  => 'present',
+      ensure  => 'file',
       mode    => $nginx::global_mode,
       content => template('nginx/server/uwsgi_params.erb'),
     }

@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::config {
-
   assert_private()
 
   $client_body_temp_path          = $nginx::client_body_temp_path
@@ -195,7 +194,7 @@ class nginx::config {
     }
   }
 
-  file {$run_dir:
+  file { $run_dir:
     ensure => directory,
   }
 
@@ -213,14 +212,14 @@ class nginx::config {
   }
 
   if $client_body_temp_path {
-    file {$client_body_temp_path:
+    file { $client_body_temp_path:
       ensure => directory,
       owner  => $daemon_user,
     }
   }
 
   if $proxy_temp_path {
-    file {$proxy_temp_path:
+    file { $proxy_temp_path:
       ensure => directory,
       owner  => $daemon_user,
     }

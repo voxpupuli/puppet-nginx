@@ -51,7 +51,6 @@
 #        '172.16.0.0/12': 'intra'
 #        '192.168.0.0/16': 'intra'
 
-
 define nginx::resource::geo (
   Hash $networks,
   Optional[String] $default           = undef,
@@ -62,7 +61,6 @@ define nginx::resource::geo (
   Optional[Array] $proxies            = undef,
   Optional[Boolean] $proxy_recursive  = undef
 ) {
-
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }

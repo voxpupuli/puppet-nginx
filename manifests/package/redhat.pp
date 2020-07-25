@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::package::redhat {
-
   $package_name             = $nginx::package_name
   $package_source           = $nginx::package_source
   $package_ensure           = $nginx::package_ensure
@@ -98,7 +97,6 @@ class nginx::package::redhat {
             ensure  => $passenger_package_ensure,
             require => Yumrepo['passenger'],
           }
-
         } else {
           fail("${facts['os']['name']} version ${facts['os']['release']['major']} is unsupported with \$package_source 'passenger'")
         }
@@ -113,5 +111,4 @@ class nginx::package::redhat {
     ensure => $package_ensure,
     name   => $package_name,
   }
-
 }

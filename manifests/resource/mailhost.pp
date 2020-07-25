@@ -122,7 +122,6 @@ define nginx::resource::mailhost (
   String $proxy_pass_error_message               = 'off',
   Array $server_name                             = [$name]
 ) {
-
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }

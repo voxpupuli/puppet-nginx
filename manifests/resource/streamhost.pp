@@ -65,7 +65,6 @@ define nginx::resource::streamhost (
   String $group                           = $nginx::global_group,
   String $mode                            = $nginx::global_mode,
 ) {
-
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
   }
@@ -118,7 +117,7 @@ define nginx::resource::streamhost (
   }
 
   unless $nginx::confd_only {
-    file{ "${name_sanitized}.conf symlink":
+    file { "${name_sanitized}.conf symlink":
       ensure  => $streamhost_symlink_ensure,
       path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
