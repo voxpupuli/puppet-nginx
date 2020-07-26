@@ -200,6 +200,7 @@ class nginx::config {
 
   file { $run_dir:
     ensure => directory,
+    mode   => '0644',
   }
 
   if $nginx::manage_snippets_dir {
