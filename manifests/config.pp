@@ -197,6 +197,7 @@ class nginx::config {
 
   file {$run_dir:
     ensure => directory,
+    owner  => $daemon_user
   }
 
   if $nginx::manage_snippets_dir {
