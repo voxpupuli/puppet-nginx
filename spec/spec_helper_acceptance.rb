@@ -1,31 +1,18 @@
-require 'beaker-rspec'
-require 'beaker-puppet'
-require 'beaker/puppet_install_helper'
-require 'beaker/module_install_helper'
+require 'voxpupuli/acceptance/spec_helper_acceptance'
 
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
-install_ca_certs unless ENV['PUPPET_INSTALL_TYPE'] =~ %r{pe}i
-install_module_on(hosts)
-install_module_dependencies_on(hosts)
+configure_beaker do |host|
+  case fact('os.family')
+  when 'Debian'
+    on host, puppet('module', 'install', 'puppetlabs-apt'), acceptable_exit_codes: [0, 1]
+  when 'RedHat'
+    # Soft dep on epel for Passenger
+    install_package(host, 'epel-release')
+  end
 
-RSpec.configure do |c|
-  c.formatter = :documentation
-
-  # This is where we 'setup' the nodes before running our tests
-  c.before :suite do
-    hosts.each do |host|
-      case fact('os.family')
-      when 'Debian'
-        on host, puppet('module', 'install', 'puppetlabs-apt'), acceptable_exit_codes: [0, 1]
-      when 'RedHat'
-        # Soft dep on epel for Passenger
-        install_package(host, 'epel-release')
-      end
-
-      # Fake keys.
-      # Valid self-signed SSL key with 10 year expiry.
-      # Required for nginx to start when SSL enabled
-      on host, 'echo "-----BEGIN PRIVATE KEY-----
+  # Fake keys.
+  # Valid self-signed SSL key with 10 year expiry.
+  # Required for nginx to start when SSL enabled
+  on host, 'echo "-----BEGIN PRIVATE KEY-----
 MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQClaMoD8ngzwKOm
 2Lz36s0Jndus7icck31wFlAC00XQxZi8CbD9d3tz+aLzYrefaBrKPX69c7M9QVKH
 92Tl4tEiedwhgr6wvYM+LIYIla/+VYP+LUYA7pf6DWCUzZOk5sZp0bLVhNCvP1pK
@@ -77,7 +64,7 @@ vJ2zxuaGG971dvvN1uvIiKx3SmQAHboUnVGJ4u9rpAf8Pb2DgaDgjc/zQKZCUT4a
 MNTh6O4DDw7Zpv6p0A/U8R8ntfGhWaZH+06KXK6Lu8Jol7hGDTaj0MlH+Hl5FkIV
 i5A8a0crzAUy0qEmGadFRVrqGpw74Q==
 -----END PRIVATE KEY-----" > /tmp/blah.key'
-      on host, 'echo "-----BEGIN CERTIFICATE-----
+  on host, 'echo "-----BEGIN CERTIFICATE-----
 MIIFITCCAwmgAwIBAgIUflF+XwcxPU99fLGJ5nmmfqCL+iAwDQYJKoZIhvcNAQEL
 BQAwIDEeMBwGA1UEAwwVbG9jYWxob3N0LmxvY2FsZG9tYWluMB4XDTIwMDEwNjEz
 MzkwOVoXDTMwMDEwMzEzMzkwOVowIDEeMBwGA1UEAwwVbG9jYWxob3N0LmxvY2Fs
@@ -108,16 +95,14 @@ VMrp/E2f2Wf83aggglj2zFMbZUOV1BkEkjfIcXr0KIWKD8uv4iobyUVDLIMv8Qpp
 xfzmRMxZCJIk9jjChtw8KY7NlKyu
 -----END CERTIFICATE-----" > /tmp/blah.cert'
 
-      on host, 'mkdir -p /etc/pki/tls/certs'
-      on host, 'mkdir -p /etc/pki/tls/private'
+  on host, 'mkdir -p /etc/pki/tls/certs'
+  on host, 'mkdir -p /etc/pki/tls/private'
 
-      # put the keys in a directory with the correct SELinux context
-      on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/blah.cert'
-      on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/crypted.cert'
-      on host, 'cp /tmp/blah.key /etc/pki/tls/private/blah.key'
-      on host, 'openssl rsa -in /tmp/blah.key -out /etc/pki/tls/private/crypted.key -passout pass:Sup3r_S3cr3t_Passw0rd'
-      on host, 'echo Sup3r_S3cr3t_Passw0rd >/etc/pki/tls/private/crypted.pass'
-      on host, 'chmod 0600 /etc/pki/tls/private/crypted.pass'
-    end
-  end
+  # put the keys in a directory with the correct SELinux context
+  on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/blah.cert'
+  on host, 'cp /tmp/blah.cert /etc/pki/tls/certs/crypted.cert'
+  on host, 'cp /tmp/blah.key /etc/pki/tls/private/blah.key'
+  on host, 'openssl rsa -in /tmp/blah.key -out /etc/pki/tls/private/crypted.key -passout pass:Sup3r_S3cr3t_Passw0rd'
+  on host, 'echo Sup3r_S3cr3t_Passw0rd >/etc/pki/tls/private/crypted.pass'
+  on host, 'chmod 0600 /etc/pki/tls/private/crypted.pass'
 end
