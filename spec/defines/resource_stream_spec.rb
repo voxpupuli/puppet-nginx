@@ -102,6 +102,12 @@ describe 'nginx::resource::streamhost' do
               match: %r{\s+listen\s+\[::\]:80 spdy;}
             },
             {
+              title: 'should set resolver(s)',
+              attr: 'resolver',
+              value: ['203.0.113.1', '203.0.113.2'],
+              match: %r{\s+resolver\s+203.0.113.1 203.0.113.2;}
+            },
+            {
               title: 'should contain raw_prepend directives',
               attr: 'raw_prepend',
               value: [
