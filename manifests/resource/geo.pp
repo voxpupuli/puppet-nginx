@@ -73,16 +73,12 @@ define nginx::resource::geo (
     default  => 'file',
   }
 
-  File {
-    owner => 'root',
-    group => $root_group,
-    mode  => $nginx::global_mode,
-  }
-
   file { "${conf_dir}/${name}-geo.conf":
     ensure  => $ensure_real,
+    owner   => 'root',
+    group   => $root_group,
+    mode    => $nginx::global_mode,
     content => template('nginx/conf.d/geo.erb'),
     notify  => Class['nginx::service'],
-    require => File[$conf_dir],
   }
 }

@@ -95,16 +95,12 @@ define nginx::resource::map (
     default  => 'file',
   }
 
-  File {
-    owner => 'root',
-    group => $root_group,
-    mode  => $nginx::global_mode,
-  }
-
   file { "${conf_dir}/${name}-map.conf":
     ensure  => $ensure_real,
+    owner   => 'root',
+    group   => $root_group,
+    mode    => $nginx::global_mode,
     content => template('nginx/conf.d/map.erb'),
     notify  => Class['nginx::service'],
-    require => File[$conf_dir],
   }
 }

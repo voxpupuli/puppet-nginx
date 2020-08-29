@@ -84,20 +84,9 @@ define nginx::resource::streamhost (
   $name_sanitized = regsubst($name, ' ', '_', 'G')
   $config_file = "${streamhost_dir}/${name_sanitized}.conf"
 
-  File {
-    ensure => $ensure ? {
-      'absent' => absent,
-      default  => 'file',
-    },
-    notify => Class['nginx::service'],
-    owner  => $owner,
-    group  => $group,
-    mode   => $mode,
-  }
-
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
-  if ($ipv6_enable == true) and (!$facts['networking']['ip6']) {
+  if $ipv6_enable and !$facts['networking']['ip6'] {
     warning('nginx: IPv6 support is not enabled or configured properly')
   }
 
@@ -121,7 +110,10 @@ define nginx::resource::streamhost (
       ensure  => $streamhost_symlink_ensure,
       path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
-      require => [Concat[$config_file], File[$streamhost_enable_dir]],
+      owner   => $owner,
+      group   => $group,
+      mode    => $mode,
+      require => Concat[$config_file],
       notify  => Class['nginx::service'],
     }
   }
