@@ -73,6 +73,11 @@ class nginx::package::redhat {
       }
       'passenger': {
         if ($facts['os']['name'] in ['RedHat', 'CentOS', 'VirtuozzoLinux']) and ($facts['os']['release']['major'] in ['6', '7']) {
+          # 2019-11: Passenger changed their gpg key from: `https://packagecloud.io/phusion/passenger/gpgkey`
+          # to: `https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt`
+          # Find the latest key by opening: https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+
+          # Also note: Since 6.0.5 there are no nginx packages in the phusion EL7 repository, and nginx packages are expected to come from epel instead
           yumrepo { 'passenger':
             baseurl       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
             descr         => 'passenger repo',
@@ -80,7 +85,7 @@ class nginx::package::redhat {
             gpgcheck      => '0',
             repo_gpgcheck => '1',
             priority      => '1',
-            gpgkey        => 'https://packagecloud.io/phusion/passenger/gpgkey',
+            gpgkey        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
             before        => Package['nginx'],
           }
 
