@@ -13,4 +13,3 @@ nginx::resource::server { 'test.local:8080':
   ipv6_enable => true,
   proxy       => 'http://proxypass',
 }
-

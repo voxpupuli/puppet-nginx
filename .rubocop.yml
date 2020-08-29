@@ -528,6 +528,9 @@ RSpec/RepeatedDescription:
 RSpec/NestedGroups:
   Enabled: False
 
+RSpec/MultipleExpectations:
+  Enabled: false
+
 # this is broken on ruby1.9
 Layout/IndentHeredoc:
   Enabled: False

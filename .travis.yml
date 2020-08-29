@@ -1,4 +1,5 @@
 ---
+os: linux
 dist: bionic
 language: ruby
 cache: bundler
@@ -7,7 +8,7 @@ before_install:
   - bundle --version
 script:
   - 'bundle exec rake $CHECK'
-matrix:
+jobs:
   fast_finish: true
   include:
   - rvm: 2.4.4
@@ -24,43 +25,43 @@ matrix:
     env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=ubuntu1604-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=ubuntu1604-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=ubuntu1804-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=ubuntu1804-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=centos7-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=centos7-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=centos7-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=centos7-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian9-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian9-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian9-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian10-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian10-64 CHECK=beaker
     services: docker
   - rvm: 2.5.3
     bundler_args: --without development release
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian10-64 BEAKER_HYPERVISOR=docker CHECK=beaker
+    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian10-64 CHECK=beaker
     services: docker
 branches:
   only:
@@ -76,7 +77,7 @@ notifications:
       - "chat.freenode.org#voxpupuli-notifications"
 deploy:
   provider: puppetforge
-  user: puppet
+  username: puppet
   password:
     secure: "SDpX6jzritODonEQBqy9g0NbOmk2a9dBfAtZLrvHwM8BTpM2W0Y1daqzIbpzxFiqlNX+6r2GSq9SV70N0A9Ko/uPV9aG/XZx7MsBR9DNVjgqjJSl7+aF88VJfRpOv4PAyTM33JMx91nLFxM/ql61YX+2DXGXrhUkBsMZcdBgQnk="
   on:

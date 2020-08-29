@@ -14,7 +14,6 @@
 #
 # This class file is not called directly
 class nginx::package {
-
   $package_name             = $nginx::package_name
   $package_source           = $nginx::package_source
   $package_ensure           = $nginx::package_ensure
