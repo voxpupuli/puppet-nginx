@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'Nginx::UpstreamZone' do
-  it { is_expected.to compile.with_all_deps }
   it { is_expected.to allow_value('live 64k') }
   it { is_expected.to allow_value('live 64K') }
   it { is_expected.to allow_value('stage 1m') }
