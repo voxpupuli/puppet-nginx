@@ -48,12 +48,12 @@
 #  }
 define nginx::resource::streamhost (
   Enum['absent', 'present'] $ensure            = 'present',
-  Variant[Array, String] $listen_ip            = '*',
-  Integer $listen_port                         = 80,
+  Nginx::Listen::V4 $listen_ip                 = '*',
+  Stdlib::Port $listen_port                    = 80,
   Optional[String] $listen_options             = undef,
   Boolean $ipv6_enable                         = false,
-  Variant[Array, String] $ipv6_listen_ip       = '::',
-  Integer $ipv6_listen_port                    = 80,
+  Nginx::Listen::V6 $ipv6_listen_ip            = '::',
+  Stdlib::Port $ipv6_listen_port               = 80,
   String $ipv6_listen_options                  = 'default ipv6only=on',
   $proxy                                       = undef,
   String $proxy_read_timeout                   = $nginx::proxy_read_timeout,

@@ -256,7 +256,7 @@ define nginx::resource::location (
   Boolean $mp4                                                     = false,
   Boolean $flv                                                     = false,
   Optional[String] $expires                                        = undef,
-  Hash $add_header                                                 = {},
+  Nginx::Headers $add_header                                       = {},
   Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
 ) {
   if ! defined(Class['nginx']) {
