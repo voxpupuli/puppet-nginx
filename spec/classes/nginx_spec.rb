@@ -1077,6 +1077,15 @@ describe 'nginx' do
                 attr: 'ssl_password_file',
                 value: '/path/to/password_file',
                 match: '  ssl_password_file         /path/to/password_file;'
+              },
+              {
+                title: 'should contain debug_connection directives',
+                attr: 'debug_connections',
+                value: %w[127.0.0.1 unix:],
+                match: [
+                  '  debug_connection 127.0.0.1;',
+                  '  debug_connection unix:;'
+                ]
               }
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do

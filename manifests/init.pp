@@ -40,6 +40,10 @@
 #   already installed.  If the fact is unavailable, it defaults to '1.6.0'.
 #   You may need to set this manually to get a working and idempotent
 #   configuration.
+#
+# @param debug_connections
+#   Configures nginx `debug_connection` lines in the `events` section of the nginx config.
+#   See http://nginx.org/en/docs/ngx_core_module.html#debug_connection
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,

@@ -1,1 +1,1 @@
-type Nginx::DebugConnection = Variant[Stdlib::Host, Enum['unix:']]
+type Nginx::DebugConnection = Variant[Stdlib::Host, Stdlib::IP::Address, Enum['unix:']]
