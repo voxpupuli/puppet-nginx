@@ -1,18 +1,5 @@
-# Class: nginx::package::debian
-#
-# This module manages NGINX package installation on debian based systems
-#
-# Parameters:
-#
-# There are no default parameters for this class.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-# This class file is not called directly
+# @summary Manage NGINX package installation on debian based systems
+# @api private
 class nginx::package::debian {
   $package_name             = $nginx::package_name
   $package_source           = $nginx::package_source

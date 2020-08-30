@@ -1,8 +1,5 @@
-# Class: nginx::params
-# ====================
-#
-# nginx default settings and according to operating system
-#
+# @summary default settings and according to operating system
+# @api private
 class nginx::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)

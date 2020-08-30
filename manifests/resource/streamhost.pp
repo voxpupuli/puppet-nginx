@@ -1,51 +1,54 @@
-# define: nginx::resource::streamhost
+# @summary Create a virtual steamhost
 #
-# This definition creates a virtual host
+# @param ensure
+#   Enables or disables the specified streamhost
+# @param listen_ip
+#   Default IP Address for NGINX to listen with this streamhost on. Defaults to
+#   all interfaces (*)
+# @param listen_port
+#   Default TCP Port for NGINX to listen with this streamhost on.
+# @param listen_options
+#   Extra options for listen directive like 'default' to catchall.
+# @param ipv6_enable
+#   Value to enable/disable IPv6 support Module will check to see if IPv6
+#   support exists on your system before enabling.
+# @param ipv6_listen_ip
+#   Default IPv6 Address for NGINX to listen with this streamhost on. Defaults
+#   to all interfaces (::)
+# @param ipv6_listen_port
+#   Default IPv6 Port for NGINX to listen with this streamhost on.
+# @param ipv6_listen_options
+#   Extra options for listen directive like 'default' to catchall. Template
+#   will allways add ipv6only=on. While issue jfryman/puppet-nginx#30 is
+#   discussed, default value is 'default'.
+# @param proxy
+#   Proxy server(s) for the root location to connect to. Accepts a single
+#   value, can be used in conjunction with nginx::resource::upstream
+# @param proxy_read_timeout
+#   Override the default the proxy read timeout value of 90 seconds
+# @param resolver
+#   Configures name servers used to resolve names of upstream servers into
+#   addresses.
+# @param raw_prepend
+#   A single string, or an array of strings to prepend to the server directive
+#   (after cfg prepend directives). NOTE: YOU are responsible for a semicolon
+#   on each line that requires one.
+# @param raw_append
+#   A single string, or an array of strings to append to the server directive
+#   (after cfg append directives). NOTE: YOU are responsible for a semicolon on
+#   each line that requires one.
+# @param owner
+#   Defines owner of the .conf file
+# @param group
+#   Defines group of the .conf file
+# @param mode
+#   Defines mode of the .conf file Default to return 503
 #
-# Parameters:
-#   [*ensure*]              - Enables or disables the specified streamhost
-#     (present|absent)
-#   [*listen_ip*]           - Default IP Address for NGINX to listen with this
-#     streamhost on. Defaults to all interfaces (*)
-#   [*listen_port*]         - Default IP Port for NGINX to listen with this
-#     streamhost on. Defaults to TCP 80
-#   [*listen_options*]      - Extra options for listen directive like
-#     'default' to catchall. Undef by default.
-#   [*ipv6_enable*]         - BOOL value to enable/disable IPv6 support
-#     (false|true). Module will check to see if IPv6 support exists on your
-#     system before enabling.
-#   [*ipv6_listen_ip*]      - Default IPv6 Address for NGINX to listen with
-#     this streamhost on. Defaults to all interfaces (::)
-#   [*ipv6_listen_port*]    - Default IPv6 Port for NGINX to listen with this
-#     streamhost on. Defaults to TCP 80
-#   [*ipv6_listen_options*] - Extra options for listen directive like 'default'
-#     to catchall. Template will allways add ipv6only=on. While issue
-#     jfryman/puppet-nginx#30 is discussed, default value is 'default'.
-#   [*proxy*]               - Proxy server(s) for the root location to connect
-#     to.  Accepts a single value, can be used in conjunction with
-#     nginx::resource::upstream
-#   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
-#     of 90 seconds
-#   [*resolver*]            - Array: Configures name servers used to resolve
-#     names of upstream servers into addresses.
-#   [*raw_prepend*]            - A single string, or an array of strings to
-#     prepend to the server directive (after cfg prepend directives). NOTE:
-#     YOU are responsible for a semicolon on each line that requires one.
-#   [*raw_append*]             - A single string, or an array of strings to
-#     append to the server directive (after cfg append directives). NOTE:
-#     YOU are responsible for a semicolon on each line that requires one.
-#   [*owner*]                   - Defines owner of the .conf file
-#   [*group*]                   - Defines group of the .conf file
-#   [*mode*]                    - Defines mode of the .conf file
-#                                 Default to return 503
-# Actions:
+# @example
+#   nginx::resource::streamhost { 'test2.local':
+#     ensure   => present,
+#   }
 #
-# Requires:
-#
-# Sample Usage:
-#  nginx::resource::streamhost { 'test2.local':
-#    ensure   => present,
-#  }
 define nginx::resource::streamhost (
   Enum['absent', 'present'] $ensure            = 'present',
   Variant[Array, String] $listen_ip            = '*',
