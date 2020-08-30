@@ -18,6 +18,9 @@ server {
   listen [<%= @ipv6_listen_ip %>]:<%= @ipv6_listen_port %> <% if @ipv6_listen_options %><%= @ipv6_listen_options %><% end %>;
   <%- end -%>
 <%- end -%>
+<%- unless @resolver.empty? -%>
+  resolver              <% @resolver.each do |res| %> <%= res %><% end %>;
+<%- end -%>
 
   <% Array(@raw_prepend).each do |line| -%>
     <%= line %>
