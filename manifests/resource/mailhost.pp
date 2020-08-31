@@ -98,7 +98,7 @@ define nginx::resource::mailhost (
   Optional[String[1]] $ssl_session_cache                           = undef,
   Optional[String[1]] $ssl_session_ticket_key                      = undef,
   Optional[Nginx::Toggle] $ssl_session_tickets                     = undef,
-  Nginx::Duration $ssl_session_timeout                             = '5m',
+  Nginx::Time $ssl_session_timeout                                 = '5m',
   Optional[String[1]] $ssl_trusted_cert                            = undef,
   Optional[Integer] $ssl_verify_depth                              = undef,
   Enum['on', 'off', 'only'] $starttls                              = 'off',
