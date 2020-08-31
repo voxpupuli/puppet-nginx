@@ -221,9 +221,7 @@ describe 'nginx' do
           it do
             is_expected.to contain_service('nginx').with(
               ensure: 'running',
-              enable: true,
-              hasstatus: true,
-              hasrestart: true
+              enable: true
             )
           end
 

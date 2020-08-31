@@ -199,7 +199,7 @@ class nginx (
   ### END Package Configuration ###
 
   ### START Service Configuation ###
-  $service_ensure                                            = running,
+  Stdlib::Ensure::Service $service_ensure                    = 'running',
   $service_enable                                            = true,
   $service_flags                                             = undef,
   $service_restart                                           = undef,
