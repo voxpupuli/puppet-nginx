@@ -9,6 +9,8 @@ describe 'Nginx::Time' do
   it { is_expected.to allow_value('1M') }
   it { is_expected.to allow_value('1y') }
 
+  it { is_expected.to allow_value('1h 30m') }
+
   it { is_expected.not_to allow_value(:undef) }
   it { is_expected.not_to allow_value(1) }
   it { is_expected.not_to allow_value(10) }

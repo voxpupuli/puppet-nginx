@@ -52,14 +52,14 @@
 #        '192.168.0.0/16': 'intra'
 
 define nginx::resource::geo (
-  Hash $networks,
-  Optional[String] $default           = undef,
-  Enum['present', 'absent'] $ensure   = 'present',
-  Boolean $ranges                     = false,
-  Optional[String] $address           = undef,
-  Optional[String] $delete            = undef,
-  Optional[Array] $proxies            = undef,
-  Optional[Boolean] $proxy_recursive  = undef
+  Hash[Stdlib::IP::Address,String[1]] $networks,
+  Optional[String[1]] $default                  = undef,
+  Enum['present', 'absent'] $ensure             = 'present',
+  Boolean $ranges                               = false,
+  Optional[String[1]] $address                  = undef,
+  Optional[Stdlib::IP::Address] $delete         = undef,
+  Optional[Array[Stdlib::IP::Address]] $proxies = undef,
+  Boolean $proxy_recursive                      = false
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
