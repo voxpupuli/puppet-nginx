@@ -61,4 +61,4 @@ PrePush:
       - 'validate'
       - 'test'
       - 'rubocop'
-    command: [ 'bundle', 'exec', 'rake' ]
+    command: ['bundle', 'exec', 'rake']
