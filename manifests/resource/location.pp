@@ -269,7 +269,7 @@ define nginx::resource::location (
     owner  => 'root',
     group  => $root_group,
     mode   => $nginx::global_mode,
-    notify => Class['::nginx::service'],
+    notify => Class['nginx::service'],
   }
 
   # # Shared Variables
