@@ -33,6 +33,8 @@ By participating in this project you agree to abide by its terms.
 
 Please be prepared to repeat some of these steps as our contributors review your code.
 
+Also consider sending in your profile code that calls this component module as an acceptance test or provide it via an issue. This helps reviewers a lot to test your use case and prevents future regressions!
+
 ## Writing proper commits - short version
 
 * Make commits of logical units.
@@ -264,7 +266,7 @@ The following strings are known to work:
 
 * ubuntu1604
 * ubuntu1804
-* debian8
+* ubuntu2004
 * debian9
 * debian10
 * centos6

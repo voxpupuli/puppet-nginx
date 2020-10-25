@@ -1,6 +1,7 @@
 ---
+# yamllint disable rule:line-length rule:truthy
 os: linux
-dist: bionic
+dist: focal
 language: ruby
 cache: bundler
 before_install:
@@ -11,62 +12,62 @@ script:
 jobs:
   fast_finish: true
   include:
-  - rvm: 2.4.4
-    bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 5.0" CHECK=test
-  - rvm: 2.5.3
-    bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 6.0" CHECK=test_with_coveralls
-  - rvm: 2.5.3
-    bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 6.0" CHECK=rubocop
-  - rvm: 2.4.4
-    bundler_args: --without system_tests development release
-    env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=centos7-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=centos7-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian9-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian9-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian10-64 CHECK=beaker
-    services: docker
-  - rvm: 2.5.3
-    bundler_args: --without development release
-    env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian10-64 CHECK=beaker
-    services: docker
+    - rvm: 2.4.4
+      bundler_args: --without system_tests development release
+      env: PUPPET_VERSION="~> 5.0" CHECK=test
+    - rvm: 2.5.3
+      bundler_args: --without system_tests development release
+      env: PUPPET_VERSION="~> 6.0" CHECK=test_with_coveralls
+    - rvm: 2.5.3
+      bundler_args: --without system_tests development release
+      env: PUPPET_VERSION="~> 6.0" CHECK=rubocop
+    - rvm: 2.4.4
+      bundler_args: --without system_tests development release
+      env: PUPPET_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1604-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=ubuntu1804-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=centos7-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=centos7-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian9-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian9-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_setfile=debian10-64 CHECK=beaker
+      services: docker
+    - rvm: 2.5.3
+      bundler_args: --without development release
+      env: BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_setfile=debian10-64 CHECK=beaker
+      services: docker
 branches:
   only:
-  - master
-  - /^v\d/
+    - master
+    - /^v\d/
 notifications:
   email: false
   webhooks: https://voxpupu.li/incoming/travis

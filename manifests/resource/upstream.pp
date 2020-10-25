@@ -120,7 +120,7 @@ define nginx::resource::upstream (
 
   concat { "${conf_dir}/${name}-upstream.conf":
     ensure  => $ensure,
-    notify  => Class['::nginx::service'],
+    notify  => Class['nginx::service'],
     require => File[$conf_dir],
   }
 
