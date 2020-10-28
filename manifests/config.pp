@@ -167,6 +167,7 @@ class nginx::config {
   file { "${conf_dir}/conf.d":
     ensure => directory,
   }
+
   if $confd_purge {
     # Err on the side of caution - make sure *both* $server_purge and
     # $confd_purge are set if $confd_only is set, before purging files
@@ -177,6 +178,7 @@ class nginx::config {
         recurse => true,
         notify  => Class['nginx::service'],
       }
+
       File["${conf_dir}/conf.stream.d"] {
         purge   => true,
         recurse => true,
@@ -188,6 +190,7 @@ class nginx::config {
   file { "${conf_dir}/conf.mail.d":
     ensure => directory,
   }
+
   if $confd_purge == true {
     File["${conf_dir}/conf.mail.d"] {
       purge   => true,
@@ -233,22 +236,26 @@ class nginx::config {
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
+
     file { "${conf_dir}/sites-enabled":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
+
     if $server_purge {
       File["${conf_dir}/sites-available"] {
         purge   => true,
         recurse => true,
       }
+
       File["${conf_dir}/sites-enabled"] {
         purge   => true,
         recurse => true,
       }
     }
+
     # No real reason not to make these even if $stream is not enabled.
     file { "${conf_dir}/streams-enabled":
       ensure => directory,
@@ -256,12 +263,14 @@ class nginx::config {
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
+
     file { "${conf_dir}/streams-available":
       ensure => directory,
       owner  => $sites_available_owner,
       group  => $sites_available_group,
       mode   => $sites_available_mode,
     }
+
     if $server_purge {
       File["${conf_dir}/streams-enabled"] {
         purge   => true,
@@ -273,11 +282,13 @@ class nginx::config {
   file { "${conf_dir}/nginx.conf":
     ensure  => file,
     content => template($conf_template),
+    tag     => 'nginx_config_file',
   }
 
   file { "${conf_dir}/mime.types":
     ensure  => file,
     content => epp($mime_template),
+    tag     => 'nginx_config_file',
   }
 
   file { "${temp_dir}/nginx.d":

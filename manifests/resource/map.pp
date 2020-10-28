@@ -102,5 +102,6 @@ define nginx::resource::map (
     mode    => $nginx::global_mode,
     content => template('nginx/conf.d/map.erb'),
     notify  => Class['nginx::service'],
+    tag     => 'nginx_config_file',
   }
 }

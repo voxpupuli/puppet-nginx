@@ -349,6 +349,7 @@ define nginx::resource::server (
     mode    => $mode,
     notify  => Class['nginx::service'],
     require => File[$server_dir],
+    tag     => 'nginx_config_file',
   }
 
   # This deals with a situation where the listen directive for SSL doesn't match

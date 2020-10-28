@@ -147,6 +147,7 @@ define nginx::resource::mailhost (
     mode    => $nginx::global_mode,
     notify  => Class['nginx::service'],
     require => File[$config_dir],
+    tag     => 'nginx_config_file',
   }
 
   if $ssl_port == undef or $listen_port != $ssl_port {

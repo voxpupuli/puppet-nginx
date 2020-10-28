@@ -122,6 +122,7 @@ define nginx::resource::upstream (
     ensure  => $ensure,
     notify  => Class['nginx::service'],
     require => File[$conf_dir],
+    tag     => 'nginx_config_file',
   }
 
   concat::fragment { "${name}_upstream_header":

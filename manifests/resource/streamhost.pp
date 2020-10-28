@@ -97,6 +97,7 @@ define nginx::resource::streamhost (
     mode    => $mode,
     notify  => Class['nginx::service'],
     require => File[$streamhost_dir],
+    tag     => 'nginx_config_file',
   }
 
   concat::fragment { "${name_sanitized}-header":
