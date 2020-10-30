@@ -16,7 +16,7 @@
     expires <%= @expires %>;
 <% end -%>
 <% if @location_allow -%>
-    <%- @location_allow.each do |allow_rule| -%>
+    <%- @location_allow.flatten.each do |allow_rule| -%>
     allow <%= allow_rule %>;
     <%- end -%>
 <% end -%>

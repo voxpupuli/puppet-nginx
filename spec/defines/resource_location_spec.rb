@@ -113,12 +113,23 @@ describe 'nginx::resource::location' do
               match: '    expires 33d;'
             },
             {
-              title: 'should set location_allow',
+              title: 'should set location_allow (flat array)',
               attr: 'location_allow',
               value: %w[127.0.0.1 10.0.0.1],
               match: [
                 '    allow 127.0.0.1;',
                 '    allow 10.0.0.1;'
+              ]
+            },
+            {
+              title: 'should set location_allow (nested array)',
+              attr: 'location_allow',
+              value: %w[127.0.0.1 10.0.0.1 [127.0.0.2 10.0.0.2]],
+              match: [
+                '    allow 127.0.0.1;',
+                '    allow 10.0.0.1;'
+                '    allow 127.0.0.2;',
+                '    allow 10.0.0.2;'
               ]
             },
             {
