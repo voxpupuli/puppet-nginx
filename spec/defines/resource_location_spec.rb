@@ -124,10 +124,10 @@ describe 'nginx::resource::location' do
             {
               title: 'should set location_allow (nested array)',
               attr: 'location_allow',
-              value: %w[127.0.0.1 10.0.0.1 [127.0.0.2 10.0.0.2]],
+              value: ['127.0.0.1', '10.0.0.1', ['127.0.0.2', '10.0.0.2']],
               match: [
                 '    allow 127.0.0.1;',
-                '    allow 10.0.0.1;'
+                '    allow 10.0.0.1;',
                 '    allow 127.0.0.2;',
                 '    allow 10.0.0.2;'
               ]
