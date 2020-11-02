@@ -1,6 +1,5 @@
-# Class: nginx
-#
-# This module manages NGINX.
+# @summary
+#   This module manages NGINX.
 #
 # Parameters:
 #
@@ -44,6 +43,10 @@
 # @param debug_connections
 #   Configures nginx `debug_connection` lines in the `events` section of the nginx config.
 #   See http://nginx.org/en/docs/ngx_core_module.html#debug_connection
+#
+# @param service_config_check
+#  whether to en- or disable the config check via nginx -t on config changes
+#
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,
@@ -205,6 +208,7 @@ class nginx (
   $service_restart                                           = undef,
   $service_name                                              = 'nginx',
   $service_manage                                            = true,
+  Boolean $service_config_check                              = false,
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###

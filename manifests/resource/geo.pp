@@ -80,5 +80,6 @@ define nginx::resource::geo (
     mode    => $nginx::global_mode,
     content => template('nginx/conf.d/geo.erb'),
     notify  => Class['nginx::service'],
+    tag     => 'nginx_config_file',
   }
 }

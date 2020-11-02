@@ -301,6 +301,7 @@ define nginx::resource::location (
       ensure  => 'file',
       mode    => $nginx::global_mode,
       content => template('nginx/server/fastcgi.conf.erb'),
+      tag     => 'nginx_config_file',
     }
   }
 
@@ -309,6 +310,7 @@ define nginx::resource::location (
       ensure  => 'file',
       mode    => $nginx::global_mode,
       content => template('nginx/server/uwsgi_params.erb'),
+      tag     => 'nginx_config_file',
     }
   }
 

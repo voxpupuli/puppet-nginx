@@ -27,6 +27,7 @@ define nginx::resource::snippet (
     mode    => $mode,
     notify  => Class['nginx::service'],
     require => File[$nginx::snippets_dir],
+    tag     => 'nginx_config_file',
   }
 
   concat::fragment { "snippet-${name_sanitized}-header":
