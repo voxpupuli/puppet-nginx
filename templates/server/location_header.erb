@@ -80,3 +80,29 @@
 <% if @limit_zone -%>
     limit_req zone=<%= @limit_zone %>;
 <% end -%>
+<% if @log_not_found -%>
+    log_not_found <%= @log_not_found %>;
+<% end -%>
+<% if @access_log -%>
+    <% if @access_log.is_a?(Array) -%>
+        <%- @access_log.each do |log_item| -%>
+  access_log            <%= log_item %> <%= @format_log %>;
+        <%- end -%>
+    <% elsif @access_log == 'absent' -%>
+    <% elsif @access_log == 'off' -%>
+  access_log            off;
+    <% else -%>
+    access_log <%= @access_log %> <%= @format_log %>;
+    <% end -%>
+<% end -%>
+<% if @error_log -%>
+    <% if @error_log.is_a?(Array) -%>
+        <%- @error_log.each do |log_item| -%>
+  error_log             <%= log_item %> <%= @error_level %>;
+        <% end -%>
+    <% elsif @error_log == 'off' -%>
+    error_log off;
+    <% else -%>
+    error_log <%= @error_log %> <%= @error_level %>;
+    <% end -%>
+<% end -%>

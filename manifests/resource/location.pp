@@ -94,8 +94,8 @@
 #     of off.
 #   [*proxy_cache_valid*]     - This directive sets the time for caching
 #     different replies.
-#   [*proxy_cache_lock*]           - This directive sets the locking mechanism for pouplating cache.
-#   [*proxy_cache_bypass*]         - Defines conditions which the response will not be cached
+#   [*proxy_cache_lock*]      - This directive sets the locking mechanism for pouplating cache.
+#   [*proxy_cache_bypass*]    - Defines conditions which the response will not be cached
 #   [*proxy_method*]          - If defined, overrides the HTTP method of the
 #     request to be passed to the backend.
 #   [*proxy_http_version*]    - Sets the proxy http version
@@ -123,6 +123,9 @@
 #   [*expires*]         - Setup expires time for locations content
 #   [*add_header*]      - Hash: Adds headers to the location block.  If any are specified, locations will no longer inherit headers from the parent server context
 #   [*gzip_static*]     - Defines gzip_static, nginx default is off
+#   [*access_log*]      - disable or override the logging in access_log (log format can be set with $format_log)
+#   [*error_log*]       - override the error_log for this location
+#   [*log_not_found*]   - enable or disable the logging of not found errors in error_log
 #
 #
 # Actions:
@@ -186,7 +189,7 @@ define nginx::resource::location (
   Enum['present', 'absent'] $ensure                                = 'present',
   Boolean $internal                                                = false,
   String $location                                                 = $name,
-  Variant[String[1],Array[String[1],1]] $server                    = undef,
+  Variant[String[1], Array[String[1], 1]] $server                  = undef,
   Optional[String] $www_root                                       = undef,
   Optional[String] $autoindex                                      = undef,
   Optional[Enum['on', 'off']] $autoindex_exact_size                = undef,
@@ -252,12 +255,17 @@ define nginx::resource::location (
   Optional[String] $auth_basic_user_file                           = undef,
   Optional[String] $auth_request                                   = undef,
   Array $rewrite_rules                                             = [],
-  Integer[401,599] $priority                                       = 500,
+  Integer[401, 599] $priority                                      = 500,
   Boolean $mp4                                                     = false,
   Boolean $flv                                                     = false,
   Optional[String] $expires                                        = undef,
   Hash $add_header                                                 = {},
   Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
+  $format_log                                                      = 'combined',
+  $error_level                                                     = 'error',
+  Optional[Enum['on', 'off']] $log_not_found                       = undef,
+  Optional[Variant[Array, String]] $access_log                     = undef,
+  Optional[Variant[Array, String]] $error_log                      = undef
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')
