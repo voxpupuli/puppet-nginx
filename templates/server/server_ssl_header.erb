@@ -169,4 +169,4 @@ server {
 <% Array(@passenger_env_var).each do |key,value| -%>
   passenger_env_var  <%= key %> <%= value %>;
 <% end -%>
-<%= scope.function_template(["nginx/server/locations/headers.erb"]) %>
+  <%= scope.function_template(["nginx/server/locations/headers.erb"]) %>
