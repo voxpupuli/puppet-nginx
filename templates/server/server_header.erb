@@ -133,7 +133,7 @@ server {
 <% if Array(@resolver).count > 0 -%>
   resolver                  <% Array(@resolver).each do |r| %> <%= r %><% end %>;
 <% end -%>
-<%= scope.function_template(["nginx/server/locations/headers.erb"]) %>
+  <%= scope.function_template(["nginx/server/locations/headers.erb"]) %>
 <% if @maintenance -%>
   <%= @maintenance_value %>;
 <% end -%>
