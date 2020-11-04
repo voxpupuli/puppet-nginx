@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v2.1.0) (2020-11-02)
+## [v2.1.1](https://github.com/voxpupuli/puppet-nginx/tree/v2.1.1) (2020-11-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v2.1.0...v2.1.1)
+
+**Merged pull requests:**
+
+- Revert "Indentation fix" from \#1417 [\#1425](https://github.com/voxpupuli/puppet-nginx/pull/1425) ([crazymind1337](https://github.com/crazymind1337))
+- Fix indention for add\_header at template calls [\#1424](https://github.com/voxpupuli/puppet-nginx/pull/1424) ([crazymind1337](https://github.com/crazymind1337))
+
+## [v2.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v2.1.0) (2020-11-03)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v2.0.0...v2.1.0)
 
