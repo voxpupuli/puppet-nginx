@@ -199,6 +199,9 @@ http {
 <% @proxy_pass_header.each do |header| -%>
   proxy_pass_header        <%= header %>;
 <% end -%>
+<% if @proxy_bind -%>
+  proxy_bind               <%= @proxy_bind %>;
+<% end -%>
 <% if @proxy_headers_hash_bucket_size -%>
   proxy_headers_hash_bucket_size <%= @proxy_headers_hash_bucket_size %>;
 <% end -%>
