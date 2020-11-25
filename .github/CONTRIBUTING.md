@@ -232,14 +232,14 @@ simple tests against it after applying the module. You can run this
 with:
 
 ```sh
-bundle exec rake acceptance
+bundle exec rake beaker
 ```
 
 This will run the tests on the module's default nodeset. You can override the
 nodeset used, e.g.,
 
 ```sh
-BEAKER_set=centos-7-x64 bundle exec rake acceptance
+BEAKER_set=centos-7-x64 bundle exec rake beaker
 ```
 
 There are default rake tasks for the various acceptance test modules, e.g.,
@@ -269,7 +269,6 @@ The following strings are known to work:
 * ubuntu2004
 * debian9
 * debian10
-* centos6
 * centos7
 * centos8
 

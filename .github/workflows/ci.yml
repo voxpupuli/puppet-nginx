@@ -1,0 +1,75 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  setup_matrix:
+    name: 'Setup Test Matrix'
+    runs-on: ubuntu-latest
+    outputs:
+      beaker_setfiles: ${{ steps.get-outputs.outputs.beaker_setfiles }}
+      puppet_major_versions: ${{ steps.get-outputs.outputs.puppet_major_versions }}
+      puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+    env:
+      BUNDLE_WITHOUT: development:test:release
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+      - name: Run rake validate
+        run: bundle exec rake validate
+      - name: Setup Test Matrix
+        id: get-outputs
+        run: bundle exec metadata2gha --use-fqdn --pidfile-workaround false
+
+  unit:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
+    env:
+      BUNDLE_WITHOUT: development:system_tests:release
+      PUPPET_VERSION: "~> ${{ matrix.puppet }}.0"
+    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake
+
+  acceptance:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITHOUT: development:test:release
+    strategy:
+      fail-fast: false
+      matrix:
+        setfile: ${{fromJson(needs.setup_matrix.outputs.beaker_setfiles)}}
+        puppet: ${{fromJson(needs.setup_matrix.outputs.puppet_major_versions)}}
+    name: ${{ matrix.puppet.name }} - ${{ matrix.setfile.name }}
+    steps:
+      - name: Enable IPv6 on docker
+        run: |
+          echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake beaker
+        env:
+          BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet.collection }}
+          BEAKER_setfile: ${{ matrix.setfile.value }}

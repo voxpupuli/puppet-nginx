@@ -1,4 +1,10 @@
-require 'voxpupuli/test/rake'
+# Attempt to load voxupuli-test (which pulls in puppetlabs_spec_helper),
+# otherwise attempt to load it directly.
+begin
+  require 'voxpupuli/test/rake'
+rescue LoadError
+  require 'puppetlabs_spec_helper/rake_tasks'
+end
 
 # load optional tasks for releases
 # only available if gem group releases is installed
@@ -26,6 +32,7 @@ end
 
 begin
   require 'github_changelog_generator/task'
+  require 'puppet_blacksmith'
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
     version = (Blacksmith::Modulefile.new).version
     config.future_release = "v#{version}" if version =~ /^\d+\.\d+.\d+$/
