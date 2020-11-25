@@ -1,15 +1,5 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
-def location_for(place, fake_version = nil)
-  if place =~ /^(git[:@][^#]*)#(.*)/
-    [fake_version, { :git => $1, :branch => $2, :require => false }].compact
-  elsif place =~ /^file:\/\/(.*)/
-    ['>= 0', { :path => File.expand_path($1), :require => false }]
-  else
-    [place, { :require => false }]
-  end
-end
-
 group :test do
   gem 'voxpupuli-test', '~> 2.1',  :require => false
   gem 'coveralls',                 :require => false
@@ -17,14 +7,13 @@ group :test do
 end
 
 group :development do
-  gem 'travis',                   :require => false
-  gem 'travis-lint',              :require => false
   gem 'guard-rake',               :require => false
   gem 'overcommit', '>= 0.39.1',  :require => false
 end
 
 group :system_tests do
-  gem 'voxpupuli-acceptance',  :require => false
+  gem 'puppet_metadata', '~> 0.3.0',  :require => false
+  gem 'voxpupuli-acceptance',         :require => false
 end
 
 group :release do
@@ -34,15 +23,11 @@ group :release do
   gem 'puppet-strings', '>= 2.2',    :require => false
 end
 
+gem 'puppetlabs_spec_helper', '~> 2.0', :require => false
+gem 'rake', :require => false
+gem 'facter', ENV['FACTER_GEM_VERSION'], :require => false, :groups => [:test]
 
-
-if facterversion = ENV['FACTER_GEM_VERSION']
-  gem 'facter', facterversion.to_s, :require => false, :groups => [:test]
-else
-  gem 'facter', :require => false, :groups => [:test]
-end
-
-ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 6.0' : puppetversion = ENV['PUPPET_VERSION'].to_s
+puppetversion = ENV['PUPPET_VERSION'] || '~> 6.0'
 gem 'puppet', puppetversion, :require => false, :groups => [:test]
 
 # vim: syntax=ruby

@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  BUNDLE_WITHOUT: development:test:system_tests
+
+jobs:
+  deploy:
+    name: 'deploy to forge'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+      - name: Build and Deploy
+        env:
+          # Configure secrets here:
+          #  https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
+          BLACKSMITH_FORGE_USERNAME: '${{ secrets.PUPPET_FORGE_USERNAME }}'
+          BLACKSMITH_FORGE_API_KEY: '${{ secrets.PUPPET_FORGE_API_KEY }}'
+        run: bundle exec rake module:push
