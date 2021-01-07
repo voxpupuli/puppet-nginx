@@ -138,7 +138,7 @@
 #   [*maintenance*]                - A boolean value to set a server in maintenance
 #   [*maintenance_value*]          - Value to return when maintenance is on.  Default to return 503
 #   [*error_pages*]                - Hash: setup errors pages, hash key is the http code and hash value the page
-#   [*locations*]                  - Hash of servers resources used by this server
+#   [*locations*]                  - Hash of location resources used by this server
 #   [*locations_defaults*]         - Hash of location default settings
 # Actions:
 #
