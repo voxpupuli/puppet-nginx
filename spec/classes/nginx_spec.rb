@@ -681,6 +681,18 @@ describe 'nginx' do
                 match: '  send_timeout        963;'
               },
               {
+                title: 'should set lingering_close',
+                attr: 'lingering_close',
+                value: 'always',
+                match: '  lingering_close      always;'
+              },
+              {
+                title: 'should set lingering_time',
+                attr: 'lingering_time',
+                value: '30s',
+                match: '  lingering_time      30s;'
+              },
+              {
                 title: 'should set lingering_timeout',
                 attr: 'lingering_timeout',
                 value: '385',

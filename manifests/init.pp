@@ -93,6 +93,8 @@ class nginx (
   $client_body_timeout                                       = '60s',
   $send_timeout                                              = '60s',
   $lingering_timeout                                         = '5s',
+  Optional[Enum['on','off','always']] $lingering_close       = undef,
+  Optional[String[1]] $lingering_time                        = undef,
   Optional[Enum['on', 'off']] $etag                          = undef,
   Optional[String] $events_use                               = undef,
   Array[Nginx::DebugConnection] $debug_connections           = [],

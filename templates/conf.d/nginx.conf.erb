@@ -121,6 +121,12 @@ http {
   keepalive_requests  <%= @keepalive_requests %>;
   client_body_timeout <%= @client_body_timeout %>;
   send_timeout        <%= @send_timeout %>;
+<% if @lingering_close -%>
+  lingering_close      <%= @lingering_close %>;
+<% end -%>
+<% if @lingering_time -%>
+  lingering_time      <%= @lingering_time %>;
+<% end -%>
   lingering_timeout   <%= @lingering_timeout %>;
   tcp_nodelay         <%= @http_tcp_nodelay %>;
 
