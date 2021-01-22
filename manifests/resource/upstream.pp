@@ -1,75 +1,106 @@
-# define: nginx::resource::upstream
+# @summary Create a new upstream proxy entry for NGINX
 #
-# This definition creates a new upstream proxy entry for NGINX
+# @param ensure
+#   Enables or disables the specified location
+# @param context
+#   Set the type of this upstream.
+# @param members
+#   Hash of member URIs for NGINX to connect to. Must follow valid NGINX
+#   syntax.  If omitted, individual members should be defined with
+#   nginx::resource::upstream::member
+# @param members_tag
+#   Restrict collecting the exported members for this upstream with a tag.
+# @param member_defaults
+#   Specify default settings added to each member of this upstream.
+# @param hash
+#   Activate the hash load balancing method
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#hash).
+# @param ip_hash
+#   Activate ip_hash for this upstream
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ip_hash).
+# @param keepalive
+#   Set the maximum number of idle keepalive connections
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive).
+# @param keepalive_requests
+#   Sets the maximum number of requests that can be served through one
+#   keepalive connection
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive_requests).
+# @param keepalive_timeout
+#   Sets a timeout during which an idle keepalive connection to an upstream
+#   server will stay open
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive_timeout).
+# @param least_conn
+#   Activate the least_conn load balancing method
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_conn).
+# @param least_time
+#   Activate the least_time load balancing method
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_time).
+# @param ntlm
+#   Allow NTLM authentication
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ntlm).
+# @param queue_max
+#   Set the maximum number of queued requests
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue).
+# @param queue_timeout
+#   Set the timeout for the queue
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue).
+# @param random
+#   Activate the random load balancing method
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#random).
+# @param statefile
+#   Specifies a file that keeps the state of the dynamically configurable group
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#state).
+# @param sticky
+#   Enables session affinity
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#sticky).
+# @param zone
+#   Defines the name and optional the size of the shared memory zone
+#   (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#zone).
+# @param cfg_append
+#   Hash of custom directives to put after other directives in upstream
+# @param cfg_prepend
+#   It expects a hash with custom directives to put before anything else inside
+#   upstream
 #
-# Parameters:
-#   [*ensure*]                - Enables or disables the specified location (present|absent)
-#   [*context*]               - Set the type of this upstream (http|stream).
-#   [*members*]               - Hash of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
-#                               If omitted, individual members should be defined with nginx::resource::upstream::member
-#   [*members_tag*]           - Restrict collecting the exported members for this upstream with a tag.
-#   [*member_defaults*]       - Specify default settings added to each member of this upstream.
-#   [*hash*]                  - Activate the hash load balancing method (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#hash).
-#   [*ip_hash*]               - Activate ip_hash for this upstream (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ip_hash).
-#   [*keepalive*]             - Set the maximum number of idle keepalive connections (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive).
-#   [*keepalive_requests*]    - Sets the maximum number of requests that can be served through one keepalive connection (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive_requests).
-#   [*keepalive_timeout*]     - Sets a timeout during which an idle keepalive connection to an upstream server will stay open (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#keepalive_timeout).
-#   [*least_conn*]            - Activate the least_conn load balancing method (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_conn).
-#   [*least_time*]            - Activate the least_time load balancing method (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#least_time).
-#   [*ntlm*]                  - Allow NTLM authentication (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ntlm).
-#   [*queue_max*]             - Set the maximum number of queued requests (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue).
-#   [*queue_timeout*]         - Set the timeout for the queue (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue).
-#   [*random*]                - Activate the random load balancing method (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#random).
-#   [*statefile*]             - Specifies a file that keeps the state of the dynamically configurable group (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#state).
-#   [*sticky*]                - Enables session affinity (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#sticky).
-#   [*zone*]                  - Defines the name and optional the size of the shared memory zone (https://nginx.org/en/docs/http/ngx_http_upstream_module.html#zone).
-#   [*cfg_append*]            - Hash of custom directives to put after other directives in upstream
-#   [*cfg_prepend*]           - It expects a hash with custom directives to put before anything else inside upstream
+# @example
+#   nginx::resource::upstream { 'proxypass':
+#     ensure  => present,
+#     members => {
+#       'localhost:3001' => {
+#         server => 'localhost',
+#         port   => 3001,
+#       },
+#       'localhost:3002' => {
+#         server => 'localhost',
+#         port   => 3002,
+#       },
+#       'localhost:3003' => {
+#         server => 'localhost',
+#         port   => 3003,
+#       },
+#     },
+#   }
 #
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#  nginx::resource::upstream { 'proxypass':
-#    ensure  => present,
-#    members => {
-#      'localhost:3001' => {
-#        server => 'localhost',
-#        port   => 3001,
-#      },
-#      'localhost:3002' => {
-#        server => 'localhost',
-#        port   => 3002,
-#      },
-#      'localhost:3003' => {
-#        server => 'localhost',
-#        port   => 3003,
-#      },
-#    },
-#  }
-#
-#  Custom config example to use ip_hash, and 20 keepalive connections
-#  create a hash with any extra custom config you want.
-#  nginx::resource::upstream { 'proxypass':
-#    ensure    => present,
-#    members   => {
-#      'localhost:3001' => {
-#        server => 'localhost',
-#        port   => 3001,
-#      },
-#      'localhost:3002' => {
-#        server => 'localhost',
-#        port   => 3002,
-#      },
-#      'localhost:3003' => {
-#        server => 'localhost',
-#        port   => 3003,
-#      },
-#    },
-#    ip_hash   => true,
-#    keepalive => 20,
-#  }
+# @example Custom config example to use ip_hash, and 20 keepalive connections create a hash with any extra custom config you want.
+#   nginx::resource::upstream { 'proxypass':
+#     ensure    => present,
+#     members   => {
+#       'localhost:3001' => {
+#         server => 'localhost',
+#         port   => 3001,
+#       },
+#       'localhost:3002' => {
+#         server => 'localhost',
+#         port   => 3002,
+#       },
+#       'localhost:3003' => {
+#         server => 'localhost',
+#         port   => 3003,
+#       },
+#     },
+#     ip_hash   => true,
+#     keepalive => 20,
+#   }
 #
 define nginx::resource::upstream (
   Enum['present', 'absent']           $ensure                 = 'present',

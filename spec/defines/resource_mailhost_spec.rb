@@ -96,14 +96,14 @@ describe 'nginx::resource::mailhost' do
             {
               title: 'should set protocol',
               attr: 'protocol',
-              value: 'test-protocol',
-              match: '  protocol              test-protocol;'
+              value: 'imap',
+              match: '  protocol              imap;'
             },
             {
               title: 'should set xclient',
               attr: 'xclient',
-              value: 'test-xclient',
-              match: '  xclient               test-xclient;'
+              value: 'off',
+              match: '  xclient               off;'
             },
             {
               title: 'should set auth_http',
@@ -533,14 +533,14 @@ describe 'nginx::resource::mailhost' do
             {
               title: 'should set protocol',
               attr: 'protocol',
-              value: 'test-protocol',
-              match: '  protocol              test-protocol;'
+              value: 'imap',
+              match: '  protocol              imap;'
             },
             {
               title: 'should set xclient',
               attr: 'xclient',
-              value: 'test-xclient',
-              match: '  xclient               test-xclient;'
+              value: 'off',
+              match: '  xclient               off;'
             },
             {
               title: 'should set auth_http',

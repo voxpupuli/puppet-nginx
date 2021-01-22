@@ -1,11 +1,16 @@
-# This definition creates a reusable config snippet that can be included by other resources
+# @summary Create a reusable config snippet that can be included by other resources
 #
-# @param ensure Enables or disables the specified snippet
-# @param owner Defines owner of the .conf file
-# @param group Defines group of the .conf file
-# @param mode Defines mode of the .conf file
-# @param raw_content Raw content that will be inserted into the snipped as-is
-
+# @param ensure
+#   Enables or disables the specified snippet
+# @param owner
+#   Defines owner of the .conf file
+# @param group
+#   Defines group of the .conf file
+# @param mode
+#   Defines mode of the .conf file
+# @param raw_content
+#   Raw content that will be inserted into the snipped as-is
+#
 define nginx::resource::snippet (
   String[1] $raw_content,
   Enum['absent', 'present'] $ensure = 'present',

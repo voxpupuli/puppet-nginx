@@ -1,28 +1,12 @@
-# @summary
-#   This module manages NGINX.
+# @summary Manage NGINX
 #
-# Parameters:
+# Packaged NGINX
+#   - RHEL: EPEL or custom package
+#   - Debian/Ubuntu: Default Install or custom package
+#   - SuSE: Default Install or custom package
 #
-# Actions:
-#
-# Requires:
-#  puppetlabs-stdlib - https://github.com/puppetlabs/puppetlabs-stdlib
-#
-#  Packaged NGINX
-#    - RHEL: EPEL or custom package
-#    - Debian/Ubuntu: Default Install or custom package
-#    - SuSE: Default Install or custom package
-#
-#  stdlib
-#    - puppetlabs-stdlib module >= 0.1.6
-#
-# Sample Usage:
-#
-# The module works with sensible defaults:
-#
-# node default {
+# @example Use the sensible defaults
 #   include nginx
-# }
 #
 # @param include_modules_enabled
 #   When set, nginx will include module configurations files installed in the

@@ -1,56 +1,59 @@
-# define: nginx::resource::geo
+# @summary Create a new geo mapping entry for NGINX
 #
-# This definition creates a new geo mapping entry for NGINX
+# @param networks
+#    Hash of geo lookup keys and resultant values
 #
-# Parameters:
-#   [*networks*]        - Hash of geo lookup keys and resultant values
-#   [*default*]         - Sets the resulting value if the source value fails to
-#                         match any of the variants.
-#   [*ensure*]          - Enables or disables the specified location
-#   [*ranges*]          - Indicates that lookup keys (network addresses) are
-#                         specified as ranges.
-#   [*address*]         - Nginx defaults to using $remote_addr for testing.
-#                         This allows you to override that with another variable
-#                         name (automatically prefixed with $)
-#   [*delete*]          - deletes the specified network (see: geo module docs)
-#   [*proxy_recursive*] - Changes the behavior of address acquisition when
-#                         specifying trusted proxies via 'proxies' directive
-#   [*proxies*]         - Hash of network->value mappings.
+# @param default
+#    Sets the resulting value if the source value fails to match any of the
+#    variants.
 #
-# Actions:
+# @param ensure
+#    Enables or disables the specified location
 #
-# Requires:
+# @param ranges
+#    Indicates that lookup keys (network addresses) are specified as ranges.
 #
-# Sample Usage:
+# @param address
+#    Nginx defaults to using $remote_addr for testing.  This allows you to
+#    override that with another variable name (automatically prefixed with $)
 #
-#  nginx::resource::geo { 'client_network':
-#    ensure          => present,
-#    ranges          => false,
-#    default         => extra,
-#    proxy_recursive => false,
-#    proxies         => [ '192.168.99.99' ],
-#    networks        => {
-#      '10.0.0.0/8'     => 'intra',
-#      '172.16.0.0/12'  => 'intra',
-#      '192.168.0.0/16' => 'intra',
-#    }
-#  }
+# @param delete
+#    deletes the specified network (see: geo module docs)
 #
-# Sample Hiera usage:
+# @param proxy_recursive
+#    Changes the behavior of address acquisition when specifying trusted
+#    proxies via 'proxies' directive
 #
-#  nginx::geo_mappings:
-#    client_network:
-#      ensure: present
-#      ranges: false
-#      default: 'extra'
-#      proxy_recursive: false
-#      proxies:
-#         - 192.168.99.99
-#      networks:
-#        '10.0.0.0/8': 'intra'
-#        '172.16.0.0/12': 'intra'
-#        '192.168.0.0/16': 'intra'
-
+# @param proxies
+#    Hash of network->value mappings.
+#
+# @example Puppet usage
+#   nginx::resource::geo { 'client_network':
+#     ensure          => present,
+#     ranges          => false,
+#     default         => extra,
+#     proxy_recursive => false,
+#     proxies         => [ '192.168.99.99' ],
+#     networks        => {
+#       '10.0.0.0/8'     => 'intra',
+#       '172.16.0.0/12'  => 'intra',
+#       '192.168.0.0/16' => 'intra',
+#     }
+#   }
+#
+# @example Hiera usage
+#   nginx::geo_mappings:
+#     client_network:
+#       ensure: present
+#       ranges: false
+#       default: 'extra'
+#       proxy_recursive: false
+#       proxies:
+#          - 192.168.99.99
+#       networks:
+#         '10.0.0.0/8': 'intra'
+#         '172.16.0.0/12': 'intra'
+#         '192.168.0.0/16': 'intra'
 define nginx::resource::geo (
   Hash $networks,
   Optional[String] $default           = undef,

@@ -1,75 +1,68 @@
-# define: nginx::resource::map
+# @summary Create a new mapping entry for NGINX
 #
-# This definition creates a new mapping entry for NGINX
+# @param ensure
+#   Enables or disables the specified location
+# @param default
+#   Sets the resulting value if the source values fails to match any of the
+#   variants.
+# @param string
+#   Source string or variable to provide mapping for
+# @param mappings
+#   Hash of map lookup keys and resultant values
+# @param hostnames
+#   Indicates that source values can be hostnames with a prefix or suffix mask.
+# @param include_files
+#   An array of external files to include
+# @param context
+#   Specify if mapping is for http or stream context
 #
-# Parameters:
-#   [*ensure*]     - Enables or disables the specified location (present|absent)
-#   [*default*]    - Sets the resulting value if the source values fails to
-#                    match any of the variants.
-#   [*string*]     - Source string or variable to provide mapping for
-#   [*mappings*]   - Hash of map lookup keys and resultant values
-#   [*hostnames*]  - Indicates that source values can be hostnames with a
-#                    prefix or suffix mask.
-#   [*include_files*]   - An array of external files to include
-#   [*context']    - Specify if mapping is for http or stream context
+# @example
+#   nginx::resource::map { 'backend_pool':
+#     ensure    => present,
+#     hostnames => true,
+#     default   => 'ny-pool-1,
+#     string    => '$http_host',
+#     mappings  => {
+#       '*.nyc.example.com' => 'ny-pool-1',
+#       '*.sf.example.com'  => 'sf-pool-1',
+#     }
+#   }
 #
-# Actions:
+# @example Preserving input of order of mappings
+#   nginx::resource::map { 'backend_pool':
+#     ...
+#     mappings  => [
+#       { 'key' => '*.sf.example.com', 'value' => 'sf-pool-1' },
+#       { 'key' => '*.nyc.example.com', 'value' => 'ny-pool-1' },
+#     ]
+#   }
 #
-# Requires:
+# @example Using external include
+#   nginx::resource::map { 'redirections':
+#      include_files => [ '/etc/nginx/conf.d/redirections.map']
+#   }
 #
-# Sample Usage:
+# @example Hiera usage
+#   nginx::string_mappings:
+#     client_network:
+#       ensure: present
+#       hostnames: true
+#       default: 'ny-pool-1'
+#       string: $http_host
+#       mappings:
+#         '*.nyc.example.com': 'ny-pool-1'
+#         '*.sf.example.com': 'sf-pool-1'
 #
-#  nginx::resource::map { 'backend_pool':
-#    ensure    => present,
-#    hostnames => true,
-#    default   => 'ny-pool-1,
-#    string    => '$http_host',
-#    mappings  => {
-#      '*.nyc.example.com' => 'ny-pool-1',
-#      '*.sf.example.com'  => 'sf-pool-1',
-#    }
-#  }
+# @example Hiera usage: preserving input of order of mappings:
+#   nginx::string_mappings:
+#     client_network:
+#       ...
+#       mappings:
+#         - key: '*.sf.example.com'
+#           value: 'sf-pool-1'
+#         - key: '*.nyc.example.com'
+#           value: 'ny-pool-1'
 #
-# Sample Usage (preserving input of order of mappings):
-#
-#  nginx::resource::map { 'backend_pool':
-#    ...
-#    mappings  => [
-#      { 'key' => '*.sf.example.com', 'value' => 'sf-pool-1' },
-#      { 'key' => '*.nyc.example.com', 'value' => 'ny-pool-1' },
-#    ]
-#  }
-#
-# Sample Usage (using external include)
-#
-# nginx::resource::map { 'redirections':
-#
-#    include_files => [ '/etc/nginx/conf.d/redirections.map']
-#
-# }
-#
-# Sample Hiera usage:
-#
-#  nginx::string_mappings:
-#    client_network:
-#      ensure: present
-#      hostnames: true
-#      default: 'ny-pool-1'
-#      string: $http_host
-#      mappings:
-#        '*.nyc.example.com': 'ny-pool-1'
-#        '*.sf.example.com': 'sf-pool-1'
-#
-# Sample Hiera usage (preserving input of order of mappings):
-#
-#  nginx::string_mappings:
-#    client_network:
-#      ...
-#      mappings:
-#        - key: '*.sf.example.com'
-#          value: 'sf-pool-1'
-#        - key: '*.nyc.example.com'
-#          value: 'ny-pool-1'
 define nginx::resource::map (
   String[2] $string,
   Variant[Array, Hash] $mappings,
