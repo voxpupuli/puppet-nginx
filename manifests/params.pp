@@ -115,7 +115,7 @@ class nginx::params {
           'log_mode'    => '0755',
           'run_dir'     => '/run/nginx',
         }
-      # The following was designed/tested on Ubuntu 18 and Debian 9/10 but probably works on newer versions as well
+        # The following was designed/tested on Ubuntu 18 and Debian 9/10 but probably works on newer versions as well
       } else {
         $_module_os_overrides = {
           'manage_repo'             => true,
