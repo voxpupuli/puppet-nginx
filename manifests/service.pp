@@ -7,7 +7,7 @@ class nginx::service {
 
   if $nginx::service_config_check {
     exec { 'nginx_config_check':
-      command     => 'nginx -t',
+      command     => $nginx::service_config_check_command,
       refreshonly => true,
       path        => [
         '/usr/local/sbin',
