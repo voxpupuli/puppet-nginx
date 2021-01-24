@@ -31,6 +31,9 @@
 # @param service_config_check
 #  whether to en- or disable the config check via nginx -t on config changes
 #
+# @param service_config_check_command
+#  Command to execute to validate the generated configuration.
+#
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,
@@ -195,6 +198,7 @@ class nginx (
   $service_name                                              = 'nginx',
   $service_manage                                            = true,
   Boolean $service_config_check                              = false,
+  String $service_config_check_command                       = 'nginx -t',
   ### END Service Configuration ###
 
   ### START Hiera Lookups ###
