@@ -4,7 +4,34 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v2.1.1](https://github.com/voxpupuli/puppet-nginx/tree/v2.1.1) (2020-11-04)
+## [v3.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.0.0) (2021-01-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v2.1.1...v3.0.0)
+
+https://github.com/voxpupuli/puppet-nginx/pull/1385 changes the default behaviour for manage_repo. Before that PR, only on certain Debian based systems the nginx repo is enabled. With #1385 it's enabled on all Debian based systems. Also, please note that REFERENCE.md was added in this release but is not yet complete.
+
+**Breaking changes:**
+
+- Drop EL6 & Puppet 5 from and add Puppet 7 to metadata [\#1436](https://github.com/voxpupuli/puppet-nginx/pull/1436) ([genebean](https://github.com/genebean))
+- Drop Ubuntu 10/12/14 code [\#1385](https://github.com/voxpupuli/puppet-nginx/pull/1385) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add Ubuntu focal support [\#1442](https://github.com/voxpupuli/puppet-nginx/pull/1442) ([attachmentgenie](https://github.com/attachmentgenie))
+- makes service\_config\_check exec command configurable [\#1438](https://github.com/voxpupuli/puppet-nginx/pull/1438) ([saz](https://github.com/saz))
+- Add two more lingering\_ config options [\#1435](https://github.com/voxpupuli/puppet-nginx/pull/1435) ([sbeaulie](https://github.com/sbeaulie))
+
+**Fixed bugs:**
+
+- nginx isnt allowed to write into tmp directories, due to permissions … [\#1399](https://github.com/voxpupuli/puppet-nginx/pull/1399) ([attachmentgenie](https://github.com/attachmentgenie))
+
+**Merged pull requests:**
+
+- Replace Travis build status in README [\#1432](https://github.com/voxpupuli/puppet-nginx/pull/1432) ([saz](https://github.com/saz))
+- fix comment [\#1430](https://github.com/voxpupuli/puppet-nginx/pull/1430) ([nod0n](https://github.com/nod0n))
+- Convert documentation to puppet-strings [\#1412](https://github.com/voxpupuli/puppet-nginx/pull/1412) ([ekohl](https://github.com/ekohl))
+
+## [v2.1.1](https://github.com/voxpupuli/puppet-nginx/tree/v2.1.1) (2020-11-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v2.1.0...v2.1.1)
 
