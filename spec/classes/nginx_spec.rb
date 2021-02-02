@@ -325,13 +325,13 @@ describe 'nginx' do
               is_expected.to contain_file('/run/nginx/client_body_temp').with(
                 ensure: 'directory',
                 group: 'root',
-                mode: '0644'
+                mode: '0700'
               )
             else
               is_expected.to contain_file('/var/nginx/client_body_temp').with(
                 ensure: 'directory',
                 group: 'root',
-                mode: '0644'
+                mode: '0700'
               )
             end
           end
@@ -341,13 +341,13 @@ describe 'nginx' do
               is_expected.to contain_file('/run/nginx/proxy_temp').with(
                 ensure: 'directory',
                 group: 'root',
-                mode: '0644'
+                mode: '0700'
               )
             else
               is_expected.to contain_file('/var/nginx/proxy_temp').with(
                 ensure: 'directory',
                 group: 'root',
-                mode: '0644'
+                mode: '0700'
               )
             end
           end
