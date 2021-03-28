@@ -1,11 +1,15 @@
 <% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) < 0 -%>
   ssl on;
 <% end -%>
-<% if @ssl_cert -%>
-  ssl_certificate           <%= @ssl_cert %>;
+<% if @ssl_cert_real -%>
+<% @ssl_cert_real.each do | cert | -%>
+  ssl_certificate           <%= cert %>;
 <% end -%>
-<% if @ssl_key -%>
-  ssl_certificate_key       <%= @ssl_key %>;
+<% end -%>
+<% if @ssl_key_real -%>
+<% @ssl_key_real.each do | key | -%>
+  ssl_certificate_key       <%= key %>;
+<% end -%>
 <% end -%>
 <% if defined? @ssl_client_cert -%>
   ssl_client_certificate    <%= @ssl_client_cert %>;
