@@ -1250,6 +1250,19 @@ describe 'nginx::resource::server' do
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{ssl_certificate_key}) }
           end
 
+          context 'SSL cert and key are both an array' do
+            let(:params) { {
+              ssl: true,
+              ssl_cert: ['/tmp/foo1.crt', '/tmp/foo2.crt'],
+              ssl_key: ['/tmp/foo1.key', '/tmp/foo2.key'],
+            } }
+
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate\s+/tmp/foo1.crt}) }
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate_key\s+/tmp/foo1.key}) }
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate\s+/tmp/foo2.crt}) }
+            it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate_key\s+/tmp/foo2.key}) }
+          end
+
           context 'when use_default_location => true' do
             let :params do
               default_params.merge(use_default_location: true)
