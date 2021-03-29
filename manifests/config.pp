@@ -43,6 +43,7 @@ class nginx::config {
   $lingering_timeout              = $nginx::lingering_timeout
   $lingering_close                = $nginx::lingering_close
   $lingering_time                 = $nginx::lingering_time
+  $reset_timedout_connection      = $nginx::reset_timedout_connection
   $etag                           = $nginx::etag
   $events_use                     = $nginx::events_use
   $debug_connections              = $nginx::debug_connections

@@ -171,6 +171,9 @@
 #   no longer inherit headers from the parent server context
 # @param gzip_static
 #   Defines gzip_static, nginx default is off
+# @param reset_timedout_connection
+#   Enables or disables resetting timed out connections and connections closed
+#   with the non-standard code 444.
 #
 # @example Simple example
 #   nginx::resource::location { 'test2.local-bob':
@@ -300,6 +303,7 @@ define nginx::resource::location (
   Optional[String] $expires                                        = undef,
   Hash $add_header                                                 = {},
   Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
+  Optional[Enum['on', 'off']] $reset_timedout_connection           = undef,
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')

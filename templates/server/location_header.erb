@@ -80,3 +80,6 @@
 <% if @limit_zone -%>
     limit_req zone=<%= @limit_zone %>;
 <% end -%>
+<% if @reset_timedout_connection -%>
+  reset_timedout_connection <%= @reset_timedout_connection %>;
+<% end -%>

@@ -48,6 +48,9 @@
 # @param autoindex_localtime
 #   Specifies whether times in the directory listing should be output in the
 #   local time zone or UTC.
+# @param reset_timedout_connection
+#   Enables or disables resetting timed out connections and connections closed
+#   with the non-standard code 444.
 # @param proxy
 #   Proxy server(s) for the root location to connect to. Accepts a single
 #   value, can be used in conjunction with nginx::resource::upstream
@@ -362,6 +365,7 @@ define nginx::resource::server (
   Optional[Enum['on', 'off']] $autoindex_exact_size                              = undef,
   Optional[Enum['html', 'xml', 'json', 'jsonp']] $autoindex_format               = undef,
   Optional[Enum['on', 'off']] $autoindex_localtime                               = undef,
+  Optional[Enum['on', 'off']] $reset_timedout_connection                         = undef,
   Array[String] $server_name                                                     = [$name],
   Optional[String] $www_root                                                     = undef,
   Boolean $rewrite_www_to_non_www                                                = false,
