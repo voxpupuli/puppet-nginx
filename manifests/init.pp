@@ -69,7 +69,9 @@ class nginx (
   Boolean $include_modules_enabled                           = $nginx::params::include_modules_enabled,
 
   # Primary Templates
-  $conf_template                                             = 'nginx/conf.d/nginx.conf.erb',
+  String[1] $conf_template                                   = 'nginx/conf.d/nginx.conf.erb',
+  String[1] $fastcgi_conf_template                           = 'nginx/server/fastcgi.conf.erb',
+  String[1] $uwsgi_params_template                           = 'nginx/server/uwsgi_params.erb',
 
   ### START Nginx Configuration ###
   Optional[Enum['on', 'off']] $absolute_redirect             = undef,
