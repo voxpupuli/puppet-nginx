@@ -215,7 +215,7 @@ describe 'nginx::resource::upstream' do
               },
               {
                 value: { sticky: { cookie: { name: 'srv_id', expires: '1h', domain: '.example.com', httponly: true, secure: true, path: '/' } } },
-                match: 'sticky cookie name=srv_id expires=1h domain=.example.com httponly secure path=/'
+                match: 'sticky cookie srv_id expires=1h domain=.example.com httponly secure path=/'
               },
               {
                 value: { sticky: { route: '$route_cookie $route_uri' } },
