@@ -390,7 +390,7 @@ define nginx::resource::server (
   Optional[Array[String]] $include_files                                         = undef,
   Optional[Variant[String, Array]] $access_log                                   = undef,
   Optional[Variant[String, Array]] $error_log                                    = undef,
-  $format_log                                                                    = 'combined',
+  Optional[String] $format_log                                                   = $nginx::http_format_log,
   Optional[Hash] $passenger_cgi_param                                            = undef,
   Optional[Hash] $passenger_set_header                                           = undef,
   Optional[Hash] $passenger_env_var                                              = undef,
