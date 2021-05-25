@@ -16,6 +16,9 @@ worker_processes <%= @worker_processes %>;
 <% if @worker_rlimit_nofile -%>
 worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% end -%>
+<% if @pcre_jit -%>
+pcre_jit <%= @pcre_jit %>;
+<% end -%>
 
 <% if @pid -%>
 pid        <%= @pid %>;

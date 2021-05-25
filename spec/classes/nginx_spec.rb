@@ -471,6 +471,12 @@ describe 'nginx' do
                 match: 'worker_rlimit_nofile 10000;'
               },
               {
+                title: 'should set pcre_jit',
+                attr: 'pcre_jit',
+                value: 'on',
+                match: %r{^\s*pcre_jit\s+on;}
+              },
+              {
                 title: 'should set error_log',
                 attr: 'nginx_error_log',
                 value: '/path/to/error.log',

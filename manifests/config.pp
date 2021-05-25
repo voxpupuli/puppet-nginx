@@ -132,6 +132,7 @@ class nginx::config {
   $worker_connections             = $nginx::worker_connections
   $worker_processes               = $nginx::worker_processes
   $worker_rlimit_nofile           = $nginx::worker_rlimit_nofile
+  $pcre_jit                       = $nginx::pcre_jit
   $include_modules_enabled        = $nginx::include_modules_enabled
 
   # Non-configurable settings
