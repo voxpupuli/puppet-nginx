@@ -17,10 +17,10 @@ group :system_tests do
 end
 
 group :release do
-  gem 'github_changelog_generator',  :require => false, :git => 'https://github.com/voxpupuli/github-changelog-generator', :branch => 'voxpupuli_essential_fixes'
-  gem 'puppet-blacksmith',           :require => false
-  gem 'voxpupuli-release',           :require => false
-  gem 'puppet-strings', '>= 2.2',    :require => false
+  gem 'github_changelog_generator', '>= 1.16.1',  :require => false
+  gem 'puppet-blacksmith',                        :require => false
+  gem 'voxpupuli-release',                        :require => false
+  gem 'puppet-strings', '>= 2.2',                 :require => false
 end
 
 gem 'puppetlabs_spec_helper', '~> 2.0', :require => false
