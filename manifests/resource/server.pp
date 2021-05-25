@@ -597,17 +597,13 @@ define nginx::resource::server (
     if $ssl_key {
       $ssl_key_real = $ssl_key.flatten
       $ssl_key_real.each | $key | {
-        File <| title == $key or path == $key |> {
-          before => Concat::Fragment["${name_sanitized}-ssl-header"],
-        }
+        File <| title == $key or path == $key |> -> Concat::Fragment["${name_sanitized}-ssl-header"]
       }
     }
     if $ssl_cert {
       $ssl_cert_real = $ssl_cert.flatten
       $ssl_cert_real.each | $cert | {
-        File <| title == $cert or path == $cert |> {
-          before => Concat::Fragment["${name_sanitized}-ssl-header"],
-        }
+        File <| title == $cert or path == $cert |> -> Concat::Fragment["${name_sanitized}-ssl-header"]
       }
     }
     concat::fragment { "${name_sanitized}-ssl-header":
