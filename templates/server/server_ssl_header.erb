@@ -96,15 +96,15 @@ server {
 <% end -%>
 <% if @access_log.is_a?(Array) -%>
   <%- @access_log.each do |log_item| -%>
-  access_log            <%= log_item %> <%= @format_log %>;
+  access_log            <%= log_item %><% if @format_log %> <%= @format_log%><% end %>;
   <%- end -%>
 <% elsif @access_log == 'absent' -%>
 <% elsif @access_log == 'off' -%>
   access_log            off;
 <% elsif not @access_log -%>
-  access_log            <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log <%= @format_log %>;
+  access_log            <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log<% if @format_log %> <%= @format_log%><% end %>;
 <% else -%>
-  access_log            <%= @access_log %> <%= @format_log %>;
+  access_log            <%= @access_log %><% if @format_log %> <%= @format_log%><% end %>;
 <% end -%>
 <% if @error_log.is_a?(Array) -%>
   <%- @error_log.each do |log_item| -%>
