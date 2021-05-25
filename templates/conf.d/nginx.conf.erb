@@ -132,6 +132,9 @@ http {
 <% end -%>
   lingering_timeout   <%= @lingering_timeout %>;
   tcp_nodelay         <%= @http_tcp_nodelay %>;
+<% if @reset_timedout_connection -%>
+  reset_timedout_connection <%= @reset_timedout_connection %>;
+<% end -%>
 
 <% if @etag -%>
   etag <%= @etag %>;

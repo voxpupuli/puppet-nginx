@@ -379,6 +379,12 @@ describe 'nginx::resource::server' do
               attr: 'autoindex_exact_size',
               value: 'on',
               match: '  autoindex_exact_size on;'
+            },
+            {
+              title: 'should set reset_timedout_connection',
+              attr: 'reset_timedout_connection',
+              value: 'on',
+              match: %r{^\s+reset_timedout_connection\s+on;}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

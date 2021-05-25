@@ -230,6 +230,12 @@ describe 'nginx::resource::location' do
               attr: 'auth_request',
               value: 'value',
               match: %r{\s+auth_request\s+value;}
+            },
+            {
+              title: 'should set reset_timedout_connection',
+              attr: 'reset_timedout_connection',
+              value: 'on',
+              match: %r{^\s+reset_timedout_connection\s+on;}
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do

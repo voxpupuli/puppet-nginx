@@ -34,6 +34,10 @@
 # @param service_config_check_command
 #  Command to execute to validate the generated configuration.
 #
+# @param reset_timedout_connection
+#   Enables or disables resetting timed out connections and connections closed
+#   with the non-standard code 444.
+#
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,
@@ -176,6 +180,7 @@ class nginx (
   Optional[Stdlib::Absolutepath] $ssl_trusted_certificate    = undef,
   Optional[Integer] $ssl_verify_depth                        = undef,
   Optional[Stdlib::Absolutepath] $ssl_password_file          = undef,
+  Optional[Enum['on', 'off']] $reset_timedout_connection     = undef,
 
   ### START Package Configuration ###
   $package_ensure                                            = present,
