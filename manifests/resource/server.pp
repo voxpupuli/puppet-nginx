@@ -567,7 +567,7 @@ define nginx::resource::server (
     file { $fastcgi_params:
       ensure  => file,
       mode    => $nginx::global_mode,
-      content => template('nginx/server/fastcgi.conf.erb'),
+      content => template($nginx::fastcgi_conf_template),
     }
   }
 
@@ -575,7 +575,7 @@ define nginx::resource::server (
     file { $uwsgi_params:
       ensure  => file,
       mode    => $nginx::global_mode,
-      content => template('nginx/server/uwsgi_params.erb'),
+      content => template($nginx::uwsgi_params_template),
     }
   }
 
