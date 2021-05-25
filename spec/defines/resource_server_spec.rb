@@ -1257,11 +1257,13 @@ describe 'nginx::resource::server' do
           end
 
           context 'SSL cert and key are both an array' do
-            let(:params) { {
-              ssl: true,
-              ssl_cert: ['/tmp/foo1.crt', '/tmp/foo2.crt'],
-              ssl_key: ['/tmp/foo1.key', '/tmp/foo2.key'],
-            } }
+            let(:params) do
+              {
+                ssl: true,
+                ssl_cert: ['/tmp/foo1.crt', '/tmp/foo2.crt'],
+                ssl_key: ['/tmp/foo1.key', '/tmp/foo2.key'],
+              }
+            end
 
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate\s+/tmp/foo1.crt}) }
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_certificate_key\s+/tmp/foo1.key}) }
