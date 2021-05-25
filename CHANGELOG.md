@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.1.0) (2021-05-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.0.0...v3.1.0)
+
+**Implemented enhancements:**
+
+- Unify \(http\_\)log\_format in nginx class and server resource [\#1452](https://github.com/voxpupuli/puppet-nginx/pull/1452) ([TuningYourCode](https://github.com/TuningYourCode))
+- Add variables to overwrite fastcgi.conf and uwsgi\_params template [\#1451](https://github.com/voxpupuli/puppet-nginx/pull/1451) ([TuningYourCode](https://github.com/TuningYourCode))
+- Add parameter for `pcre_jit` [\#1450](https://github.com/voxpupuli/puppet-nginx/pull/1450) ([saz](https://github.com/saz))
+- Add `reset_timedout_connection` parameter [\#1448](https://github.com/voxpupuli/puppet-nginx/pull/1448) ([saz](https://github.com/saz))
+- Allow configuration of multiple ssl certificates and keys [\#1446](https://github.com/voxpupuli/puppet-nginx/pull/1446) ([saz](https://github.com/saz))
+- Use more restrictive mode on temp paths [\#1443](https://github.com/voxpupuli/puppet-nginx/pull/1443) ([anarcat](https://github.com/anarcat))
+
+**Fixed bugs:**
+
+- Do not set resource defaults on ssl\_cert/ssl\_key resources [\#1449](https://github.com/voxpupuli/puppet-nginx/pull/1449) ([saz](https://github.com/saz))
+
+**Closed issues:**
+
+- Support hybrid RSA and ECDSA configuration [\#1434](https://github.com/voxpupuli/puppet-nginx/issues/1434)
+
+**Merged pull requests:**
+
+- puppetlabs concat/stdlib: Allow 7.x [\#1453](https://github.com/voxpupuli/puppet-nginx/pull/1453) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.0.0) (2021-01-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v2.1.1...v3.0.0)
