@@ -284,7 +284,7 @@
 define nginx::resource::server (
   Enum['absent', 'present'] $ensure                                              = 'present',
   Variant[Array, String] $listen_ip                                              = '*',
-  Integer $listen_port                                                           = 80,
+  Stdlib::Port $listen_port                                                      = 80,
   Optional[String] $listen_options                                               = undef,
   Boolean $listen_unix_socket_enable                                             = false,
   Variant[Array[Stdlib::Absolutepath], Stdlib::Absolutepath] $listen_unix_socket = '/var/run/nginx.sock',
@@ -294,7 +294,7 @@ define nginx::resource::server (
   Array $location_deny                                                           = [],
   Boolean $ipv6_enable                                                           = false,
   Variant[Array, String] $ipv6_listen_ip                                         = '::',
-  Integer $ipv6_listen_port                                                      = 80,
+  Stdlib::Port $ipv6_listen_port                                                 = $listen_port,
   String $ipv6_listen_options                                                    = 'default ipv6only=on',
   Hash $add_header                                                               = {},
   Boolean $ssl                                                                   = false,
