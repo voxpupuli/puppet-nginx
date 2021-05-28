@@ -132,7 +132,7 @@ define nginx::resource::mailhost (
   Optional[String] $listen_options               = undef,
   Boolean $ipv6_enable                           = false,
   Variant[Array[String], String] $ipv6_listen_ip = '::',
-  Stdlib::Port $ipv6_listen_port                 = 80,
+  Stdlib::Port $ipv6_listen_port                 = $listen_port,
   String $ipv6_listen_options                    = 'default ipv6only=on',
   Boolean $ssl                                   = false,
   Optional[String] $ssl_cert                     = undef,

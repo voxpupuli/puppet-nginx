@@ -61,19 +61,19 @@ describe 'nginx::resource::mailhost' do
               title: 'should enable IPv6',
               attr: 'ipv6_enable',
               value: true,
-              match: '  listen                [::]:80 default ipv6only=on;'
+              match: '  listen                [::]:25 default ipv6only=on;'
             },
             {
               title: 'should not enable IPv6',
               attr: 'ipv6_enable',
               value: false,
-              notmatch: %r{  listen                \[::\]:80 default ipv6only=on;}
+              notmatch: %r{  listen                \[::\]:25 default ipv6only=on;}
             },
             {
               title: 'should set the IPv6 listen IP',
               attr: 'ipv6_listen_ip',
               value: '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-              match: '  listen                [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:80 default ipv6only=on;'
+              match: '  listen                [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:25 default ipv6only=on;'
             },
             {
               title: 'should set the IPv6 listen port',
@@ -85,7 +85,7 @@ describe 'nginx::resource::mailhost' do
               title: 'should set the IPv6 listen options',
               attr: 'ipv6_listen_options',
               value: 'spdy',
-              match: '  listen                [::]:80 spdy;'
+              match: '  listen                [::]:25 spdy;'
             },
             {
               title: 'should set servername(s)',

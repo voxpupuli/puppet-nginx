@@ -6,7 +6,7 @@ jobs:
   setup_matrix:
     name: 'Setup Test Matrix'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     outputs:
       beaker_setfiles: ${{ steps.get-outputs.outputs.beaker_setfiles }}
       puppet_major_versions: ${{ steps.get-outputs.outputs.puppet_major_versions }}
@@ -31,7 +31,7 @@ jobs:
   unit:
     needs: setup_matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
