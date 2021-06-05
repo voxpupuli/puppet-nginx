@@ -52,7 +52,7 @@
 
 ## Classes
 
-### <a name="nginx"></a>`nginx`
+### `nginx`
 
 Packaged NGINX
   - RHEL: EPEL or custom package
@@ -69,175 +69,9 @@ include nginx
 
 #### Parameters
 
-The following parameters are available in the `nginx` class:
+The following parameters are available in the `nginx` class.
 
-* [`include_modules_enabled`](#include_modules_enabled)
-* [`passenger_package_name`](#passenger_package_name)
-* [`nginx_version`](#nginx_version)
-* [`debug_connections`](#debug_connections)
-* [`service_config_check`](#service_config_check)
-* [`service_config_check_command`](#service_config_check_command)
-* [`client_body_temp_path`](#client_body_temp_path)
-* [`confd_only`](#confd_only)
-* [`confd_purge`](#confd_purge)
-* [`conf_dir`](#conf_dir)
-* [`daemon`](#daemon)
-* [`daemon_user`](#daemon_user)
-* [`daemon_group`](#daemon_group)
-* [`dynamic_modules`](#dynamic_modules)
-* [`global_owner`](#global_owner)
-* [`global_group`](#global_group)
-* [`global_mode`](#global_mode)
-* [`limit_req_zone`](#limit_req_zone)
-* [`log_dir`](#log_dir)
-* [`log_user`](#log_user)
-* [`log_group`](#log_group)
-* [`log_mode`](#log_mode)
-* [`http_access_log`](#http_access_log)
-* [`http_format_log`](#http_format_log)
-* [`nginx_error_log`](#nginx_error_log)
-* [`nginx_error_log_severity`](#nginx_error_log_severity)
-* [`pid`](#pid)
-* [`proxy_temp_path`](#proxy_temp_path)
-* [`root_group`](#root_group)
-* [`run_dir`](#run_dir)
-* [`sites_available_owner`](#sites_available_owner)
-* [`sites_available_group`](#sites_available_group)
-* [`sites_available_mode`](#sites_available_mode)
-* [`super_user`](#super_user)
-* [`temp_dir`](#temp_dir)
-* [`server_purge`](#server_purge)
-* [`conf_template`](#conf_template)
-* [`absolute_redirect`](#absolute_redirect)
-* [`accept_mutex`](#accept_mutex)
-* [`accept_mutex_delay`](#accept_mutex_delay)
-* [`client_body_buffer_size`](#client_body_buffer_size)
-* [`client_max_body_size`](#client_max_body_size)
-* [`client_body_timeout`](#client_body_timeout)
-* [`send_timeout`](#send_timeout)
-* [`lingering_timeout`](#lingering_timeout)
-* [`lingering_close`](#lingering_close)
-* [`lingering_time`](#lingering_time)
-* [`etag`](#etag)
-* [`events_use`](#events_use)
-* [`fastcgi_cache_inactive`](#fastcgi_cache_inactive)
-* [`fastcgi_cache_key`](#fastcgi_cache_key)
-* [`fastcgi_cache_keys_zone`](#fastcgi_cache_keys_zone)
-* [`fastcgi_cache_levels`](#fastcgi_cache_levels)
-* [`fastcgi_cache_max_size`](#fastcgi_cache_max_size)
-* [`fastcgi_cache_path`](#fastcgi_cache_path)
-* [`fastcgi_cache_use_stale`](#fastcgi_cache_use_stale)
-* [`gzip`](#gzip)
-* [`gzip_buffers`](#gzip_buffers)
-* [`gzip_comp_level`](#gzip_comp_level)
-* [`gzip_disable`](#gzip_disable)
-* [`gzip_min_length`](#gzip_min_length)
-* [`gzip_http_version`](#gzip_http_version)
-* [`gzip_proxied`](#gzip_proxied)
-* [`gzip_types`](#gzip_types)
-* [`gzip_vary`](#gzip_vary)
-* [`gzip_static`](#gzip_static)
-* [`http_cfg_prepend`](#http_cfg_prepend)
-* [`http_cfg_append`](#http_cfg_append)
-* [`http_raw_prepend`](#http_raw_prepend)
-* [`http_raw_append`](#http_raw_append)
-* [`http_tcp_nodelay`](#http_tcp_nodelay)
-* [`http_tcp_nopush`](#http_tcp_nopush)
-* [`keepalive_timeout`](#keepalive_timeout)
-* [`keepalive_requests`](#keepalive_requests)
-* [`log_format`](#log_format)
-* [`mail`](#mail)
-* [`mime_types_path`](#mime_types_path)
-* [`stream`](#stream)
-* [`multi_accept`](#multi_accept)
-* [`names_hash_bucket_size`](#names_hash_bucket_size)
-* [`names_hash_max_size`](#names_hash_max_size)
-* [`nginx_cfg_prepend`](#nginx_cfg_prepend)
-* [`proxy_buffers`](#proxy_buffers)
-* [`proxy_buffer_size`](#proxy_buffer_size)
-* [`proxy_cache_inactive`](#proxy_cache_inactive)
-* [`proxy_cache_keys_zone`](#proxy_cache_keys_zone)
-* [`proxy_cache_levels`](#proxy_cache_levels)
-* [`proxy_cache_max_size`](#proxy_cache_max_size)
-* [`proxy_cache_path`](#proxy_cache_path)
-* [`proxy_cache_loader_files`](#proxy_cache_loader_files)
-* [`proxy_cache_loader_sleep`](#proxy_cache_loader_sleep)
-* [`proxy_cache_loader_threshold`](#proxy_cache_loader_threshold)
-* [`proxy_use_temp_path`](#proxy_use_temp_path)
-* [`proxy_connect_timeout`](#proxy_connect_timeout)
-* [`proxy_headers_hash_bucket_size`](#proxy_headers_hash_bucket_size)
-* [`proxy_http_version`](#proxy_http_version)
-* [`proxy_read_timeout`](#proxy_read_timeout)
-* [`proxy_redirect`](#proxy_redirect)
-* [`proxy_send_timeout`](#proxy_send_timeout)
-* [`proxy_set_header`](#proxy_set_header)
-* [`proxy_hide_header`](#proxy_hide_header)
-* [`proxy_pass_header`](#proxy_pass_header)
-* [`proxy_ignore_header`](#proxy_ignore_header)
-* [`proxy_max_temp_file_size`](#proxy_max_temp_file_size)
-* [`proxy_busy_buffers_size`](#proxy_busy_buffers_size)
-* [`sendfile`](#sendfile)
-* [`server_tokens`](#server_tokens)
-* [`spdy`](#spdy)
-* [`http2`](#http2)
-* [`ssl_stapling`](#ssl_stapling)
-* [`ssl_stapling_verify`](#ssl_stapling_verify)
-* [`snippets_dir`](#snippets_dir)
-* [`manage_snippets_dir`](#manage_snippets_dir)
-* [`types_hash_bucket_size`](#types_hash_bucket_size)
-* [`types_hash_max_size`](#types_hash_max_size)
-* [`worker_connections`](#worker_connections)
-* [`ssl_prefer_server_ciphers`](#ssl_prefer_server_ciphers)
-* [`worker_processes`](#worker_processes)
-* [`worker_rlimit_nofile`](#worker_rlimit_nofile)
-* [`ssl_protocols`](#ssl_protocols)
-* [`ssl_ciphers`](#ssl_ciphers)
-* [`ssl_dhparam`](#ssl_dhparam)
-* [`ssl_ecdh_curve`](#ssl_ecdh_curve)
-* [`ssl_session_cache`](#ssl_session_cache)
-* [`ssl_session_timeout`](#ssl_session_timeout)
-* [`ssl_session_tickets`](#ssl_session_tickets)
-* [`ssl_session_ticket_key`](#ssl_session_ticket_key)
-* [`ssl_buffer_size`](#ssl_buffer_size)
-* [`ssl_crl`](#ssl_crl)
-* [`ssl_stapling_file`](#ssl_stapling_file)
-* [`ssl_stapling_responder`](#ssl_stapling_responder)
-* [`ssl_trusted_certificate`](#ssl_trusted_certificate)
-* [`ssl_verify_depth`](#ssl_verify_depth)
-* [`ssl_password_file`](#ssl_password_file)
-* [`package_ensure`](#package_ensure)
-* [`package_name`](#package_name)
-* [`package_source`](#package_source)
-* [`package_flavor`](#package_flavor)
-* [`manage_repo`](#manage_repo)
-* [`mime_types`](#mime_types)
-* [`mime_types_preserve_defaults`](#mime_types_preserve_defaults)
-* [`repo_release`](#repo_release)
-* [`passenger_package_ensure`](#passenger_package_ensure)
-* [`repo_source`](#repo_source)
-* [`service_ensure`](#service_ensure)
-* [`service_enable`](#service_enable)
-* [`service_flags`](#service_flags)
-* [`service_restart`](#service_restart)
-* [`service_name`](#service_name)
-* [`service_manage`](#service_manage)
-* [`geo_mappings`](#geo_mappings)
-* [`geo_mappings_defaults`](#geo_mappings_defaults)
-* [`string_mappings`](#string_mappings)
-* [`string_mappings_defaults`](#string_mappings_defaults)
-* [`nginx_locations`](#nginx_locations)
-* [`nginx_locations_defaults`](#nginx_locations_defaults)
-* [`nginx_mailhosts`](#nginx_mailhosts)
-* [`nginx_mailhosts_defaults`](#nginx_mailhosts_defaults)
-* [`nginx_servers`](#nginx_servers)
-* [`nginx_servers_defaults`](#nginx_servers_defaults)
-* [`nginx_streamhosts`](#nginx_streamhosts)
-* [`nginx_streamhosts_defaults`](#nginx_streamhosts_defaults)
-* [`nginx_upstreams`](#nginx_upstreams)
-* [`nginx_upstreams_defaults`](#nginx_upstreams_defaults)
-* [`purge_passenger_repo`](#purge_passenger_repo)
-
-##### <a name="include_modules_enabled"></a>`include_modules_enabled`
+##### `include_modules_enabled`
 
 Data type: `Boolean`
 
@@ -246,7 +80,7 @@ When set, nginx will include module configurations files installed in the
 
 Default value: `$nginx::params::include_modules_enabled`
 
-##### <a name="passenger_package_name"></a>`passenger_package_name`
+##### `passenger_package_name`
 
 Data type: `String[1]`
 
@@ -255,7 +89,7 @@ nginx being usable.
 
 Default value: `$nginx::params::passenger_package_name`
 
-##### <a name="nginx_version"></a>`nginx_version`
+##### `nginx_version`
 
 Data type: `String[1]`
 
@@ -268,7 +102,7 @@ configuration.
 
 Default value: `pick(fact('nginx_version'), '1.6.0')`
 
-##### <a name="debug_connections"></a>`debug_connections`
+##### `debug_connections`
 
 Data type: `Array[Nginx::DebugConnection]`
 
@@ -277,7 +111,7 @@ See http://nginx.org/en/docs/ngx_core_module.html#debug_connection
 
 Default value: `[]`
 
-##### <a name="service_config_check"></a>`service_config_check`
+##### `service_config_check`
 
 Data type: `Boolean`
 
@@ -285,7 +119,7 @@ whether to en- or disable the config check via nginx -t on config changes
 
 Default value: ``false``
 
-##### <a name="service_config_check_command"></a>`service_config_check_command`
+##### `service_config_check_command`
 
 Data type: `String`
 
@@ -293,7 +127,16 @@ Command to execute to validate the generated configuration.
 
 Default value: `'nginx -t'`
 
-##### <a name="client_body_temp_path"></a>`client_body_temp_path`
+##### `reset_timedout_connection`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables resetting timed out connections and connections closed
+with the non-standard code 444.
+
+Default value: ``undef``
+
+##### `client_body_temp_path`
 
 Data type: `Variant[Stdlib::Absolutepath, Boolean]`
 
@@ -301,7 +144,7 @@ Data type: `Variant[Stdlib::Absolutepath, Boolean]`
 
 Default value: `$nginx::params::client_body_temp_path`
 
-##### <a name="confd_only"></a>`confd_only`
+##### `confd_only`
 
 Data type: `Boolean`
 
@@ -309,7 +152,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="confd_purge"></a>`confd_purge`
+##### `confd_purge`
 
 Data type: `Boolean`
 
@@ -317,7 +160,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="conf_dir"></a>`conf_dir`
+##### `conf_dir`
 
 Data type: `Any`
 
@@ -325,7 +168,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::conf_dir`
 
-##### <a name="daemon"></a>`daemon`
+##### `daemon`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -333,7 +176,7 @@ Data type: `Optional[Enum['on', 'off']]`
 
 Default value: ``undef``
 
-##### <a name="daemon_user"></a>`daemon_user`
+##### `daemon_user`
 
 Data type: `Any`
 
@@ -341,7 +184,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::daemon_user`
 
-##### <a name="daemon_group"></a>`daemon_group`
+##### `daemon_group`
 
 Data type: `Any`
 
@@ -349,7 +192,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="dynamic_modules"></a>`dynamic_modules`
+##### `dynamic_modules`
 
 Data type: `Array[String]`
 
@@ -357,7 +200,7 @@ Data type: `Array[String]`
 
 Default value: `[]`
 
-##### <a name="global_owner"></a>`global_owner`
+##### `global_owner`
 
 Data type: `Any`
 
@@ -365,7 +208,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::global_owner`
 
-##### <a name="global_group"></a>`global_group`
+##### `global_group`
 
 Data type: `Any`
 
@@ -373,7 +216,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::global_group`
 
-##### <a name="global_mode"></a>`global_mode`
+##### `global_mode`
 
 Data type: `Any`
 
@@ -381,7 +224,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::global_mode`
 
-##### <a name="limit_req_zone"></a>`limit_req_zone`
+##### `limit_req_zone`
 
 Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
@@ -389,7 +232,7 @@ Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 Default value: ``undef``
 
-##### <a name="log_dir"></a>`log_dir`
+##### `log_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -397,7 +240,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `$nginx::params::log_dir`
 
-##### <a name="log_user"></a>`log_user`
+##### `log_user`
 
 Data type: `String[1]`
 
@@ -405,7 +248,7 @@ Data type: `String[1]`
 
 Default value: `$nginx::params::log_user`
 
-##### <a name="log_group"></a>`log_group`
+##### `log_group`
 
 Data type: `String[1]`
 
@@ -413,7 +256,7 @@ Data type: `String[1]`
 
 Default value: `$nginx::params::log_group`
 
-##### <a name="log_mode"></a>`log_mode`
+##### `log_mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -421,7 +264,7 @@ Data type: `Stdlib::Filemode`
 
 Default value: `$nginx::params::log_mode`
 
-##### <a name="http_access_log"></a>`http_access_log`
+##### `http_access_log`
 
 Data type: `Variant[String, Array[String]]`
 
@@ -429,15 +272,15 @@ Data type: `Variant[String, Array[String]]`
 
 Default value: `"${log_dir}/${nginx::params::http_access_log_file}"`
 
-##### <a name="http_format_log"></a>`http_format_log`
+##### `http_format_log`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
 
 
 Default value: ``undef``
 
-##### <a name="nginx_error_log"></a>`nginx_error_log`
+##### `nginx_error_log`
 
 Data type: `Variant[String, Array[String]]`
 
@@ -445,7 +288,7 @@ Data type: `Variant[String, Array[String]]`
 
 Default value: `"${log_dir}/${nginx::params::nginx_error_log_file}"`
 
-##### <a name="nginx_error_log_severity"></a>`nginx_error_log_severity`
+##### `nginx_error_log_severity`
 
 Data type: `Nginx::ErrorLogSeverity`
 
@@ -453,7 +296,7 @@ Data type: `Nginx::ErrorLogSeverity`
 
 Default value: `'error'`
 
-##### <a name="pid"></a>`pid`
+##### `pid`
 
 Data type: `Any`
 
@@ -461,7 +304,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::pid`
 
-##### <a name="proxy_temp_path"></a>`proxy_temp_path`
+##### `proxy_temp_path`
 
 Data type: `Variant[Stdlib::Absolutepath, Boolean]`
 
@@ -469,7 +312,7 @@ Data type: `Variant[Stdlib::Absolutepath, Boolean]`
 
 Default value: `$nginx::params::proxy_temp_path`
 
-##### <a name="root_group"></a>`root_group`
+##### `root_group`
 
 Data type: `Any`
 
@@ -477,7 +320,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::root_group`
 
-##### <a name="run_dir"></a>`run_dir`
+##### `run_dir`
 
 Data type: `Any`
 
@@ -485,7 +328,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::run_dir`
 
-##### <a name="sites_available_owner"></a>`sites_available_owner`
+##### `sites_available_owner`
 
 Data type: `Any`
 
@@ -493,7 +336,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::sites_available_owner`
 
-##### <a name="sites_available_group"></a>`sites_available_group`
+##### `sites_available_group`
 
 Data type: `Any`
 
@@ -501,7 +344,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::sites_available_group`
 
-##### <a name="sites_available_mode"></a>`sites_available_mode`
+##### `sites_available_mode`
 
 Data type: `Any`
 
@@ -509,7 +352,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::sites_available_mode`
 
-##### <a name="super_user"></a>`super_user`
+##### `super_user`
 
 Data type: `Boolean`
 
@@ -517,7 +360,7 @@ Data type: `Boolean`
 
 Default value: `$nginx::params::super_user`
 
-##### <a name="temp_dir"></a>`temp_dir`
+##### `temp_dir`
 
 Data type: `Any`
 
@@ -525,7 +368,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::temp_dir`
 
-##### <a name="server_purge"></a>`server_purge`
+##### `server_purge`
 
 Data type: `Boolean`
 
@@ -533,15 +376,31 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="conf_template"></a>`conf_template`
+##### `conf_template`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'nginx/conf.d/nginx.conf.erb'`
 
-##### <a name="absolute_redirect"></a>`absolute_redirect`
+##### `fastcgi_conf_template`
+
+Data type: `String[1]`
+
+
+
+Default value: `'nginx/server/fastcgi.conf.erb'`
+
+##### `uwsgi_params_template`
+
+Data type: `String[1]`
+
+
+
+Default value: `'nginx/server/uwsgi_params.erb'`
+
+##### `absolute_redirect`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -549,7 +408,7 @@ Data type: `Optional[Enum['on', 'off']]`
 
 Default value: ``undef``
 
-##### <a name="accept_mutex"></a>`accept_mutex`
+##### `accept_mutex`
 
 Data type: `Enum['on', 'off']`
 
@@ -557,7 +416,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'on'`
 
-##### <a name="accept_mutex_delay"></a>`accept_mutex_delay`
+##### `accept_mutex_delay`
 
 Data type: `Any`
 
@@ -565,7 +424,7 @@ Data type: `Any`
 
 Default value: `'500ms'`
 
-##### <a name="client_body_buffer_size"></a>`client_body_buffer_size`
+##### `client_body_buffer_size`
 
 Data type: `Any`
 
@@ -573,7 +432,7 @@ Data type: `Any`
 
 Default value: `'128k'`
 
-##### <a name="client_max_body_size"></a>`client_max_body_size`
+##### `client_max_body_size`
 
 Data type: `String`
 
@@ -581,7 +440,7 @@ Data type: `String`
 
 Default value: `'10m'`
 
-##### <a name="client_body_timeout"></a>`client_body_timeout`
+##### `client_body_timeout`
 
 Data type: `Any`
 
@@ -589,7 +448,7 @@ Data type: `Any`
 
 Default value: `'60s'`
 
-##### <a name="send_timeout"></a>`send_timeout`
+##### `send_timeout`
 
 Data type: `Any`
 
@@ -597,7 +456,7 @@ Data type: `Any`
 
 Default value: `'60s'`
 
-##### <a name="lingering_timeout"></a>`lingering_timeout`
+##### `lingering_timeout`
 
 Data type: `Any`
 
@@ -605,7 +464,7 @@ Data type: `Any`
 
 Default value: `'5s'`
 
-##### <a name="lingering_close"></a>`lingering_close`
+##### `lingering_close`
 
 Data type: `Optional[Enum['on','off','always']]`
 
@@ -613,7 +472,7 @@ Data type: `Optional[Enum['on','off','always']]`
 
 Default value: ``undef``
 
-##### <a name="lingering_time"></a>`lingering_time`
+##### `lingering_time`
 
 Data type: `Optional[String[1]]`
 
@@ -621,7 +480,7 @@ Data type: `Optional[String[1]]`
 
 Default value: ``undef``
 
-##### <a name="etag"></a>`etag`
+##### `etag`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -629,7 +488,7 @@ Data type: `Optional[Enum['on', 'off']]`
 
 Default value: ``undef``
 
-##### <a name="events_use"></a>`events_use`
+##### `events_use`
 
 Data type: `Optional[String]`
 
@@ -637,7 +496,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="fastcgi_cache_inactive"></a>`fastcgi_cache_inactive`
+##### `fastcgi_cache_inactive`
 
 Data type: `String`
 
@@ -645,7 +504,7 @@ Data type: `String`
 
 Default value: `'20m'`
 
-##### <a name="fastcgi_cache_key"></a>`fastcgi_cache_key`
+##### `fastcgi_cache_key`
 
 Data type: `Optional[String]`
 
@@ -653,7 +512,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="fastcgi_cache_keys_zone"></a>`fastcgi_cache_keys_zone`
+##### `fastcgi_cache_keys_zone`
 
 Data type: `String`
 
@@ -661,7 +520,7 @@ Data type: `String`
 
 Default value: `'d3:100m'`
 
-##### <a name="fastcgi_cache_levels"></a>`fastcgi_cache_levels`
+##### `fastcgi_cache_levels`
 
 Data type: `String`
 
@@ -669,7 +528,7 @@ Data type: `String`
 
 Default value: `'1'`
 
-##### <a name="fastcgi_cache_max_size"></a>`fastcgi_cache_max_size`
+##### `fastcgi_cache_max_size`
 
 Data type: `String`
 
@@ -677,7 +536,7 @@ Data type: `String`
 
 Default value: `'500m'`
 
-##### <a name="fastcgi_cache_path"></a>`fastcgi_cache_path`
+##### `fastcgi_cache_path`
 
 Data type: `Optional[String]`
 
@@ -685,7 +544,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="fastcgi_cache_use_stale"></a>`fastcgi_cache_use_stale`
+##### `fastcgi_cache_use_stale`
 
 Data type: `Optional[String]`
 
@@ -693,7 +552,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="gzip"></a>`gzip`
+##### `gzip`
 
 Data type: `Enum['on', 'off']`
 
@@ -701,7 +560,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="gzip_buffers"></a>`gzip_buffers`
+##### `gzip_buffers`
 
 Data type: `Any`
 
@@ -709,7 +568,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="gzip_comp_level"></a>`gzip_comp_level`
+##### `gzip_comp_level`
 
 Data type: `Any`
 
@@ -717,7 +576,7 @@ Data type: `Any`
 
 Default value: `1`
 
-##### <a name="gzip_disable"></a>`gzip_disable`
+##### `gzip_disable`
 
 Data type: `Any`
 
@@ -725,7 +584,7 @@ Data type: `Any`
 
 Default value: `'msie6'`
 
-##### <a name="gzip_min_length"></a>`gzip_min_length`
+##### `gzip_min_length`
 
 Data type: `Any`
 
@@ -733,7 +592,7 @@ Data type: `Any`
 
 Default value: `20`
 
-##### <a name="gzip_http_version"></a>`gzip_http_version`
+##### `gzip_http_version`
 
 Data type: `Any`
 
@@ -741,7 +600,7 @@ Data type: `Any`
 
 Default value: `1.1`
 
-##### <a name="gzip_proxied"></a>`gzip_proxied`
+##### `gzip_proxied`
 
 Data type: `Any`
 
@@ -749,7 +608,7 @@ Data type: `Any`
 
 Default value: `'off'`
 
-##### <a name="gzip_types"></a>`gzip_types`
+##### `gzip_types`
 
 Data type: `Any`
 
@@ -757,7 +616,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="gzip_vary"></a>`gzip_vary`
+##### `gzip_vary`
 
 Data type: `Enum['on', 'off']`
 
@@ -765,7 +624,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="gzip_static"></a>`gzip_static`
+##### `gzip_static`
 
 Data type: `Optional[Enum['on', 'off', 'always']]`
 
@@ -773,7 +632,7 @@ Data type: `Optional[Enum['on', 'off', 'always']]`
 
 Default value: ``undef``
 
-##### <a name="http_cfg_prepend"></a>`http_cfg_prepend`
+##### `http_cfg_prepend`
 
 Data type: `Optional[Variant[Hash, Array]]`
 
@@ -781,7 +640,7 @@ Data type: `Optional[Variant[Hash, Array]]`
 
 Default value: ``undef``
 
-##### <a name="http_cfg_append"></a>`http_cfg_append`
+##### `http_cfg_append`
 
 Data type: `Optional[Variant[Hash, Array]]`
 
@@ -789,7 +648,7 @@ Data type: `Optional[Variant[Hash, Array]]`
 
 Default value: ``undef``
 
-##### <a name="http_raw_prepend"></a>`http_raw_prepend`
+##### `http_raw_prepend`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -797,7 +656,7 @@ Data type: `Optional[Variant[Array[String], String]]`
 
 Default value: ``undef``
 
-##### <a name="http_raw_append"></a>`http_raw_append`
+##### `http_raw_append`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -805,7 +664,7 @@ Data type: `Optional[Variant[Array[String], String]]`
 
 Default value: ``undef``
 
-##### <a name="http_tcp_nodelay"></a>`http_tcp_nodelay`
+##### `http_tcp_nodelay`
 
 Data type: `Enum['on', 'off']`
 
@@ -813,7 +672,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'on'`
 
-##### <a name="http_tcp_nopush"></a>`http_tcp_nopush`
+##### `http_tcp_nopush`
 
 Data type: `Enum['on', 'off']`
 
@@ -821,7 +680,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="keepalive_timeout"></a>`keepalive_timeout`
+##### `keepalive_timeout`
 
 Data type: `Any`
 
@@ -829,7 +688,7 @@ Data type: `Any`
 
 Default value: `'65s'`
 
-##### <a name="keepalive_requests"></a>`keepalive_requests`
+##### `keepalive_requests`
 
 Data type: `Any`
 
@@ -837,7 +696,7 @@ Data type: `Any`
 
 Default value: `'100'`
 
-##### <a name="log_format"></a>`log_format`
+##### `log_format`
 
 Data type: `Any`
 
@@ -845,7 +704,7 @@ Data type: `Any`
 
 Default value: `{}`
 
-##### <a name="mail"></a>`mail`
+##### `mail`
 
 Data type: `Boolean`
 
@@ -853,7 +712,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="mime_types_path"></a>`mime_types_path`
+##### `mime_types_path`
 
 Data type: `Variant[String, Boolean]`
 
@@ -861,7 +720,7 @@ Data type: `Variant[String, Boolean]`
 
 Default value: `'mime.types'`
 
-##### <a name="stream"></a>`stream`
+##### `stream`
 
 Data type: `Boolean`
 
@@ -869,7 +728,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="multi_accept"></a>`multi_accept`
+##### `multi_accept`
 
 Data type: `String`
 
@@ -877,7 +736,7 @@ Data type: `String`
 
 Default value: `'off'`
 
-##### <a name="names_hash_bucket_size"></a>`names_hash_bucket_size`
+##### `names_hash_bucket_size`
 
 Data type: `Integer`
 
@@ -885,7 +744,7 @@ Data type: `Integer`
 
 Default value: `64`
 
-##### <a name="names_hash_max_size"></a>`names_hash_max_size`
+##### `names_hash_max_size`
 
 Data type: `Integer`
 
@@ -893,7 +752,7 @@ Data type: `Integer`
 
 Default value: `512`
 
-##### <a name="nginx_cfg_prepend"></a>`nginx_cfg_prepend`
+##### `nginx_cfg_prepend`
 
 Data type: `Any`
 
@@ -901,7 +760,7 @@ Data type: `Any`
 
 Default value: ``false``
 
-##### <a name="proxy_buffers"></a>`proxy_buffers`
+##### `proxy_buffers`
 
 Data type: `String`
 
@@ -909,7 +768,7 @@ Data type: `String`
 
 Default value: `'32 4k'`
 
-##### <a name="proxy_buffer_size"></a>`proxy_buffer_size`
+##### `proxy_buffer_size`
 
 Data type: `String`
 
@@ -917,7 +776,7 @@ Data type: `String`
 
 Default value: `'8k'`
 
-##### <a name="proxy_cache_inactive"></a>`proxy_cache_inactive`
+##### `proxy_cache_inactive`
 
 Data type: `String`
 
@@ -925,7 +784,7 @@ Data type: `String`
 
 Default value: `'20m'`
 
-##### <a name="proxy_cache_keys_zone"></a>`proxy_cache_keys_zone`
+##### `proxy_cache_keys_zone`
 
 Data type: `String`
 
@@ -933,7 +792,7 @@ Data type: `String`
 
 Default value: `'d2:100m'`
 
-##### <a name="proxy_cache_levels"></a>`proxy_cache_levels`
+##### `proxy_cache_levels`
 
 Data type: `String`
 
@@ -941,7 +800,7 @@ Data type: `String`
 
 Default value: `'1'`
 
-##### <a name="proxy_cache_max_size"></a>`proxy_cache_max_size`
+##### `proxy_cache_max_size`
 
 Data type: `String`
 
@@ -949,7 +808,7 @@ Data type: `String`
 
 Default value: `'500m'`
 
-##### <a name="proxy_cache_path"></a>`proxy_cache_path`
+##### `proxy_cache_path`
 
 Data type: `Optional[Variant[Hash, String]]`
 
@@ -957,7 +816,7 @@ Data type: `Optional[Variant[Hash, String]]`
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_loader_files"></a>`proxy_cache_loader_files`
+##### `proxy_cache_loader_files`
 
 Data type: `Optional[Integer]`
 
@@ -965,7 +824,7 @@ Data type: `Optional[Integer]`
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_loader_sleep"></a>`proxy_cache_loader_sleep`
+##### `proxy_cache_loader_sleep`
 
 Data type: `Optional[String]`
 
@@ -973,7 +832,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_loader_threshold"></a>`proxy_cache_loader_threshold`
+##### `proxy_cache_loader_threshold`
 
 Data type: `Optional[String]`
 
@@ -981,7 +840,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="proxy_use_temp_path"></a>`proxy_use_temp_path`
+##### `proxy_use_temp_path`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -989,7 +848,7 @@ Data type: `Optional[Enum['on', 'off']]`
 
 Default value: ``undef``
 
-##### <a name="proxy_connect_timeout"></a>`proxy_connect_timeout`
+##### `proxy_connect_timeout`
 
 Data type: `Any`
 
@@ -997,7 +856,7 @@ Data type: `Any`
 
 Default value: `'90s'`
 
-##### <a name="proxy_headers_hash_bucket_size"></a>`proxy_headers_hash_bucket_size`
+##### `proxy_headers_hash_bucket_size`
 
 Data type: `Integer`
 
@@ -1005,7 +864,7 @@ Data type: `Integer`
 
 Default value: `64`
 
-##### <a name="proxy_http_version"></a>`proxy_http_version`
+##### `proxy_http_version`
 
 Data type: `Optional[String]`
 
@@ -1013,7 +872,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="proxy_read_timeout"></a>`proxy_read_timeout`
+##### `proxy_read_timeout`
 
 Data type: `Any`
 
@@ -1021,7 +880,7 @@ Data type: `Any`
 
 Default value: `'90s'`
 
-##### <a name="proxy_redirect"></a>`proxy_redirect`
+##### `proxy_redirect`
 
 Data type: `Any`
 
@@ -1029,7 +888,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="proxy_send_timeout"></a>`proxy_send_timeout`
+##### `proxy_send_timeout`
 
 Data type: `Any`
 
@@ -1037,7 +896,7 @@ Data type: `Any`
 
 Default value: `'90s'`
 
-##### <a name="proxy_set_header"></a>`proxy_set_header`
+##### `proxy_set_header`
 
 Data type: `Array`
 
@@ -1050,7 +909,7 @@ Default value: `[
     'Proxy ""',
   ]`
 
-##### <a name="proxy_hide_header"></a>`proxy_hide_header`
+##### `proxy_hide_header`
 
 Data type: `Array`
 
@@ -1058,7 +917,7 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="proxy_pass_header"></a>`proxy_pass_header`
+##### `proxy_pass_header`
 
 Data type: `Array`
 
@@ -1066,7 +925,7 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="proxy_ignore_header"></a>`proxy_ignore_header`
+##### `proxy_ignore_header`
 
 Data type: `Array`
 
@@ -1074,7 +933,7 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="proxy_max_temp_file_size"></a>`proxy_max_temp_file_size`
+##### `proxy_max_temp_file_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -1082,7 +941,7 @@ Data type: `Optional[Nginx::Size]`
 
 Default value: ``undef``
 
-##### <a name="proxy_busy_buffers_size"></a>`proxy_busy_buffers_size`
+##### `proxy_busy_buffers_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -1090,7 +949,7 @@ Data type: `Optional[Nginx::Size]`
 
 Default value: ``undef``
 
-##### <a name="sendfile"></a>`sendfile`
+##### `sendfile`
 
 Data type: `Enum['on', 'off']`
 
@@ -1098,7 +957,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'on'`
 
-##### <a name="server_tokens"></a>`server_tokens`
+##### `server_tokens`
 
 Data type: `Enum['on', 'off']`
 
@@ -1106,7 +965,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'on'`
 
-##### <a name="spdy"></a>`spdy`
+##### `spdy`
 
 Data type: `Enum['on', 'off']`
 
@@ -1114,7 +973,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="http2"></a>`http2`
+##### `http2`
 
 Data type: `Enum['on', 'off']`
 
@@ -1122,7 +981,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="ssl_stapling"></a>`ssl_stapling`
+##### `ssl_stapling`
 
 Data type: `Enum['on', 'off']`
 
@@ -1130,7 +989,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="ssl_stapling_verify"></a>`ssl_stapling_verify`
+##### `ssl_stapling_verify`
 
 Data type: `Enum['on', 'off']`
 
@@ -1138,7 +997,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'off'`
 
-##### <a name="snippets_dir"></a>`snippets_dir`
+##### `snippets_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1146,7 +1005,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `$nginx::params::snippets_dir`
 
-##### <a name="manage_snippets_dir"></a>`manage_snippets_dir`
+##### `manage_snippets_dir`
 
 Data type: `Boolean`
 
@@ -1154,7 +1013,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### <a name="types_hash_bucket_size"></a>`types_hash_bucket_size`
+##### `types_hash_bucket_size`
 
 Data type: `Any`
 
@@ -1162,7 +1021,7 @@ Data type: `Any`
 
 Default value: `'512'`
 
-##### <a name="types_hash_max_size"></a>`types_hash_max_size`
+##### `types_hash_max_size`
 
 Data type: `Any`
 
@@ -1170,7 +1029,7 @@ Data type: `Any`
 
 Default value: `'1024'`
 
-##### <a name="worker_connections"></a>`worker_connections`
+##### `worker_connections`
 
 Data type: `Integer`
 
@@ -1178,7 +1037,7 @@ Data type: `Integer`
 
 Default value: `1024`
 
-##### <a name="ssl_prefer_server_ciphers"></a>`ssl_prefer_server_ciphers`
+##### `ssl_prefer_server_ciphers`
 
 Data type: `Enum['on', 'off']`
 
@@ -1186,7 +1045,7 @@ Data type: `Enum['on', 'off']`
 
 Default value: `'on'`
 
-##### <a name="worker_processes"></a>`worker_processes`
+##### `worker_processes`
 
 Data type: `Variant[Integer, Enum['auto']]`
 
@@ -1194,7 +1053,7 @@ Data type: `Variant[Integer, Enum['auto']]`
 
 Default value: `'auto'`
 
-##### <a name="worker_rlimit_nofile"></a>`worker_rlimit_nofile`
+##### `worker_rlimit_nofile`
 
 Data type: `Integer`
 
@@ -1202,55 +1061,7 @@ Data type: `Integer`
 
 Default value: `1024`
 
-##### <a name="ssl_protocols"></a>`ssl_protocols`
-
-Data type: `String`
-
-
-
-Default value: `'TLSv1 TLSv1.1 TLSv1.2'`
-
-##### <a name="ssl_ciphers"></a>`ssl_ciphers`
-
-Data type: `String`
-
-
-
-Default value: `'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS'`
-
-##### <a name="ssl_dhparam"></a>`ssl_dhparam`
-
-Data type: `Optional[Stdlib::Unixpath]`
-
-
-
-Default value: ``undef``
-
-##### <a name="ssl_ecdh_curve"></a>`ssl_ecdh_curve`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="ssl_session_cache"></a>`ssl_session_cache`
-
-Data type: `String`
-
-
-
-Default value: `'shared:SSL:10m'`
-
-##### <a name="ssl_session_timeout"></a>`ssl_session_timeout`
-
-Data type: `String`
-
-
-
-Default value: `'5m'`
-
-##### <a name="ssl_session_tickets"></a>`ssl_session_tickets`
+##### `pcre_jit`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -1258,15 +1069,31 @@ Data type: `Optional[Enum['on', 'off']]`
 
 Default value: ``undef``
 
-##### <a name="ssl_session_ticket_key"></a>`ssl_session_ticket_key`
+##### `ssl_protocols`
 
-Data type: `Optional[Stdlib::Absolutepath]`
+Data type: `String`
+
+
+
+Default value: `'TLSv1 TLSv1.1 TLSv1.2'`
+
+##### `ssl_ciphers`
+
+Data type: `String`
+
+
+
+Default value: `'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS'`
+
+##### `ssl_dhparam`
+
+Data type: `Optional[Stdlib::Unixpath]`
 
 
 
 Default value: ``undef``
 
-##### <a name="ssl_buffer_size"></a>`ssl_buffer_size`
+##### `ssl_ecdh_curve`
 
 Data type: `Optional[String]`
 
@@ -1274,7 +1101,31 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="ssl_crl"></a>`ssl_crl`
+##### `ssl_session_cache`
+
+Data type: `String`
+
+
+
+Default value: `'shared:SSL:10m'`
+
+##### `ssl_session_timeout`
+
+Data type: `String`
+
+
+
+Default value: `'5m'`
+
+##### `ssl_session_tickets`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+
+
+Default value: ``undef``
+
+##### `ssl_session_ticket_key`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -1282,15 +1133,7 @@ Data type: `Optional[Stdlib::Absolutepath]`
 
 Default value: ``undef``
 
-##### <a name="ssl_stapling_file"></a>`ssl_stapling_file`
-
-Data type: `Optional[Stdlib::Absolutepath]`
-
-
-
-Default value: ``undef``
-
-##### <a name="ssl_stapling_responder"></a>`ssl_stapling_responder`
+##### `ssl_buffer_size`
 
 Data type: `Optional[String]`
 
@@ -1298,7 +1141,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="ssl_trusted_certificate"></a>`ssl_trusted_certificate`
+##### `ssl_crl`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -1306,7 +1149,31 @@ Data type: `Optional[Stdlib::Absolutepath]`
 
 Default value: ``undef``
 
-##### <a name="ssl_verify_depth"></a>`ssl_verify_depth`
+##### `ssl_stapling_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: ``undef``
+
+##### `ssl_stapling_responder`
+
+Data type: `Optional[String]`
+
+
+
+Default value: ``undef``
+
+##### `ssl_trusted_certificate`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: ``undef``
+
+##### `ssl_verify_depth`
 
 Data type: `Optional[Integer]`
 
@@ -1314,7 +1181,7 @@ Data type: `Optional[Integer]`
 
 Default value: ``undef``
 
-##### <a name="ssl_password_file"></a>`ssl_password_file`
+##### `ssl_password_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -1322,7 +1189,7 @@ Data type: `Optional[Stdlib::Absolutepath]`
 
 Default value: ``undef``
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### `package_ensure`
 
 Data type: `Any`
 
@@ -1330,7 +1197,7 @@ Data type: `Any`
 
 Default value: `present`
 
-##### <a name="package_name"></a>`package_name`
+##### `package_name`
 
 Data type: `Any`
 
@@ -1338,7 +1205,7 @@ Data type: `Any`
 
 Default value: `$nginx::params::package_name`
 
-##### <a name="package_source"></a>`package_source`
+##### `package_source`
 
 Data type: `Any`
 
@@ -1346,7 +1213,7 @@ Data type: `Any`
 
 Default value: `'nginx'`
 
-##### <a name="package_flavor"></a>`package_flavor`
+##### `package_flavor`
 
 Data type: `Any`
 
@@ -1354,7 +1221,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="manage_repo"></a>`manage_repo`
+##### `manage_repo`
 
 Data type: `Boolean`
 
@@ -1362,7 +1229,7 @@ Data type: `Boolean`
 
 Default value: `$nginx::params::manage_repo`
 
-##### <a name="mime_types"></a>`mime_types`
+##### `mime_types`
 
 Data type: `Hash[String[1], String[1]]`
 
@@ -1370,7 +1237,7 @@ Data type: `Hash[String[1], String[1]]`
 
 Default value: `$nginx::params::mime_types`
 
-##### <a name="mime_types_preserve_defaults"></a>`mime_types_preserve_defaults`
+##### `mime_types_preserve_defaults`
 
 Data type: `Boolean`
 
@@ -1378,7 +1245,7 @@ Data type: `Boolean`
 
 Default value: ``false``
 
-##### <a name="repo_release"></a>`repo_release`
+##### `repo_release`
 
 Data type: `Optional[String]`
 
@@ -1386,7 +1253,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="passenger_package_ensure"></a>`passenger_package_ensure`
+##### `passenger_package_ensure`
 
 Data type: `Any`
 
@@ -1394,7 +1261,7 @@ Data type: `Any`
 
 Default value: `'present'`
 
-##### <a name="repo_source"></a>`repo_source`
+##### `repo_source`
 
 Data type: `Optional[Stdlib::HTTPUrl]`
 
@@ -1402,7 +1269,7 @@ Data type: `Optional[Stdlib::HTTPUrl]`
 
 Default value: ``undef``
 
-##### <a name="service_ensure"></a>`service_ensure`
+##### `service_ensure`
 
 Data type: `Stdlib::Ensure::Service`
 
@@ -1410,7 +1277,7 @@ Data type: `Stdlib::Ensure::Service`
 
 Default value: `'running'`
 
-##### <a name="service_enable"></a>`service_enable`
+##### `service_enable`
 
 Data type: `Any`
 
@@ -1418,7 +1285,7 @@ Data type: `Any`
 
 Default value: ``true``
 
-##### <a name="service_flags"></a>`service_flags`
+##### `service_flags`
 
 Data type: `Any`
 
@@ -1426,7 +1293,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="service_restart"></a>`service_restart`
+##### `service_restart`
 
 Data type: `Any`
 
@@ -1434,7 +1301,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="service_name"></a>`service_name`
+##### `service_name`
 
 Data type: `Any`
 
@@ -1442,7 +1309,7 @@ Data type: `Any`
 
 Default value: `'nginx'`
 
-##### <a name="service_manage"></a>`service_manage`
+##### `service_manage`
 
 Data type: `Any`
 
@@ -1450,7 +1317,7 @@ Data type: `Any`
 
 Default value: ``true``
 
-##### <a name="geo_mappings"></a>`geo_mappings`
+##### `geo_mappings`
 
 Data type: `Hash`
 
@@ -1458,7 +1325,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="geo_mappings_defaults"></a>`geo_mappings_defaults`
+##### `geo_mappings_defaults`
 
 Data type: `Hash`
 
@@ -1466,7 +1333,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="string_mappings"></a>`string_mappings`
+##### `string_mappings`
 
 Data type: `Hash`
 
@@ -1474,7 +1341,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="string_mappings_defaults"></a>`string_mappings_defaults`
+##### `string_mappings_defaults`
 
 Data type: `Hash`
 
@@ -1482,7 +1349,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_locations"></a>`nginx_locations`
+##### `nginx_locations`
 
 Data type: `Hash`
 
@@ -1490,7 +1357,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_locations_defaults"></a>`nginx_locations_defaults`
+##### `nginx_locations_defaults`
 
 Data type: `Hash`
 
@@ -1498,7 +1365,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_mailhosts"></a>`nginx_mailhosts`
+##### `nginx_mailhosts`
 
 Data type: `Hash`
 
@@ -1506,7 +1373,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_mailhosts_defaults"></a>`nginx_mailhosts_defaults`
+##### `nginx_mailhosts_defaults`
 
 Data type: `Hash`
 
@@ -1514,7 +1381,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_servers"></a>`nginx_servers`
+##### `nginx_servers`
 
 Data type: `Hash`
 
@@ -1522,7 +1389,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_servers_defaults"></a>`nginx_servers_defaults`
+##### `nginx_servers_defaults`
 
 Data type: `Hash`
 
@@ -1530,7 +1397,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_streamhosts"></a>`nginx_streamhosts`
+##### `nginx_streamhosts`
 
 Data type: `Hash`
 
@@ -1538,7 +1405,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_streamhosts_defaults"></a>`nginx_streamhosts_defaults`
+##### `nginx_streamhosts_defaults`
 
 Data type: `Hash`
 
@@ -1546,7 +1413,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_upstreams"></a>`nginx_upstreams`
+##### `nginx_upstreams`
 
 Data type: `Hash`
 
@@ -1554,7 +1421,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="nginx_upstreams_defaults"></a>`nginx_upstreams_defaults`
+##### `nginx_upstreams_defaults`
 
 Data type: `Nginx::UpstreamDefaults`
 
@@ -1562,7 +1429,7 @@ Data type: `Nginx::UpstreamDefaults`
 
 Default value: `{}`
 
-##### <a name="purge_passenger_repo"></a>`purge_passenger_repo`
+##### `purge_passenger_repo`
 
 Data type: `Boolean`
 
@@ -1572,7 +1439,7 @@ Default value: ``true``
 
 ## Defined types
 
-### <a name="nginxresourcegeo"></a>`nginx::resource::geo`
+### `nginx::resource::geo`
 
 Create a new geo mapping entry for NGINX
 
@@ -1614,24 +1481,15 @@ nginx::geo_mappings:
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::geo` defined type:
+The following parameters are available in the `nginx::resource::geo` defined type.
 
-* [`networks`](#networks)
-* [`default`](#default)
-* [`ensure`](#ensure)
-* [`ranges`](#ranges)
-* [`address`](#address)
-* [`delete`](#delete)
-* [`proxy_recursive`](#proxy_recursive)
-* [`proxies`](#proxies)
-
-##### <a name="networks"></a>`networks`
+##### `networks`
 
 Data type: `Hash`
 
 Hash of geo lookup keys and resultant values
 
-##### <a name="default"></a>`default`
+##### `default`
 
 Data type: `Optional[String]`
 
@@ -1640,7 +1498,7 @@ variants.
 
 Default value: ``undef``
 
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -1648,7 +1506,7 @@ Enables or disables the specified location
 
 Default value: `'present'`
 
-##### <a name="ranges"></a>`ranges`
+##### `ranges`
 
 Data type: `Boolean`
 
@@ -1656,7 +1514,7 @@ Indicates that lookup keys (network addresses) are specified as ranges.
 
 Default value: ``false``
 
-##### <a name="address"></a>`address`
+##### `address`
 
 Data type: `Optional[String]`
 
@@ -1665,7 +1523,7 @@ override that with another variable name (automatically prefixed with $)
 
 Default value: ``undef``
 
-##### <a name="delete"></a>`delete`
+##### `delete`
 
 Data type: `Optional[String]`
 
@@ -1673,7 +1531,7 @@ deletes the specified network (see: geo module docs)
 
 Default value: ``undef``
 
-##### <a name="proxy_recursive"></a>`proxy_recursive`
+##### `proxy_recursive`
 
 Data type: `Optional[Boolean]`
 
@@ -1682,7 +1540,7 @@ proxies via 'proxies' directive
 
 Default value: ``undef``
 
-##### <a name="proxies"></a>`proxies`
+##### `proxies`
 
 Data type: `Optional[Array]`
 
@@ -1690,7 +1548,7 @@ Hash of network->value mappings.
 
 Default value: ``undef``
 
-### <a name="nginxresourcelocation"></a>`nginx::resource::location`
+### `nginx::resource::location`
 
 Create a new location entry within a virtual host
 
@@ -1765,81 +1623,9 @@ nginx::resource::location { 'test2.local-bob':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::location` defined type:
+The following parameters are available in the `nginx::resource::location` defined type.
 
-* [`ensure`](#ensure)
-* [`internal`](#internal)
-* [`server`](#server)
-* [`location`](#location)
-* [`location_satisfy`](#location_satisfy)
-* [`location_allow`](#location_allow)
-* [`location_deny`](#location_deny)
-* [`www_root`](#www_root)
-* [`autoindex`](#autoindex)
-* [`autoindex_exact_size`](#autoindex_exact_size)
-* [`autoindex_format`](#autoindex_format)
-* [`autoindex_localtime`](#autoindex_localtime)
-* [`index_files`](#index_files)
-* [`proxy`](#proxy)
-* [`proxy_redirect`](#proxy_redirect)
-* [`proxy_read_timeout`](#proxy_read_timeout)
-* [`proxy_connect_timeout`](#proxy_connect_timeout)
-* [`proxy_send_timeout`](#proxy_send_timeout)
-* [`proxy_set_header`](#proxy_set_header)
-* [`proxy_hide_header`](#proxy_hide_header)
-* [`proxy_pass_header`](#proxy_pass_header)
-* [`proxy_ignore_header`](#proxy_ignore_header)
-* [`proxy_next_upstream`](#proxy_next_upstream)
-* [`fastcgi`](#fastcgi)
-* [`fastcgi_param`](#fastcgi_param)
-* [`fastcgi_params`](#fastcgi_params)
-* [`fastcgi_script`](#fastcgi_script)
-* [`fastcgi_split_path`](#fastcgi_split_path)
-* [`uwsgi`](#uwsgi)
-* [`uwsgi_param`](#uwsgi_param)
-* [`uwsgi_params`](#uwsgi_params)
-* [`uwsgi_read_timeout`](#uwsgi_read_timeout)
-* [`ssl`](#ssl)
-* [`ssl_only`](#ssl_only)
-* [`location_alias`](#location_alias)
-* [`stub_status`](#stub_status)
-* [`raw_prepend`](#raw_prepend)
-* [`raw_append`](#raw_append)
-* [`limit_zone`](#limit_zone)
-* [`location_custom_cfg`](#location_custom_cfg)
-* [`location_cfg_prepend`](#location_cfg_prepend)
-* [`location_custom_cfg_prepend`](#location_custom_cfg_prepend)
-* [`location_custom_cfg_append`](#location_custom_cfg_append)
-* [`location_cfg_append`](#location_cfg_append)
-* [`include`](#include)
-* [`try_files`](#try_files)
-* [`proxy_cache`](#proxy_cache)
-* [`proxy_cache_key`](#proxy_cache_key)
-* [`proxy_cache_use_stale`](#proxy_cache_use_stale)
-* [`proxy_cache_valid`](#proxy_cache_valid)
-* [`proxy_cache_lock`](#proxy_cache_lock)
-* [`proxy_cache_bypass`](#proxy_cache_bypass)
-* [`proxy_method`](#proxy_method)
-* [`proxy_http_version`](#proxy_http_version)
-* [`proxy_set_body`](#proxy_set_body)
-* [`proxy_buffering`](#proxy_buffering)
-* [`proxy_request_buffering`](#proxy_request_buffering)
-* [`proxy_max_temp_file_size`](#proxy_max_temp_file_size)
-* [`proxy_busy_buffers_size`](#proxy_busy_buffers_size)
-* [`absolute_redirect`](#absolute_redirect)
-* [`auth_basic`](#auth_basic)
-* [`auth_basic_user_file`](#auth_basic_user_file)
-* [`auth_request`](#auth_request)
-* [`priority`](#priority)
-* [`mp4`](#mp4)
-* [`flv`](#flv)
-* [`expires`](#expires)
-* [`add_header`](#add_header)
-* [`gzip_static`](#gzip_static)
-* [`fastcgi_index`](#fastcgi_index)
-* [`rewrite_rules`](#rewrite_rules)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -1848,7 +1634,7 @@ Enables or disables the specified location
 
 Default value: `'present'`
 
-##### <a name="internal"></a>`internal`
+##### `internal`
 
 Data type: `Boolean`
 
@@ -1857,7 +1643,7 @@ used for internal requests only. Default: false
 
 Default value: ``false``
 
-##### <a name="server"></a>`server`
+##### `server`
 
 Data type: `Variant[String[1],Array[String[1],1]]`
 
@@ -1865,7 +1651,7 @@ Defines a server or list of servers that include this location
 
 Default value: ``undef``
 
-##### <a name="location"></a>`location`
+##### `location`
 
 Data type: `String`
 
@@ -1874,7 +1660,7 @@ entry
 
 Default value: `$name`
 
-##### <a name="location_satisfy"></a>`location_satisfy`
+##### `location_satisfy`
 
 Data type: `Optional[Enum['any', 'all']]`
 
@@ -1882,7 +1668,7 @@ Allows access if all (all) or at least one (any) of the auth modules allow acces
 
 Default value: ``undef``
 
-##### <a name="location_allow"></a>`location_allow`
+##### `location_allow`
 
 Data type: `Optional[Array]`
 
@@ -1890,7 +1676,7 @@ Locations to allow connections from.
 
 Default value: ``undef``
 
-##### <a name="location_deny"></a>`location_deny`
+##### `location_deny`
 
 Data type: `Optional[Array]`
 
@@ -1898,7 +1684,7 @@ Locations to deny connections from.
 
 Default value: ``undef``
 
-##### <a name="www_root"></a>`www_root`
+##### `www_root`
 
 Data type: `Optional[String]`
 
@@ -1907,7 +1693,7 @@ conjunction with $proxy
 
 Default value: ``undef``
 
-##### <a name="autoindex"></a>`autoindex`
+##### `autoindex`
 
 Data type: `Optional[String]`
 
@@ -1915,7 +1701,7 @@ Set it on 'on' to activate autoindex directory listing.
 
 Default value: ``undef``
 
-##### <a name="autoindex_exact_size"></a>`autoindex_exact_size`
+##### `autoindex_exact_size`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -1924,7 +1710,7 @@ filesize, or rounded to kilobytes, megabytes and gigabytes.
 
 Default value: ``undef``
 
-##### <a name="autoindex_format"></a>`autoindex_format`
+##### `autoindex_format`
 
 Data type: `Optional[Enum['html', 'xml', 'json', 'jsonp']]`
 
@@ -1932,7 +1718,7 @@ Sets the format of a directory listing.
 
 Default value: ``undef``
 
-##### <a name="autoindex_localtime"></a>`autoindex_localtime`
+##### `autoindex_localtime`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -1941,7 +1727,7 @@ local time zone or UTC.
 
 Default value: ``undef``
 
-##### <a name="index_files"></a>`index_files`
+##### `index_files`
 
 Data type: `Array`
 
@@ -1953,7 +1739,7 @@ Default value: `[
     'index.php',
   ]`
 
-##### <a name="proxy"></a>`proxy`
+##### `proxy`
 
 Data type: `Optional[String]`
 
@@ -1962,7 +1748,7 @@ be used in conjunction with nginx::resource::upstream
 
 Default value: ``undef``
 
-##### <a name="proxy_redirect"></a>`proxy_redirect`
+##### `proxy_redirect`
 
 Data type: `Optional[String]`
 
@@ -1971,7 +1757,7 @@ sets the text, which must be changed in response-header "Location" and
 
 Default value: `$nginx::proxy_redirect`
 
-##### <a name="proxy_read_timeout"></a>`proxy_read_timeout`
+##### `proxy_read_timeout`
 
 Data type: `String`
 
@@ -1979,7 +1765,7 @@ Override the default the proxy read timeout value of 90 seconds
 
 Default value: `$nginx::proxy_read_timeout`
 
-##### <a name="proxy_connect_timeout"></a>`proxy_connect_timeout`
+##### `proxy_connect_timeout`
 
 Data type: `String`
 
@@ -1987,7 +1773,7 @@ Override the default the proxy connect timeout value of 90 seconds
 
 Default value: `$nginx::proxy_connect_timeout`
 
-##### <a name="proxy_send_timeout"></a>`proxy_send_timeout`
+##### `proxy_send_timeout`
 
 Data type: `String`
 
@@ -1996,7 +1782,7 @@ value of 90 seconds
 
 Default value: `$nginx::proxy_send_timeout`
 
-##### <a name="proxy_set_header"></a>`proxy_set_header`
+##### `proxy_set_header`
 
 Data type: `Array`
 
@@ -2004,7 +1790,7 @@ Array of server headers to set
 
 Default value: `$nginx::proxy_set_header`
 
-##### <a name="proxy_hide_header"></a>`proxy_hide_header`
+##### `proxy_hide_header`
 
 Data type: `Array`
 
@@ -2012,7 +1798,7 @@ Array of server headers to hide
 
 Default value: `$nginx::proxy_hide_header`
 
-##### <a name="proxy_pass_header"></a>`proxy_pass_header`
+##### `proxy_pass_header`
 
 Data type: `Array`
 
@@ -2020,7 +1806,7 @@ Array of server headers to pass
 
 Default value: `$nginx::proxy_pass_header`
 
-##### <a name="proxy_ignore_header"></a>`proxy_ignore_header`
+##### `proxy_ignore_header`
 
 Data type: `Array`
 
@@ -2028,7 +1814,7 @@ Array of server headers to ignore
 
 Default value: `$nginx::proxy_ignore_header`
 
-##### <a name="proxy_next_upstream"></a>`proxy_next_upstream`
+##### `proxy_next_upstream`
 
 Data type: `Optional[String]`
 
@@ -2036,7 +1822,7 @@ Specify cases a request should be passed to the next server in the upstream.
 
 Default value: ``undef``
 
-##### <a name="fastcgi"></a>`fastcgi`
+##### `fastcgi`
 
 Data type: `Optional[String]`
 
@@ -2044,7 +1830,7 @@ location of fastcgi (host:port)
 
 Default value: ``undef``
 
-##### <a name="fastcgi_param"></a>`fastcgi_param`
+##### `fastcgi_param`
 
 Data type: `Optional[Hash]`
 
@@ -2052,7 +1838,7 @@ Set additional custom fastcgi_params
 
 Default value: ``undef``
 
-##### <a name="fastcgi_params"></a>`fastcgi_params`
+##### `fastcgi_params`
 
 Data type: `String`
 
@@ -2060,7 +1846,7 @@ optional alternative fastcgi_params file to use
 
 Default value: `"${nginx::conf_dir}/fastcgi.conf"`
 
-##### <a name="fastcgi_script"></a>`fastcgi_script`
+##### `fastcgi_script`
 
 Data type: `Optional[String]`
 
@@ -2068,7 +1854,7 @@ optional SCRIPT_FILE parameter
 
 Default value: ``undef``
 
-##### <a name="fastcgi_split_path"></a>`fastcgi_split_path`
+##### `fastcgi_split_path`
 
 Data type: `Optional[String]`
 
@@ -2077,7 +1863,7 @@ script_name and path_info via regex
 
 Default value: ``undef``
 
-##### <a name="uwsgi"></a>`uwsgi`
+##### `uwsgi`
 
 Data type: `Optional[String]`
 
@@ -2085,7 +1871,7 @@ location of uwsgi (host:port)
 
 Default value: ``undef``
 
-##### <a name="uwsgi_param"></a>`uwsgi_param`
+##### `uwsgi_param`
 
 Data type: `Optional[Hash]`
 
@@ -2093,7 +1879,7 @@ Set additional custom uwsgi_params
 
 Default value: ``undef``
 
-##### <a name="uwsgi_params"></a>`uwsgi_params`
+##### `uwsgi_params`
 
 Data type: `String`
 
@@ -2101,7 +1887,7 @@ optional alternative uwsgi_params file to use
 
 Default value: `"${nginx::config::conf_dir}/uwsgi_params"`
 
-##### <a name="uwsgi_read_timeout"></a>`uwsgi_read_timeout`
+##### `uwsgi_read_timeout`
 
 Data type: `Optional[String]`
 
@@ -2109,7 +1895,7 @@ optional value for uwsgi_read_timeout
 
 Default value: ``undef``
 
-##### <a name="ssl"></a>`ssl`
+##### `ssl`
 
 Data type: `Boolean`
 
@@ -2117,7 +1903,7 @@ Indicates whether to setup SSL bindings for this location.
 
 Default value: ``false``
 
-##### <a name="ssl_only"></a>`ssl_only`
+##### `ssl_only`
 
 Data type: `Boolean`
 
@@ -2125,7 +1911,7 @@ Required if the SSL and normal server have the same port.
 
 Default value: ``false``
 
-##### <a name="location_alias"></a>`location_alias`
+##### `location_alias`
 
 Data type: `Optional[String]`
 
@@ -2133,7 +1919,7 @@ Path to be used as basis for serving requests for this location
 
 Default value: ``undef``
 
-##### <a name="stub_status"></a>`stub_status`
+##### `stub_status`
 
 Data type: `Optional[Boolean]`
 
@@ -2142,7 +1928,7 @@ on location
 
 Default value: ``undef``
 
-##### <a name="raw_prepend"></a>`raw_prepend`
+##### `raw_prepend`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -2152,7 +1938,7 @@ semicolon on each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="raw_append"></a>`raw_append`
+##### `raw_append`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -2162,7 +1948,7 @@ each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="limit_zone"></a>`limit_zone`
+##### `limit_zone`
 
 Data type: `Optional[String[1]]`
 
@@ -2171,7 +1957,7 @@ previously defined limit_req_zone in the main nginx configuration
 
 Default value: ``undef``
 
-##### <a name="location_custom_cfg"></a>`location_custom_cfg`
+##### `location_custom_cfg`
 
 Data type: `Optional[Hash]`
 
@@ -2180,7 +1966,7 @@ types (proxy, fastcgi, root, or stub_status)
 
 Default value: ``undef``
 
-##### <a name="location_cfg_prepend"></a>`location_cfg_prepend`
+##### `location_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -2189,7 +1975,7 @@ location (used with all other types except custom_cfg)
 
 Default value: ``undef``
 
-##### <a name="location_custom_cfg_prepend"></a>`location_custom_cfg_prepend`
+##### `location_custom_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -2199,7 +1985,7 @@ structures such as if.
 
 Default value: ``undef``
 
-##### <a name="location_custom_cfg_append"></a>`location_custom_cfg_append`
+##### `location_custom_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -2209,7 +1995,7 @@ structures such as if.
 
 Default value: ``undef``
 
-##### <a name="location_cfg_append"></a>`location_cfg_append`
+##### `location_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -2219,7 +2005,7 @@ custom_cfg)
 
 Default value: ``undef``
 
-##### <a name="include"></a>`include`
+##### `include`
 
 Data type: `Optional[Array]`
 
@@ -2227,7 +2013,7 @@ An array of files to include for this location
 
 Default value: ``undef``
 
-##### <a name="try_files"></a>`try_files`
+##### `try_files`
 
 Data type: `Optional[Array]`
 
@@ -2235,7 +2021,7 @@ An array of file locations to try
 
 Default value: ``undef``
 
-##### <a name="proxy_cache"></a>`proxy_cache`
+##### `proxy_cache`
 
 Data type: `Optional[String]`
 
@@ -2244,7 +2030,7 @@ multiple places.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_key"></a>`proxy_cache_key`
+##### `proxy_cache_key`
 
 Data type: `Optional[String]`
 
@@ -2252,7 +2038,7 @@ Override the default proxy_cache_key of $scheme$proxy_host$request_uri
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_use_stale"></a>`proxy_cache_use_stale`
+##### `proxy_cache_use_stale`
 
 Data type: `Optional[String]`
 
@@ -2260,7 +2046,7 @@ Override the default proxy_cache_use_stale value of off.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_valid"></a>`proxy_cache_valid`
+##### `proxy_cache_valid`
 
 Data type: `Optional[Variant[Array, String]]`
 
@@ -2268,7 +2054,7 @@ This directive sets the time for caching different replies.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_lock"></a>`proxy_cache_lock`
+##### `proxy_cache_lock`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -2276,7 +2062,7 @@ This directive sets the locking mechanism for pouplating cache.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_bypass"></a>`proxy_cache_bypass`
+##### `proxy_cache_bypass`
 
 Data type: `Optional[Variant[Array, String]]`
 
@@ -2284,7 +2070,7 @@ Defines conditions which the response will not be cached
 
 Default value: ``undef``
 
-##### <a name="proxy_method"></a>`proxy_method`
+##### `proxy_method`
 
 Data type: `Optional[String]`
 
@@ -2293,7 +2079,7 @@ backend.
 
 Default value: ``undef``
 
-##### <a name="proxy_http_version"></a>`proxy_http_version`
+##### `proxy_http_version`
 
 Data type: `Optional[String]`
 
@@ -2301,7 +2087,7 @@ Sets the proxy http version
 
 Default value: ``undef``
 
-##### <a name="proxy_set_body"></a>`proxy_set_body`
+##### `proxy_set_body`
 
 Data type: `Optional[String]`
 
@@ -2309,7 +2095,7 @@ If defined, sets the body passed to the backend.
 
 Default value: ``undef``
 
-##### <a name="proxy_buffering"></a>`proxy_buffering`
+##### `proxy_buffering`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -2317,7 +2103,7 @@ If defined, sets the proxy_buffering to the passed value.
 
 Default value: ``undef``
 
-##### <a name="proxy_request_buffering"></a>`proxy_request_buffering`
+##### `proxy_request_buffering`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -2325,7 +2111,7 @@ If defined, sets the proxy_request_buffering to the passed value.
 
 Default value: ``undef``
 
-##### <a name="proxy_max_temp_file_size"></a>`proxy_max_temp_file_size`
+##### `proxy_max_temp_file_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -2333,7 +2119,7 @@ Sets the maximum size of the temporary buffer file.
 
 Default value: ``undef``
 
-##### <a name="proxy_busy_buffers_size"></a>`proxy_busy_buffers_size`
+##### `proxy_busy_buffers_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -2342,7 +2128,7 @@ client while the response is not yet fully read.
 
 Default value: ``undef``
 
-##### <a name="absolute_redirect"></a>`absolute_redirect`
+##### `absolute_redirect`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -2350,7 +2136,7 @@ Enables or disables the absolute redirect functionality of nginx
 
 Default value: ``undef``
 
-##### <a name="auth_basic"></a>`auth_basic`
+##### `auth_basic`
 
 Data type: `Optional[String]`
 
@@ -2359,7 +2145,7 @@ Authentication.
 
 Default value: ``undef``
 
-##### <a name="auth_basic_user_file"></a>`auth_basic_user_file`
+##### `auth_basic_user_file`
 
 Data type: `Optional[String]`
 
@@ -2367,7 +2153,7 @@ This directive sets the htpasswd filename for the authentication realm.
 
 Default value: ``undef``
 
-##### <a name="auth_request"></a>`auth_request`
+##### `auth_request`
 
 Data type: `Optional[String]`
 
@@ -2375,7 +2161,7 @@ This allows you to specify a custom auth endpoint
 
 Default value: ``undef``
 
-##### <a name="priority"></a>`priority`
+##### `priority`
 
 Data type: `Integer[401,599]`
 
@@ -2385,7 +2171,7 @@ root, or before root.
 
 Default value: `500`
 
-##### <a name="mp4"></a>`mp4`
+##### `mp4`
 
 Data type: `Boolean`
 
@@ -2394,7 +2180,7 @@ used for mp4 streaming. Default: false
 
 Default value: ``false``
 
-##### <a name="flv"></a>`flv`
+##### `flv`
 
 Data type: `Boolean`
 
@@ -2403,7 +2189,7 @@ used for flv streaming. Default: false
 
 Default value: ``false``
 
-##### <a name="expires"></a>`expires`
+##### `expires`
 
 Data type: `Optional[String]`
 
@@ -2411,7 +2197,7 @@ Setup expires time for locations content
 
 Default value: ``undef``
 
-##### <a name="add_header"></a>`add_header`
+##### `add_header`
 
 Data type: `Hash`
 
@@ -2420,7 +2206,7 @@ no longer inherit headers from the parent server context
 
 Default value: `{}`
 
-##### <a name="gzip_static"></a>`gzip_static`
+##### `gzip_static`
 
 Data type: `Optional[Enum['on', 'off', 'always']]`
 
@@ -2428,7 +2214,16 @@ Defines gzip_static, nginx default is off
 
 Default value: ``undef``
 
-##### <a name="fastcgi_index"></a>`fastcgi_index`
+##### `reset_timedout_connection`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables resetting timed out connections and connections closed
+with the non-standard code 444.
+
+Default value: ``undef``
+
+##### `fastcgi_index`
 
 Data type: `Optional[String]`
 
@@ -2436,7 +2231,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="rewrite_rules"></a>`rewrite_rules`
+##### `rewrite_rules`
 
 Data type: `Array`
 
@@ -2444,7 +2239,7 @@ Data type: `Array`
 
 Default value: `[]`
 
-### <a name="nginxresourcemailhost"></a>`nginx::resource::mailhost`
+### `nginx::resource::mailhost`
 
 Define a mailhost
 
@@ -2469,54 +2264,9 @@ nginx::resource::mailhost { 'domain1.example':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::mailhost` defined type:
+The following parameters are available in the `nginx::resource::mailhost` defined type.
 
-* [`ensure`](#ensure)
-* [`listen_ip`](#listen_ip)
-* [`listen_port`](#listen_port)
-* [`listen_options`](#listen_options)
-* [`ipv6_enable`](#ipv6_enable)
-* [`ipv6_listen_ip`](#ipv6_listen_ip)
-* [`ipv6_listen_port`](#ipv6_listen_port)
-* [`ipv6_listen_options`](#ipv6_listen_options)
-* [`ssl`](#ssl)
-* [`ssl_cert`](#ssl_cert)
-* [`ssl_ciphers`](#ssl_ciphers)
-* [`ssl_client_cert`](#ssl_client_cert)
-* [`ssl_crl`](#ssl_crl)
-* [`ssl_dhparam`](#ssl_dhparam)
-* [`ssl_ecdh_curve`](#ssl_ecdh_curve)
-* [`ssl_key`](#ssl_key)
-* [`ssl_password_file`](#ssl_password_file)
-* [`ssl_port`](#ssl_port)
-* [`ssl_prefer_server_ciphers`](#ssl_prefer_server_ciphers)
-* [`ssl_protocols`](#ssl_protocols)
-* [`ssl_session_cache`](#ssl_session_cache)
-* [`ssl_session_ticket_key`](#ssl_session_ticket_key)
-* [`ssl_session_tickets`](#ssl_session_tickets)
-* [`ssl_session_timeout`](#ssl_session_timeout)
-* [`ssl_trusted_cert`](#ssl_trusted_cert)
-* [`ssl_verify_depth`](#ssl_verify_depth)
-* [`starttls`](#starttls)
-* [`protocol`](#protocol)
-* [`auth_http`](#auth_http)
-* [`xclient`](#xclient)
-* [`imap_auth`](#imap_auth)
-* [`imap_capabilities`](#imap_capabilities)
-* [`imap_client_buffer`](#imap_client_buffer)
-* [`pop3_auth`](#pop3_auth)
-* [`pop3_capabilities`](#pop3_capabilities)
-* [`smtp_auth`](#smtp_auth)
-* [`smtp_capabilities`](#smtp_capabilities)
-* [`proxy_pass_error_message`](#proxy_pass_error_message)
-* [`server_name`](#server_name)
-* [`raw_prepend`](#raw_prepend)
-* [`raw_append`](#raw_append)
-* [`mailhost_cfg_append`](#mailhost_cfg_append)
-* [`mailhost_cfg_prepend`](#mailhost_cfg_prepend)
-* [`auth_http_header`](#auth_http_header)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['absent', 'present']`
 
@@ -2524,7 +2274,7 @@ Enables or disables the specified mailhost
 
 Default value: `'present'`
 
-##### <a name="listen_ip"></a>`listen_ip`
+##### `listen_ip`
 
 Data type: `Variant[Array[String], String]`
 
@@ -2532,13 +2282,13 @@ Default IP Address for NGINX to listen with this server on. Defaults to all inte
 
 Default value: `'*'`
 
-##### <a name="listen_port"></a>`listen_port`
+##### `listen_port`
 
 Data type: `Stdlib::Port`
 
 Default IP Port for NGINX to listen with this server on.
 
-##### <a name="listen_options"></a>`listen_options`
+##### `listen_options`
 
 Data type: `Optional[String]`
 
@@ -2546,7 +2296,7 @@ Extra options for listen directive like 'default' to catchall.
 
 Default value: ``undef``
 
-##### <a name="ipv6_enable"></a>`ipv6_enable`
+##### `ipv6_enable`
 
 Data type: `Boolean`
 
@@ -2555,7 +2305,7 @@ if IPv6 support exists on your system before enabling.
 
 Default value: ``false``
 
-##### <a name="ipv6_listen_ip"></a>`ipv6_listen_ip`
+##### `ipv6_listen_ip`
 
 Data type: `Variant[Array[String], String]`
 
@@ -2564,15 +2314,15 @@ all interfaces (::)
 
 Default value: `'::'`
 
-##### <a name="ipv6_listen_port"></a>`ipv6_listen_port`
+##### `ipv6_listen_port`
 
 Data type: `Stdlib::Port`
 
 Default IPv6 Port for NGINX to listen with this server on.
 
-Default value: `80`
+Default value: `$listen_port`
 
-##### <a name="ipv6_listen_options"></a>`ipv6_listen_options`
+##### `ipv6_listen_options`
 
 Data type: `String`
 
@@ -2582,7 +2332,7 @@ discussed, default value is 'default'.
 
 Default value: `'default ipv6only=on'`
 
-##### <a name="ssl"></a>`ssl`
+##### `ssl`
 
 Data type: `Boolean`
 
@@ -2590,7 +2340,7 @@ Indicates whether to setup SSL bindings for this mailhost.
 
 Default value: ``false``
 
-##### <a name="ssl_cert"></a>`ssl_cert`
+##### `ssl_cert`
 
 Data type: `Optional[String]`
 
@@ -2599,7 +2349,7 @@ not generated by this module.
 
 Default value: ``undef``
 
-##### <a name="ssl_ciphers"></a>`ssl_ciphers`
+##### `ssl_ciphers`
 
 Data type: `String`
 
@@ -2607,7 +2357,7 @@ Override default SSL ciphers.
 
 Default value: `$nginx::ssl_ciphers`
 
-##### <a name="ssl_client_cert"></a>`ssl_client_cert`
+##### `ssl_client_cert`
 
 Data type: `Optional[String]`
 
@@ -2616,7 +2366,7 @@ Support. This is not generated by this module.
 
 Default value: ``undef``
 
-##### <a name="ssl_crl"></a>`ssl_crl`
+##### `ssl_crl`
 
 Data type: `Optional[String]`
 
@@ -2624,7 +2374,7 @@ String: Specifies CRL path in file system
 
 Default value: ``undef``
 
-##### <a name="ssl_dhparam"></a>`ssl_dhparam`
+##### `ssl_dhparam`
 
 Data type: `Optional[String]`
 
@@ -2634,7 +2384,7 @@ session keys between server and client.
 
 Default value: `$nginx::ssl_dhparam`
 
-##### <a name="ssl_ecdh_curve"></a>`ssl_ecdh_curve`
+##### `ssl_ecdh_curve`
 
 Data type: `Optional[String]`
 
@@ -2642,7 +2392,7 @@ This directive specifies a curve for ECDHE ciphers.
 
 Default value: ``undef``
 
-##### <a name="ssl_key"></a>`ssl_key`
+##### `ssl_key`
 
 Data type: `Optional[String]`
 
@@ -2651,7 +2401,7 @@ generated by this module.
 
 Default value: ``undef``
 
-##### <a name="ssl_password_file"></a>`ssl_password_file`
+##### `ssl_password_file`
 
 Data type: `Optional[String]`
 
@@ -2659,7 +2409,7 @@ This directive specifies a file containing passphrases for secret keys.
 
 Default value: ``undef``
 
-##### <a name="ssl_port"></a>`ssl_port`
+##### `ssl_port`
 
 Data type: `Optional[Stdlib::Port]`
 
@@ -2667,7 +2417,7 @@ Default IP Port for NGINX to listen with this SSL server on.
 
 Default value: ``undef``
 
-##### <a name="ssl_prefer_server_ciphers"></a>`ssl_prefer_server_ciphers`
+##### `ssl_prefer_server_ciphers`
 
 Data type: `Enum['on', 'off']`
 
@@ -2676,7 +2426,7 @@ using the SSLv3 and TLS protocols.
 
 Default value: `$nginx::ssl_prefer_server_ciphers`
 
-##### <a name="ssl_protocols"></a>`ssl_protocols`
+##### `ssl_protocols`
 
 Data type: `String`
 
@@ -2684,7 +2434,7 @@ SSL protocols enabled.
 
 Default value: `$nginx::ssl_protocols`
 
-##### <a name="ssl_session_cache"></a>`ssl_session_cache`
+##### `ssl_session_cache`
 
 Data type: `Optional[String]`
 
@@ -2692,7 +2442,7 @@ Sets the type and size of the session cache.
 
 Default value: ``undef``
 
-##### <a name="ssl_session_ticket_key"></a>`ssl_session_ticket_key`
+##### `ssl_session_ticket_key`
 
 Data type: `Optional[String]`
 
@@ -2701,7 +2451,7 @@ decrypt TLS session tickets.
 
 Default value: ``undef``
 
-##### <a name="ssl_session_tickets"></a>`ssl_session_tickets`
+##### `ssl_session_tickets`
 
 Data type: `Optional[String]`
 
@@ -2709,7 +2459,7 @@ Whether to enable or disable session resumption through TLS session tickets.
 
 Default value: ``undef``
 
-##### <a name="ssl_session_timeout"></a>`ssl_session_timeout`
+##### `ssl_session_timeout`
 
 Data type: `String`
 
@@ -2718,7 +2468,7 @@ stored in a cache.
 
 Default value: `'5m'`
 
-##### <a name="ssl_trusted_cert"></a>`ssl_trusted_cert`
+##### `ssl_trusted_cert`
 
 Data type: `Optional[String]`
 
@@ -2727,7 +2477,7 @@ verify client certificates and OCSP responses if ssl_stapling is enabled.
 
 Default value: ``undef``
 
-##### <a name="ssl_verify_depth"></a>`ssl_verify_depth`
+##### `ssl_verify_depth`
 
 Data type: `Optional[Integer]`
 
@@ -2735,7 +2485,7 @@ Sets the verification depth in the client certificates chain.
 
 Default value: ``undef``
 
-##### <a name="starttls"></a>`starttls`
+##### `starttls`
 
 Data type: `Enum['on', 'off', 'only']`
 
@@ -2743,7 +2493,7 @@ Enable STARTTLS support
 
 Default value: `'off'`
 
-##### <a name="protocol"></a>`protocol`
+##### `protocol`
 
 Data type: `Optional[Enum['imap', 'pop3', 'smtp']]`
 
@@ -2751,7 +2501,7 @@ Mail protocol to use
 
 Default value: ``undef``
 
-##### <a name="auth_http"></a>`auth_http`
+##### `auth_http`
 
 Data type: `Optional[String]`
 
@@ -2760,7 +2510,7 @@ for authorization.
 
 Default value: ``undef``
 
-##### <a name="xclient"></a>`xclient`
+##### `xclient`
 
 Data type: `Enum['on', 'off']`
 
@@ -2768,7 +2518,7 @@ Whether to use xclient for smtp
 
 Default value: `'on'`
 
-##### <a name="imap_auth"></a>`imap_auth`
+##### `imap_auth`
 
 Data type: `Optional[String]`
 
@@ -2776,7 +2526,7 @@ Sets permitted methods of authentication for IMAP clients.
 
 Default value: ``undef``
 
-##### <a name="imap_capabilities"></a>`imap_capabilities`
+##### `imap_capabilities`
 
 Data type: `Optional[Array]`
 
@@ -2785,7 +2535,7 @@ response to the CAPA command.
 
 Default value: ``undef``
 
-##### <a name="imap_client_buffer"></a>`imap_client_buffer`
+##### `imap_client_buffer`
 
 Data type: `Optional[String]`
 
@@ -2793,7 +2543,7 @@ Sets the IMAP commands read buffer size.
 
 Default value: ``undef``
 
-##### <a name="pop3_auth"></a>`pop3_auth`
+##### `pop3_auth`
 
 Data type: `Optional[String]`
 
@@ -2801,7 +2551,7 @@ Sets permitted methods of authentication for POP3 clients.
 
 Default value: ``undef``
 
-##### <a name="pop3_capabilities"></a>`pop3_capabilities`
+##### `pop3_capabilities`
 
 Data type: `Optional[Array]`
 
@@ -2810,7 +2560,7 @@ response to the CAPA command.
 
 Default value: ``undef``
 
-##### <a name="smtp_auth"></a>`smtp_auth`
+##### `smtp_auth`
 
 Data type: `Optional[String]`
 
@@ -2818,7 +2568,7 @@ Sets permitted methods of SASL authentication for SMTP clients.
 
 Default value: ``undef``
 
-##### <a name="smtp_capabilities"></a>`smtp_capabilities`
+##### `smtp_capabilities`
 
 Data type: `Optional[Array]`
 
@@ -2827,7 +2577,7 @@ response to the EHLO command.
 
 Default value: ``undef``
 
-##### <a name="proxy_pass_error_message"></a>`proxy_pass_error_message`
+##### `proxy_pass_error_message`
 
 Data type: `String`
 
@@ -2836,7 +2586,7 @@ authentication on the backend to the client.
 
 Default value: `'off'`
 
-##### <a name="server_name"></a>`server_name`
+##### `server_name`
 
 Data type: `Array`
 
@@ -2844,7 +2594,7 @@ List of mailhostnames for which this mailhost will respond.
 
 Default value: `[$name]`
 
-##### <a name="raw_prepend"></a>`raw_prepend`
+##### `raw_prepend`
 
 Data type: `Optional[Variant[Array, String]]`
 
@@ -2854,7 +2604,7 @@ semicolon on each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="raw_append"></a>`raw_append`
+##### `raw_append`
 
 Data type: `Optional[Variant[Array, String]]`
 
@@ -2864,7 +2614,7 @@ semicolon on each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="mailhost_cfg_append"></a>`mailhost_cfg_append`
+##### `mailhost_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -2873,7 +2623,7 @@ inside server
 
 Default value: ``undef``
 
-##### <a name="mailhost_cfg_prepend"></a>`mailhost_cfg_prepend`
+##### `mailhost_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -2882,7 +2632,7 @@ inside server
 
 Default value: ``undef``
 
-##### <a name="auth_http_header"></a>`auth_http_header`
+##### `auth_http_header`
 
 Data type: `Optional[String]`
 
@@ -2890,7 +2640,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-### <a name="nginxresourcemap"></a>`nginx::resource::map`
+### `nginx::resource::map`
 
 Create a new mapping entry for NGINX
 
@@ -2960,17 +2710,9 @@ nginx::string_mappings:
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::map` defined type:
+The following parameters are available in the `nginx::resource::map` defined type.
 
-* [`ensure`](#ensure)
-* [`default`](#default)
-* [`string`](#string)
-* [`mappings`](#mappings)
-* [`hostnames`](#hostnames)
-* [`include_files`](#include_files)
-* [`context`](#context)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['absent', 'present']`
 
@@ -2978,7 +2720,7 @@ Enables or disables the specified location
 
 Default value: `'present'`
 
-##### <a name="default"></a>`default`
+##### `default`
 
 Data type: `Optional[String]`
 
@@ -2987,19 +2729,19 @@ variants.
 
 Default value: ``undef``
 
-##### <a name="string"></a>`string`
+##### `string`
 
 Data type: `String[2]`
 
 Source string or variable to provide mapping for
 
-##### <a name="mappings"></a>`mappings`
+##### `mappings`
 
 Data type: `Variant[Array, Hash]`
 
 Hash of map lookup keys and resultant values
 
-##### <a name="hostnames"></a>`hostnames`
+##### `hostnames`
 
 Data type: `Boolean`
 
@@ -3007,7 +2749,7 @@ Indicates that source values can be hostnames with a prefix or suffix mask.
 
 Default value: ``false``
 
-##### <a name="include_files"></a>`include_files`
+##### `include_files`
 
 Data type: `Array[String]`
 
@@ -3015,7 +2757,7 @@ An array of external files to include
 
 Default value: `[]`
 
-##### <a name="context"></a>`context`
+##### `context`
 
 Data type: `Enum['http', 'stream']`
 
@@ -3023,7 +2765,7 @@ Specify if mapping is for http or stream context
 
 Default value: `'http'`
 
-### <a name="nginxresourceserver"></a>`nginx::resource::server`
+### `nginx::resource::server`
 
 Create a virtual host
 
@@ -3043,138 +2785,9 @@ nginx::resource::server { 'test2.local':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::server` defined type:
+The following parameters are available in the `nginx::resource::server` defined type.
 
-* [`ensure`](#ensure)
-* [`listen_ip`](#listen_ip)
-* [`listen_port`](#listen_port)
-* [`listen_options`](#listen_options)
-* [`listen_unix_socket_enable`](#listen_unix_socket_enable)
-* [`listen_unix_socket`](#listen_unix_socket)
-* [`listen_unix_socket_options`](#listen_unix_socket_options)
-* [`location_satisfy`](#location_satisfy)
-* [`location_allow`](#location_allow)
-* [`location_deny`](#location_deny)
-* [`ipv6_enable`](#ipv6_enable)
-* [`ipv6_listen_ip`](#ipv6_listen_ip)
-* [`ipv6_listen_port`](#ipv6_listen_port)
-* [`ipv6_listen_options`](#ipv6_listen_options)
-* [`add_header`](#add_header)
-* [`index_files`](#index_files)
-* [`autoindex`](#autoindex)
-* [`autoindex_exact_size`](#autoindex_exact_size)
-* [`autoindex_format`](#autoindex_format)
-* [`autoindex_localtime`](#autoindex_localtime)
-* [`proxy`](#proxy)
-* [`proxy_read_timeout`](#proxy_read_timeout)
-* [`proxy_send_timeout`](#proxy_send_timeout)
-* [`proxy_redirect`](#proxy_redirect)
-* [`proxy_buffering`](#proxy_buffering)
-* [`proxy_request_buffering`](#proxy_request_buffering)
-* [`proxy_max_temp_file_size`](#proxy_max_temp_file_size)
-* [`proxy_busy_buffers_size`](#proxy_busy_buffers_size)
-* [`resolver`](#resolver)
-* [`fastcgi`](#fastcgi)
-* [`fastcgi_param`](#fastcgi_param)
-* [`fastcgi_params`](#fastcgi_params)
-* [`fastcgi_index`](#fastcgi_index)
-* [`fastcgi_script`](#fastcgi_script)
-* [`uwsgi_read_timeout`](#uwsgi_read_timeout)
-* [`ssl`](#ssl)
-* [`ssl_cert`](#ssl_cert)
-* [`ssl_client_cert`](#ssl_client_cert)
-* [`ssl_verify_client`](#ssl_verify_client)
-* [`ssl_crl`](#ssl_crl)
-* [`ssl_dhparam`](#ssl_dhparam)
-* [`ssl_ecdh_curve`](#ssl_ecdh_curve)
-* [`ssl_prefer_server_ciphers`](#ssl_prefer_server_ciphers)
-* [`ssl_redirect`](#ssl_redirect)
-* [`ssl_redirect_port`](#ssl_redirect_port)
-* [`ssl_key`](#ssl_key)
-* [`ssl_port`](#ssl_port)
-* [`ssl_protocols`](#ssl_protocols)
-* [`ssl_buffer_size`](#ssl_buffer_size)
-* [`ssl_ciphers`](#ssl_ciphers)
-* [`ssl_stapling`](#ssl_stapling)
-* [`ssl_stapling_file`](#ssl_stapling_file)
-* [`ssl_stapling_responder`](#ssl_stapling_responder)
-* [`ssl_stapling_verify`](#ssl_stapling_verify)
-* [`ssl_session_timeout`](#ssl_session_timeout)
-* [`ssl_session_tickets`](#ssl_session_tickets)
-* [`ssl_session_ticket_key`](#ssl_session_ticket_key)
-* [`ssl_trusted_cert`](#ssl_trusted_cert)
-* [`ssl_verify_depth`](#ssl_verify_depth)
-* [`ssl_password_file`](#ssl_password_file)
-* [`spdy`](#spdy)
-* [`http2`](#http2)
-* [`server_name`](#server_name)
-* [`www_root`](#www_root)
-* [`rewrite_www_to_non_www`](#rewrite_www_to_non_www)
-* [`rewrite_non_www_to_www`](#rewrite_non_www_to_www)
-* [`try_files`](#try_files)
-* [`proxy_cache`](#proxy_cache)
-* [`proxy_cache_key`](#proxy_cache_key)
-* [`proxy_cache_use_stale`](#proxy_cache_use_stale)
-* [`proxy_cache_valid`](#proxy_cache_valid)
-* [`proxy_cache_lock`](#proxy_cache_lock)
-* [`proxy_cache_bypass`](#proxy_cache_bypass)
-* [`proxy_method`](#proxy_method)
-* [`proxy_http_version`](#proxy_http_version)
-* [`proxy_set_body`](#proxy_set_body)
-* [`absolute_redirect`](#absolute_redirect)
-* [`auth_basic`](#auth_basic)
-* [`auth_basic_user_file`](#auth_basic_user_file)
-* [`auth_request`](#auth_request)
-* [`client_max_body_size`](#client_max_body_size)
-* [`client_body_timeout`](#client_body_timeout)
-* [`client_header_timeout`](#client_header_timeout)
-* [`raw_prepend`](#raw_prepend)
-* [`raw_append`](#raw_append)
-* [`location_raw_prepend`](#location_raw_prepend)
-* [`location_raw_append`](#location_raw_append)
-* [`server_cfg_append`](#server_cfg_append)
-* [`server_cfg_prepend`](#server_cfg_prepend)
-* [`server_cfg_ssl_append`](#server_cfg_ssl_append)
-* [`server_cfg_ssl_prepend`](#server_cfg_ssl_prepend)
-* [`include_files`](#include_files)
-* [`access_log`](#access_log)
-* [`error_log`](#error_log)
-* [`passenger_cgi_param`](#passenger_cgi_param)
-* [`passenger_set_header`](#passenger_set_header)
-* [`passenger_env_var`](#passenger_env_var)
-* [`passenger_pre_start`](#passenger_pre_start)
-* [`log_by_lua`](#log_by_lua)
-* [`log_by_lua_file`](#log_by_lua_file)
-* [`gzip_types`](#gzip_types)
-* [`gzip_static`](#gzip_static)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`maintenance`](#maintenance)
-* [`maintenance_value`](#maintenance_value)
-* [`error_pages`](#error_pages)
-* [`locations`](#locations)
-* [`locations_defaults`](#locations_defaults)
-* [`ssl_listen_option`](#ssl_listen_option)
-* [`ssl_cache`](#ssl_cache)
-* [`proxy_connect_timeout`](#proxy_connect_timeout)
-* [`proxy_set_header`](#proxy_set_header)
-* [`proxy_hide_header`](#proxy_hide_header)
-* [`proxy_pass_header`](#proxy_pass_header)
-* [`uwsgi`](#uwsgi)
-* [`uwsgi_params`](#uwsgi_params)
-* [`location_custom_cfg`](#location_custom_cfg)
-* [`location_cfg_prepend`](#location_cfg_prepend)
-* [`location_cfg_append`](#location_cfg_append)
-* [`location_custom_cfg_prepend`](#location_custom_cfg_prepend)
-* [`location_custom_cfg_append`](#location_custom_cfg_append)
-* [`format_log`](#format_log)
-* [`use_default_location`](#use_default_location)
-* [`rewrite_rules`](#rewrite_rules)
-* [`string_mappings`](#string_mappings)
-* [`geo_mappings`](#geo_mappings)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['absent', 'present']`
 
@@ -3182,7 +2795,7 @@ Enables or disables the specified server
 
 Default value: `'present'`
 
-##### <a name="listen_ip"></a>`listen_ip`
+##### `listen_ip`
 
 Data type: `Variant[Array, String]`
 
@@ -3191,15 +2804,15 @@ interfaces (*)
 
 Default value: `'*'`
 
-##### <a name="listen_port"></a>`listen_port`
+##### `listen_port`
 
-Data type: `Integer`
+Data type: `Stdlib::Port`
 
 Default TCP Port for NGINX to listen with this server on.
 
 Default value: `80`
 
-##### <a name="listen_options"></a>`listen_options`
+##### `listen_options`
 
 Data type: `Optional[String]`
 
@@ -3207,7 +2820,7 @@ Extra options for listen directive like 'default_server' to catchall.
 
 Default value: ``undef``
 
-##### <a name="listen_unix_socket_enable"></a>`listen_unix_socket_enable`
+##### `listen_unix_socket_enable`
 
 Data type: `Boolean`
 
@@ -3215,7 +2828,7 @@ value to enable/disable UNIX socket listening support.
 
 Default value: ``false``
 
-##### <a name="listen_unix_socket"></a>`listen_unix_socket`
+##### `listen_unix_socket`
 
 Data type: `Variant[Array[Stdlib::Absolutepath], Stdlib::Absolutepath]`
 
@@ -3223,7 +2836,7 @@ Default unix socket for NGINX to listen with this server on.
 
 Default value: `'/var/run/nginx.sock'`
 
-##### <a name="listen_unix_socket_options"></a>`listen_unix_socket_options`
+##### `listen_unix_socket_options`
 
 Data type: `Optional[String]`
 
@@ -3231,7 +2844,7 @@ Extra options for listen directive like 'default' to catchall.
 
 Default value: ``undef``
 
-##### <a name="location_satisfy"></a>`location_satisfy`
+##### `location_satisfy`
 
 Data type: `Optional[Enum['any', 'all']]`
 
@@ -3240,7 +2853,7 @@ access.
 
 Default value: ``undef``
 
-##### <a name="location_allow"></a>`location_allow`
+##### `location_allow`
 
 Data type: `Array`
 
@@ -3248,7 +2861,7 @@ Locations to allow connections from.
 
 Default value: `[]`
 
-##### <a name="location_deny"></a>`location_deny`
+##### `location_deny`
 
 Data type: `Array`
 
@@ -3256,7 +2869,7 @@ Locations to deny connections from.
 
 Default value: `[]`
 
-##### <a name="ipv6_enable"></a>`ipv6_enable`
+##### `ipv6_enable`
 
 Data type: `Boolean`
 
@@ -3265,7 +2878,7 @@ if IPv6 support exists on your system before enabling.
 
 Default value: ``false``
 
-##### <a name="ipv6_listen_ip"></a>`ipv6_listen_ip`
+##### `ipv6_listen_ip`
 
 Data type: `Variant[Array, String]`
 
@@ -3273,15 +2886,15 @@ Default IPv6 Address for NGINX to listen with this server on. Defaults to all in
 
 Default value: `'::'`
 
-##### <a name="ipv6_listen_port"></a>`ipv6_listen_port`
+##### `ipv6_listen_port`
 
-Data type: `Integer`
+Data type: `Stdlib::Port`
 
 Default IPv6 Port for NGINX to listen with this server on. Defaults to TCP 80
 
-Default value: `80`
+Default value: `$listen_port`
 
-##### <a name="ipv6_listen_options"></a>`ipv6_listen_options`
+##### `ipv6_listen_options`
 
 Data type: `String`
 
@@ -3291,7 +2904,7 @@ discussed, default value is 'default'.
 
 Default value: `'default ipv6only=on'`
 
-##### <a name="add_header"></a>`add_header`
+##### `add_header`
 
 Data type: `Hash`
 
@@ -3300,7 +2913,7 @@ Adds headers to the HTTP response when response code is equal to 200, 204,
 
 Default value: `{}`
 
-##### <a name="index_files"></a>`index_files`
+##### `index_files`
 
 Data type: `Array`
 
@@ -3312,7 +2925,7 @@ Default value: `[
     'index.php',
   ]`
 
-##### <a name="autoindex"></a>`autoindex`
+##### `autoindex`
 
 Data type: `Optional[String]`
 
@@ -3320,7 +2933,7 @@ Set it on 'on' or 'off 'to activate/deactivate autoindex directory listing.
 
 Default value: ``undef``
 
-##### <a name="autoindex_exact_size"></a>`autoindex_exact_size`
+##### `autoindex_exact_size`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3329,7 +2942,7 @@ filesize, or rounded to kilobytes, megabytes and gigabytes.
 
 Default value: ``undef``
 
-##### <a name="autoindex_format"></a>`autoindex_format`
+##### `autoindex_format`
 
 Data type: `Optional[Enum['html', 'xml', 'json', 'jsonp']]`
 
@@ -3337,7 +2950,7 @@ Sets the format of a directory listing.
 
 Default value: ``undef``
 
-##### <a name="autoindex_localtime"></a>`autoindex_localtime`
+##### `autoindex_localtime`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3346,7 +2959,16 @@ local time zone or UTC.
 
 Default value: ``undef``
 
-##### <a name="proxy"></a>`proxy`
+##### `reset_timedout_connection`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables resetting timed out connections and connections closed
+with the non-standard code 444.
+
+Default value: ``undef``
+
+##### `proxy`
 
 Data type: `Optional[String]`
 
@@ -3355,7 +2977,7 @@ value, can be used in conjunction with nginx::resource::upstream
 
 Default value: ``undef``
 
-##### <a name="proxy_read_timeout"></a>`proxy_read_timeout`
+##### `proxy_read_timeout`
 
 Data type: `String`
 
@@ -3363,7 +2985,7 @@ Override the default proxy read timeout value of 90 seconds
 
 Default value: `$nginx::proxy_read_timeout`
 
-##### <a name="proxy_send_timeout"></a>`proxy_send_timeout`
+##### `proxy_send_timeout`
 
 Data type: `String`
 
@@ -3371,7 +2993,7 @@ Override the default proxy send timeout value of 90 seconds
 
 Default value: `$nginx::proxy_send_timeout`
 
-##### <a name="proxy_redirect"></a>`proxy_redirect`
+##### `proxy_redirect`
 
 Data type: `Optional[String]`
 
@@ -3379,7 +3001,7 @@ Override the default proxy_redirect value of off.
 
 Default value: ``undef``
 
-##### <a name="proxy_buffering"></a>`proxy_buffering`
+##### `proxy_buffering`
 
 Data type: `Optional[String]`
 
@@ -3387,7 +3009,7 @@ If defined, sets the proxy_buffering to the passed value.
 
 Default value: ``undef``
 
-##### <a name="proxy_request_buffering"></a>`proxy_request_buffering`
+##### `proxy_request_buffering`
 
 Data type: `Optional[String]`
 
@@ -3395,7 +3017,7 @@ If defined, sets the proxy_request_buffering to the passed value.
 
 Default value: ``undef``
 
-##### <a name="proxy_max_temp_file_size"></a>`proxy_max_temp_file_size`
+##### `proxy_max_temp_file_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -3403,7 +3025,7 @@ Sets the maximum size of the temporary buffer file.
 
 Default value: ``undef``
 
-##### <a name="proxy_busy_buffers_size"></a>`proxy_busy_buffers_size`
+##### `proxy_busy_buffers_size`
 
 Data type: `Optional[Nginx::Size]`
 
@@ -3412,7 +3034,7 @@ client while the response is not yet fully read.
 
 Default value: ``undef``
 
-##### <a name="resolver"></a>`resolver`
+##### `resolver`
 
 Data type: `Array`
 
@@ -3420,7 +3042,7 @@ Configures name servers used to resolve names of upstream servers into addresses
 
 Default value: `[]`
 
-##### <a name="fastcgi"></a>`fastcgi`
+##### `fastcgi`
 
 Data type: `Optional[String]`
 
@@ -3428,7 +3050,7 @@ location of fastcgi (host:port)
 
 Default value: ``undef``
 
-##### <a name="fastcgi_param"></a>`fastcgi_param`
+##### `fastcgi_param`
 
 Data type: `Any`
 
@@ -3436,7 +3058,7 @@ Set additional custom fastcgi_params
 
 Default value: ``undef``
 
-##### <a name="fastcgi_params"></a>`fastcgi_params`
+##### `fastcgi_params`
 
 Data type: `String`
 
@@ -3444,7 +3066,7 @@ optional alternative fastcgi_params file to use
 
 Default value: `"${nginx::conf_dir}/fastcgi.conf"`
 
-##### <a name="fastcgi_index"></a>`fastcgi_index`
+##### `fastcgi_index`
 
 Data type: `Optional[String]`
 
@@ -3452,7 +3074,7 @@ optional FastCGI index page
 
 Default value: ``undef``
 
-##### <a name="fastcgi_script"></a>`fastcgi_script`
+##### `fastcgi_script`
 
 Data type: `Optional[String]`
 
@@ -3460,7 +3082,7 @@ optional SCRIPT_FILE parameter
 
 Default value: ``undef``
 
-##### <a name="uwsgi_read_timeout"></a>`uwsgi_read_timeout`
+##### `uwsgi_read_timeout`
 
 Data type: `Optional[String]`
 
@@ -3468,7 +3090,7 @@ optional value for uwsgi_read_timeout
 
 Default value: ``undef``
 
-##### <a name="ssl"></a>`ssl`
+##### `ssl`
 
 Data type: `Boolean`
 
@@ -3476,17 +3098,18 @@ Indicates whether to setup SSL bindings for this server.
 
 Default value: ``false``
 
-##### <a name="ssl_cert"></a>`ssl_cert`
+##### `ssl_cert`
 
-Data type: `Optional[Variant[String, Boolean]]`
+Data type: `Optional[Variant[String, Boolean, Array[String]]]`
 
 Pre-generated SSL Certificate file to reference for SSL Support. This is
 not generated by this module.  Set to `false` to inherit from the http
 section, which improves performance by conserving memory.
+Use an array to add multiple SSL Certificates.
 
 Default value: ``undef``
 
-##### <a name="ssl_client_cert"></a>`ssl_client_cert`
+##### `ssl_client_cert`
 
 Data type: `Optional[String]`
 
@@ -3495,7 +3118,7 @@ Support. This is not generated by this module.
 
 Default value: ``undef``
 
-##### <a name="ssl_verify_client"></a>`ssl_verify_client`
+##### `ssl_verify_client`
 
 Data type: `String`
 
@@ -3503,7 +3126,7 @@ Enables verification of client certificates.
 
 Default value: `'on'`
 
-##### <a name="ssl_crl"></a>`ssl_crl`
+##### `ssl_crl`
 
 Data type: `Optional[String]`
 
@@ -3511,7 +3134,7 @@ Specifies CRL path in file system
 
 Default value: ``undef``
 
-##### <a name="ssl_dhparam"></a>`ssl_dhparam`
+##### `ssl_dhparam`
 
 Data type: `Optional[String]`
 
@@ -3521,7 +3144,7 @@ session keys between server and client.
 
 Default value: ``undef``
 
-##### <a name="ssl_ecdh_curve"></a>`ssl_ecdh_curve`
+##### `ssl_ecdh_curve`
 
 Data type: `Optional[String]`
 
@@ -3529,7 +3152,7 @@ This directive specifies a curve for ECDHE ciphers.
 
 Default value: ``undef``
 
-##### <a name="ssl_prefer_server_ciphers"></a>`ssl_prefer_server_ciphers`
+##### `ssl_prefer_server_ciphers`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3538,7 +3161,7 @@ ciphers when using the SSLv3 and TLS protocols.
 
 Default value: ``undef``
 
-##### <a name="ssl_redirect"></a>`ssl_redirect`
+##### `ssl_redirect`
 
 Data type: `Boolean`
 
@@ -3547,7 +3170,7 @@ honor ssl_port if it's set.
 
 Default value: ``false``
 
-##### <a name="ssl_redirect_port"></a>`ssl_redirect_port`
+##### `ssl_redirect_port`
 
 Data type: `Optional[Integer]`
 
@@ -3555,17 +3178,18 @@ Overrides $ssl_port in the SSL redirect set by ssl_redirect
 
 Default value: ``undef``
 
-##### <a name="ssl_key"></a>`ssl_key`
+##### `ssl_key`
 
-Data type: `Optional[Variant[String, Boolean]]`
+Data type: `Optional[Variant[String, Boolean, Array[String]]]`
 
 Pre-generated SSL Key file to reference for SSL Support. This is not
 generated by this module. Set to `false` to inherit from the http section,
 which improves performance by conserving memory.
+Use an array to add multiple SSL Keys.
 
 Default value: ``undef``
 
-##### <a name="ssl_port"></a>`ssl_port`
+##### `ssl_port`
 
 Data type: `Integer`
 
@@ -3573,7 +3197,7 @@ Default IP Port for NGINX to listen with this SSL server on.
 
 Default value: `443`
 
-##### <a name="ssl_protocols"></a>`ssl_protocols`
+##### `ssl_protocols`
 
 Data type: `Optional[String]`
 
@@ -3581,7 +3205,7 @@ SSL protocols enabled. Defaults to 'TLSv1 TLSv1.1 TLSv1.2'.
 
 Default value: ``undef``
 
-##### <a name="ssl_buffer_size"></a>`ssl_buffer_size`
+##### `ssl_buffer_size`
 
 Data type: `Optional[String]`
 
@@ -3589,7 +3213,7 @@ Sets the size of the buffer used for sending data.
 
 Default value: ``undef``
 
-##### <a name="ssl_ciphers"></a>`ssl_ciphers`
+##### `ssl_ciphers`
 
 Data type: `Optional[String]`
 
@@ -3597,7 +3221,7 @@ SSL ciphers enabled.
 
 Default value: ``undef``
 
-##### <a name="ssl_stapling"></a>`ssl_stapling`
+##### `ssl_stapling`
 
 Data type: `Boolean`
 
@@ -3605,7 +3229,7 @@ Enables or disables stapling of OCSP responses by the server.
 
 Default value: ``false``
 
-##### <a name="ssl_stapling_file"></a>`ssl_stapling_file`
+##### `ssl_stapling_file`
 
 Data type: `Optional[String]`
 
@@ -3614,7 +3238,7 @@ instead of querying the OCSP responder specified in the server certificate.
 
 Default value: ``undef``
 
-##### <a name="ssl_stapling_responder"></a>`ssl_stapling_responder`
+##### `ssl_stapling_responder`
 
 Data type: `Optional[String]`
 
@@ -3623,7 +3247,7 @@ Information Access certificate extension.
 
 Default value: ``undef``
 
-##### <a name="ssl_stapling_verify"></a>`ssl_stapling_verify`
+##### `ssl_stapling_verify`
 
 Data type: `Boolean`
 
@@ -3631,7 +3255,7 @@ Enables or disables verification of OCSP responses by the server. Defaults to fa
 
 Default value: ``false``
 
-##### <a name="ssl_session_timeout"></a>`ssl_session_timeout`
+##### `ssl_session_timeout`
 
 Data type: `Optional[String]`
 
@@ -3640,7 +3264,7 @@ Specifies a time during which a client may reuse the session parameters stored i
 
 Default value: ``undef``
 
-##### <a name="ssl_session_tickets"></a>`ssl_session_tickets`
+##### `ssl_session_tickets`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3648,7 +3272,7 @@ Enables or disables session resumption through TLS session tickets.
 
 Default value: ``undef``
 
-##### <a name="ssl_session_ticket_key"></a>`ssl_session_ticket_key`
+##### `ssl_session_ticket_key`
 
 Data type: `Optional[String]`
 
@@ -3656,7 +3280,7 @@ Sets a file with the secret key used to encrypt and decrypt TLS session tickets.
 
 Default value: ``undef``
 
-##### <a name="ssl_trusted_cert"></a>`ssl_trusted_cert`
+##### `ssl_trusted_cert`
 
 Data type: `Optional[String]`
 
@@ -3665,7 +3289,7 @@ Specifies a file with trusted CA certificates in the PEM format used to verify c
 
 Default value: ``undef``
 
-##### <a name="ssl_verify_depth"></a>`ssl_verify_depth`
+##### `ssl_verify_depth`
 
 Data type: `Optional[Integer]`
 
@@ -3673,7 +3297,7 @@ Sets the verification depth in the client certificates chain.
 
 Default value: ``undef``
 
-##### <a name="ssl_password_file"></a>`ssl_password_file`
+##### `ssl_password_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -3681,7 +3305,7 @@ File containing the password for the SSL Key file.
 
 Default value: ``undef``
 
-##### <a name="spdy"></a>`spdy`
+##### `spdy`
 
 Data type: `Enum['on', 'off']`
 
@@ -3689,7 +3313,7 @@ Toggles SPDY protocol.
 
 Default value: `$nginx::spdy`
 
-##### <a name="http2"></a>`http2`
+##### `http2`
 
 Data type: `Enum['on', 'off']`
 
@@ -3697,7 +3321,7 @@ Toggles HTTP/2 protocol.
 
 Default value: `$nginx::http2`
 
-##### <a name="server_name"></a>`server_name`
+##### `server_name`
 
 Data type: `Array[String]`
 
@@ -3705,7 +3329,7 @@ List of servernames for which this server will respond. Default [$name].
 
 Default value: `[$name]`
 
-##### <a name="www_root"></a>`www_root`
+##### `www_root`
 
 Data type: `Optional[String]`
 
@@ -3713,7 +3337,7 @@ Specifies the location on disk for files to be read from. Cannot be set in conju
 
 Default value: ``undef``
 
-##### <a name="rewrite_www_to_non_www"></a>`rewrite_www_to_non_www`
+##### `rewrite_www_to_non_www`
 
 Data type: `Boolean`
 
@@ -3722,7 +3346,7 @@ Adds a server directive and rewrite rule to rewrite www.domain.com to domain.com
 
 Default value: ``false``
 
-##### <a name="rewrite_non_www_to_www"></a>`rewrite_non_www_to_www`
+##### `rewrite_non_www_to_www`
 
 Data type: `Boolean`
 
@@ -3731,7 +3355,7 @@ Adds a server directive and rewrite rule to rewrite domain.com to www.domain.com
 
 Default value: ``false``
 
-##### <a name="try_files"></a>`try_files`
+##### `try_files`
 
 Data type: `Optional[Array[String]]`
 
@@ -3739,7 +3363,7 @@ Specifies the locations for files to be checked as an array. Cannot be used in c
 
 Default value: ``undef``
 
-##### <a name="proxy_cache"></a>`proxy_cache`
+##### `proxy_cache`
 
 Data type: `Optional[String]`
 
@@ -3747,7 +3371,7 @@ This directive sets name of zone for caching. The same zone can be used in multi
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_key"></a>`proxy_cache_key`
+##### `proxy_cache_key`
 
 Data type: `Optional[String]`
 
@@ -3755,7 +3379,7 @@ Override the default proxy_cache_key of $scheme$proxy_host$request_uri
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_use_stale"></a>`proxy_cache_use_stale`
+##### `proxy_cache_use_stale`
 
 Data type: `Optional[String]`
 
@@ -3763,7 +3387,7 @@ Override the default proxy_cache_use_stale value of off.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_valid"></a>`proxy_cache_valid`
+##### `proxy_cache_valid`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3771,7 +3395,7 @@ This directive sets the time for caching different replies.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_lock"></a>`proxy_cache_lock`
+##### `proxy_cache_lock`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3779,7 +3403,7 @@ This directive sets the locking mechanism for pouplating cache.
 
 Default value: ``undef``
 
-##### <a name="proxy_cache_bypass"></a>`proxy_cache_bypass`
+##### `proxy_cache_bypass`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3787,7 +3411,7 @@ Defines conditions which the response will not be cached
 
 Default value: ``undef``
 
-##### <a name="proxy_method"></a>`proxy_method`
+##### `proxy_method`
 
 Data type: `Optional[String]`
 
@@ -3795,7 +3419,7 @@ If defined, overrides the HTTP method of the request to be passed to the backend
 
 Default value: ``undef``
 
-##### <a name="proxy_http_version"></a>`proxy_http_version`
+##### `proxy_http_version`
 
 Data type: `Optional[String]`
 
@@ -3803,7 +3427,7 @@ Sets the proxy http version
 
 Default value: ``undef``
 
-##### <a name="proxy_set_body"></a>`proxy_set_body`
+##### `proxy_set_body`
 
 Data type: `Optional[String]`
 
@@ -3811,7 +3435,7 @@ If defined, sets the body passed to the backend.
 
 Default value: ``undef``
 
-##### <a name="absolute_redirect"></a>`absolute_redirect`
+##### `absolute_redirect`
 
 Data type: `Optional[Enum['on', 'off']]`
 
@@ -3819,7 +3443,7 @@ Enables or disables the absolute redirect functionality of nginx
 
 Default value: ``undef``
 
-##### <a name="auth_basic"></a>`auth_basic`
+##### `auth_basic`
 
 Data type: `Optional[String]`
 
@@ -3827,7 +3451,7 @@ This directive includes testing name and password with HTTP Basic Authentication
 
 Default value: ``undef``
 
-##### <a name="auth_basic_user_file"></a>`auth_basic_user_file`
+##### `auth_basic_user_file`
 
 Data type: `Optional[String]`
 
@@ -3835,7 +3459,7 @@ This directive sets the htpasswd filename for the authentication realm.
 
 Default value: ``undef``
 
-##### <a name="auth_request"></a>`auth_request`
+##### `auth_request`
 
 Data type: `Optional[String]`
 
@@ -3843,7 +3467,7 @@ This allows you to specify a custom auth endpoint
 
 Default value: ``undef``
 
-##### <a name="client_max_body_size"></a>`client_max_body_size`
+##### `client_max_body_size`
 
 Data type: `Any`
 
@@ -3851,7 +3475,7 @@ This directive sets client_max_body_size.
 
 Default value: ``undef``
 
-##### <a name="client_body_timeout"></a>`client_body_timeout`
+##### `client_body_timeout`
 
 Data type: `Optional[String]`
 
@@ -3859,7 +3483,7 @@ Sets how long the server will wait for a client body. Default is 60s
 
 Default value: ``undef``
 
-##### <a name="client_header_timeout"></a>`client_header_timeout`
+##### `client_header_timeout`
 
 Data type: `Optional[String]`
 
@@ -3867,7 +3491,7 @@ Sets how long the server will wait for a client header. Default is 60s
 
 Default value: ``undef``
 
-##### <a name="raw_prepend"></a>`raw_prepend`
+##### `raw_prepend`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3877,7 +3501,7 @@ on each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="raw_append"></a>`raw_append`
+##### `raw_append`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3887,7 +3511,7 @@ each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="location_raw_prepend"></a>`location_raw_prepend`
+##### `location_raw_prepend`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3897,7 +3521,7 @@ semicolon on each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="location_raw_append"></a>`location_raw_append`
+##### `location_raw_append`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -3907,7 +3531,7 @@ each line that requires one.
 
 Default value: ``undef``
 
-##### <a name="server_cfg_append"></a>`server_cfg_append`
+##### `server_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -3915,7 +3539,7 @@ It expects a hash with custom directives to put after everything else inside ser
 
 Default value: ``undef``
 
-##### <a name="server_cfg_prepend"></a>`server_cfg_prepend`
+##### `server_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -3923,7 +3547,7 @@ It expects a hash with custom directives to put before everything else inside se
 
 Default value: ``undef``
 
-##### <a name="server_cfg_ssl_append"></a>`server_cfg_ssl_append`
+##### `server_cfg_ssl_append`
 
 Data type: `Optional[Hash]`
 
@@ -3931,7 +3555,7 @@ It expects a hash with custom directives to put after everything else inside ser
 
 Default value: ``undef``
 
-##### <a name="server_cfg_ssl_prepend"></a>`server_cfg_ssl_prepend`
+##### `server_cfg_ssl_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -3939,7 +3563,7 @@ It expects a hash with custom directives to put before everything else inside se
 
 Default value: ``undef``
 
-##### <a name="include_files"></a>`include_files`
+##### `include_files`
 
 Data type: `Optional[Array[String]]`
 
@@ -3947,7 +3571,7 @@ Adds include files to server
 
 Default value: ``undef``
 
-##### <a name="access_log"></a>`access_log`
+##### `access_log`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -3960,7 +3584,7 @@ server with the string 'off'.
 
 Default value: ``undef``
 
-##### <a name="error_log"></a>`error_log`
+##### `error_log`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -3970,7 +3594,7 @@ server stanza (and default to nginx.conf setting)
 
 Default value: ``undef``
 
-##### <a name="passenger_cgi_param"></a>`passenger_cgi_param`
+##### `passenger_cgi_param`
 
 Data type: `Optional[Hash]`
 
@@ -3978,7 +3602,7 @@ Allows one to define additional CGI environment variables to pass to the backend
 
 Default value: ``undef``
 
-##### <a name="passenger_set_header"></a>`passenger_set_header`
+##### `passenger_set_header`
 
 Data type: `Optional[Hash]`
 
@@ -3986,7 +3610,7 @@ Allows one to set headers to pass to the backend application (Passenger 5.0+)
 
 Default value: ``undef``
 
-##### <a name="passenger_env_var"></a>`passenger_env_var`
+##### `passenger_env_var`
 
 Data type: `Optional[Hash]`
 
@@ -3994,7 +3618,7 @@ Allows one to set environment variables to pass to the backend application (Pass
 
 Default value: ``undef``
 
-##### <a name="passenger_pre_start"></a>`passenger_pre_start`
+##### `passenger_pre_start`
 
 Data type: `Optional[Variant[Array[String], String]]`
 
@@ -4004,7 +3628,7 @@ multiple URLs can be specified.
 
 Default value: ``undef``
 
-##### <a name="log_by_lua"></a>`log_by_lua`
+##### `log_by_lua`
 
 Data type: `Optional[String]`
 
@@ -4014,7 +3638,7 @@ after.
 
 Default value: ``undef``
 
-##### <a name="log_by_lua_file"></a>`log_by_lua_file`
+##### `log_by_lua_file`
 
 Data type: `Optional[String]`
 
@@ -4024,7 +3648,7 @@ release, the Lua/LuaJIT bytecode to be executed.
 
 Default value: ``undef``
 
-##### <a name="gzip_types"></a>`gzip_types`
+##### `gzip_types`
 
 Data type: `Optional[String]`
 
@@ -4032,7 +3656,7 @@ Defines gzip_types, nginx default is text/html
 
 Default value: ``undef``
 
-##### <a name="gzip_static"></a>`gzip_static`
+##### `gzip_static`
 
 Data type: `Optional[String]`
 
@@ -4040,7 +3664,7 @@ Defines gzip_static, nginx default is off
 
 Default value: ``undef``
 
-##### <a name="owner"></a>`owner`
+##### `owner`
 
 Data type: `String`
 
@@ -4048,7 +3672,7 @@ Defines owner of the .conf file
 
 Default value: `$nginx::global_owner`
 
-##### <a name="group"></a>`group`
+##### `group`
 
 Data type: `String`
 
@@ -4056,7 +3680,7 @@ Defines group of the .conf file
 
 Default value: `$nginx::global_group`
 
-##### <a name="mode"></a>`mode`
+##### `mode`
 
 Data type: `String`
 
@@ -4064,7 +3688,7 @@ Defines mode of the .conf file
 
 Default value: `$nginx::global_mode`
 
-##### <a name="maintenance"></a>`maintenance`
+##### `maintenance`
 
 Data type: `Boolean`
 
@@ -4072,7 +3696,7 @@ A boolean value to set a server in maintenance
 
 Default value: ``false``
 
-##### <a name="maintenance_value"></a>`maintenance_value`
+##### `maintenance_value`
 
 Data type: `String`
 
@@ -4080,7 +3704,7 @@ Value to return when maintenance is on.
 
 Default value: `'return 503'`
 
-##### <a name="error_pages"></a>`error_pages`
+##### `error_pages`
 
 Data type: `Any`
 
@@ -4088,7 +3712,7 @@ Setup errors pages, hash key is the http code and hash value the page
 
 Default value: ``undef``
 
-##### <a name="locations"></a>`locations`
+##### `locations`
 
 Data type: `Hash`
 
@@ -4096,7 +3720,7 @@ Hash of location resources used by this server
 
 Default value: `{}`
 
-##### <a name="locations_defaults"></a>`locations_defaults`
+##### `locations_defaults`
 
 Data type: `Hash`
 
@@ -4104,7 +3728,7 @@ Hash of location default settings
 
 Default value: `{}`
 
-##### <a name="ssl_listen_option"></a>`ssl_listen_option`
+##### `ssl_listen_option`
 
 Data type: `Boolean`
 
@@ -4112,7 +3736,7 @@ Data type: `Boolean`
 
 Default value: ``true``
 
-##### <a name="ssl_cache"></a>`ssl_cache`
+##### `ssl_cache`
 
 Data type: `Optional[String]`
 
@@ -4120,7 +3744,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="proxy_connect_timeout"></a>`proxy_connect_timeout`
+##### `proxy_connect_timeout`
 
 Data type: `Any`
 
@@ -4128,7 +3752,7 @@ Data type: `Any`
 
 Default value: `$nginx::proxy_connect_timeout`
 
-##### <a name="proxy_set_header"></a>`proxy_set_header`
+##### `proxy_set_header`
 
 Data type: `Array[String]`
 
@@ -4136,7 +3760,7 @@ Data type: `Array[String]`
 
 Default value: `$nginx::proxy_set_header`
 
-##### <a name="proxy_hide_header"></a>`proxy_hide_header`
+##### `proxy_hide_header`
 
 Data type: `Array[String]`
 
@@ -4144,7 +3768,7 @@ Data type: `Array[String]`
 
 Default value: `$nginx::proxy_hide_header`
 
-##### <a name="proxy_pass_header"></a>`proxy_pass_header`
+##### `proxy_pass_header`
 
 Data type: `Array[String]`
 
@@ -4152,7 +3776,7 @@ Data type: `Array[String]`
 
 Default value: `$nginx::proxy_pass_header`
 
-##### <a name="uwsgi"></a>`uwsgi`
+##### `uwsgi`
 
 Data type: `Optional[String]`
 
@@ -4160,7 +3784,7 @@ Data type: `Optional[String]`
 
 Default value: ``undef``
 
-##### <a name="uwsgi_params"></a>`uwsgi_params`
+##### `uwsgi_params`
 
 Data type: `String`
 
@@ -4168,7 +3792,7 @@ Data type: `String`
 
 Default value: `"${nginx::config::conf_dir}/uwsgi_params"`
 
-##### <a name="location_custom_cfg"></a>`location_custom_cfg`
+##### `location_custom_cfg`
 
 Data type: `Optional[Hash]`
 
@@ -4176,7 +3800,7 @@ Data type: `Optional[Hash]`
 
 Default value: ``undef``
 
-##### <a name="location_cfg_prepend"></a>`location_cfg_prepend`
+##### `location_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -4184,7 +3808,7 @@ Data type: `Optional[Hash]`
 
 Default value: ``undef``
 
-##### <a name="location_cfg_append"></a>`location_cfg_append`
+##### `location_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -4192,7 +3816,7 @@ Data type: `Optional[Hash]`
 
 Default value: ``undef``
 
-##### <a name="location_custom_cfg_prepend"></a>`location_custom_cfg_prepend`
+##### `location_custom_cfg_prepend`
 
 Data type: `Optional[Hash]`
 
@@ -4200,7 +3824,7 @@ Data type: `Optional[Hash]`
 
 Default value: ``undef``
 
-##### <a name="location_custom_cfg_append"></a>`location_custom_cfg_append`
+##### `location_custom_cfg_append`
 
 Data type: `Optional[Hash]`
 
@@ -4208,15 +3832,15 @@ Data type: `Optional[Hash]`
 
 Default value: ``undef``
 
-##### <a name="format_log"></a>`format_log`
+##### `format_log`
 
-Data type: `Any`
+Data type: `Optional[String]`
 
 
 
-Default value: `'combined'`
+Default value: `$nginx::http_format_log`
 
-##### <a name="use_default_location"></a>`use_default_location`
+##### `use_default_location`
 
 Data type: `Any`
 
@@ -4224,7 +3848,7 @@ Data type: `Any`
 
 Default value: ``true``
 
-##### <a name="rewrite_rules"></a>`rewrite_rules`
+##### `rewrite_rules`
 
 Data type: `Any`
 
@@ -4232,7 +3856,7 @@ Data type: `Any`
 
 Default value: `[]`
 
-##### <a name="string_mappings"></a>`string_mappings`
+##### `string_mappings`
 
 Data type: `Any`
 
@@ -4240,7 +3864,7 @@ Data type: `Any`
 
 Default value: `{}`
 
-##### <a name="geo_mappings"></a>`geo_mappings`
+##### `geo_mappings`
 
 Data type: `Any`
 
@@ -4248,21 +3872,15 @@ Data type: `Any`
 
 Default value: `{}`
 
-### <a name="nginxresourcesnippet"></a>`nginx::resource::snippet`
+### `nginx::resource::snippet`
 
 Create a reusable config snippet that can be included by other resources
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::snippet` defined type:
+The following parameters are available in the `nginx::resource::snippet` defined type.
 
-* [`ensure`](#ensure)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`raw_content`](#raw_content)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['absent', 'present']`
 
@@ -4270,7 +3888,7 @@ Enables or disables the specified snippet
 
 Default value: `'present'`
 
-##### <a name="owner"></a>`owner`
+##### `owner`
 
 Data type: `String`
 
@@ -4278,7 +3896,7 @@ Defines owner of the .conf file
 
 Default value: `$nginx::global_owner`
 
-##### <a name="group"></a>`group`
+##### `group`
 
 Data type: `String`
 
@@ -4286,7 +3904,7 @@ Defines group of the .conf file
 
 Default value: `$nginx::global_group`
 
-##### <a name="mode"></a>`mode`
+##### `mode`
 
 Data type: `Stdlib::Filemode`
 
@@ -4294,13 +3912,13 @@ Defines mode of the .conf file
 
 Default value: `$nginx::global_mode`
 
-##### <a name="raw_content"></a>`raw_content`
+##### `raw_content`
 
 Data type: `String[1]`
 
 Raw content that will be inserted into the snipped as-is
 
-### <a name="nginxresourcestreamhost"></a>`nginx::resource::streamhost`
+### `nginx::resource::streamhost`
 
 Create a virtual steamhost
 
@@ -4316,27 +3934,9 @@ nginx::resource::streamhost { 'test2.local':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::streamhost` defined type:
+The following parameters are available in the `nginx::resource::streamhost` defined type.
 
-* [`ensure`](#ensure)
-* [`listen_ip`](#listen_ip)
-* [`listen_port`](#listen_port)
-* [`listen_options`](#listen_options)
-* [`ipv6_enable`](#ipv6_enable)
-* [`ipv6_listen_ip`](#ipv6_listen_ip)
-* [`ipv6_listen_port`](#ipv6_listen_port)
-* [`ipv6_listen_options`](#ipv6_listen_options)
-* [`proxy`](#proxy)
-* [`proxy_read_timeout`](#proxy_read_timeout)
-* [`resolver`](#resolver)
-* [`raw_prepend`](#raw_prepend)
-* [`raw_append`](#raw_append)
-* [`owner`](#owner)
-* [`group`](#group)
-* [`mode`](#mode)
-* [`proxy_connect_timeout`](#proxy_connect_timeout)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['absent', 'present']`
 
@@ -4344,7 +3944,7 @@ Enables or disables the specified streamhost
 
 Default value: `'present'`
 
-##### <a name="listen_ip"></a>`listen_ip`
+##### `listen_ip`
 
 Data type: `Variant[Array, String]`
 
@@ -4353,7 +3953,7 @@ all interfaces (*)
 
 Default value: `'*'`
 
-##### <a name="listen_port"></a>`listen_port`
+##### `listen_port`
 
 Data type: `Integer`
 
@@ -4361,7 +3961,7 @@ Default TCP Port for NGINX to listen with this streamhost on.
 
 Default value: `80`
 
-##### <a name="listen_options"></a>`listen_options`
+##### `listen_options`
 
 Data type: `Optional[String]`
 
@@ -4369,7 +3969,7 @@ Extra options for listen directive like 'default' to catchall.
 
 Default value: ``undef``
 
-##### <a name="ipv6_enable"></a>`ipv6_enable`
+##### `ipv6_enable`
 
 Data type: `Boolean`
 
@@ -4378,7 +3978,7 @@ support exists on your system before enabling.
 
 Default value: ``false``
 
-##### <a name="ipv6_listen_ip"></a>`ipv6_listen_ip`
+##### `ipv6_listen_ip`
 
 Data type: `Variant[Array, String]`
 
@@ -4387,15 +3987,15 @@ to all interfaces (::)
 
 Default value: `'::'`
 
-##### <a name="ipv6_listen_port"></a>`ipv6_listen_port`
+##### `ipv6_listen_port`
 
 Data type: `Integer`
 
 Default IPv6 Port for NGINX to listen with this streamhost on.
 
-Default value: `80`
+Default value: `$listen_port`
 
-##### <a name="ipv6_listen_options"></a>`ipv6_listen_options`
+##### `ipv6_listen_options`
 
 Data type: `String`
 
@@ -4405,7 +4005,7 @@ discussed, default value is 'default'.
 
 Default value: `'default ipv6only=on'`
 
-##### <a name="proxy"></a>`proxy`
+##### `proxy`
 
 Data type: `Any`
 
@@ -4414,7 +4014,7 @@ value, can be used in conjunction with nginx::resource::upstream
 
 Default value: ``undef``
 
-##### <a name="proxy_read_timeout"></a>`proxy_read_timeout`
+##### `proxy_read_timeout`
 
 Data type: `String`
 
@@ -4422,7 +4022,7 @@ Override the default the proxy read timeout value of 90 seconds
 
 Default value: `$nginx::proxy_read_timeout`
 
-##### <a name="resolver"></a>`resolver`
+##### `resolver`
 
 Data type: `Array`
 
@@ -4431,7 +4031,7 @@ addresses.
 
 Default value: `[]`
 
-##### <a name="raw_prepend"></a>`raw_prepend`
+##### `raw_prepend`
 
 Data type: `Variant[Array[String], String]`
 
@@ -4441,7 +4041,7 @@ on each line that requires one.
 
 Default value: `[]`
 
-##### <a name="raw_append"></a>`raw_append`
+##### `raw_append`
 
 Data type: `Variant[Array[String], String]`
 
@@ -4451,7 +4051,7 @@ each line that requires one.
 
 Default value: `[]`
 
-##### <a name="owner"></a>`owner`
+##### `owner`
 
 Data type: `String`
 
@@ -4459,7 +4059,7 @@ Defines owner of the .conf file
 
 Default value: `$nginx::global_owner`
 
-##### <a name="group"></a>`group`
+##### `group`
 
 Data type: `String`
 
@@ -4467,7 +4067,7 @@ Defines group of the .conf file
 
 Default value: `$nginx::global_group`
 
-##### <a name="mode"></a>`mode`
+##### `mode`
 
 Data type: `String`
 
@@ -4475,7 +4075,7 @@ Defines mode of the .conf file Default to return 503
 
 Default value: `$nginx::global_mode`
 
-##### <a name="proxy_connect_timeout"></a>`proxy_connect_timeout`
+##### `proxy_connect_timeout`
 
 Data type: `Any`
 
@@ -4483,7 +4083,7 @@ Data type: `Any`
 
 Default value: `$nginx::proxy_connect_timeout`
 
-### <a name="nginxresourceupstream"></a>`nginx::resource::upstream`
+### `nginx::resource::upstream`
 
 Create a new upstream proxy entry for NGINX
 
@@ -4537,31 +4137,9 @@ nginx::resource::upstream { 'proxypass':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::upstream` defined type:
+The following parameters are available in the `nginx::resource::upstream` defined type.
 
-* [`ensure`](#ensure)
-* [`context`](#context)
-* [`members`](#members)
-* [`members_tag`](#members_tag)
-* [`member_defaults`](#member_defaults)
-* [`hash`](#hash)
-* [`ip_hash`](#ip_hash)
-* [`keepalive`](#keepalive)
-* [`keepalive_requests`](#keepalive_requests)
-* [`keepalive_timeout`](#keepalive_timeout)
-* [`least_conn`](#least_conn)
-* [`least_time`](#least_time)
-* [`ntlm`](#ntlm)
-* [`queue_max`](#queue_max)
-* [`queue_timeout`](#queue_timeout)
-* [`random`](#random)
-* [`statefile`](#statefile)
-* [`sticky`](#sticky)
-* [`zone`](#zone)
-* [`cfg_append`](#cfg_append)
-* [`cfg_prepend`](#cfg_prepend)
-
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -4569,7 +4147,7 @@ Enables or disables the specified location
 
 Default value: `'present'`
 
-##### <a name="context"></a>`context`
+##### `context`
 
 Data type: `Enum['http', 'stream']`
 
@@ -4577,7 +4155,7 @@ Set the type of this upstream.
 
 Default value: `'http'`
 
-##### <a name="members"></a>`members`
+##### `members`
 
 Data type: `Nginx::UpstreamMembers`
 
@@ -4587,7 +4165,7 @@ nginx::resource::upstream::member
 
 Default value: `{}`
 
-##### <a name="members_tag"></a>`members_tag`
+##### `members_tag`
 
 Data type: `Optional[String[1]]`
 
@@ -4595,7 +4173,7 @@ Restrict collecting the exported members for this upstream with a tag.
 
 Default value: ``undef``
 
-##### <a name="member_defaults"></a>`member_defaults`
+##### `member_defaults`
 
 Data type: `Nginx::UpstreamMemberDefaults`
 
@@ -4603,7 +4181,7 @@ Specify default settings added to each member of this upstream.
 
 Default value: `{}`
 
-##### <a name="hash"></a>`hash`
+##### `hash`
 
 Data type: `Optional[String[1]]`
 
@@ -4612,7 +4190,7 @@ Activate the hash load balancing method
 
 Default value: ``undef``
 
-##### <a name="ip_hash"></a>`ip_hash`
+##### `ip_hash`
 
 Data type: `Boolean`
 
@@ -4621,7 +4199,7 @@ Activate ip_hash for this upstream
 
 Default value: ``false``
 
-##### <a name="keepalive"></a>`keepalive`
+##### `keepalive`
 
 Data type: `Optional[Integer[1]]`
 
@@ -4630,7 +4208,7 @@ Set the maximum number of idle keepalive connections
 
 Default value: ``undef``
 
-##### <a name="keepalive_requests"></a>`keepalive_requests`
+##### `keepalive_requests`
 
 Data type: `Optional[Integer[1]]`
 
@@ -4640,7 +4218,7 @@ keepalive connection
 
 Default value: ``undef``
 
-##### <a name="keepalive_timeout"></a>`keepalive_timeout`
+##### `keepalive_timeout`
 
 Data type: `Optional[Nginx::Time]`
 
@@ -4650,7 +4228,7 @@ server will stay open
 
 Default value: ``undef``
 
-##### <a name="least_conn"></a>`least_conn`
+##### `least_conn`
 
 Data type: `Boolean`
 
@@ -4659,7 +4237,7 @@ Activate the least_conn load balancing method
 
 Default value: ``false``
 
-##### <a name="least_time"></a>`least_time`
+##### `least_time`
 
 Data type: `Optional[Nginx::UpstreamLeastTime]`
 
@@ -4668,7 +4246,7 @@ Activate the least_time load balancing method
 
 Default value: ``undef``
 
-##### <a name="ntlm"></a>`ntlm`
+##### `ntlm`
 
 Data type: `Boolean`
 
@@ -4677,7 +4255,7 @@ Allow NTLM authentication
 
 Default value: ``false``
 
-##### <a name="queue_max"></a>`queue_max`
+##### `queue_max`
 
 Data type: `Optional[Integer]`
 
@@ -4686,7 +4264,7 @@ Set the maximum number of queued requests
 
 Default value: ``undef``
 
-##### <a name="queue_timeout"></a>`queue_timeout`
+##### `queue_timeout`
 
 Data type: `Optional[Nginx::Time]`
 
@@ -4695,7 +4273,7 @@ Set the timeout for the queue
 
 Default value: ``undef``
 
-##### <a name="random"></a>`random`
+##### `random`
 
 Data type: `Optional[String[1]]`
 
@@ -4704,7 +4282,7 @@ Activate the random load balancing method
 
 Default value: ``undef``
 
-##### <a name="statefile"></a>`statefile`
+##### `statefile`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -4713,7 +4291,7 @@ Specifies a file that keeps the state of the dynamically configurable group
 
 Default value: ``undef``
 
-##### <a name="sticky"></a>`sticky`
+##### `sticky`
 
 Data type: `Optional[Nginx::UpstreamSticky]`
 
@@ -4722,7 +4300,7 @@ Enables session affinity
 
 Default value: ``undef``
 
-##### <a name="zone"></a>`zone`
+##### `zone`
 
 Data type: `Optional[Nginx::UpstreamZone]`
 
@@ -4731,7 +4309,7 @@ Defines the name and optional the size of the shared memory zone
 
 Default value: ``undef``
 
-##### <a name="cfg_append"></a>`cfg_append`
+##### `cfg_append`
 
 Data type: `Nginx::UpstreamCustomParameters`
 
@@ -4739,7 +4317,7 @@ Hash of custom directives to put after other directives in upstream
 
 Default value: `{}`
 
-##### <a name="cfg_prepend"></a>`cfg_prepend`
+##### `cfg_prepend`
 
 Data type: `Nginx::UpstreamCustomParameters`
 
@@ -4748,7 +4326,7 @@ upstream
 
 Default value: `{}`
 
-### <a name="nginxresourceupstreammember"></a>`nginx::resource::upstream::member`
+### `nginx::resource::upstream::member`
 
 Export this resource in all upstream member servers and collect them on the
 NGINX server. Exporting resources requires storeconfigs on the Puppetserver
@@ -4777,34 +4355,15 @@ nginx::resource::upstream { 'proxypass':
 
 #### Parameters
 
-The following parameters are available in the `nginx::resource::upstream::member` defined type:
+The following parameters are available in the `nginx::resource::upstream::member` defined type.
 
-* [`upstream`](#upstream)
-* [`ensure`](#ensure)
-* [`context`](#context)
-* [`server`](#server)
-* [`port`](#port)
-* [`weight`](#weight)
-* [`max_conns`](#max_conns)
-* [`max_fails`](#max_fails)
-* [`fail_timeout`](#fail_timeout)
-* [`backup`](#backup)
-* [`resolve`](#resolve)
-* [`route`](#route)
-* [`service`](#service)
-* [`slow_start`](#slow_start)
-* [`state`](#state)
-* [`params_prepend`](#params_prepend)
-* [`params_append`](#params_append)
-* [`comment`](#comment)
-
-##### <a name="upstream"></a>`upstream`
+##### `upstream`
 
 Data type: `String[1]`
 
 The name of the upstream resource
 
-##### <a name="ensure"></a>`ensure`
+##### `ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -4812,7 +4371,7 @@ Enables or disables the specified member
 
 Default value: `'present'`
 
-##### <a name="context"></a>`context`
+##### `context`
 
 Data type: `Enum['http', 'stream']`
 
@@ -4820,7 +4379,7 @@ Set the type of this upstream
 
 Default value: `'http'`
 
-##### <a name="server"></a>`server`
+##### `server`
 
 Data type: `Optional[Nginx::UpstreamMemberServer]`
 
@@ -4828,7 +4387,7 @@ Hostname or IP of the upstream member server
 
 Default value: `$name`
 
-##### <a name="port"></a>`port`
+##### `port`
 
 Data type: `Stdlib::Port`
 
@@ -4836,7 +4395,7 @@ Port of the listening service on the upstream member
 
 Default value: `80`
 
-##### <a name="weight"></a>`weight`
+##### `weight`
 
 Data type: `Optional[Integer[1]]`
 
@@ -4844,7 +4403,7 @@ Set the weight for this upstream member
 
 Default value: ``undef``
 
-##### <a name="max_conns"></a>`max_conns`
+##### `max_conns`
 
 Data type: `Optional[Integer[1]]`
 
@@ -4852,7 +4411,7 @@ Set the max_conns for this upstream member
 
 Default value: ``undef``
 
-##### <a name="max_fails"></a>`max_fails`
+##### `max_fails`
 
 Data type: `Optional[Integer[0]]`
 
@@ -4860,7 +4419,7 @@ Set the max_fails for this upstream member
 
 Default value: ``undef``
 
-##### <a name="fail_timeout"></a>`fail_timeout`
+##### `fail_timeout`
 
 Data type: `Optional[Nginx::Time]`
 
@@ -4868,7 +4427,7 @@ Set the fail_timeout for this upstream member
 
 Default value: ``undef``
 
-##### <a name="backup"></a>`backup`
+##### `backup`
 
 Data type: `Boolean`
 
@@ -4876,7 +4435,7 @@ Activate backup for this upstream member
 
 Default value: ``false``
 
-##### <a name="resolve"></a>`resolve`
+##### `resolve`
 
 Data type: `Boolean`
 
@@ -4884,7 +4443,7 @@ Activate resolve for this upstream member
 
 Default value: ``false``
 
-##### <a name="route"></a>`route`
+##### `route`
 
 Data type: `Optional[String[1]]`
 
@@ -4892,7 +4451,7 @@ Set the route for this upstream member
 
 Default value: ``undef``
 
-##### <a name="service"></a>`service`
+##### `service`
 
 Data type: `Optional[String[1]]`
 
@@ -4900,7 +4459,7 @@ Set the service for this upstream member
 
 Default value: ``undef``
 
-##### <a name="slow_start"></a>`slow_start`
+##### `slow_start`
 
 Data type: `Optional[Nginx::Time]`
 
@@ -4908,7 +4467,7 @@ Set the slow_start for this upstream member
 
 Default value: ``undef``
 
-##### <a name="state"></a>`state`
+##### `state`
 
 Data type: `Optional[Enum['drain','down']]`
 
@@ -4916,7 +4475,7 @@ Set the state for this upstream member
 
 Default value: ``undef``
 
-##### <a name="params_prepend"></a>`params_prepend`
+##### `params_prepend`
 
 Data type: `Optional[String[1]]`
 
@@ -4924,7 +4483,7 @@ prepend a parameter for this upstream member
 
 Default value: ``undef``
 
-##### <a name="params_append"></a>`params_append`
+##### `params_append`
 
 Data type: `Optional[String[1]]`
 
@@ -4932,7 +4491,7 @@ append a paremeter for this upstream member
 
 Default value: ``undef``
 
-##### <a name="comment"></a>`comment`
+##### `comment`
 
 Data type: `Optional[String[1]]`
 
@@ -4942,54 +4501,35 @@ Default value: ``undef``
 
 ## Data types
 
-### <a name="nginxdebugconnection"></a>`Nginx::DebugConnection`
+### `Nginx::DebugConnection`
 
 The Nginx::DebugConnection data type.
 
-Alias of
+Alias of `Variant[Stdlib::Host, Stdlib::IP::Address, Enum['unix:']]`
 
-```puppet
-Variant[Stdlib::Host, Stdlib::IP::Address, Enum['unix:']]
-```
-
-### <a name="nginxerrorlogseverity"></a>`Nginx::ErrorLogSeverity`
+### `Nginx::ErrorLogSeverity`
 
 The Nginx::ErrorLogSeverity data type.
 
-Alias of
+Alias of `Enum['debug', 'info', 'notice', 'warn', 'error', 'crit', 'alert', 'emerg']`
 
-```puppet
-Enum['debug', 'info', 'notice', 'warn', 'error', 'crit', 'alert', 'emerg']
-```
-
-### <a name="nginxsize"></a>`Nginx::Size`
+### `Nginx::Size`
 
 The Nginx::Size data type.
 
-Alias of
+Alias of `Pattern[/^\d+[k|K|m|M]?$/]`
 
-```puppet
-Pattern[/^\d+[k|K|m|M]?$/]
-```
-
-### <a name="nginxtime"></a>`Nginx::Time`
+### `Nginx::Time`
 
 The Nginx::Time data type.
 
-Alias of
+Alias of `Pattern[/^\d+(ms|s|m|h|d|w|M|y)?$/]`
 
-```puppet
-Pattern[/^\d+(ms|s|m|h|d|w|M|y)?$/]
-```
-
-### <a name="nginxupstreamcustomparameters"></a>`Nginx::UpstreamCustomParameters`
+### `Nginx::UpstreamCustomParameters`
 
 The Nginx::UpstreamCustomParameters data type.
 
-Alias of
-
-```puppet
-Hash[String[1], Variant[
+Alias of `Hash[String[1], Variant[
     String[1],
     Integer,
     Array[
@@ -5010,17 +4550,13 @@ Hash[String[1], Variant[
         ]
       ]
     ]
-  ]]
-```
+  ]]`
 
-### <a name="nginxupstreamdefaults"></a>`Nginx::UpstreamDefaults`
+### `Nginx::UpstreamDefaults`
 
 The Nginx::UpstreamDefaults data type.
 
-Alias of
-
-```puppet
-Struct[{
+Alias of `Struct[{
   context           => Optional[Enum['http', 'stream']],
   member_defaults   => Optional[Nginx::UpstreamMemberDefaults],
   hash              => Optional[String],
@@ -5039,47 +4575,31 @@ Struct[{
   zone              => Optional[Nginx::UpstreamZone],
   cfg_append        => Optional[Hash],
   cfg_prepend       => Optional[Hash],
-}]
-```
+}]`
 
-### <a name="nginxupstreamleasttime"></a>`Nginx::UpstreamLeastTime`
+### `Nginx::UpstreamLeastTime`
 
 The Nginx::UpstreamLeastTime data type.
 
-Alias of
+Alias of `Variant[Nginx::UpstreamLeastTimeHttp, Nginx::UpstreamLeastTimeStream]`
 
-```puppet
-Variant[Nginx::UpstreamLeastTimeHttp, Nginx::UpstreamLeastTimeStream]
-```
-
-### <a name="nginxupstreamleasttimehttp"></a>`Nginx::UpstreamLeastTimeHttp`
+### `Nginx::UpstreamLeastTimeHttp`
 
 The Nginx::UpstreamLeastTimeHttp data type.
 
-Alias of
+Alias of `Enum['header', 'header inflight', 'last_byte', 'last_byte inflight']`
 
-```puppet
-Enum['header', 'header inflight', 'last_byte', 'last_byte inflight']
-```
-
-### <a name="nginxupstreamleasttimestream"></a>`Nginx::UpstreamLeastTimeStream`
+### `Nginx::UpstreamLeastTimeStream`
 
 The Nginx::UpstreamLeastTimeStream data type.
 
-Alias of
+Alias of `Enum['connect', 'connect inflight', 'first_byte', 'first_byte inflight', 'last_byte', 'last_byte inflight']`
 
-```puppet
-Enum['connect', 'connect inflight', 'first_byte', 'first_byte inflight', 'last_byte', 'last_byte inflight']
-```
-
-### <a name="nginxupstreammember"></a>`Nginx::UpstreamMember`
+### `Nginx::UpstreamMember`
 
 The Nginx::UpstreamMember data type.
 
-Alias of
-
-```puppet
-Struct[{
+Alias of `Struct[{
   server         => Optional[Nginx::UpstreamMemberServer],
   port           => Optional[Stdlib::Port],
   weight         => Optional[Integer[1]],
@@ -5095,17 +4615,13 @@ Struct[{
   params_prepend => Optional[String],
   params_append  => Optional[String],
   comment        => Optional[String],
-}]
-```
+}]`
 
-### <a name="nginxupstreammemberdefaults"></a>`Nginx::UpstreamMemberDefaults`
+### `Nginx::UpstreamMemberDefaults`
 
 The Nginx::UpstreamMemberDefaults data type.
 
-Alias of
-
-```puppet
-Struct[{
+Alias of `Struct[{
   server         => Optional[Nginx::UpstreamMemberServer],
   port           => Optional[Stdlib::Port],
   weight         => Optional[Integer[1]],
@@ -5120,37 +4636,25 @@ Struct[{
   state          => Optional[Enum['drain','down']],
   params_prepend => Optional[String],
   params_append  => Optional[String],
-}]
-```
+}]`
 
-### <a name="nginxupstreammemberserver"></a>`Nginx::UpstreamMemberServer`
+### `Nginx::UpstreamMemberServer`
 
 The Nginx::UpstreamMemberServer data type.
 
-Alias of
+Alias of `Variant[Stdlib::Host, Pattern[/^unix:\/([^\/\0]+\/*)[^:]*$/]]`
 
-```puppet
-Variant[Stdlib::Host, Pattern[/^unix:\/([^\/\0]+\/*)[^:]*$/]]
-```
-
-### <a name="nginxupstreammembers"></a>`Nginx::UpstreamMembers`
+### `Nginx::UpstreamMembers`
 
 The Nginx::UpstreamMembers data type.
 
-Alias of
+Alias of `Hash[String, Nginx::UpstreamMember]`
 
-```puppet
-Hash[String, Nginx::UpstreamMember]
-```
-
-### <a name="nginxupstreamsticky"></a>`Nginx::UpstreamSticky`
+### `Nginx::UpstreamSticky`
 
 The Nginx::UpstreamSticky data type.
 
-Alias of
-
-```puppet
-Variant[Hash[
+Alias of `Variant[Hash[
     Enum['cookie'],
     Struct[{
       name     => String,
@@ -5173,26 +4677,17 @@ Variant[Hash[
       header  => Optional[Boolean],
       sync    => Optional[Boolean],
     }]
-  ]]
-```
+  ]]`
 
-### <a name="nginxupstreamstickyzone"></a>`Nginx::UpstreamStickyZone`
+### `Nginx::UpstreamStickyZone`
 
 The Nginx::UpstreamStickyZone data type.
 
-Alias of
+Alias of `Pattern[/^[-_\.A-Za-z0-9]*:\d+[k|K|m|M]$/]`
 
-```puppet
-Pattern[/^[-_\.A-Za-z0-9]*:\d+[k|K|m|M]$/]
-```
-
-### <a name="nginxupstreamzone"></a>`Nginx::UpstreamZone`
+### `Nginx::UpstreamZone`
 
 The Nginx::UpstreamZone data type.
 
-Alias of
-
-```puppet
-Pattern[/^[-_\.A-Za-z0-9]* \d+[k|K|m|M]$/]
-```
+Alias of `Pattern[/^[-_\.A-Za-z0-9]* \d+[k|K|m|M]$/]`
 
