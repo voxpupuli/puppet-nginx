@@ -22,6 +22,12 @@ class nginx::package::debian {
     include 'apt'
     Exec['apt_update'] -> Package['nginx']
 
+    if $facts['os']['architecture'] == 'amd64' and $facts['os']['name'] == 'Ubuntu' {
+      $architecture = 'amd64'
+    } else {
+      $architecture = undef
+    }
+
     case $package_source {
       'nginx', 'nginx-stable': {
         $stable_repo_source = $repo_source ? {
@@ -29,10 +35,11 @@ class nginx::package::debian {
           default => $repo_source,
         }
         apt::source { 'nginx':
-          location => $stable_repo_source,
-          repos    => 'nginx',
-          key      => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
-          release  => $release,
+          location     => $stable_repo_source,
+          repos        => 'nginx',
+          key          => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
+          release      => $release,
+          architecture => $architecture,
         }
       }
       'nginx-mainline': {
@@ -41,10 +48,11 @@ class nginx::package::debian {
           default => $repo_source,
         }
         apt::source { 'nginx':
-          location => $mainline_repo_source,
-          repos    => 'nginx',
-          key      => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
-          release  => $release,
+          location     => $mainline_repo_source,
+          repos        => 'nginx',
+          key          => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
+          release      => $release,
+          architecture => $architecture,
         }
       }
       'passenger': {
@@ -53,9 +61,10 @@ class nginx::package::debian {
           default => $repo_source,
         }
         apt::source { 'nginx':
-          location => $passenger_repo_source,
-          repos    => 'main',
-          key      => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' },
+          location     => $passenger_repo_source,
+          repos        => 'main',
+          key          => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' },
+          architecture => $architecture,
         }
 
         package { $passenger_package_name:
