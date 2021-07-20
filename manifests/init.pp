@@ -44,6 +44,9 @@
 # @param nginx_snippets_defaults
 #   Can be used to define default values for the parameter `nginx_snippets`.
 #
+# @param dnfmodule
+#   Specifies which dnf AppStream stream to enable for nginx package.
+#
 class nginx (
   ### START Nginx Configuration ###
   Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]] $client_body_temp_path      = undef,
@@ -209,6 +212,7 @@ class nginx (
   String $passenger_package_ensure                           = installed,
   String[1] $passenger_package_name                          = $nginx::params::passenger_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
+  Optional[String[1]] $dnfmodule                             = undef,
   ### END Package Configuration ###
 
   ### START Service Configuation ###

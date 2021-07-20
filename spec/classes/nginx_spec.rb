@@ -151,6 +151,30 @@ describe 'nginx' do
             end
           end
 
+          context 'dnfmodule => 1.18' do
+            let(:params) { { dnfmodule: '1.18' } }
+
+            it do
+              is_expected.to contain_package('nginx')
+            end
+
+            if %w[8].include?(facts.dig(:os, 'release', 'major'))
+              it do
+                is_expected.to contain_package('nginx:1.18').with(
+                  'ensure'      => '1.18',
+                  'name'        => 'nginx',
+                  'before'      => 'Package[nginx]',
+                  'provider'    => 'dnfmodule',
+                  'enable_only' => true
+                )
+              end
+            else
+              it do
+                is_expected.not_to contain_package('nginx:1.18')
+              end
+            end
+          end
+
         when 'Debian'
           context 'using defaults' do
             it { is_expected.to contain_package('nginx') }

@@ -82,6 +82,7 @@ The following parameters are available in the `nginx` class:
 * [`reset_timedout_connection`](#-nginx--reset_timedout_connection)
 * [`nginx_snippets`](#-nginx--nginx_snippets)
 * [`nginx_snippets_defaults`](#-nginx--nginx_snippets_defaults)
+* [`dnfmodule`](#-nginx--dnfmodule)
 * [`client_body_temp_path`](#-nginx--client_body_temp_path)
 * [`confd_only`](#-nginx--confd_only)
 * [`confd_purge`](#-nginx--confd_purge)
@@ -330,6 +331,14 @@ Data type: `Hash`
 Can be used to define default values for the parameter `nginx_snippets`.
 
 Default value: `{}`
+
+##### <a name="-nginx--dnfmodule"></a>`dnfmodule`
+
+Data type: `Optional[String[1]]`
+
+Specifies which dnf AppStream stream to enable for nginx package.
+
+Default value: `undef`
 
 ##### <a name="-nginx--client_body_temp_path"></a>`client_body_temp_path`
 
