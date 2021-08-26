@@ -25,7 +25,7 @@ By participating in this project you agree to abide by its terms.
 
 * Fork the repo.
 * Create a separate branch for your change.
-* We only take pull requests with passing tests, and documentation. [travis-ci](http://travis-ci.org) runs the tests for us. You can also execute them locally. This is explained [in a later section](#the-test-matrix).
+* We only take pull requests with passing tests, and documentation. [GitHub Actions](https://docs.github.com/en/actions) run the tests for us. You can also execute them locally. This is explained [in a later section](#the-test-matrix).
 * Checkout [our docs](https://voxpupuli.org/docs/reviewing_pr/) we use to review a module and the [official styleguide](https://puppet.com/docs/puppet/6.0/style_guide.html). They provide some guidance for new code that might help you before you submit a pull request.
 * Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, please add a test.
 * Squash your commits down into logical components. Make sure to rebase against our current master.

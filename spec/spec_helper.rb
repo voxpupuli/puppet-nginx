@@ -1,6 +1,5 @@
-# This file is managed via modulesync
-# https://github.com/voxpupuli/modulesync
-# https://github.com/voxpupuli/modulesync_config
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
 # puppetlabs_spec_helper will set up coverage if the env variable is set.
 # We want to do this if lib exists and it hasn't been explicitly set.
