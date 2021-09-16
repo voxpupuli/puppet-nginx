@@ -81,6 +81,8 @@
 #   optional FastCGI index page
 # @param fastcgi_script
 #   optional SCRIPT_FILE parameter
+# @param uwsgi_param
+#   Set additional custom uwsgi_params
 # @param uwsgi_read_timeout
 #   optional value for uwsgi_read_timeout
 # @param ssl
@@ -354,6 +356,7 @@ define nginx::resource::server (
   String $fastcgi_params                                                         = "${nginx::conf_dir}/fastcgi.conf",
   Optional[String] $fastcgi_script                                               = undef,
   Optional[String] $uwsgi                                                        = undef,
+  Optional[Hash] $uwsgi_param                                                    = undef,
   String $uwsgi_params                                                           = "${nginx::config::conf_dir}/uwsgi_params",
   Optional[String] $uwsgi_read_timeout                                           = undef,
   Array $index_files                                                             = [
@@ -536,6 +539,7 @@ define nginx::resource::server (
       fastcgi_params              => $fastcgi_params,
       fastcgi_script              => $fastcgi_script,
       uwsgi                       => $uwsgi,
+      uwsgi_param                 => $uwsgi_param,
       uwsgi_params                => $uwsgi_params,
       uwsgi_read_timeout          => $uwsgi_read_timeout,
       try_files                   => $try_files,
