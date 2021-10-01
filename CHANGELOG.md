@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v3.2.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.2.0) (2021-05-28)
+## [v3.2.1](https://github.com/voxpupuli/puppet-nginx/tree/v3.2.1) (2021-10-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.2.0...v3.2.1)
+
+**Closed issues:**
+
+- Nginx::Resource::Server: has no parameter named 'proxy\_cookie\_path' [\#1458](https://github.com/voxpupuli/puppet-nginx/issues/1458)
+
+**Merged pull requests:**
+
+- Fix CI on CentOS 7 [\#1473](https://github.com/voxpupuli/puppet-nginx/pull/1473) ([smortex](https://github.com/smortex))
+- Allow stdlib 8.0.0 [\#1465](https://github.com/voxpupuli/puppet-nginx/pull/1465) ([smortex](https://github.com/smortex))
+
+## [v3.2.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.2.0) (2021-06-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.1.0...v3.2.0)
 
