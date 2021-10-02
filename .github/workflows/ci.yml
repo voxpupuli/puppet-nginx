@@ -1,6 +1,14 @@
+---
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
+
 name: CI
 
 on: pull_request
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   setup_matrix:
@@ -8,20 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     outputs:
-      beaker_setfiles: ${{ steps.get-outputs.outputs.beaker_setfiles }}
-      puppet_major_versions: ${{ steps.get-outputs.outputs.puppet_major_versions }}
       puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+      github_action_test_matrix: ${{ steps.get-outputs.outputs.github_action_test_matrix }}
     env:
-      BUNDLE_WITHOUT: development:release
+      BUNDLE_WITHOUT: development:system_tests:release
     steps:
       - uses: actions/checkout@v2
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.0'
           bundler-cache: true
-      - name: Run rake validate
-        run: bundle exec rake validate
+      - name: Run static validations
+        run: bundle exec rake validate lint check
       - name: Run rake rubocop
         run: bundle exec rake rubocop
       - name: Setup Test Matrix
@@ -48,7 +55,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run tests
-        run: bundle exec rake
+        run: bundle exec rake parallel_spec
 
   acceptance:
     needs: setup_matrix
@@ -58,18 +65,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        setfile: ${{fromJson(needs.setup_matrix.outputs.beaker_setfiles)}}
-        puppet: ${{fromJson(needs.setup_matrix.outputs.puppet_major_versions)}}
+        include: ${{fromJson(needs.setup_matrix.outputs.github_action_test_matrix)}}
     name: ${{ matrix.puppet.name }} - ${{ matrix.setfile.name }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.0'
           bundler-cache: true
       - name: Run tests
         run: bundle exec rake beaker
         env:
           BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet.collection }}
           BEAKER_setfile: ${{ matrix.setfile.value }}
+
+  tests:
+    needs:
+      - unit
+      - acceptance
+    runs-on: ubuntu-latest
+    name: Test suite
+    steps:
+      - run: echo Test suite completed
