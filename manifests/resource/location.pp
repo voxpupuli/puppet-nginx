@@ -319,9 +319,9 @@ define nginx::resource::location (
   Hash $add_header                                                 = {},
   Optional[Enum['on', 'off', 'always']] $gzip_static               = undef,
   Optional[Enum['on', 'off']] $reset_timedout_connection           = undef,
-  Optional[Variant[Array, String]] $access_log                     = undef,
-  Optional[Variant[Array, String]] $error_log                      = undef,
-  Optional[String] $format_log                                     = $nginx::http_format_log,
+  Optional[Variant[Array[String[1], 1], String[1]]] $access_log    = undef,
+  Optional[Variant[Array[String[1], 1], String[1]]] $error_log     = undef,
+  Optional[String[1]] $format_log                                  = $nginx::http_format_log,
   Optional[Enum['on', 'off']] $log_not_found                       = undef,
 ) {
   if !defined(Class['nginx']) {
