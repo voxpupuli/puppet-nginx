@@ -3,8 +3,18 @@ require 'spec_helper_acceptance'
 describe 'nginx::resource::mailhost define:' do
   it 'runs successfully' do
     pp = "
+    if fact('os.family') == 'RedHat' {
+      package { 'nginx-mod-mail':
+        ensure => installed,
+      }
+    }
+
     class { 'nginx':
-      mail => true,
+      mail            => true,
+      dynamic_modules => fact('os.family') ? {
+        'RedHat' => ['/usr/lib64/nginx/modules/ngx_mail_module.so'],
+        default  => [],
+      }
     }
     nginx::resource::mailhost { 'domain1.example':
       ensure      => present,
@@ -39,9 +49,19 @@ describe 'nginx::resource::mailhost define:' do
   context 'when configured for nginx 1.14' do
     it 'runs successfully' do
       pp = "
+    if fact('os.family') == 'RedHat' {
+      package { 'nginx-mod-mail':
+        ensure => installed,
+      }
+    }
+
     class { 'nginx':
-      mail          => true,
-      nginx_version => '1.14.0',
+      mail            => true,
+      nginx_version   => '1.14.0',
+      dynamic_modules => fact('os.family') ? {
+        'RedHat' => ['/usr/lib64/nginx/modules/ngx_mail_module.so'],
+        default  => [],
+      }
     }
     nginx::resource::mailhost { 'domain1.example':
       ensure      => present,

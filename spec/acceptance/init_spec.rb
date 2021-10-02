@@ -4,7 +4,14 @@ describe 'nginx class' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
-      pp = 'include nginx'
+      pp = "
+      include nginx
+
+      nginx::resource::server { 'example.com':
+        ensure   => present,
+        www_root => '/var/www/html',
+      }
+      "
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -35,7 +42,16 @@ describe 'nginx class' do
   context 'with service_config_check true' do
     # Using puppet_apply as a helper
     it 'works idempotently with no errors' do
-      pp = "class { 'nginx': service_config_check => true, }"
+      pp = "
+      class { 'nginx':
+        service_config_check => true,
+      }
+
+      nginx::resource::server { 'example.com':
+        ensure   => present,
+        www_root => '/var/www/html',
+      }
+      "
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
