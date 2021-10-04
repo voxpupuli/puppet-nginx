@@ -145,6 +145,7 @@ class nginx (
     'Host $host',
     'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
+    'X-Forwarded-Proto $scheme',
     'Proxy ""',
   ],
   Array $proxy_hide_header                                   = [],
