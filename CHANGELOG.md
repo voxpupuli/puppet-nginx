@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v3.3.0) (2021-10-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.2.1...v3.3.0)
+
+**Implemented enhancements:**
+
+- Set X-Forwarded-Proto by default for reverse proxies [\#1462](https://github.com/voxpupuli/puppet-nginx/pull/1462) ([bruhadavid](https://github.com/bruhadavid))
+
+**Closed issues:**
+
+- Release with stdlib up to 9.0.0 [\#1469](https://github.com/voxpupuli/puppet-nginx/issues/1469)
+
 ## [v3.2.1](https://github.com/voxpupuli/puppet-nginx/tree/v3.2.1) (2021-10-04)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.2.0...v3.2.1)
