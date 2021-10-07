@@ -44,9 +44,22 @@
 # @param nginx_snippets_defaults
 #   Can be used to define default values for the parameter `nginx_snippets`.
 #
+# @param proxy_temp_mode
+#   Permissions for the $proxy_temp_path file resource.
+#
+# @param proxy_temp_path
+#   Directory for storing temporary files with data received from proxied servers.
+#
+# @param client_body_temp_path
+#   Directory for storing temporary files holding client request bodies.
+#
+# @param client_body_temp_mode
+#    Permissions for the $client_body_temp_path file resource.
+#
 class nginx (
   ### START Nginx Configuration ###
   Optional[Stdlib::Absolutepath] $client_body_temp_path      = undef,
+  Optional[Stdlib::Filemode] $client_body_temp_mode          = undef,
   Boolean $confd_only                                        = false,
   Boolean $confd_purge                                       = false,
   $conf_dir                                                  = $nginx::params::conf_dir,
@@ -69,6 +82,7 @@ class nginx (
   Nginx::ErrorLogSeverity $nginx_error_log_severity          = 'error',
   $pid                                                       = $nginx::params::pid,
   Optional[Stdlib::Absolutepath] $proxy_temp_path            = undef,
+  Optional[Stdlib::Filemode] $proxy_temp_mode                = undef,
   $root_group                                                = $nginx::params::root_group,
   $sites_available_owner                                     = $nginx::params::sites_available_owner,
   $sites_available_group                                     = $nginx::params::sites_available_group,

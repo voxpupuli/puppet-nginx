@@ -1427,6 +1427,52 @@ describe 'nginx' do
             it { is_expected.to contain_file('/var/log/nginx').with(mode: '0771') }
           end
 
+          context 'when proxy_temp_path is non-default' do
+            let(:params) { { proxy_temp_path: '/tmp/nginx_proxy' } }
+
+            it do
+              is_expected.to contain_file('/tmp/nginx_proxy').
+                without('mode')
+            end
+          end
+
+          context 'when proxy_temp_mode is non-default' do
+            let(:params) do
+              {
+                proxy_temp_path: '/tmp/nginx_proxy',
+                proxy_temp_mode: '0771',
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/tmp/nginx_proxy').
+                with_mode('0771')
+            end
+          end
+
+          context 'when client_body_temp_path is non-default' do
+            let(:params) { { client_body_temp_path: '/tmp/nginx_client' } }
+
+            it do
+              is_expected.to contain_file('/tmp/nginx_client').
+                without('mode')
+            end
+          end
+
+          context 'when client_body_temp_mode is non-default' do
+            let(:params) do
+              {
+                client_body_temp_path: '/tmp/nginx_client',
+                client_body_temp_mode: '0771',
+              }
+            end
+
+            it do
+              is_expected.to contain_file('/tmp/nginx_client').
+                with_mode('0771')
+            end
+          end
+
           context 'when gzip is non-default (on) test gzip defaults' do
             let(:params) { { gzip: 'on' } }
 

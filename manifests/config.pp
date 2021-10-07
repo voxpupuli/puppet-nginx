@@ -206,7 +206,7 @@ class nginx::config {
     file { $client_body_temp_path:
       ensure => directory,
       owner  => $daemon_user,
-      mode   => '0700',
+      mode   => $nginx::client_body_temp_mode,
     }
   }
 
@@ -214,7 +214,7 @@ class nginx::config {
     file { $proxy_temp_path:
       ensure => directory,
       owner  => $daemon_user,
-      mode   => '0700',
+      mode   => $nginx::proxy_temp_mode,
     }
   }
 
