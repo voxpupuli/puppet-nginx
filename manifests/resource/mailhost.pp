@@ -153,7 +153,7 @@ define nginx::resource::mailhost (
   Optional[String] $ssl_trusted_cert             = undef,
   Optional[Integer] $ssl_verify_depth            = undef,
   Enum['on', 'off', 'only'] $starttls            = 'off',
-  Optional[Enum['imap', 'pop3', 'smtp']] $protocol = undef,
+  Optional[Enum['imap', 'pop3', 'sieve', 'smtp']] $protocol = undef,
   Optional[String] $auth_http                    = undef,
   Optional[String] $auth_http_header             = undef,
   Enum['on', 'off'] $xclient                     = 'on',
