@@ -216,7 +216,7 @@ http {
 <% end -%>
 <% if @proxy_cache_path.is_a?(Hash) -%>
 <% @proxy_cache_path.sort_by{|k,v| k}.each do |key,value| -%>
-  proxy_cache_path        <%= key %> keys_zone=<%= value %> levels=<%= @proxy_cache_levels %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive -%>
+  proxy_cache_path        <%= key %> levels=<%= @proxy_cache_levels %> keys_zone=<%= value %> max_size=<%= @proxy_cache_max_size %> inactive=<%= @proxy_cache_inactive -%>
    <%- if @proxy_use_temp_path %> use_temp_path=<%= @proxy_use_temp_path %><% end -%>
    <%- if @proxy_cache_loader_files %> loader_files=<%= @proxy_cache_loader_files %><% end -%>
    <%- if @proxy_cache_loader_sleep %> loader_sleep=<%= @proxy_cache_loader_sleep %><% end -%>

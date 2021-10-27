@@ -26,7 +26,6 @@ class nginx::config {
   $pid                            = $nginx::pid
   $proxy_temp_path                = $nginx::proxy_temp_path
   $root_group                     = $nginx::root_group
-  $run_dir                        = $nginx::run_dir
   $sites_available_owner          = $nginx::sites_available_owner
   $sites_available_group          = $nginx::sites_available_group
   $sites_available_mode           = $nginx::sites_available_mode
@@ -189,11 +188,6 @@ class nginx::config {
     }
   }
 
-  file { $run_dir:
-    ensure => directory,
-    mode   => '0644',
-  }
-
   if $nginx::manage_snippets_dir {
     file { $nginx::snippets_dir:
       ensure => directory,
@@ -217,6 +211,28 @@ class nginx::config {
 
   if $proxy_temp_path {
     file { $proxy_temp_path:
+      ensure => directory,
+      owner  => $daemon_user,
+      mode   => '0700',
+    }
+  }
+
+  if $fastcgi_cache_path {
+    file { $fastcgi_cache_path:
+      ensure => directory,
+      owner  => $daemon_user,
+      mode   => '0700',
+    }
+  }
+
+  if $proxy_cache_path =~ Hash {
+    file { $proxy_cache_path.keys():
+      ensure => directory,
+      owner  => $daemon_user,
+      mode   => '0700',
+    }
+  } elsif $proxy_cache_path =~ String {
+    file { $proxy_cache_path:
       ensure => directory,
       owner  => $daemon_user,
       mode   => '0700',
