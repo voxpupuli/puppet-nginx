@@ -26,7 +26,6 @@ class nginx::config {
   $pid                            = $nginx::pid
   $proxy_temp_path                = $nginx::proxy_temp_path
   $root_group                     = $nginx::root_group
-  $run_dir                        = $nginx::run_dir
   $sites_available_owner          = $nginx::sites_available_owner
   $sites_available_group          = $nginx::sites_available_group
   $sites_available_mode           = $nginx::sites_available_mode
@@ -187,11 +186,6 @@ class nginx::config {
       purge   => true,
       recurse => true,
     }
-  }
-
-  file { $run_dir:
-    ensure => directory,
-    mode   => '0644',
   }
 
   if $nginx::manage_snippets_dir {
