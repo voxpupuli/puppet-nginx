@@ -202,6 +202,7 @@ describe 'nginx::resource::server define:' do
       it { is_expected.to be_running }
     end
 
+    # rubocop:disable RSpec/RepeatedExampleGroupBody
     describe port(80) do
       it { is_expected.to be_listening }
     end
@@ -209,6 +210,7 @@ describe 'nginx::resource::server define:' do
     describe port(443) do
       it { is_expected.to be_listening }
     end
+    # rubocop:enable RSpec/RepeatedExampleGroupBody
 
     it 'answers to http://www.puppetlabs.com with redirect to HTTPS' do
       shell('/usr/bin/curl -I http://www.puppetlabs.com:80') do |r|

@@ -40,6 +40,7 @@ describe 'nginx::resource::mailhost define:' do
     it { is_expected.to contain 'listen                *:465 ssl;' }
   end
 
+  # rubocop:disable RSpec/RepeatedExampleGroupBody
   describe port(587) do
     it { is_expected.to be_listening }
   end
@@ -47,6 +48,7 @@ describe 'nginx::resource::mailhost define:' do
   describe port(465) do
     it { is_expected.to be_listening }
   end
+  # rubocop:enable RSpec/RepeatedExampleGroupBody
 
   context 'when configured for nginx 1.14' do
     it 'runs successfully' do

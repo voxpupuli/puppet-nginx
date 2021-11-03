@@ -38,6 +38,7 @@ describe 'nginx::resource::upstream' do
         ]
       end
 
+      # rubocop:disable RSpec/MultipleMemoizedHelpers
       describe 'os-independent items' do
         ##
         ## check that http is the default
@@ -514,6 +515,7 @@ describe 'nginx::resource::upstream' do
           end
         end
       end
+      # rubocop:enable RSpec/MultipleMemoizedHelpers
     end
   end
 end

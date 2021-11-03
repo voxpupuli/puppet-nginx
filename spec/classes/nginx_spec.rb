@@ -38,7 +38,7 @@ describe 'nginx' do
         it { is_expected.to contain_nginx__resource__streamhost('streamhost1').with_proxy('streamproxy') }
       end
 
-      context 'nginx::package' do
+      context 'nginx::package' do # rubocop:disable RSpec/EmptyExampleGroup
         case facts[:osfamily]
         when 'RedHat'
           context 'using defaults' do

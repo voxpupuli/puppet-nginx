@@ -720,25 +720,7 @@ describe 'nginx::resource::mailhost' do
             it { is_expected.to contain_concat__fragment("#{title}-header") }
           end
 
-          context 'when listen_port != "ssl_port"' do
-            let :params do
-              default_params.merge(listen_port: 80,
-                                   ssl_port: 443)
-            end
-
-            it { is_expected.to contain_concat__fragment("#{title}-header") }
-          end
-
           context 'when listen_port == ssl_port' do
-            let :params do
-              default_params.merge(listen_port: 80,
-                                   ssl_port: 80)
-            end
-
-            it { is_expected.not_to contain_concat__fragment("#{title}-header") }
-          end
-
-          context 'when listen_port == "ssl_port"' do
             let :params do
               default_params.merge(listen_port: 80,
                                    ssl_port: 80)
