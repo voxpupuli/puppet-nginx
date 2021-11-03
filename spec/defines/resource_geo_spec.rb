@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx::resource::geo' do
@@ -20,9 +22,9 @@ describe 'nginx::resource::geo' do
         {
           default: 'extra',
           networks: {
-            '172.16.0.0/12'  => 'intra',
+            '172.16.0.0/12' => 'intra',
             '192.168.0.0/16' => 'intra',
-            '10.0.0.0/8'     => 'intra'
+            '10.0.0.0/8' => 'intra'
           },
           proxies: ['1.2.3.4', '4.3.2.1']
         }
@@ -33,12 +35,13 @@ describe 'nginx::resource::geo' do
           let(:params) { default_params }
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").that_requires('File[/etc/nginx/conf.d]') }
+
           it do
-            is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
+            expect(subject).to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
               'owner' => 'root',
-              'group'   => 'root',
-              'mode'    => '0644',
-              'ensure'  => 'file',
+              'group' => 'root',
+              'mode' => '0644',
+              'ensure' => 'file',
               'content' => %r{geo \$#{title}}
             )
           end
@@ -69,8 +72,8 @@ describe 'nginx::resource::geo' do
               attr: 'networks',
               value: {
                 '192.168.0.0/16' => 'intra',
-                '172.16.0.0/12'  => 'intra',
-                '10.0.0.0/8'     => 'intra'
+                '172.16.0.0/12' => 'intra',
+                '10.0.0.0/8' => 'intra'
               },
               match: [
                 '  10.0.0.0/8     intra;',
@@ -104,10 +107,11 @@ describe 'nginx::resource::geo' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with_mode('0644') }
+
               it param[:title] do
                 verify_contents(catalogue, "/etc/nginx/conf.d/#{title}-geo.conf", Array(param[:match]))
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").without_content(item)
+                  expect(subject).to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").without_content(item)
                 end
               end
             end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx::resource::streamhost' do
@@ -27,15 +29,17 @@ describe 'nginx::resource::streamhost' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
-            is_expected.to contain_concat("/etc/nginx/streams-available/#{title}.conf").with('owner' => 'root',
-                                                                                             'group' => 'root',
-                                                                                             'mode' => '0644')
+            expect(subject).to contain_concat("/etc/nginx/streams-available/#{title}.conf").with('owner' => 'root',
+                                                                                                 'group' => 'root',
+                                                                                                 'mode' => '0644')
           end
+
           it do
-            is_expected.to contain_file("#{title}.conf symlink").with('ensure' => 'link',
-                                                                      'path'   => "/etc/nginx/streams-enabled/#{title}.conf",
-                                                                      'target' => "/etc/nginx/streams-available/#{title}.conf")
+            expect(subject).to contain_file("#{title}.conf symlink").with('ensure' => 'link',
+                                                                          'path' => "/etc/nginx/streams-enabled/#{title}.conf",
+                                                                          'target' => "/etc/nginx/streams-available/#{title}.conf")
           end
         end
 
@@ -44,10 +48,11 @@ describe 'nginx::resource::streamhost' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
-            is_expected.to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
-                                                                                         'group' => 'root',
-                                                                                         'mode' => '0644')
+            expect(subject).to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
+                                                                                             'group' => 'root',
+                                                                                             'mode' => '0644')
           end
         end
 
@@ -132,17 +137,18 @@ describe 'nginx::resource::streamhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-header").without_content(item)
                 end
               end
             end

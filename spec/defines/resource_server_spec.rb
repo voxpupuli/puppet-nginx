@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx::resource::server' do
@@ -30,20 +32,23 @@ describe 'nginx::resource::server' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
-            is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with('owner' => 'root',
-                                                                                           'group' => 'root',
-                                                                                           'mode' => '0644')
+            expect(subject).to contain_concat("/etc/nginx/sites-available/#{title}.conf").with('owner' => 'root',
+                                                                                               'group' => 'root',
+                                                                                               'mode' => '0644')
           end
+
           it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{access_log\s+/var/log/nginx/www\.rspec\.example\.com\.access\.log;}) }
           it { is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{error_log\s+/var/log/nginx/www\.rspec\.example\.com\.error\.log}) }
           it { is_expected.to contain_concat__fragment("#{title}-footer") }
           it { is_expected.to contain_nginx__resource__location("#{title}-default") }
           it { is_expected.not_to contain_file('/etc/nginx/fastcgi.conf') }
+
           it do
-            is_expected.to contain_file("#{title}.conf symlink").with('ensure' => 'link',
-                                                                      'path'   => "/etc/nginx/sites-enabled/#{title}.conf",
-                                                                      'target' => "/etc/nginx/sites-available/#{title}.conf")
+            expect(subject).to contain_file("#{title}.conf symlink").with('ensure' => 'link',
+                                                                          'path' => "/etc/nginx/sites-enabled/#{title}.conf",
+                                                                          'target' => "/etc/nginx/sites-available/#{title}.conf")
           end
         end
 
@@ -52,12 +57,13 @@ describe 'nginx::resource::server' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
-            is_expected.to contain_concat("/etc/nginx/conf.d/#{title}.conf").with('owner' => 'root',
-                                                                                  'group' => 'root',
-                                                                                  'mode' => '0644')
-            is_expected.not_to contain_file('/etc/nginx/sites-enabled')
-            is_expected.not_to contain_file('/etc/nginx/sites-available')
+            expect(subject).to contain_concat("/etc/nginx/conf.d/#{title}.conf").with('owner' => 'root',
+                                                                                      'group' => 'root',
+                                                                                      'mode' => '0644')
+            expect(subject).not_to contain_file('/etc/nginx/sites-enabled')
+            expect(subject).not_to contain_file('/etc/nginx/sites-available')
           end
         end
 
@@ -67,7 +73,7 @@ describe 'nginx::resource::server' do
           end
 
           it do
-            is_expected.to compile.and_raise_error(
+            expect(subject).to compile.and_raise_error(
               %r{You must not set both \$rewrite_www_to_non_www and \$rewrite_non_www_to_www to true}
             )
           end
@@ -391,17 +397,18 @@ describe 'nginx::resource::server' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-header").without_content(item)
                 end
               end
             end
@@ -448,17 +455,18 @@ describe 'nginx::resource::server' do
                 let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
                 it { is_expected.to contain_concat__fragment("#{title}-header") }
+
                 it param[:title] do
                   matches = Array(param[:match])
 
                   if matches.all? { |m| m.is_a? Regexp }
-                    matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                    matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                   else
                     lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                     expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                   end
                   Array(param[:notmatch]).each do |item|
-                    is_expected.to contain_concat__fragment("#{title}-header").without_content(item)
+                    expect(subject).to contain_concat__fragment("#{title}-header").without_content(item)
                   end
                 end
               end
@@ -506,17 +514,18 @@ describe 'nginx::resource::server' do
                 let(:params) { default_params.merge(param[:attr].to_sym => param[:value], ssl: true, ssl_cert: '/tmp/dummy.crt', ssl_key: '/tmp/dummy.key', listen_port: 443) }
 
                 it { is_expected.to contain_concat__fragment("#{title}-ssl-header") }
+
                 it param[:title] do
                   matches = Array(param[:match])
 
                   if matches.all? { |m| m.is_a? Regexp }
-                    matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
+                    matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
                   else
                     lines = catalogue.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
                     expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                   end
                   Array(param[:notmatch]).each do |item|
-                    is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(item)
+                    expect(subject).to contain_concat__fragment("#{title}-ssl-header").without_content(item)
                   end
                 end
               end
@@ -571,17 +580,18 @@ describe 'nginx::resource::server' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-footer") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-footer").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-footer").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-footer").without_content(item)
                 end
               end
             end
@@ -605,17 +615,18 @@ describe 'nginx::resource::server' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-footer") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-footer").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-footer").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-footer").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-footer").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-footer").without_content(item)
                 end
               end
             end
@@ -639,6 +650,7 @@ describe 'nginx::resource::server' do
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
             end
+
             context 'with fact nginx_version=1.14.1' do
               let(:facts) { facts.merge(nginx_version: '1.14.1') }
 
@@ -1045,23 +1057,24 @@ describe 'nginx::resource::server' do
             context "when #{param[:attr]} is #{param[:value]}" do
               let :params do
                 default_params.merge(param[:attr].to_sym => param[:value],
-                                     :ssl                => true,
-                                     :ssl_key            => 'dummy.key',
-                                     :ssl_cert           => 'dummy.crt')
+                                     :ssl => true,
+                                     :ssl_key => 'dummy.key',
+                                     :ssl_cert => 'dummy.crt')
               end
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-ssl-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-ssl-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-ssl-header").without_content(item)
                 end
               end
             end
@@ -1124,23 +1137,24 @@ describe 'nginx::resource::server' do
             context "when #{param[:attr]} is #{param[:value]}" do
               let :params do
                 default_params.merge(param[:attr].to_sym => param[:value],
-                                     :ssl                => true,
-                                     :ssl_key            => 'dummy.key',
-                                     :ssl_cert           => 'dummy.crt')
+                                     :ssl => true,
+                                     :ssl_key => 'dummy.key',
+                                     :ssl_cert => 'dummy.crt')
               end
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-footer") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-ssl-footer").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-ssl-footer").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
                 Array(param[:notmatch]).each do |item|
-                  is_expected.to contain_concat__fragment("#{title}-ssl-footer").without_content(item)
+                  expect(subject).to contain_concat__fragment("#{title}-ssl-footer").without_content(item)
                 end
               end
             end
@@ -1162,7 +1176,7 @@ describe 'nginx::resource::server' do
             end
 
             it "sets the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
-              is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
+              expect(subject).to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
             end
           end
 
@@ -1177,7 +1191,7 @@ describe 'nginx::resource::server' do
             end
 
             it "sets the server_name of the rewrite server stanza to every server_name with 'www.' stripped" do
-              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
+              expect(subject).to contain_concat__fragment("#{title}-header").with_content(%r{^\s+server_name\s+foo.com\s+bar.foo.com\s+foo.com;})
             end
           end
 
@@ -1449,6 +1463,7 @@ describe 'nginx::resource::server' do
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{error_log\s+/var/log/nginx/ssl-www\.rspec\.example\.com\.error\.log}) }
             it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{ssl_verify_client\s+optional;}) }
           end
+
           context 'when passenger_cgi_param is set' do
             let :params do
               default_params.merge(passenger_cgi_param: { 'test1' => 'test value 1', 'test2' => 'test value 2', 'test3' => 'test value 3' })
@@ -1548,7 +1563,7 @@ describe 'nginx::resource::server' do
             end
 
             it 'has correctly ordered entries in the config' do
-              is_expected.to contain_concat__fragment("#{title}-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2" tv2;\n\s+add_header\s+"header3"  'test value 3' tv3;\n})
+              expect(subject).to contain_concat__fragment("#{title}-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2" tv2;\n\s+add_header\s+"header3"  'test value 3' tv3;\n})
             end
           end
 
@@ -1561,7 +1576,7 @@ describe 'nginx::resource::server' do
             end
 
             it 'has correctly ordered entries in the config' do
-              is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2" tv2;\n\s+add_header\s+"header3"  'test value 3' tv3;\n})
+              expect(subject).to contain_concat__fragment("#{title}-ssl-header").with_content(%r{\s+add_header\s+"header1" "test value 1";\n\s+add_header\s+"header2" "test value 2" tv2;\n\s+add_header\s+"header3"  'test value 3' tv3;\n})
             end
           end
         end

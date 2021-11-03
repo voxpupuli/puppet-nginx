@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx::resource::mailhost' do
@@ -21,17 +23,19 @@ describe 'nginx::resource::mailhost' do
 
           it { is_expected.to contain_class('nginx') }
           it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").that_requires('File[/etc/nginx/conf.mail.d]') }
+
           it do
-            is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with('owner' => 'root',
-                                                                                       'group' => 'root',
-                                                                                       'mode' => '0644')
+            expect(subject).to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with('owner' => 'root',
+                                                                                           'group' => 'root',
+                                                                                           'mode' => '0644')
           end
+
           it { is_expected.to contain_concat__fragment("#{title}-header") }
           it { is_expected.not_to contain_concat__fragment("#{title}-ssl") }
         end
 
         describe 'absent assumption' do
-          let(:params) { default_params.merge('ensure'.to_sym => 'absent') }
+          let(:params) { default_params.merge(ensure: 'absent') }
 
           it { is_expected.to contain_class('nginx') }
           it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with('ensure' => 'absent') }
@@ -190,11 +194,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -237,11 +242,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -277,11 +283,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -317,11 +324,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -472,11 +480,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-header").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-header").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -595,11 +604,12 @@ describe 'nginx::resource::mailhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl") }
+
               it param[:title] do
                 matches = Array(param[:match])
 
                 if matches.all? { |m| m.is_a? Regexp }
-                  matches.each { |item| is_expected.to contain_concat__fragment("#{title}-ssl").with_content(item) }
+                  matches.each { |item| expect(subject).to contain_concat__fragment("#{title}-ssl").with_content(item) }
                 else
                   lines = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content].split("\n")
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
@@ -633,6 +643,7 @@ describe 'nginx::resource::mailhost' do
                 expect(content).to include('listen                *:587 ssl;')
               end
             end
+
             context 'when version comes from parameter' do
               let(:pre_condition) { ['class { "nginx": nginx_version => "1.16.0"}'] }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'nginx class:' do
@@ -57,6 +59,7 @@ describe 'nginx class:' do
 
     describe package('nginx') do
       it { is_expected.to be_installed }
+
       it 'comes from the expected source' do
         pkg_output = shell(pkg_cmd)
         expect(pkg_output.stdout).to match pkg_match

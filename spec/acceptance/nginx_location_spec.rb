@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'nginx::resource::location define:' do
@@ -45,6 +47,7 @@ describe 'nginx::resource::location define:' do
     it { is_expected.to contain '  location /.well-known/acme-challenge/ {' }
     it { is_expected.to contain '    root      /var/www/letsencrypt;' }
   end
+
   describe file('/etc/nginx/sites-available/stage.puppetlabs.com.conf') do
     it { is_expected.to be_file }
     it { is_expected.to contain '# MANAGED BY PUPPET' }
