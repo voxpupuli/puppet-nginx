@@ -112,7 +112,7 @@ server {
   <%- end -%>
 <% elsif @error_log == 'absent' -%>
 <% elsif not @error_log -%>
-  error_log             <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+  error_log             <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log <%= scope['::nginx::nginx_error_log_severity'] %>;
 <% else -%>
   error_log             <%= @error_log %>;
 <% end -%>
