@@ -29,8 +29,6 @@ jobs:
           bundler-cache: true
       - name: Run static validations
         run: bundle exec rake validate lint check
-      - name: Run rake rubocop
-        run: bundle exec rake rubocop
       - name: Setup Test Matrix
         id: get-outputs
         run: bundle exec metadata2gha --use-fqdn --pidfile-workaround false
