@@ -3,6 +3,9 @@
 require 'spec_helper_acceptance'
 
 describe 'nginx::resource::mailhost define:' do
+  if fact('osfamily') == 'RedHat'
+    shell('yum clean all')
+  end
   it 'runs successfully' do
     pp = "
     if fact('os.family') == 'RedHat' {
