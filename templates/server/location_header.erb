@@ -25,6 +25,9 @@
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
+<% if @location_acl -%>
+    include <%= scope['::nginx::config::conf_dir'] %>/conf.d/<%= @location_acl -%>.acl;
+<% end -%>
 <% if @absolute_redirect -%>
   absolute_redirect <%= @absolute_redirect %>;
 <% end -%>

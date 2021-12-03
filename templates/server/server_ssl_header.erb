@@ -157,6 +157,9 @@ server {
 <% Array(@raw_prepend).each do |line| -%>
   <%= line %>
 <% end -%>
+<% if @server_acl -%>
+  include <%= scope['::nginx::config::conf_dir'] %>/conf.d/<%= @server_acl -%>.acl;
+<% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>
