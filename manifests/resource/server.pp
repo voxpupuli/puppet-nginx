@@ -18,10 +18,14 @@
 # @param location_satisfy
 #   Allows access if all (all) or at least one (any) of the auth modules allow
 #   access.
+# @param server_acl
+#   Specifies server ACL name in nginx::conf_dir/conf.d/${server_acl}.acl.
 # @param location_allow
 #   Locations to allow connections from.
 # @param location_deny
 #   Locations to deny connections from.
+# @param location_acl
+#   Specifies location ACL name in nginx::conf_dir/conf.d/${location_acl}.acl.
 # @param ipv6_enable
 #   value to enable/disable IPv6 support (false|true). Module will check to see
 #   if IPv6 support exists on your system before enabling.
@@ -290,8 +294,10 @@ define nginx::resource::server (
   Variant[Array[Stdlib::Absolutepath], Stdlib::Absolutepath] $listen_unix_socket = '/var/run/nginx.sock',
   Optional[String] $listen_unix_socket_options                                   = undef,
   Optional[Enum['any', 'all']] $location_satisfy                                 = undef,
+  Optional[String] $server_acl                                                   = undef,
   Array $location_allow                                                          = [],
   Array $location_deny                                                           = [],
+  Optional[String] $location_acl                                                 = undef,
   Boolean $ipv6_enable                                                           = false,
   Variant[Array, String] $ipv6_listen_ip                                         = '::',
   Stdlib::Port $ipv6_listen_port                                                 = $listen_port,
@@ -507,6 +513,7 @@ define nginx::resource::server (
       ssl_only                    => $ssl_only,
       location                    => '/',
       location_satisfy            => $location_satisfy,
+      location_acl                => $location_acl,
       location_allow              => $location_allow,
       location_deny               => $location_deny,
       proxy                       => $proxy,
