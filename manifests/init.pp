@@ -38,6 +38,12 @@
 #   Enables or disables resetting timed out connections and connections closed
 #   with the non-standard code 444.
 #
+# @param nginx_snippets
+#   Specifies a hash from which to generate `nginx::resource::snippet` resources.
+#
+# @param nginx_snippets_defaults
+#   Can be used to define default values for the parameter `nginx_snippets`.
+#
 class nginx (
   ### START Nginx Configuration ###
   Variant[Stdlib::Absolutepath, Boolean] $client_body_temp_path = $nginx::params::client_body_temp_path,
@@ -216,6 +222,8 @@ class nginx (
   Hash $geo_mappings_defaults                             = {},
   Hash $string_mappings                                   = {},
   Hash $string_mappings_defaults                          = {},
+  Hash $nginx_snippets                                    = {},
+  Hash $nginx_snippets_defaults                           = {},
   Hash $nginx_locations                                   = {},
   Hash $nginx_locations_defaults                          = {},
   Hash $nginx_mailhosts                                   = {},
@@ -236,6 +244,7 @@ class nginx (
   contain 'nginx::service'
 
   create_resources( 'nginx::resource::geo', $geo_mappings, $geo_mappings_defaults )
+  create_resources( 'nginx::resource::snippet', $nginx_snippets, $nginx_snippets_defaults )
   create_resources( 'nginx::resource::location', $nginx_locations, $nginx_locations_defaults )
   create_resources( 'nginx::resource::mailhost', $nginx_mailhosts, $nginx_mailhosts_defaults )
   create_resources( 'nginx::resource::map', $string_mappings, $string_mappings_defaults )
