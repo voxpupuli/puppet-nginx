@@ -16,12 +16,12 @@
     expires <%= @expires %>;
 <% end -%>
 <% if @location_allow -%>
-    <%- @location_allow.flatten.each do |allow_rule| -%>
+    <%- @location_allow.flatten.uniq.each do |allow_rule| -%>
     allow <%= allow_rule %>;
     <%- end -%>
 <% end -%>
 <% if @location_deny -%>
-    <%- @location_deny.each do |deny_rule| -%>
+    <%- @location_deny.uniq.each do |deny_rule| -%>
     deny <%= deny_rule %>;
     <%- end -%>
 <% end -%>
