@@ -201,10 +201,11 @@ class nginx::config {
   }
 
   file { $log_dir:
-    ensure => directory,
-    mode   => $log_mode,
-    owner  => $log_user,
-    group  => $log_group,
+    ensure  => directory,
+    mode    => $log_mode,
+    owner   => $log_user,
+    group   => $log_group,
+    replace => no, # log_dir can be a symlink
   }
 
   if $client_body_temp_path {
