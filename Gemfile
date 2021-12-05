@@ -7,7 +7,7 @@ group :test do
   gem 'voxpupuli-test', '~> 2.5',   :require => false
   gem 'coveralls',                  :require => false
   gem 'simplecov-console',          :require => false
-  gem 'puppet_metadata', '~> 1.0',  :require => false
+  gem 'puppet_metadata',            :require => false, :git => 'https://github.com/bastelfreak/puppet_metadata.git', :branch => 'add-archlinux'
 end
 
 group :development do
@@ -16,6 +16,9 @@ group :development do
 end
 
 group :system_tests do
+  gem 'beaker-hostgenerator',            :require => false, :git => 'https://github.com/ekohl/beaker-hostgenerator.git', :branch => 'add-archlinux'
+  gem 'beaker',                          :require => false, :git => 'https://github.com/bastelfreak/beaker.git', :branch => 'add-archlinux'
+  gem 'beaker-docker',                   :require => false, :git => 'https://github.com/bastelfreak/beaker-docker.git', :branch => 'add-archlinux'
   gem 'voxpupuli-acceptance', '~> 1.0',  :require => false
 end
 
