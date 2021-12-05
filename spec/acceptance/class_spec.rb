@@ -22,6 +22,8 @@ describe 'nginx class:' do
                 else
                   %r{Phusion}
                 end
+  when 'Archlinux'
+    pkg_remove_cmd = 'pacman --remove --noconfirm --nosave --recursive nginx-mainline'
   end
 
   context 'default parameters' do
@@ -42,7 +44,7 @@ describe 'nginx class:' do
     end
   end
 
-  context 'nginx with package_source passenger' do
+  context 'nginx with package_source passenger', unless: default[:platform] =~ %r{archlinux} do
     it 'runs successfully' do
       shell(pkg_remove_cmd)
       pp = <<-EOS
