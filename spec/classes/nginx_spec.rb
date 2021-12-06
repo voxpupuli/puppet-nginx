@@ -302,56 +302,6 @@ describe 'nginx' do
             )
           end
           it do
-            case facts[:osfamily]
-            when 'Debian'
-              is_expected.to contain_file('/run/nginx').with(
-                ensure: 'directory',
-                owner: 'root',
-                group: 'root',
-                mode: '0644'
-              )
-            else
-              is_expected.to contain_file('/var/nginx').with(
-                ensure: 'directory',
-                owner: 'root',
-                group: 'root',
-                mode: '0644'
-              )
-            end
-          end
-          it do
-            case facts[:osfamily]
-            when 'Debian'
-              is_expected.to contain_file('/run/nginx/client_body_temp').with(
-                ensure: 'directory',
-                group: 'root',
-                mode: '0700'
-              )
-            else
-              is_expected.to contain_file('/var/nginx/client_body_temp').with(
-                ensure: 'directory',
-                group: 'root',
-                mode: '0700'
-              )
-            end
-          end
-          it do
-            case facts[:osfamily]
-            when 'Debian'
-              is_expected.to contain_file('/run/nginx/proxy_temp').with(
-                ensure: 'directory',
-                group: 'root',
-                mode: '0700'
-              )
-            else
-              is_expected.to contain_file('/var/nginx/proxy_temp').with(
-                ensure: 'directory',
-                group: 'root',
-                mode: '0700'
-              )
-            end
-          end
-          it do
             is_expected.to contain_file('/etc/nginx/nginx.conf').with(
               ensure: 'file',
               owner: 'root',
@@ -383,8 +333,6 @@ describe 'nginx' do
           end
           case facts[:osfamily]
           when 'RedHat'
-            it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'nginx') }
-            it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'nginx') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user nginx;} }
             it do
               is_expected.to contain_file('/var/log/nginx').with(
@@ -395,8 +343,6 @@ describe 'nginx' do
               )
             end
           when 'Debian'
-            it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
-            it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
             it do
               is_expected.to contain_file('/var/log/nginx').with(
@@ -726,6 +672,12 @@ describe 'nginx' do
                 title: 'should set proxy_cache_path',
                 attr: 'proxy_cache_path',
                 value: '/path/to/proxy.cache',
+                match: %r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;}
+              },
+              {
+                title: 'should set proxy_cache_path from hash',
+                attr: 'proxy_cache_path',
+                value: { '/path/to/proxy.cache' => 'd2:100m' },
                 match: %r{\s+proxy_cache_path\s+/path/to/proxy.cache levels=1 keys_zone=d2:100m max_size=500m inactive=20m;}
               },
               {
@@ -1124,6 +1076,17 @@ describe 'nginx' do
                     expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                   end
 
+                  # if we have a _path attribute make sure we create the path
+                  if param[:attr].end_with?('_path')
+                    if param[:value].is_a?(Hash)
+                      param[:value].keys.each do |path|
+                        is_expected.to contain_file(path).with_ensure('directory')
+                      end
+                    else
+                      is_expected.to contain_file(param[:value]).with_ensure('directory')
+                    end
+                  end
+
                   Array(param[:notmatch]).each do |item|
                     is_expected.to contain_file('/etc/nginx/nginx.conf').without_content(item)
                   end
@@ -1378,14 +1341,6 @@ describe 'nginx' do
           context 'when daemon_user = www-data' do
             let(:params) { { daemon_user: 'www-data' } }
 
-            case facts[:osfamily]
-            when 'Debian'
-              it { is_expected.to contain_file('/run/nginx/client_body_temp').with(owner: 'www-data') }
-              it { is_expected.to contain_file('/run/nginx/proxy_temp').with(owner: 'www-data') }
-            else
-              it { is_expected.to contain_file('/var/nginx/client_body_temp').with(owner: 'www-data') }
-              it { is_expected.to contain_file('/var/nginx/proxy_temp').with(owner: 'www-data') }
-            end
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
           end
 
