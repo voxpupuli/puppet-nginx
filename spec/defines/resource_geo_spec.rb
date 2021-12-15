@@ -34,17 +34,15 @@ describe 'nginx::resource::geo' do
         describe 'basic assumptions' do
           let(:params) { default_params }
 
-          it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").that_requires('File[/etc/nginx/conf.d]') }
-
-          it do
-            expect(subject).to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
+          it {
+            is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").with(
               'owner' => 'root',
               'group' => 'root',
               'mode' => '0644',
               'ensure' => 'file',
               'content' => %r{geo \$#{title}}
-            )
-          end
+            ).that_requires('File[/etc/nginx/conf.d]')
+          }
         end
 
         describe 'geo.conf template content' do
@@ -111,7 +109,7 @@ describe 'nginx::resource::geo' do
               it param[:title] do
                 verify_contents(catalogue, "/etc/nginx/conf.d/#{title}-geo.conf", Array(param[:match]))
                 Array(param[:notmatch]).each do |item|
-                  expect(subject).to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").without_content(item)
+                  it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-geo.conf").without_content(item) }
                 end
               end
             end

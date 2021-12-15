@@ -318,7 +318,6 @@ describe 'nginx' do
           end
 
           it do
-            is_expected.to contain_file('/etc/nginx/nginx.conf').with(
             case facts[:osfamily]
             when 'Debian'
               expect(subject).to contain_file('/run/nginx').with(
@@ -1156,11 +1155,11 @@ describe 'nginx' do
                   # if we have a _path attribute make sure we create the path
                   if param[:attr].end_with?('_path')
                     if param[:value].is_a?(Hash)
-                      param[:value].keys.each do |path|
-                        is_expected.to contain_file(path).with_ensure('directory')
+                      param[:value].each_key do |path|
+                        expect(subject).to contain_file(path).with_ensure('directory')
                       end
                     else
-                      is_expected.to contain_file(param[:value]).with_ensure('directory')
+                      expect(subject).to contain_file(param[:value]).with_ensure('directory')
                     end
                   end
 
