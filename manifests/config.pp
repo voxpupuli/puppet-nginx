@@ -205,7 +205,7 @@ class nginx::config {
     mode    => $log_mode,
     owner   => $log_user,
     group   => $log_group,
-    replace => no, # log_dir can be a symlink
+    replace => $nginx::manage_log_dir,
   }
 
   if $client_body_temp_path {
