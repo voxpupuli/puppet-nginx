@@ -11,9 +11,6 @@ This module was migrated from James Fryman <james@frymanet.com> to Vox Pupuli.
 
 ## INSTALLING OR UPGRADING
 
-**Please note**: This module is undergoing some structural maintenance.
-You may experience breaking changes between minor versions.
-
 This module manages NGINX configuration.
 
 ### Requirements
