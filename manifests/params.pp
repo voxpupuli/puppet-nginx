@@ -112,7 +112,7 @@ class nginx::params {
       }
     }
     'Debian': {
-      if ($facts['os']['name'] == 'ubuntu' and $facts['os']['distro']['codename'] == 'xenial') {
+      if ($facts['os']['name'] == 'Ubuntu' and $facts['os']['release']['major'] == '16.04') {
         $_module_os_overrides = {
           'manage_repo' => true,
           'daemon_user' => 'www-data',
