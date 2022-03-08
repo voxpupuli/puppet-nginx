@@ -104,7 +104,7 @@ class nginx::package::redhat {
     }
   }
 
-  if $dnfmodule and fact('os.family') == 'RedHat' and versioncmp(fact('os.release.full'), '8.0') >= 0 {
+  if $dnfmodule and fact('os.family') == 'RedHat' and versioncmp(fact('os.release.major'), '8') >= 0 {
     package { "nginx:${dnfmodule}":
       ensure      => $dnfmodule,
       name        => 'nginx',
