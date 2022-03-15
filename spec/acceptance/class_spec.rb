@@ -42,7 +42,7 @@ describe 'nginx class:' do
     end
   end
 
-  context 'nginx with package_source passenger' do
+  context 'nginx with package_source passenger', if: pkg_cmd do
     it 'runs successfully' do
       shell(pkg_remove_cmd)
       pp = <<-EOS
@@ -73,7 +73,7 @@ describe 'nginx class:' do
     end
   end
 
-  context 'reset to default parameters' do
+  context 'reset to default parameters', if: pkg_cmd do
     it 'runs successfully' do
       shell(pkg_remove_cmd)
       pp = "class { 'nginx': }"
