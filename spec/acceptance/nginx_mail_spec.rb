@@ -78,6 +78,7 @@ describe 'nginx::resource::mailhost define:' do
 
       apply_manifest(pp, catch_failures: true)
     end
+
     describe file('/etc/nginx/conf.mail.d/domain1.example.conf') do
       it 'does\'t contain `ssl` on `listen` line' do
         is_expected.to contain 'listen                *:465;'

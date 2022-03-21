@@ -27,11 +27,13 @@ describe 'nginx::resource::streamhost' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
             is_expected.to contain_concat("/etc/nginx/streams-available/#{title}.conf").with('owner' => 'root',
                                                                                              'group' => 'root',
-                                                                                             'mode' => '0644')
+                                                                                             'mode'  => '0644')
           end
+
           it do
             is_expected.to contain_file("#{title}.conf symlink").with('ensure' => 'link',
                                                                       'path'   => "/etc/nginx/streams-enabled/#{title}.conf",
@@ -44,10 +46,11 @@ describe 'nginx::resource::streamhost' do
           let(:params) { default_params }
 
           it { is_expected.to contain_class('nginx') }
+
           it do
             is_expected.to contain_concat("/etc/nginx/conf.stream.d/#{title}.conf").with('owner' => 'root',
                                                                                          'group' => 'root',
-                                                                                         'mode' => '0644')
+                                                                                         'mode'  => '0644')
           end
         end
 
@@ -132,6 +135,7 @@ describe 'nginx::resource::streamhost' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_concat__fragment("#{title}-header") }
+
               it param[:title] do
                 matches = Array(param[:match])
 

@@ -88,6 +88,7 @@ describe 'nginx::resource::upstream define:' do
     it { is_expected.to contain '  zone production 64k;' }
     it { is_expected.to contain '  keepalive 16;' }
   end
+
   describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
     it { is_expected.to be_file }
     it { is_expected.to contain '# MANAGED BY PUPPET' }
@@ -102,6 +103,7 @@ describe 'nginx::resource::upstream define:' do
     it { is_expected.to contain '  server unix:/var/run/socket_02.sock max_conns=20 max_fails=20 fail_timeout=20s;' }
     it { is_expected.to contain '  zone socket 64k;' }
   end
+
   describe file('/etc/nginx/sites-available/socket.puppetlabs.com.conf') do
     it { is_expected.to be_file }
     it { is_expected.to contain '# MANAGED BY PUPPET' }
