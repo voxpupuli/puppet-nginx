@@ -9,26 +9,14 @@ on:
     tags:
       - '*'
 
-env:
-  BUNDLE_WITHOUT: development:test:system_tests
-
 jobs:
-  deploy:
-    name: 'deploy to forge'
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'voxpupuli'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-          bundler-cache: true
-      - name: Build and Deploy
-        env:
-          # Configure secrets here:
-          #  https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
-          BLACKSMITH_FORGE_USERNAME: '${{ secrets.PUPPET_FORGE_USERNAME }}'
-          BLACKSMITH_FORGE_API_KEY: '${{ secrets.PUPPET_FORGE_API_KEY }}'
-        run: bundle exec rake module:push
+  release:
+    name: Release
+    uses: voxpupuli/gha-puppet/.github/workflows/release.yml@v1
+    with:
+      allowed_owner: 'voxpupuli'
+    secrets:
+      # Configure secrets here:
+      #  https://docs.github.com/en/actions/security-guides/encrypted-secrets
+      username: ${{ secrets.PUPPET_FORGE_USERNAME }}
+      api_key: ${{ secrets.PUPPET_FORGE_API_KEY }}
