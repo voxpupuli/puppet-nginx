@@ -39,6 +39,8 @@ describe 'nginx' do
       end
 
       context 'nginx::package' do
+        it { is_expected.to compile.with_all_deps }
+
         case facts[:osfamily]
         when 'RedHat'
           context 'using defaults' do
