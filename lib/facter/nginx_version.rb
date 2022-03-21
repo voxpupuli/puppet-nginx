@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Facter.add(:nginx_version) do
   confine { Facter.value(:kernel) != 'windows' }
   confine { Facter.value(:operatingsystem) != 'nexus' }
