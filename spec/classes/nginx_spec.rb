@@ -1114,7 +1114,7 @@ describe 'nginx' do
                   # if we have a _path attribute make sure we create the path
                   if param[:attr].end_with?('_path')
                     if param[:value].is_a?(Hash)
-                      param[:value].keys.each do |path|
+                      param[:value].each_key do |path|
                         is_expected.to contain_file(path).with_ensure('directory')
                       end
                     else
