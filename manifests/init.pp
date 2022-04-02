@@ -59,6 +59,7 @@ class nginx (
   $global_mode                                               = $nginx::params::global_mode,
   Optional[Variant[String[1], Array[String[1]]]] $limit_req_zone = undef,
   Stdlib::Absolutepath $log_dir                              = $nginx::params::log_dir,
+  Boolean $manage_log_dir                                    = true,
   String[1] $log_user                                        = $nginx::params::log_user,
   String[1] $log_group                                       = $nginx::params::log_group,
   Stdlib::Filemode $log_mode                                 = $nginx::params::log_mode,

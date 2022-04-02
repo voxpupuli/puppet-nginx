@@ -331,6 +331,15 @@ describe 'nginx' do
               recurse: true
             )
           end
+          context 'manage_log_dir => false' do
+            let(:params) { { manage_log_dir: false } }
+
+            it do
+              is_expected.to contain_file('/var/log/nginx').with(
+                replace: false
+              )
+            end
+          end
           case facts[:osfamily]
           when 'RedHat'
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user nginx;} }
@@ -339,7 +348,8 @@ describe 'nginx' do
                 ensure: 'directory',
                 owner: 'nginx',
                 group: 'nginx',
-                mode: '0750'
+                mode: '0750',
+                replace: true
               )
             end
           when 'Debian'
@@ -349,7 +359,8 @@ describe 'nginx' do
                 ensure: 'directory',
                 owner: 'root',
                 group: 'adm',
-                mode: '0755'
+                mode: '0755',
+                replace: true
               )
             end
           end
