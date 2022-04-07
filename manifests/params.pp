@@ -139,7 +139,7 @@ class nginx::params {
         'daemon_user' => 'www',
         'root_group'  => 'wheel',
         'log_group'   => 'wheel',
-        'log_user'    => 'root',
+        'log_user'    => 'www',
       }
     }
     'Gentoo': {
