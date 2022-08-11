@@ -3,11 +3,15 @@
 require 'spec_helper_acceptance'
 
 describe 'nginx class:' do
+  test_passenger = true
+
   case fact('osfamily')
   when 'RedHat'
     pkg_cmd = 'yum info nginx | grep "^From repo"'
     pkg_remove_cmd = 'yum -y remove nginx nginx-filesystem passenger'
     pkg_match = case fact('operatingsystemmajrelease')
+                when '8'
+                  test_passenger = false
                 when '7' # https://blog.phusion.nl/2020/05/29/passenger-6-0-5/
                   %r{epel}
                 else
@@ -24,6 +28,8 @@ describe 'nginx class:' do
                 else
                   %r{Phusion}
                 end
+  else
+    test_passenger = false
   end
 
   context 'default parameters' do
@@ -44,7 +50,7 @@ describe 'nginx class:' do
     end
   end
 
-  context 'nginx with package_source passenger', if: pkg_cmd do
+  context 'nginx with package_source passenger', if: test_passenger do
     it 'runs successfully' do
       shell(pkg_remove_cmd)
       pp = <<-EOS
@@ -76,7 +82,7 @@ describe 'nginx class:' do
     end
   end
 
-  context 'reset to default parameters', if: pkg_cmd do
+  context 'reset to default parameters', if: pkg_remove_cmd do
     it 'runs successfully' do
       shell(pkg_remove_cmd)
       pp = "class { 'nginx': }"
