@@ -279,15 +279,15 @@ describe 'nginx::resource::upstream' do
                     with_content("  server #{params[:members].keys[0]}:80;\n")
                 }
 
-                if upstream_parameter[:match] == false
+                if upstream_parameter[:match]
                   it {
                     is_expected.to contain_concat__fragment("#{title}_upstream_footer").
-                      with_content("}\n")
+                      with_content("  #{upstream_parameter[:match]};\n}\n")
                   }
                 else
                   it {
                     is_expected.to contain_concat__fragment("#{title}_upstream_footer").
-                      with_content("  #{upstream_parameter[:match]};\n}\n")
+                      with_content("}\n")
                   }
                 end
               end
