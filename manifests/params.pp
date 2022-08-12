@@ -112,25 +112,14 @@ class nginx::params {
       }
     }
     'Debian': {
-      if ($facts['os']['name'] == 'Ubuntu' and $facts['os']['release']['major'] == '16.04') {
-        $_module_os_overrides = {
-          'manage_repo' => true,
-          'daemon_user' => 'www-data',
-          'log_user'    => 'root',
-          'log_group'   => 'adm',
-          'log_mode'    => '0755',
-        }
-        # The following was designed/tested on Ubuntu 18 and Debian 9/10 but probably works on newer versions as well
-      } else {
-        $_module_os_overrides = {
-          'manage_repo'             => true,
-          'daemon_user'             => 'www-data',
-          'log_user'                => 'root',
-          'log_group'               => 'adm',
-          'log_mode'                => '0755',
-          'passenger_package_name'  => 'libnginx-mod-http-passenger',
-          'include_modules_enabled' => true,
-        }
+      $_module_os_overrides = {
+        'manage_repo'             => true,
+        'daemon_user'             => 'www-data',
+        'log_user'                => 'root',
+        'log_group'               => 'adm',
+        'log_mode'                => '0755',
+        'passenger_package_name'  => 'libnginx-mod-http-passenger',
+        'include_modules_enabled' => true,
       }
     }
     'DragonFly', 'FreeBSD': {
