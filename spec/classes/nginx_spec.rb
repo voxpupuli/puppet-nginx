@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx' do
@@ -37,10 +39,13 @@ describe 'nginx' do
       end
 
       context 'nginx::package' do
+        it { is_expected.to compile.with_all_deps }
+
         case facts[:osfamily]
         when 'RedHat'
           context 'using defaults' do
             it { is_expected.to contain_package('nginx') }
+
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
                 'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
@@ -51,11 +56,13 @@ describe 'nginx' do
                 'gpgkey'   => 'https://nginx.org/keys/nginx_signing.key'
               )
             end
+
             it do
               is_expected.to contain_yumrepo('passenger').with(
                 'ensure' => 'absent'
               )
             end
+
             it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
           end
@@ -64,6 +71,7 @@ describe 'nginx' do
             let(:params) { { purge_passenger_repo: false } }
 
             it { is_expected.to contain_package('nginx') }
+
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
                 'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
@@ -86,16 +94,18 @@ describe 'nginx' do
                 'baseurl' => "https://nginx.org/packages/mainline/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
               )
             end
+
             it do
               is_expected.to contain_yumrepo('passenger').with(
                 'ensure' => 'absent'
               )
             end
+
             it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
           end
 
-          context 'package_source => passenger' do
+          context 'package_source => passenger', unless: facts[:operatingsystemmajrelease] == '8' do
             let(:params) { { package_source: 'passenger' } }
 
             it do
@@ -106,17 +116,19 @@ describe 'nginx' do
                 'gpgkey'        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt'
               )
             end
+
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
                 'ensure' => 'absent'
               )
             end
+
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
             it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
             it { is_expected.to contain_package('passenger').with('ensure' => 'present') }
           end
 
-          describe 'installs the requested passenger package version' do
+          describe 'installs the requested passenger package version', unless: facts[:operatingsystemmajrelease] == '8' do
             let(:params) { { package_source: 'passenger', passenger_package_ensure: '4.1.0-1.el9' } }
 
             it 'installs specified version exactly' do
@@ -143,11 +155,12 @@ describe 'nginx' do
           context 'using defaults' do
             it { is_expected.to contain_package('nginx') }
             it { is_expected.not_to contain_package('passenger') }
+
             it do
               is_expected.to contain_apt__source('nginx').with(
-                'location'   => "https://nginx.org/packages/#{facts[:operatingsystem].downcase}",
-                'repos'      => 'nginx',
-                'key' => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
+                'location' => "https://nginx.org/packages/#{facts[:operatingsystem].downcase}",
+                'repos'    => 'nginx',
+                'key'      => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
               )
             end
           end
@@ -176,17 +189,18 @@ describe 'nginx' do
             let(:params) { { package_source: 'passenger' } }
 
             it { is_expected.to contain_package('nginx') }
-            if facts[:lsbdistid] == 'Debian' && %w[9 10].include?(facts.dig(:os, 'release', 'major')) ||
-               facts[:lsbdistid] == 'Ubuntu' && %w[bionic focal].include?(facts[:lsbdistcodename])
+
+            if (facts[:lsbdistid] == 'Debian' && %w[9 10].include?(facts.dig(:os, 'release', 'major'))) ||
+               (facts[:lsbdistid] == 'Ubuntu' && %w[bionic focal].include?(facts[:lsbdistcodename]))
               it { is_expected.to contain_package('libnginx-mod-http-passenger') }
             else
               it { is_expected.to contain_package('passenger') }
             end
             it do
               is_expected.to contain_apt__source('nginx').with(
-                'location'   => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
-                'repos'      => 'main',
-                'key'        => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' }
+                'location' => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+                'repos'    => 'main',
+                'key'      => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' }
               )
             end
           end
@@ -274,6 +288,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/etc/nginx/conf.d').only_with(
               path: '/etc/nginx/conf.d',
@@ -283,6 +298,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/etc/nginx/conf.stream.d').only_with(
               path: '/etc/nginx/conf.stream.d',
@@ -292,6 +308,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/etc/nginx/conf.mail.d').only_with(
               path: '/etc/nginx/conf.mail.d',
@@ -301,6 +318,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/etc/nginx/nginx.conf').with(
               ensure: 'file',
@@ -309,6 +327,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/etc/nginx/mime.types').with(
               ensure: 'file',
@@ -317,6 +336,7 @@ describe 'nginx' do
               mode: '0644'
             )
           end
+
           it do
             is_expected.to contain_file('/tmp/nginx.d').with(
               ensure: 'absent',
@@ -324,6 +344,7 @@ describe 'nginx' do
               recurse: true
             )
           end
+
           it do
             is_expected.to contain_file('/tmp/nginx.mail.d').with(
               ensure: 'absent',
@@ -331,6 +352,7 @@ describe 'nginx' do
               recurse: true
             )
           end
+
           context 'manage_log_dir => false' do
             let(:params) { { manage_log_dir: false } }
 
@@ -340,9 +362,11 @@ describe 'nginx' do
               )
             end
           end
+
           case facts[:osfamily]
           when 'RedHat'
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user nginx;} }
+
             it do
               is_expected.to contain_file('/var/log/nginx').with(
                 ensure: 'directory',
@@ -354,6 +378,7 @@ describe 'nginx' do
             end
           when 'Debian'
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user www-data;} }
+
             it do
               is_expected.to contain_file('/var/log/nginx').with(
                 ensure: 'directory',
@@ -1077,6 +1102,7 @@ describe 'nginx' do
                 let(:params) { { param[:attr].to_sym => param[:value] } }
 
                 it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_mode('0644') }
+
                 it param[:title] do
                   matches = Array(param[:match])
 
@@ -1090,7 +1116,7 @@ describe 'nginx' do
                   # if we have a _path attribute make sure we create the path
                   if param[:attr].end_with?('_path')
                     if param[:value].is_a?(Hash)
-                      param[:value].keys.each do |path|
+                      param[:value].each_key do |path|
                         is_expected.to contain_file(path).with_ensure('directory')
                       end
                     else
@@ -1121,7 +1147,7 @@ describe 'nginx' do
             it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{audio/mpeg mp3;}) }
           end
 
-          context 'when mime.types is "[\'custom/file customfile\']" and mime.types.preserve.defaults is true' do
+          context 'when mime.types is "[custom/file customfile]" and mime.types.preserve.defaults is true' do
             let(:params) do
               {
                 mime_types: { 'custom/file' => 'customfile' },
@@ -1133,7 +1159,7 @@ describe 'nginx' do
             it { is_expected.to contain_file('/etc/nginx/mime.types').with_content(%r{custom/file customfile;}) }
           end
 
-          context 'when dynamic_modules is "[\'ngx_http_geoip_module\']" ' do
+          context 'when dynamic_modules is "[ngx_http_geoip_module]"' do
             let(:params) do
               {
                 dynamic_modules: ['ngx_http_geoip_module']
@@ -1143,7 +1169,7 @@ describe 'nginx' do
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{load_module "modules/ngx_http_geoip_module.so";}) }
           end
 
-          context 'when dynamic_modules is "[\'/path/to/module/ngx_http_geoip_module.so\']" ' do
+          context 'when dynamic_modules is "[/path/to/module/ngx_http_geoip_module.so]"' do
             let(:params) do
               {
                 dynamic_modules: ['/path/to/module/ngx_http_geoip_module.so']
@@ -1244,6 +1270,7 @@ describe 'nginx' do
                 recurse: true
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/sites-enabled').with(
                 purge: true,
@@ -1267,6 +1294,7 @@ describe 'nginx' do
                 recurse: true
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.stream.d').with(
                 purge: true,
@@ -1290,6 +1318,7 @@ describe 'nginx' do
                 ]
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/conf.stream.d').without(
                 %w[
@@ -1311,6 +1340,7 @@ describe 'nginx' do
                 ]
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/sites-enabled').without(
                 %w[
@@ -1320,6 +1350,7 @@ describe 'nginx' do
                 ]
               )
             end
+
             it do
               is_expected.to contain_file('/var/log/nginx').without(
                 %w[
@@ -1329,6 +1360,7 @@ describe 'nginx' do
                 ]
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/streams-available').without(
                 %w[
@@ -1338,6 +1370,7 @@ describe 'nginx' do
                 ]
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/streams-enabled').without(
                 %w[
@@ -1365,11 +1398,13 @@ describe 'nginx' do
             let(:params) { { log_dir: '/foo/bar' } }
 
             it { is_expected.to contain_file('/foo/bar').with(ensure: 'directory') }
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{access_log /foo/bar/access.log;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{error_log /foo/bar/error.log error;}
@@ -1391,31 +1426,37 @@ describe 'nginx' do
                 %r{  gzip              on;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_comp_level   1;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_disable      msie6;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_min_length   20;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_http_version 1.1;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_vary         off;}
               )
             end
+
             it do
               is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
                 %r{  gzip_proxied      off;}

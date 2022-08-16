@@ -1,7 +1,7 @@
 # Managed by modulesync - DO NOT EDIT
 # https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
 
-# Attempt to load voxupuli-test (which pulls in puppetlabs_spec_helper),
+# Attempt to load voxpupuli-test (which pulls in puppetlabs_spec_helper),
 # otherwise attempt to load it directly.
 begin
   require 'voxpupuli/test/rake'

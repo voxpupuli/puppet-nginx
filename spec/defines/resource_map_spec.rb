@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'nginx::resource::map' do
@@ -33,9 +35,10 @@ describe 'nginx::resource::map' do
           let(:params) { default_params }
 
           it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").that_requires('File[/etc/nginx/conf.d]') }
+
           it do
             is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with(
-              'owner' => 'root',
+              'owner'   => 'root',
               'group'   => 'root',
               'mode'    => '0644',
               'ensure'  => 'file',
@@ -52,9 +55,10 @@ describe 'nginx::resource::map' do
           end
 
           it { is_expected.to contain_file("/etc/nginx/conf.stream.d/#{title}-map.conf").that_requires('File[/etc/nginx/conf.stream.d]') }
+
           it do
             is_expected.to contain_file("/etc/nginx/conf.stream.d/#{title}-map.conf").with(
-              'owner' => 'root',
+              'owner'   => 'root',
               'group'   => 'root',
               'mode'    => '0644',
               'ensure'  => 'file',
@@ -119,7 +123,7 @@ describe 'nginx::resource::map' do
             },
             {
               title: 'should contain mappings in input order when supplied as an array of hashes',
-              attr:  'mappings',
+              attr: 'mappings',
               value: [
                 { 'key' => 'foo', 'value' => 'pool_b' },
                 { 'key' => 'bar', 'value' => 'pool_c' },
@@ -136,6 +140,7 @@ describe 'nginx::resource::map' do
               let(:params) { default_params.merge(param[:attr].to_sym => param[:value]) }
 
               it { is_expected.to contain_file("/etc/nginx/conf.d/#{title}-map.conf").with_mode('0644') }
+
               it param[:title] do
                 verify_contents(catalogue, "/etc/nginx/conf.d/#{title}-map.conf", Array(param[:match]))
                 Array(param[:notmatch]).each do |item|

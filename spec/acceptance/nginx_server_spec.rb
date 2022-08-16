@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'nginx::resource::server define:' do
@@ -49,6 +51,10 @@ describe 'nginx::resource::server define:' do
   end
 
   context 'should run successfully with ssl' do
+    it 'remove leftovers from previous tests', if: fact('os.family') == 'RedHat' do
+      shell('yum -y remove nginx nginx-filesystem passenger')
+    end
+
     it 'configures a nginx SSL server' do
       pp = "
       class { 'nginx': }
@@ -69,7 +75,6 @@ describe 'nginx::resource::server define:' do
 
     describe file('/etc/nginx/sites-available/www.puppetlabs.com.conf') do
       it { is_expected.to be_file }
-      it { is_expected.not_to contain 'ssl on;' } # As of nginx 1.15 (1.16 stable), this will not be set.
       it { is_expected.to contain 'listen       *:443 ssl;' }
       it { is_expected.not_to contain 'shared:SSL:10m;' }
     end
