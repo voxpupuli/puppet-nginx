@@ -74,7 +74,11 @@ http {
   default_type  application/octet-stream;
 <% if @log_format -%>
 <% @log_format.sort_by{|k,v| k}.each do |key,value| -%>
-  log_format <%= key %> '<%= value %>';
+  <%- if value.is_a?(Hash) -%>
+  log_format <%= key %> <%= "escape=#{value['escape']} " if value['escape'] %><%= value['format'].inspect %>;
+  <%- else -%>
+  log_format <%= key %> <%= value.inspect %>;
+  <%- end -%>
 <% end -%>
 <% end -%>
 

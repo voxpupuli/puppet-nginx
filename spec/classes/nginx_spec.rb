@@ -554,10 +554,10 @@ describe 'nginx' do
                   },
                 },
                 match: [
-                  '  log_format format1 \'FORMAT1\';',
-                  '  log_format format2 \'FORMAT2\';',
-                  '  log_format format3 \'FORMAT3\';',
-                  '  log_format format4 \'escape=json\' \'{"response": $status, "verb": "$request_method"}\';'
+                  '  log_format format1 "FORMAT1";',
+                  '  log_format format2 "FORMAT2";',
+                  '  log_format format3 "FORMAT3";',
+                  '  log_format format4 escape=json "{\\"response\\": $status, \\"verb\\": \\"$request_method\\"}";'
                 ]
               },
               {
