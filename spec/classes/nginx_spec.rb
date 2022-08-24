@@ -544,11 +544,20 @@ describe 'nginx' do
                 attr: 'log_format',
                 value: {
                   'format1' => 'FORMAT1',
-                  'format2' => 'FORMAT2'
+                  'format2' => 'FORMAT2',
+                  'format3' => {
+                    'format' => 'FORMAT3',
+                  },
+                  'format4' => {
+                    'escape' => 'json',
+                    'format' => '{"response": $status, "verb": "$request_method"}',
+                  },
                 },
                 match: [
-                  '  log_format format1 \'FORMAT1\';',
-                  '  log_format format2 \'FORMAT2\';'
+                  '  log_format format1 "FORMAT1";',
+                  '  log_format format2 "FORMAT2";',
+                  '  log_format format3 "FORMAT3";',
+                  '  log_format format4 escape=json "{\\"response\\": $status, \\"verb\\": \\"$request_method\\"}";'
                 ]
               },
               {
