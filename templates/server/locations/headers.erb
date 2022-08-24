@@ -2,10 +2,10 @@
     <%- if value -%>
       <%- if value.is_a?(Hash) -%>
         <%- value.each do |sk, sv| -%>
-    add_header "<%= header %>" <% if sk != '' %>"<%= sk %>"<% end %> <%= sv %>;
+    add_header <%= header.inspect %> <% if sk != '' %><%= sk.inspect %><% end %> <%= sv %>;
         <%- end -%>
       <%- else -%>
-    add_header "<%= header %>" "<%= value %>";
+    add_header <%= header.inspect %> <%= value.inspect %>;
       <%- end -%>
     <%- end -%>
 <%- end -%>

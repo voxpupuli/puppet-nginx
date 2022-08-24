@@ -460,7 +460,8 @@ describe 'nginx::resource::location' do
                 'add_header' => {
                   'header 1' => 'test value 1',
                   'header 2' => { 'test value 2' => 'tv2' },
-                  'header 3' => { '' => '\'test value 3\' tv3' }
+                  'header 3' => { '' => '\'test value 3\' tv3' },
+                  'header 4' => '{"foo": "bar"}',
                 }
               )
             end
@@ -472,6 +473,8 @@ describe 'nginx::resource::location' do
                 with_content(%r{^\s+add_header\s+"header 2"\s+"test value 2" tv2;$})
               is_expected.to contain_concat__fragment("server1-500-#{Digest::MD5.hexdigest('location')}").
                 with_content(%r{^\s+add_header\s+"header 3"\s+'test value 3' tv3;$})
+              is_expected.to contain_concat__fragment("server1-500-#{Digest::MD5.hexdigest('location')}").
+                with_content(%r(^\s+add_header\s+"header 4"\s+"{\\"foo\\": \\"bar\\"}";$))
             end
           end
         end
