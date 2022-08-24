@@ -190,8 +190,8 @@ describe 'nginx' do
 
             it { is_expected.to contain_package('nginx') }
 
-            if (facts[:lsbdistid] == 'Debian' && %w[10 11].include?(facts.dig(:os, 'release', 'major'))) ||
-               (facts[:lsbdistid] == 'Ubuntu' && %w[bionic focal jammy].include?(facts[:lsbdistcodename]))
+            if (facts.dig(:os, 'name') == 'Debian' && %w[10 11].include?(facts.dig(:os, 'release', 'major'))) ||
+               (facts.dig(:os, 'name') == 'Ubuntu' && %w[bionic focal jammy].include?(facts.dig(:os, 'distro', 'codename')))
               it { is_expected.to contain_package('libnginx-mod-http-passenger') }
             else
               it { is_expected.to contain_package('passenger') }
