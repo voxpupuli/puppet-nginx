@@ -23,7 +23,7 @@ describe 'nginx class:' do
     pkg_match = case fact('operatingsystemmajrelease')
                 when '10', '11'
                   %r{Debian Nginx Maintainers}
-                when '18.04', '20.04'
+                when '18.04', '20.04', '22.04'
                   %r{Ubuntu Developers}
                 else
                   %r{Phusion}
