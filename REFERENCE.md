@@ -35,6 +35,7 @@
 
 * [`Nginx::DebugConnection`](#nginxdebugconnection)
 * [`Nginx::ErrorLogSeverity`](#nginxerrorlogseverity)
+* [`Nginx::LogFormat`](#nginxlogformat)
 * [`Nginx::Size`](#nginxsize)
 * [`Nginx::Time`](#nginxtime)
 * [`Nginx::UpstreamCustomParameters`](#nginxupstreamcustomparameters)
@@ -78,6 +79,8 @@ The following parameters are available in the `nginx` class:
 * [`service_config_check`](#service_config_check)
 * [`service_config_check_command`](#service_config_check_command)
 * [`reset_timedout_connection`](#reset_timedout_connection)
+* [`nginx_snippets`](#nginx_snippets)
+* [`nginx_snippets_defaults`](#nginx_snippets_defaults)
 * [`client_body_temp_path`](#client_body_temp_path)
 * [`confd_only`](#confd_only)
 * [`confd_purge`](#confd_purge)
@@ -91,6 +94,7 @@ The following parameters are available in the `nginx` class:
 * [`global_mode`](#global_mode)
 * [`limit_req_zone`](#limit_req_zone)
 * [`log_dir`](#log_dir)
+* [`manage_log_dir`](#manage_log_dir)
 * [`log_user`](#log_user)
 * [`log_group`](#log_group)
 * [`log_mode`](#log_mode)
@@ -101,7 +105,6 @@ The following parameters are available in the `nginx` class:
 * [`pid`](#pid)
 * [`proxy_temp_path`](#proxy_temp_path)
 * [`root_group`](#root_group)
-* [`run_dir`](#run_dir)
 * [`sites_available_owner`](#sites_available_owner)
 * [`sites_available_group`](#sites_available_group)
 * [`sites_available_mode`](#sites_available_mode)
@@ -306,13 +309,29 @@ with the non-standard code 444.
 
 Default value: ``undef``
 
+##### <a name="nginx_snippets"></a>`nginx_snippets`
+
+Data type: `Hash`
+
+Specifies a hash from which to generate `nginx::resource::snippet` resources.
+
+Default value: `{}`
+
+##### <a name="nginx_snippets_defaults"></a>`nginx_snippets_defaults`
+
+Data type: `Hash`
+
+Can be used to define default values for the parameter `nginx_snippets`.
+
+Default value: `{}`
+
 ##### <a name="client_body_temp_path"></a>`client_body_temp_path`
 
-Data type: `Variant[Stdlib::Absolutepath, Boolean]`
+Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: `$nginx::params::client_body_temp_path`
+Default value: ``undef``
 
 ##### <a name="confd_only"></a>`confd_only`
 
@@ -410,6 +429,14 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `$nginx::params::log_dir`
 
+##### <a name="manage_log_dir"></a>`manage_log_dir`
+
+Data type: `Boolean`
+
+
+
+Default value: ``true``
+
 ##### <a name="log_user"></a>`log_user`
 
 Data type: `String[1]`
@@ -476,11 +503,11 @@ Default value: `$nginx::params::pid`
 
 ##### <a name="proxy_temp_path"></a>`proxy_temp_path`
 
-Data type: `Variant[Stdlib::Absolutepath, Boolean]`
+Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: `$nginx::params::proxy_temp_path`
+Default value: ``undef``
 
 ##### <a name="root_group"></a>`root_group`
 
@@ -489,14 +516,6 @@ Data type: `Any`
 
 
 Default value: `$nginx::params::root_group`
-
-##### <a name="run_dir"></a>`run_dir`
-
-Data type: `Any`
-
-
-
-Default value: `$nginx::params::run_dir`
 
 ##### <a name="sites_available_owner"></a>`sites_available_owner`
 
@@ -868,7 +887,7 @@ Default value: `'100'`
 
 ##### <a name="log_format"></a>`log_format`
 
-Data type: `Any`
+Data type: `Hash[String[1], Nginx::LogFormat]`
 
 
 
@@ -1076,6 +1095,7 @@ Default value: `[
     'Host $host',
     'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
+    'X-Forwarded-Host $host',
     'X-Forwarded-Proto $scheme',
     'Proxy ""',
   ]`
@@ -2793,7 +2813,7 @@ Default value: `'off'`
 
 ##### <a name="protocol"></a>`protocol`
 
-Data type: `Optional[Enum['imap', 'pop3', 'smtp']]`
+Data type: `Optional[Enum['imap', 'pop3', 'sieve', 'smtp']]`
 
 Mail protocol to use
 
@@ -5020,6 +5040,19 @@ Alias of
 
 ```puppet
 Enum['debug', 'info', 'notice', 'warn', 'error', 'crit', 'alert', 'emerg']
+```
+
+### <a name="nginxlogformat"></a>`Nginx::LogFormat`
+
+The Nginx::LogFormat data type.
+
+Alias of
+
+```puppet
+Variant[String[1], Struct[{
+    Optional[escape] => Enum['default', 'json', 'none'],
+    format           => String[1],
+  }]]
 ```
 
 ### <a name="nginxsize"></a>`Nginx::Size`
