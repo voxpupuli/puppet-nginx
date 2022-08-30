@@ -18,9 +18,8 @@
 # @param ipv6_listen_port
 #   Default IPv6 Port for NGINX to listen with this streamhost on.
 # @param ipv6_listen_options
-#   Extra options for listen directive like 'default' to catchall. Template
-#   will allways add ipv6only=on. While issue jfryman/puppet-nginx#30 is
-#   discussed, default value is 'default'.
+#   Extra options for listen directive like 'default' to
+#   catchall.
 # @param proxy
 #   Proxy server(s) for the root location to connect to. Accepts a single
 #   value, can be used in conjunction with nginx::resource::upstream

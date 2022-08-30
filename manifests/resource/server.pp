@@ -30,9 +30,7 @@
 # @param ipv6_listen_port
 #   Default IPv6 Port for NGINX to listen with this server on. Defaults to TCP 80
 # @param ipv6_listen_options
-#   Extra options for listen directive like 'default' to catchall. Template
-#   will allways add ipv6only=on.  While issue jfryman/puppet-nginx#30 is
-#   discussed, default value is 'default'.
+#   Extra options for listen directive like 'default' to catchall.
 # @param add_header
 #   Adds headers to the HTTP response when response code is equal to 200, 204,
 #   301, 302 or 304.

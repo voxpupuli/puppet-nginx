@@ -17,9 +17,7 @@
 # @param ipv6_listen_port
 #   Default IPv6 Port for NGINX to listen with this server on.
 # @param ipv6_listen_options
-#   Extra options for listen directive like 'default' to catchall. Template
-#   will allways add ipv6only=on.  While issue jfryman/puppet-nginx#30 is
-#   discussed, default value is 'default'.
+#   Extra options for listen directive like 'default' to catchall.
 # @param ssl
 #   Indicates whether to setup SSL bindings for this mailhost.
 # @param ssl_cert

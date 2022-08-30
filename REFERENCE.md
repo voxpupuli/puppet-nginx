@@ -2644,9 +2644,7 @@ Default value: `$listen_port`
 
 Data type: `String`
 
-Extra options for listen directive like 'default' to catchall. Template
-will allways add ipv6only=on.  While issue jfryman/puppet-nginx#30 is
-discussed, default value is 'default'.
+Extra options for listen directive like 'default' to catchall.
 
 Default value: `'default ipv6only=on'`
 
@@ -3354,9 +3352,7 @@ Default value: `$listen_port`
 
 Data type: `String`
 
-Extra options for listen directive like 'default' to catchall. Template
-will allways add ipv6only=on.  While issue jfryman/puppet-nginx#30 is
-discussed, default value is 'default'.
+Extra options for listen directive like 'default' to catchall.
 
 Default value: `'default ipv6only=on'`
 
@@ -4479,9 +4475,7 @@ Default value: `$listen_port`
 
 Data type: `String`
 
-Extra options for listen directive like 'default' to catchall. Template
-will allways add ipv6only=on. While issue jfryman/puppet-nginx#30 is
-discussed, default value is 'default'.
+Extra options for listen directive like 'default' to catchall.
 
 Default value: `'default ipv6only=on'`
 
