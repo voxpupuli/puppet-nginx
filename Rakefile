@@ -52,7 +52,7 @@ begin
     config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\nEach new release typically also includes the latest modulesync defaults.\nThese should not affect the functionality of the module."
     config.exclude_labels = %w{duplicate question invalid wontfix wont-fix modulesync skip-changelog}
     config.user = 'voxpupuli'
-    config.project = metadata.metadata['name']
+    config.project = 'puppet-nginx'
   end
 
   # Workaround for https://github.com/github-changelog-generator/github-changelog-generator/issues/715
