@@ -17,6 +17,8 @@
 #   Locations to allow connections from.
 # @param location_deny
 #   Locations to deny connections from.
+# @param location_acl
+#   Specifies location ACL name in nginx::conf_dir/conf.d/${location_acl}.acl.
 # @param www_root
 #   Specifies the location on disk for files to be read from. Cannot be set in
 #   conjunction with $proxy
@@ -269,6 +271,7 @@ define nginx::resource::location (
   Optional[Enum['any', 'all']] $location_satisfy                   = undef,
   Optional[Array] $location_allow                                  = undef,
   Optional[Array] $location_deny                                   = undef,
+  Optional[String] $location_acl                                   = undef,
   Optional[Boolean] $stub_status                                   = undef,
   Optional[Variant[String, Array]] $raw_prepend                    = undef,
   Optional[Variant[String, Array]] $raw_append                     = undef,
