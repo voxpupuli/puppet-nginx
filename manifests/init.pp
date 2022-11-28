@@ -110,7 +110,7 @@ class nginx (
   $gzip_disable                                              = 'msie6',
   $gzip_min_length                                           = 20,
   $gzip_http_version                                         = 1.1,
-  $gzip_proxied                                              = 'off',
+  Nginx::GzipProxied $gzip_proxied                           = 'off',
   $gzip_types                                                = undef,
   Enum['on', 'off'] $gzip_vary                               = 'off',
   Optional[Enum['on', 'off', 'always']] $gzip_static         = undef,
