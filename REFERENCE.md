@@ -35,6 +35,7 @@
 
 * [`Nginx::DebugConnection`](#Nginx--DebugConnection)
 * [`Nginx::ErrorLogSeverity`](#Nginx--ErrorLogSeverity)
+* [`Nginx::GzipProxied`](#Nginx--GzipProxied): custom type for gzip_proxied
 * [`Nginx::LogFormat`](#Nginx--LogFormat)
 * [`Nginx::Size`](#Nginx--Size)
 * [`Nginx::Time`](#Nginx--Time)
@@ -791,7 +792,7 @@ Default value: `1.1`
 
 ##### <a name="-nginx--gzip_proxied"></a>`gzip_proxied`
 
-Data type: `Any`
+Data type: `Nginx::GzipProxied`
 
 
 
@@ -5040,6 +5041,15 @@ Alias of `Variant[Stdlib::Host, Stdlib::IP::Address, Enum['unix:']]`
 The Nginx::ErrorLogSeverity data type.
 
 Alias of `Enum['debug', 'info', 'notice', 'warn', 'error', 'crit', 'alert', 'emerg']`
+
+### <a name="Nginx--GzipProxied"></a>`Nginx::GzipProxied`
+
+custom type for gzip_proxied
+
+* **See also**
+  * http://nginx.org/en/docs/http/ngx_http_gzip_module.html#gzip_proxied
+
+Alias of `Enum['off', 'expired', 'no-cache', 'no-store', 'private', 'no_last_modified', 'no_etag', 'auth', 'any']`
 
 ### <a name="Nginx--LogFormat"></a>`Nginx::LogFormat`
 
