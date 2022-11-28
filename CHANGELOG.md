@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.0.0) (2022-08-24)
+## [v4.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.1.0) (2022-11-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.0.0...v4.1.0)
+
+**Implemented enhancements:**
+
+- Add custom type for gzip\_proxied [\#1520](https://github.com/voxpupuli/puppet-nginx/pull/1520) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Fix puppet-lint violation [\#1519](https://github.com/voxpupuli/puppet-nginx/pull/1519) ([ekohl](https://github.com/ekohl))
+- fix documentation about ipv6only always being added [\#1515](https://github.com/voxpupuli/puppet-nginx/pull/1515) ([anarcat](https://github.com/anarcat))
+
+## [v4.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.0.0) (2022-08-25)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v3.3.0...v4.0.0)
 
