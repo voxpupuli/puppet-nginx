@@ -193,7 +193,7 @@ class nginx (
   Optional[Enum['on', 'off']] $reset_timedout_connection     = undef,
 
   ### START Package Configuration ###
-  $package_ensure                                            = present,
+  $package_ensure                                            = installed,
   $package_name                                              = $nginx::params::package_name,
   $package_source                                            = 'nginx',
   $package_flavor                                            = undef,
@@ -201,7 +201,7 @@ class nginx (
   Hash[String[1], String[1]] $mime_types                     = $nginx::params::mime_types,
   Boolean $mime_types_preserve_defaults                      = false,
   Optional[String] $repo_release                             = undef,
-  $passenger_package_ensure                                  = 'present',
+  $passenger_package_ensure                                  = installed,
   String[1] $passenger_package_name                          = $nginx::params::passenger_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
   ### END Package Configuration ###
