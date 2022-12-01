@@ -125,7 +125,7 @@ describe 'nginx' do
 
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
             it { is_expected.to contain_yumrepo('nginx-release').that_comes_before('Package[nginx]') }
-            it { is_expected.to contain_package('passenger').with('ensure' => 'present') }
+            it { is_expected.to contain_package('passenger').with('ensure' => 'installed') }
           end
 
           describe 'installs the requested passenger package version', unless: facts[:operatingsystemmajrelease] == '8' do

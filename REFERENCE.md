@@ -1391,7 +1391,7 @@ Data type: `Any`
 
 
 
-Default value: `present`
+Default value: `installed`
 
 ##### <a name="-nginx--package_name"></a>`package_name`
 
@@ -1455,7 +1455,7 @@ Data type: `Any`
 
 
 
-Default value: `'present'`
+Default value: `installed`
 
 ##### <a name="-nginx--repo_source"></a>`repo_source`
 
