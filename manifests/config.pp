@@ -73,6 +73,7 @@ class nginx::config {
   $keepalive_timeout              = $nginx::keepalive_timeout
   $keepalive_requests             = $nginx::keepalive_requests
   $log_format                     = $nginx::log_format
+  $stream_log_format              = $nginx::stream_log_format
   $mail                           = $nginx::mail
   $mime_types_path                = $nginx::mime_types_path
   $stream                         = $nginx::stream
