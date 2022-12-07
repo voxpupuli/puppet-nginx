@@ -22,6 +22,7 @@ class nginx::config {
   $http_access_log                = $nginx::http_access_log
   $http_format_log                = $nginx::http_format_log
   $stream_access_log              = $nginx::stream_access_log
+  $stream_custom_format_log       = $nginx::stream_custom_format_log
   $nginx_error_log                = $nginx::nginx_error_log
   $nginx_error_log_severity       = $nginx::nginx_error_log_severity
   $pid                            = $nginx::pid

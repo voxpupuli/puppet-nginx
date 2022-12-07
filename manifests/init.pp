@@ -66,6 +66,7 @@ class nginx (
   Variant[String, Array[String]] $http_access_log            = "${log_dir}/${nginx::params::http_access_log_file}",
   Optional[String] $http_format_log                          = undef,
   Variant[String, Array[String]] $stream_access_log          = "${log_dir}/stream-access.log",
+  Optional[String] $stream_custom_format_log                 = undef,
   Variant[String, Array[String]] $nginx_error_log            = "${log_dir}/${nginx::params::nginx_error_log_file}",
   Nginx::ErrorLogSeverity $nginx_error_log_severity          = 'error',
   $pid                                                       = $nginx::params::pid,

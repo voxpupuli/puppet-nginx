@@ -339,10 +339,10 @@ stream {
 
 <% if @stream_access_log.is_a?(Array) -%>
   <%- @stream_access_log.each do |log_item| -%>
-  access_log <%= log_item %>;
+  access_log <%= log_item %><% if @stream_custom_format_log %> <%= @stream_custom_format_log%><% end %>;
   <%- end -%>
 <% else -%>
-  access_log <%= @stream_access_log %>;
+  access_log <%= @stream_access_log %><% if @stream_custom_format_log %> <%= @stream_custom_format_log%><% end %>;
 <% end -%>
 }
 <% end -%>
