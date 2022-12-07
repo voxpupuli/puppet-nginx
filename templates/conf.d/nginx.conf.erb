@@ -330,5 +330,13 @@ stream {
 <% unless @confd_only -%>
   include <%= @conf_dir %>/streams-enabled/*;
 <% end -%>
+
+<% if @stream_access_log.is_a?(Array) -%>
+  <%- @stream_access_log.each do |log_item| -%>
+  access_log <%= log_item %>;
+  <%- end -%>
+<% else -%>
+  access_log <%= @stream_access_log %>;
+<% end -%>
 }
 <% end -%>
