@@ -83,15 +83,17 @@ class { 'nginx':
 }
 
 nginx::resource::mailhost { 'domain1.example':
-  auth_http   => 'server2.example/cgi-bin/auth',
-  protocol    => 'smtp',
-  listen_port => 587,
-  ssl_port    => 465,
-  starttls    => 'only',
-  xclient     => 'off',
-  ssl         => true,
-  ssl_cert    => '/tmp/server.crt',
-  ssl_key     => '/tmp/server.pem',
+  auth_http       => 'server2.example/cgi-bin/auth',
+  protocol        => 'smtp',
+  listen_port     => 587,
+  ssl_port        => 465,
+  starttls        => 'only',
+  xclient         => 'off',
+  proxy_protocol  => 'off',
+  proxy_smtp_auth => 'off',
+  ssl             => true,
+  ssl_cert        => '/tmp/server.crt',
+  ssl_key         => '/tmp/server.pem',
 }
 ```
 

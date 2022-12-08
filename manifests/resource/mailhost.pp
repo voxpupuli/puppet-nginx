@@ -72,6 +72,10 @@
 #   for authorization.
 # @param xclient
 #   Whether to use xclient for smtp
+# @param proxy_protocol 
+#   Wheter to use proxy_protocol
+# @param proxy_smtp_auth     
+#   Wheter to use proxy_smtp_auth
 # @param imap_auth
 #   Sets permitted methods of authentication for IMAP clients.
 # @param imap_capabilities
@@ -111,16 +115,18 @@
 #
 # @example SMTP server definition
 #   nginx::resource::mailhost { 'domain1.example':
-#     ensure      => present,
-#     auth_http   => 'server2.example/cgi-bin/auth',
-#     protocol    => 'smtp',
-#     listen_port => 587,
-#     ssl_port    => 465,
-#     starttls    => 'only',
-#     xclient     => 'off',
-#     ssl         => true,
-#     ssl_cert    => '/tmp/server.crt',
-#     ssl_key     => '/tmp/server.pem',
+#     ensure          => present,
+#     auth_http       => 'server2.example/cgi-bin/auth',
+#     protocol        => 'smtp',
+#     listen_port     => 587,
+#     ssl_port        => 465,
+#     starttls        => 'only',
+#     xclient         => 'off',
+#     proxy_protocol  => 'off',
+#     proxy_smtp_auth => 'off',
+#     ssl             => true,
+#     ssl_cert        => '/tmp/server.crt',
+#     ssl_key         => '/tmp/server.pem',
 #   }
 #
 define nginx::resource::mailhost (
@@ -155,6 +161,8 @@ define nginx::resource::mailhost (
   Optional[String] $auth_http                    = undef,
   Optional[String] $auth_http_header             = undef,
   Enum['on', 'off'] $xclient                     = 'on',
+  Enum['on', 'off'] $proxy_protocol              = 'off',
+  Enum['on', 'off'] $proxy_smtp_auth             = 'off',
   Optional[String] $imap_auth                    = undef,
   Optional[Array] $imap_capabilities             = undef,
   Optional[String] $imap_client_buffer           = undef,

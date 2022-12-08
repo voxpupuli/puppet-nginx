@@ -110,6 +110,18 @@ describe 'nginx::resource::mailhost' do
               match: '  xclient               off;'
             },
             {
+              title: 'should set proxy_protocol',
+              attr: 'proxy_protocol',
+              value: 'off',
+              match: '  proxy_protocol        off;'
+            },
+            {
+              title: 'should set proxy_smtp_auth',
+              attr: 'proxy_smtp_auth',
+              value: 'off',
+              match: '  proxy_smtp_auth       off;'
+            },
+            {
               title: 'should set auth_http',
               attr: 'auth_http',
               value: 'test-auth_http',
@@ -550,6 +562,18 @@ describe 'nginx::resource::mailhost' do
               attr: 'xclient',
               value: 'off',
               match: '  xclient               off;'
+            },
+            {
+              title: 'should set proxy_protocol',
+              attr: 'proxy_protocol',
+              value: 'off',
+              match: '  proxy_protocol        off;'
+            },
+            {
+              title: 'should set proxy_smtp_auth',
+              attr: 'proxy_smtp_auth',
+              value: 'off',
+              match: '  proxy_smtp_auth       off;'
             },
             {
               title: 'should set auth_http',
