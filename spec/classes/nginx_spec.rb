@@ -1531,6 +1531,22 @@ describe 'nginx' do
               )
             end
           end
+
+          context 'when stream is true' do
+            let(:params) { { stream: true } }
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{stream\s\{}
+              )
+            end
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{access_log\s/var/log/nginx/stream-access.log;}
+              )
+            end
+          end
         end
       end
     end
