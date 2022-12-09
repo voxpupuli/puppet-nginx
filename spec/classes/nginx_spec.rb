@@ -1531,6 +1531,48 @@ describe 'nginx' do
               )
             end
           end
+
+          context 'when stream is true' do
+            let(:params) { { stream: true } }
+
+            it do
+              is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                %r{stream\s\{}
+              )
+            end
+
+            context 'when stream_log_format is defined' do
+              let(:params) do
+                super().merge({ stream_log_format: { 'stream_format' => 'STREAM_FORMAT' } })
+              end
+
+              it do
+                is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                  %r{log_format stream_format 'STREAM_FORMAT';}
+                )
+              end
+            end
+
+            context 'when stream_custom_format_log is default' do
+              it do
+                is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                  %r{access_log /var/log/nginx/stream-access.log;}
+                )
+              end
+            end
+
+            context 'when stream_custom_format_log is non-default' do
+              let(:params) do
+                super().merge({ stream_custom_format_log: 'stream_format' })
+              end
+
+              it do
+                is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(
+                  %r{access_log /var/log/nginx/stream-access.log stream_format;}
+                )
+              end
+            end
+          end
         end
       end
     end
