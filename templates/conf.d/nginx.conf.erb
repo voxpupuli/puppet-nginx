@@ -124,6 +124,13 @@ http {
   server_names_hash_bucket_size <%= @names_hash_bucket_size %>;
   server_names_hash_max_size <%= @names_hash_max_size %>;
 
+<% if @map_hash_bucket_size -%>
+  map_hash_bucket_size <%= @map_hash_bucket_size %>;
+<% end -%>
+<% if @map_hash_max_size -%>
+  map_hash_max_size <%= @map_hash_max_size %>;
+<% end -%>
+
   keepalive_timeout   <%= @keepalive_timeout %>;
   keepalive_requests  <%= @keepalive_requests %>;
   client_body_timeout <%= @client_body_timeout %>;
