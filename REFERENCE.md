@@ -82,7 +82,10 @@ The following parameters are available in the `nginx` class:
 * [`reset_timedout_connection`](#-nginx--reset_timedout_connection)
 * [`nginx_snippets`](#-nginx--nginx_snippets)
 * [`nginx_snippets_defaults`](#-nginx--nginx_snippets_defaults)
+* [`proxy_temp_mode`](#-nginx--proxy_temp_mode)
+* [`proxy_temp_path`](#-nginx--proxy_temp_path)
 * [`client_body_temp_path`](#-nginx--client_body_temp_path)
+* [`client_body_temp_mode`](#-nginx--client_body_temp_mode)
 * [`confd_only`](#-nginx--confd_only)
 * [`confd_purge`](#-nginx--confd_purge)
 * [`conf_dir`](#-nginx--conf_dir)
@@ -104,7 +107,6 @@ The following parameters are available in the `nginx` class:
 * [`nginx_error_log`](#-nginx--nginx_error_log)
 * [`nginx_error_log_severity`](#-nginx--nginx_error_log_severity)
 * [`pid`](#-nginx--pid)
-* [`proxy_temp_path`](#-nginx--proxy_temp_path)
 * [`root_group`](#-nginx--root_group)
 * [`sites_available_owner`](#-nginx--sites_available_owner)
 * [`sites_available_group`](#-nginx--sites_available_group)
@@ -326,11 +328,35 @@ Can be used to define default values for the parameter `nginx_snippets`.
 
 Default value: `{}`
 
+##### <a name="-nginx--proxy_temp_mode"></a>`proxy_temp_mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+Permissions for the $proxy_temp_path file resource.
+
+Default value: `undef`
+
+##### <a name="-nginx--proxy_temp_path"></a>`proxy_temp_path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+Directory for storing temporary files with data received from proxied servers.
+
+Default value: `undef`
+
 ##### <a name="-nginx--client_body_temp_path"></a>`client_body_temp_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
+Directory for storing temporary files holding client request bodies.
 
+Default value: `undef`
+
+##### <a name="-nginx--client_body_temp_mode"></a>`client_body_temp_mode`
+
+Data type: `Optional[Stdlib::Filemode]`
+
+Permissions for the $client_body_temp_path file resource.
 
 Default value: `undef`
 
@@ -501,14 +527,6 @@ Data type: `Any`
 
 
 Default value: `$nginx::params::pid`
-
-##### <a name="-nginx--proxy_temp_path"></a>`proxy_temp_path`
-
-Data type: `Optional[Stdlib::Absolutepath]`
-
-
-
-Default value: `undef`
 
 ##### <a name="-nginx--root_group"></a>`root_group`
 
