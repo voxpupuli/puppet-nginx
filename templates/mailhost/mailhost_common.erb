@@ -3,6 +3,8 @@
   protocol              <%= @protocol %>;
 <% end -%>
   xclient               <%= @xclient %>;
+  proxy_protocol        <%= @proxy_protocol %>;
+  proxy_smtp_auth       <%= @proxy_smtp_auth %>;
 <% if defined? @auth_http -%>
   auth_http             <%= @auth_http %>;
 <% end -%>

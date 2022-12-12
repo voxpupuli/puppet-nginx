@@ -54,6 +54,8 @@ describe 'nginx::resource::mailhost define:' do
         ssl_cert    => '/etc/pki/tls/certs/blah.cert',
         ssl_key     => '/etc/pki/tls/private/blah.key',
         xclient     => 'off',
+        proxy_protocol  => 'off',
+        proxy_smtp_auth => 'off',
       }
       "
 
