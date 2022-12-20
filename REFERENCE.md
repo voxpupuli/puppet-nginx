@@ -101,6 +101,8 @@ The following parameters are available in the `nginx` class:
 * [`log_mode`](#-nginx--log_mode)
 * [`http_access_log`](#-nginx--http_access_log)
 * [`http_format_log`](#-nginx--http_format_log)
+* [`stream_access_log`](#-nginx--stream_access_log)
+* [`stream_custom_format_log`](#-nginx--stream_custom_format_log)
 * [`nginx_error_log`](#-nginx--nginx_error_log)
 * [`nginx_error_log_severity`](#-nginx--nginx_error_log_severity)
 * [`pid`](#-nginx--pid)
@@ -153,6 +155,7 @@ The following parameters are available in the `nginx` class:
 * [`keepalive_timeout`](#-nginx--keepalive_timeout)
 * [`keepalive_requests`](#-nginx--keepalive_requests)
 * [`log_format`](#-nginx--log_format)
+* [`stream_log_format`](#-nginx--stream_log_format)
 * [`mail`](#-nginx--mail)
 * [`mime_types_path`](#-nginx--mime_types_path)
 * [`stream`](#-nginx--stream)
@@ -471,6 +474,22 @@ Data type: `Variant[String, Array[String]]`
 Default value: `"${log_dir}/${nginx::params::http_access_log_file}"`
 
 ##### <a name="-nginx--http_format_log"></a>`http_format_log`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-nginx--stream_access_log"></a>`stream_access_log`
+
+Data type: `Variant[String, Array[String]]`
+
+
+
+Default value: `"${log_dir}/stream-access.log"`
+
+##### <a name="-nginx--stream_custom_format_log"></a>`stream_custom_format_log`
 
 Data type: `Optional[String]`
 
@@ -887,6 +906,14 @@ Data type: `Any`
 Default value: `'100'`
 
 ##### <a name="-nginx--log_format"></a>`log_format`
+
+Data type: `Hash[String[1], Nginx::LogFormat]`
+
+
+
+Default value: `{}`
+
+##### <a name="-nginx--stream_log_format"></a>`stream_log_format`
 
 Data type: `Hash[String[1], Nginx::LogFormat]`
 
@@ -2531,16 +2558,18 @@ Define a mailhost
 
 ```puppet
 nginx::resource::mailhost { 'domain1.example':
-  ensure      => present,
-  auth_http   => 'server2.example/cgi-bin/auth',
-  protocol    => 'smtp',
-  listen_port => 587,
-  ssl_port    => 465,
-  starttls    => 'only',
-  xclient     => 'off',
-  ssl         => true,
-  ssl_cert    => '/tmp/server.crt',
-  ssl_key     => '/tmp/server.pem',
+  ensure          => present,
+  auth_http       => 'server2.example/cgi-bin/auth',
+  protocol        => 'smtp',
+  listen_port     => 587,
+  ssl_port        => 465,
+  starttls        => 'only',
+  xclient         => 'off',
+  proxy_protocol  => 'off',
+  proxy_smtp_auth => 'off',
+  ssl             => true,
+  ssl_cert        => '/tmp/server.crt',
+  ssl_key         => '/tmp/server.pem',
 }
 ```
 
@@ -2578,6 +2607,8 @@ The following parameters are available in the `nginx::resource::mailhost` define
 * [`protocol`](#-nginx--resource--mailhost--protocol)
 * [`auth_http`](#-nginx--resource--mailhost--auth_http)
 * [`xclient`](#-nginx--resource--mailhost--xclient)
+* [`proxy_protocol`](#-nginx--resource--mailhost--proxy_protocol)
+* [`proxy_smtp_auth`](#-nginx--resource--mailhost--proxy_smtp_auth)
 * [`imap_auth`](#-nginx--resource--mailhost--imap_auth)
 * [`imap_capabilities`](#-nginx--resource--mailhost--imap_capabilities)
 * [`imap_client_buffer`](#-nginx--resource--mailhost--imap_client_buffer)
@@ -2842,6 +2873,22 @@ Data type: `Enum['on', 'off']`
 Whether to use xclient for smtp
 
 Default value: `'on'`
+
+##### <a name="-nginx--resource--mailhost--proxy_protocol"></a>`proxy_protocol`
+
+Data type: `Enum['on', 'off']`
+
+Wheter to use proxy_protocol
+
+Default value: `'off'`
+
+##### <a name="-nginx--resource--mailhost--proxy_smtp_auth"></a>`proxy_smtp_auth`
+
+Data type: `Enum['on', 'off']`
+
+Wheter to use proxy_smtp_auth
+
+Default value: `'off'`
 
 ##### <a name="-nginx--resource--mailhost--imap_auth"></a>`imap_auth`
 
