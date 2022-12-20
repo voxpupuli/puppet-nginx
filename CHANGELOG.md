@@ -4,7 +4,25 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.1.0) (2022-11-28)
+## [v4.2.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.2.0) (2022-12-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.1.0...v4.2.0)
+
+**Implemented enhancements:**
+
+- Add support for proxy\_protocol and proxy\_smtp\_auth parameters [\#1526](https://github.com/voxpupuli/puppet-nginx/pull/1526) ([jtlamers](https://github.com/jtlamers))
+- Add stream log support [\#1461](https://github.com/voxpupuli/puppet-nginx/pull/1461) ([ardrigh](https://github.com/ardrigh))
+
+**Fixed bugs:**
+
+- apt::source: configure repo only for current architecture [\#1527](https://github.com/voxpupuli/puppet-nginx/pull/1527) ([bastelfreak](https://github.com/bastelfreak))
+- init: set package\_ensure defaults to installed [\#1523](https://github.com/voxpupuli/puppet-nginx/pull/1523) ([kenyon](https://github.com/kenyon))
+
+**Closed issues:**
+
+- Default package\_ensure value is not compatible with current stdlib default for ensure\_packages\(\) [\#1522](https://github.com/voxpupuli/puppet-nginx/issues/1522)
+
+## [v4.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.1.0) (2022-11-30)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.0.0...v4.1.0)
 
