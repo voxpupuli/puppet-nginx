@@ -918,10 +918,32 @@ describe 'nginx' do
                 match: '  client_body_temp_path   /path/to/body_temp;'
               },
               {
+                title: 'should set client_body_temp_path with subdirectory hierarchy',
+                attr: 'client_body_temp_path',
+                value: [
+                  '/path/to/body_temp',
+                  1,
+                  2,
+                  3
+                ],
+                match: '  client_body_temp_path   /path/to/body_temp 1 2 3;'
+              },
+              {
                 title: 'should set proxy_temp_path',
                 attr: 'proxy_temp_path',
                 value: '/path/to/proxy_temp',
                 match: '  proxy_temp_path         /path/to/proxy_temp;'
+              },
+              {
+                title: 'should set proxy_temp_path with subdirectory hierarchy',
+                attr: 'proxy_temp_path',
+                value: [
+                  '/path/to/proxy_temp',
+                  1,
+                  2,
+                  3
+                ],
+                match: '  proxy_temp_path         /path/to/proxy_temp 1 2 3;'
               },
               {
                 title: 'should set proxy_max_temp_file_size',
@@ -1124,7 +1146,9 @@ describe 'nginx' do
 
                   # if we have a _path attribute make sure we create the path
                   if param[:attr].end_with?('_path')
-                    if param[:value].is_a?(Hash)
+                    if %w[client_body_temp_path proxy_temp_path].include?(param[:attr]) && param[:value].is_a?(Array)
+                      is_expected.to contain_file(param[:value][0]).with_ensure('directory')
+                    elsif param[:value].is_a?(Hash)
                       param[:value].each_key do |path|
                         is_expected.to contain_file(path).with_ensure('directory')
                       end

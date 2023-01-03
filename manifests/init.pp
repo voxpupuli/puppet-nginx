@@ -46,7 +46,7 @@
 #
 class nginx (
   ### START Nginx Configuration ###
-  Optional[Stdlib::Absolutepath] $client_body_temp_path      = undef,
+  Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]] $client_body_temp_path      = undef,
   Boolean $confd_only                                        = false,
   Boolean $confd_purge                                       = false,
   $conf_dir                                                  = $nginx::params::conf_dir,
@@ -70,7 +70,7 @@ class nginx (
   Variant[String, Array[String]] $nginx_error_log            = "${log_dir}/${nginx::params::nginx_error_log_file}",
   Nginx::ErrorLogSeverity $nginx_error_log_severity          = 'error',
   $pid                                                       = $nginx::params::pid,
-  Optional[Stdlib::Absolutepath] $proxy_temp_path            = undef,
+  Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]] $proxy_temp_path            = undef,
   $root_group                                                = $nginx::params::root_group,
   $sites_available_owner                                     = $nginx::params::sites_available_owner,
   $sites_available_group                                     = $nginx::params::sites_available_group,

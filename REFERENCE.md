@@ -331,9 +331,9 @@ Default value: `{}`
 
 ##### <a name="-nginx--client_body_temp_path"></a>`client_body_temp_path`
 
-Data type: `Optional[Stdlib::Absolutepath]`
+Data type: `Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]]`
 
-
+Can be used to define a directory for storing temporary files holding client request bodies, and up to a three-level subdirectory hierarchy can be used under the specified directory.
 
 Default value: `undef`
 
@@ -523,9 +523,9 @@ Default value: `$nginx::params::pid`
 
 ##### <a name="-nginx--proxy_temp_path"></a>`proxy_temp_path`
 
-Data type: `Optional[Stdlib::Absolutepath]`
+Data type: `Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]]`
 
-
+Can be used to define a directory for storing temporary files with data received from proxied servers, and up to a three-level subdirectory hierarchy can be used under the specified directory.
 
 Default value: `undef`
 

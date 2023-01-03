@@ -206,7 +206,13 @@ class nginx::config {
   }
 
   if $client_body_temp_path {
-    file { $client_body_temp_path:
+    if $client_body_temp_path.is_a(String) {
+      $_client_body_temp_path = [$client_body_temp_path]
+    } else {
+      $_client_body_temp_path = $client_body_temp_path
+    }
+
+    file { $_client_body_temp_path[0]:
       ensure => directory,
       owner  => $daemon_user,
       mode   => '0700',
@@ -214,7 +220,14 @@ class nginx::config {
   }
 
   if $proxy_temp_path {
-    file { $proxy_temp_path:
+    if $proxy_temp_path.is_a(String) {
+      $_proxy_temp_path = [$proxy_temp_path]
+    }
+    else {
+      $_proxy_temp_path = $proxy_temp_path
+    }
+
+    file { $_proxy_temp_path[0]:
       ensure => directory,
       owner  => $daemon_user,
       mode   => '0700',
