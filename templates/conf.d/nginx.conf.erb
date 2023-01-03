@@ -167,8 +167,8 @@ http {
   gzip_vary         <%= @gzip_vary %>;
 <% end -%>
 
-<% if @client_body_temp_path -%>
-  client_body_temp_path   <%= @client_body_temp_path %>;
+<% if @_client_body_temp_path -%>
+  client_body_temp_path   <%= @_client_body_temp_path.join(' ') %>;
 <% end -%>
 <% if @client_max_body_size -%>
   client_max_body_size    <%= @client_max_body_size %>;
@@ -179,8 +179,8 @@ http {
 <% if @proxy_redirect -%>
   proxy_redirect          <%= @proxy_redirect %>;
 <% end -%>
-<% if @proxy_temp_path -%>
-  proxy_temp_path         <%= @proxy_temp_path %>;
+<% if @_proxy_temp_path -%>
+  proxy_temp_path         <%= @_proxy_temp_path.join(' ') %>;
 <% end -%>
 <% if @proxy_connect_timeout -%>
   proxy_connect_timeout   <%= @proxy_connect_timeout %>;
