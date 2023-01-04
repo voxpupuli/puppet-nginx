@@ -1908,6 +1908,7 @@ The following parameters are available in the `nginx::resource::location` define
 * [`proxy_cache_use_stale`](#-nginx--resource--location--proxy_cache_use_stale)
 * [`proxy_cache_valid`](#-nginx--resource--location--proxy_cache_valid)
 * [`proxy_cache_lock`](#-nginx--resource--location--proxy_cache_lock)
+* [`proxy_cache_background_update`](#-nginx--resource--location--proxy_cache_background_update)
 * [`proxy_cache_bypass`](#-nginx--resource--location--proxy_cache_bypass)
 * [`proxy_method`](#-nginx--resource--location--proxy_method)
 * [`proxy_http_version`](#-nginx--resource--location--proxy_http_version)
@@ -2368,6 +2369,14 @@ Default value: `undef`
 Data type: `Optional[Enum['on', 'off']]`
 
 This directive sets the locking mechanism for pouplating cache.
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--location--proxy_cache_background_update"></a>`proxy_cache_background_update`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Allows starting a background subrequest to update an expired cache item
 
 Default value: `undef`
 
@@ -3240,6 +3249,7 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`proxy_cache_use_stale`](#-nginx--resource--server--proxy_cache_use_stale)
 * [`proxy_cache_valid`](#-nginx--resource--server--proxy_cache_valid)
 * [`proxy_cache_lock`](#-nginx--resource--server--proxy_cache_lock)
+* [`proxy_cache_background_update`](#-nginx--resource--server--proxy_cache_background_update)
 * [`proxy_cache_bypass`](#-nginx--resource--server--proxy_cache_bypass)
 * [`proxy_method`](#-nginx--resource--server--proxy_method)
 * [`proxy_http_version`](#-nginx--resource--server--proxy_http_version)
@@ -3912,6 +3922,14 @@ Default value: `undef`
 Data type: `Optional[Enum['on', 'off']]`
 
 This directive sets the locking mechanism for pouplating cache.
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--proxy_cache_background_update"></a>`proxy_cache_background_update`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Allows starting a background subrequest to update an expired cache item
 
 Default value: `undef`
 

@@ -933,6 +933,18 @@ describe 'nginx::resource::location' do
               match: %r{^\s+proxy_cache_lock\s+off;}
             },
             {
+              title: 'should set proxy_cache_background_update with a string',
+              attr: 'proxy_cache_background_update',
+              value: 'on',
+              match: %r{^\s+proxy_cache_background_update\s+on;}
+            },
+            {
+              title: 'should set proxy_cache_background_update with a string',
+              attr: 'proxy_cache_background_update',
+              value: 'off',
+              match: %r{^\s+proxy_cache_background_update\s+off;}
+            },
+            {
               title: 'should set proxy_pass',
               attr: 'proxy',
               value: 'value',
