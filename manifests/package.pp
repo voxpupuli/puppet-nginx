@@ -11,10 +11,10 @@ class nginx::package {
   assert_private()
 
   case $facts['os']['family'] {
-    'redhat': {
+    'RedHat': {
       contain nginx::package::redhat
     }
-    'debian': {
+    'Debian': {
       contain nginx::package::debian
     }
     'Solaris': {

@@ -14,7 +14,9 @@ class nginx::package::redhat {
   #clone and provide the Red Hat-specific package. This comes into play when not
   #on RHEL or CentOS and $manage_repo is set manually to 'true'.
   $_os = $facts['os']['name'] ? {
-    'centos'         => 'centos',
+    'Centos'         => 'centos',
+    'RockyLinux'     => 'centos',
+    'Alma'           => 'centos',
     'VirtuozzoLinux' => 'centos',
     default          => 'rhel'
   }

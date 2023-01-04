@@ -41,14 +41,14 @@ describe 'nginx' do
       context 'nginx::package' do
         it { is_expected.to compile.with_all_deps }
 
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           context 'using defaults' do
             it { is_expected.to contain_package('nginx') }
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[AlmaLinux Rocky CentOS VirtuozzoLinux].include?(facts[:os]['name']) ? 'centos' : 'rhel'}/#{facts[:os]['release']['major']}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
@@ -74,7 +74,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[AlmaLinux Rocky CentOS VirtuozzoLinux].include?(facts[:os]['name']) ? 'centos' : 'rhel'}/#{facts[:os]['release']['major']}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',

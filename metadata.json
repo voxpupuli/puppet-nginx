@@ -83,6 +83,18 @@
         "20.04",
         "22.04"
       ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
     }
   ]
 }
