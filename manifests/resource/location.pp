@@ -127,6 +127,8 @@
 #   This directive sets the time for caching different replies.
 # @param proxy_cache_lock
 #   This directive sets the locking mechanism for pouplating cache.
+# @param proxy_cache_background_update
+#   Allows starting a background subrequest to update an expired cache item
 # @param proxy_cache_bypass
 #   Defines conditions which the response will not be cached
 # @param proxy_method
@@ -283,6 +285,7 @@ define nginx::resource::location (
   Optional[String] $proxy_cache_key                                = undef,
   Optional[String] $proxy_cache_use_stale                          = undef,
   Optional[Enum['on', 'off']] $proxy_cache_lock                    = undef,
+  Optional[Enum['on', 'off']] $proxy_cache_background_update       = undef,
   Optional[Variant[Array, String]] $proxy_cache_valid              = undef,
   Optional[Variant[Array, String]] $proxy_cache_bypass             = undef,
   Optional[String] $proxy_method                                   = undef,
