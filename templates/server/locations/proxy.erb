@@ -72,6 +72,9 @@
 <% if @proxy_cache_background_update -%>
     proxy_cache_background_update <%= @proxy_cache_background_update %>;
 <% end -%>
+<% if @proxy_cache_convert_head -%>
+    proxy_cache_convert_head <%= @proxy_cache_convert_head %>;
+<% end -%>
 <% if @proxy_next_upstream -%>
     proxy_next_upstream      <%= @proxy_next_upstream %>;
 <% end -%>

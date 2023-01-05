@@ -945,6 +945,18 @@ describe 'nginx::resource::location' do
               match: %r{^\s+proxy_cache_background_update\s+off;}
             },
             {
+              title: 'should set proxy_cache_convert_head with a string',
+              attr: 'proxy_cache_convert_head',
+              value: 'on',
+              match: %r{^\s+proxy_cache_convert_head\s+on;}
+            },
+            {
+              title: 'should set proxy_cache_convert_head with a string',
+              attr: 'proxy_cache_convert_head',
+              value: 'off',
+              match: %r{^\s+proxy_cache_convert_head\s+off;}
+            },
+            {
               title: 'should set proxy_pass',
               attr: 'proxy',
               value: 'value',

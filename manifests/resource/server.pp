@@ -174,6 +174,9 @@
 #   This directive sets the locking mechanism for pouplating cache.
 # @param proxy_cache_background_update
 #   Allows starting a background subrequest to update an expired cache item
+# @param proxy_cache_convert_head
+#    Enables or disables the conversion of the “HEAD” method to “GET” for caching.
+#    When the conversion is disabled, the cache key should be configured to include the $request_method.
 # @param proxy_cache_bypass
 #   Defines conditions which the response will not be cached
 # @param proxy_method
@@ -340,6 +343,7 @@ define nginx::resource::server (
   Optional[Variant[Array[String], String]] $proxy_cache_valid                    = undef,
   Optional[Enum['on', 'off']] $proxy_cache_lock                                  = undef,
   Optional[Enum['on', 'off']] $proxy_cache_background_update                     = undef,
+  Optional[Enum['on', 'off']] $proxy_cache_convert_head                          = undef,
   Optional[Variant[Array[String], String]] $proxy_cache_bypass                   = undef,
   Optional[String] $proxy_method                                                 = undef,
   Optional[String] $proxy_http_version                                           = undef,
@@ -526,6 +530,7 @@ define nginx::resource::server (
       proxy_pass_header             => $proxy_pass_header,
       proxy_cache_lock              => $proxy_cache_lock,
       proxy_cache_background_update => $proxy_cache_background_update,
+      proxy_cache_convert_head      => $proxy_cache_convert_head,
       proxy_set_body                => $proxy_set_body,
       proxy_cache_bypass            => $proxy_cache_bypass,
       proxy_buffering               => $proxy_buffering,
