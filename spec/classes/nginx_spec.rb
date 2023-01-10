@@ -654,6 +654,18 @@ describe 'nginx' do
                 match: '  server_names_hash_max_size 10;'
               },
               {
+                title: 'should set map_hash_bucket_size',
+                attr: 'map_hash_bucket_size',
+                value: 32,
+                match: '  map_hash_bucket_size 32;'
+              },
+              {
+                title: 'should set map_hash_max_size',
+                attr: 'map_hash_max_size',
+                value: 2048,
+                match: '  map_hash_max_size 2048;'
+              },
+              {
                 title: 'should set keepalive_timeout',
                 attr: 'keepalive_timeout',
                 value: '123',

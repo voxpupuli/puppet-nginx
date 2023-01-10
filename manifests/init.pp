@@ -127,6 +127,8 @@ class nginx (
   Hash[String[1], Nginx::LogFormat] $log_format              = {},
   Hash[String[1], Nginx::LogFormat] $stream_log_format       = {},
   Boolean $mail                                              = false,
+  Optional[Integer] $map_hash_bucket_size                    = undef,
+  Optional[Integer] $map_hash_max_size                       = undef,
   Variant[String, Boolean] $mime_types_path                  = 'mime.types',
   Boolean $stream                                            = false,
   String $multi_accept                                       = 'off',
