@@ -62,7 +62,7 @@
 #   It expects a hash with custom directives to put before anything else inside
 #   upstream
 #
-# @example
+# @example basic example with three members
 #   nginx::resource::upstream { 'proxypass':
 #     ensure  => present,
 #     members => {

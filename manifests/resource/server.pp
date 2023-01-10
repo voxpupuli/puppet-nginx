@@ -275,7 +275,7 @@
 # @param locations_defaults
 #   Hash of location default settings
 #
-# @example
+# @example simple server
 #   nginx::resource::server { 'test2.local':
 #     ensure   => present,
 #     www_root => '/var/www/nginx-default',

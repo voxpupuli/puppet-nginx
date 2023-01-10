@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.3.0) (2023-01-10)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.2.0...v4.3.0)
+
+**Implemented enhancements:**
+
+- Add support for proxy\_cache\_convert\_head [\#1534](https://github.com/voxpupuli/puppet-nginx/pull/1534) ([idl0r](https://github.com/idl0r))
+- Add support for proxy\_cache\_background\_update [\#1532](https://github.com/voxpupuli/puppet-nginx/pull/1532) ([idl0r](https://github.com/idl0r))
+- Enable subdirectory hierarchy for client\_body and proxy temp paths [\#1531](https://github.com/voxpupuli/puppet-nginx/pull/1531) ([jplindquist](https://github.com/jplindquist))
+- allow setting of map\_hash\_bucket\_size and map\_hash\_max\_size [\#1525](https://github.com/voxpupuli/puppet-nginx/pull/1525) ([tuxmea](https://github.com/tuxmea))
+
 ## [v4.2.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.2.0) (2022-12-20)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.1.0...v4.2.0)

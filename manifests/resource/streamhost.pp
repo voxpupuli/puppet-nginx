@@ -43,7 +43,7 @@
 # @param mode
 #   Defines mode of the .conf file Default to return 503
 #
-# @example
+# @example basic streamhost
 #   nginx::resource::streamhost { 'test2.local':
 #     ensure   => present,
 #   }
