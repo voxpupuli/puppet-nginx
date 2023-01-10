@@ -1909,6 +1909,7 @@ The following parameters are available in the `nginx::resource::location` define
 * [`proxy_cache_valid`](#-nginx--resource--location--proxy_cache_valid)
 * [`proxy_cache_lock`](#-nginx--resource--location--proxy_cache_lock)
 * [`proxy_cache_background_update`](#-nginx--resource--location--proxy_cache_background_update)
+* [`proxy_cache_convert_head`](#-nginx--resource--location--proxy_cache_convert_head)
 * [`proxy_cache_bypass`](#-nginx--resource--location--proxy_cache_bypass)
 * [`proxy_method`](#-nginx--resource--location--proxy_method)
 * [`proxy_http_version`](#-nginx--resource--location--proxy_http_version)
@@ -2377,6 +2378,14 @@ Default value: `undef`
 Data type: `Optional[Enum['on', 'off']]`
 
 Allows starting a background subrequest to update an expired cache item
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--location--proxy_cache_convert_head"></a>`proxy_cache_convert_head`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables the conversion of the “HEAD” method to “GET” for caching. When the conversion is disabled, the cache key should be configured to include the $request_method.
 
 Default value: `undef`
 
@@ -3027,7 +3036,7 @@ Create a new mapping entry for NGINX
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 nginx::resource::map { 'backend_pool':
@@ -3160,7 +3169,7 @@ Create a virtual host
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 nginx::resource::server { 'test2.local':
@@ -3250,6 +3259,7 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`proxy_cache_valid`](#-nginx--resource--server--proxy_cache_valid)
 * [`proxy_cache_lock`](#-nginx--resource--server--proxy_cache_lock)
 * [`proxy_cache_background_update`](#-nginx--resource--server--proxy_cache_background_update)
+* [`proxy_cache_convert_head`](#-nginx--resource--server--proxy_cache_convert_head)
 * [`proxy_cache_bypass`](#-nginx--resource--server--proxy_cache_bypass)
 * [`proxy_method`](#-nginx--resource--server--proxy_method)
 * [`proxy_http_version`](#-nginx--resource--server--proxy_http_version)
@@ -3933,6 +3943,14 @@ Allows starting a background subrequest to update an expired cache item
 
 Default value: `undef`
 
+##### <a name="-nginx--resource--server--proxy_cache_convert_head"></a>`proxy_cache_convert_head`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables the conversion of the “HEAD” method to “GET” for caching. When the conversion is disabled, the cache key should be configured to include the $request_method.
+
+Default value: `undef`
+
 ##### <a name="-nginx--resource--server--proxy_cache_bypass"></a>`proxy_cache_bypass`
 
 Data type: `Optional[Variant[Array[String], String]]`
@@ -4460,7 +4478,7 @@ Create a virtual steamhost
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 nginx::resource::streamhost { 'test2.local':
@@ -4642,7 +4660,7 @@ Create a new upstream proxy entry for NGINX
 
 #### Examples
 
-##### 
+#####
 
 ```puppet
 nginx::resource::upstream { 'proxypass':
