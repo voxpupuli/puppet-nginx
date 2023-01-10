@@ -16,7 +16,7 @@
 # @param context
 #   Specify if mapping is for http or stream context
 #
-# @example
+# @example basic map with two mappings
 #   nginx::resource::map { 'backend_pool':
 #     ensure    => present,
 #     hostnames => true,

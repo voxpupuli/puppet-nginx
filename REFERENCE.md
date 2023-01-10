@@ -157,6 +157,8 @@ The following parameters are available in the `nginx` class:
 * [`log_format`](#-nginx--log_format)
 * [`stream_log_format`](#-nginx--stream_log_format)
 * [`mail`](#-nginx--mail)
+* [`map_hash_bucket_size`](#-nginx--map_hash_bucket_size)
+* [`map_hash_max_size`](#-nginx--map_hash_max_size)
 * [`mime_types_path`](#-nginx--mime_types_path)
 * [`stream`](#-nginx--stream)
 * [`multi_accept`](#-nginx--multi_accept)
@@ -333,7 +335,7 @@ Default value: `{}`
 
 Data type: `Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]]`
 
-Can be used to define a directory for storing temporary files holding client request bodies, and up to a three-level subdirectory hierarchy can be used under the specified directory.
+
 
 Default value: `undef`
 
@@ -525,7 +527,7 @@ Default value: `$nginx::params::pid`
 
 Data type: `Optional[Variant[Stdlib::Absolutepath, Tuple[Stdlib::Absolutepath, Integer, 1, 4]]]`
 
-Can be used to define a directory for storing temporary files with data received from proxied servers, and up to a three-level subdirectory hierarchy can be used under the specified directory.
+
 
 Default value: `undef`
 
@@ -928,6 +930,22 @@ Data type: `Boolean`
 
 
 Default value: `false`
+
+##### <a name="-nginx--map_hash_bucket_size"></a>`map_hash_bucket_size`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-nginx--map_hash_max_size"></a>`map_hash_max_size`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-nginx--mime_types_path"></a>`mime_types_path`
 
@@ -2385,7 +2403,8 @@ Default value: `undef`
 
 Data type: `Optional[Enum['on', 'off']]`
 
-Enables or disables the conversion of the “HEAD” method to “GET” for caching. When the conversion is disabled, the cache key should be configured to include the $request_method.
+Enables or disables the conversion of the “HEAD” method to “GET” for caching.
+When the conversion is disabled, the cache key should be configured to include the $request_method.
 
 Default value: `undef`
 
@@ -3036,7 +3055,7 @@ Create a new mapping entry for NGINX
 
 #### Examples
 
-#####
+##### basic map with two mappings
 
 ```puppet
 nginx::resource::map { 'backend_pool':
@@ -3169,7 +3188,7 @@ Create a virtual host
 
 #### Examples
 
-#####
+##### simple server
 
 ```puppet
 nginx::resource::server { 'test2.local':
@@ -3947,7 +3966,8 @@ Default value: `undef`
 
 Data type: `Optional[Enum['on', 'off']]`
 
-Enables or disables the conversion of the “HEAD” method to “GET” for caching. When the conversion is disabled, the cache key should be configured to include the $request_method.
+Enables or disables the conversion of the “HEAD” method to “GET” for caching.
+When the conversion is disabled, the cache key should be configured to include the $request_method.
 
 Default value: `undef`
 
@@ -4478,7 +4498,7 @@ Create a virtual steamhost
 
 #### Examples
 
-#####
+##### basic streamhost
 
 ```puppet
 nginx::resource::streamhost { 'test2.local':
@@ -4660,7 +4680,7 @@ Create a new upstream proxy entry for NGINX
 
 #### Examples
 
-#####
+##### basic example with three members
 
 ```puppet
 nginx::resource::upstream { 'proxypass':
