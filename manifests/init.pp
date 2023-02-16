@@ -65,7 +65,7 @@ class nginx (
   Stdlib::Filemode $log_mode                                 = $nginx::params::log_mode,
   Variant[String, Array[String]] $http_access_log            = "${log_dir}/${nginx::params::http_access_log_file}",
   Optional[String] $http_format_log                          = undef,
-  Variant[String, Array[String]] $stream_access_log          = "off",
+  Variant[String, Array[String]] $stream_access_log          = 'off',
   Optional[String] $stream_custom_format_log                 = undef,
   Variant[String, Array[String]] $nginx_error_log            = "${log_dir}/${nginx::params::nginx_error_log_file}",
   Nginx::ErrorLogSeverity $nginx_error_log_severity          = 'error',
