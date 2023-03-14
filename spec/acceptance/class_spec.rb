@@ -10,12 +10,10 @@ describe 'nginx class:' do
     pkg_cmd = 'yum info nginx | grep "^From repo"'
     pkg_remove_cmd = 'yum -y remove nginx nginx-filesystem passenger'
     pkg_match = case fact('operatingsystemmajrelease')
-                when '8'
-                  test_passenger = false
                 when '7' # https://blog.phusion.nl/2020/05/29/passenger-6-0-5/
                   %r{epel}
                 else
-                  %r{passenger}
+                  test_passenger = false
                 end
   when 'Debian'
     pkg_cmd = 'dpkg -s nginx | grep ^Maintainer'
