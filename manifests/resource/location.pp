@@ -91,6 +91,14 @@
 #   A single string, or an array of strings to append to the location directive
 #   (after custom_cfg directives). NOTE: YOU are responsible for a semicolon on
 #   each line that requires one.
+# @param rewrite_by_lua
+#   Run the Lua source code inlined as the <rewrite-script-str> at the rewrite
+#   request processing phase. This does not replace the current access logs,
+#   but runs after.
+# @param rewrite_by_lua_file
+#   Equivalent to rewrite_by_lua, except that the file specified by
+#   <path-to-lua-script-file> contains the Lua code, or, as from the v0.5.0rc32
+#   release, the Lua/LuaJIT bytecode to be executed.
 # @param limit_zone
 #   Apply a limit_req_zone to the location. Expects a string indicating a
 #   previously defined limit_req_zone in the main nginx configuration
@@ -303,6 +311,8 @@ define nginx::resource::location (
   Optional[String] $auth_basic                                     = undef,
   Optional[String] $auth_basic_user_file                           = undef,
   Optional[String] $auth_request                                   = undef,
+  Optional[String] $rewrite_by_lua                                 = undef,
+  Optional[String] $rewrite_by_lua_file                            = undef,
   Array $rewrite_rules                                             = [],
   Integer[401,599] $priority                                       = 500,
   Boolean $mp4                                                     = false,
