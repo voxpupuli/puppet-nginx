@@ -357,7 +357,7 @@ Default value: `false`
 
 ##### <a name="-nginx--conf_dir"></a>`conf_dir`
 
-Data type: `Any`
+Data type: `Stdlib::Absolutepath`
 
 
 
@@ -373,7 +373,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--daemon_user"></a>`daemon_user`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
@@ -381,7 +381,7 @@ Default value: `$nginx::params::daemon_user`
 
 ##### <a name="-nginx--daemon_group"></a>`daemon_group`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
@@ -405,7 +405,7 @@ Default value: `'root'`
 
 ##### <a name="-nginx--global_group"></a>`global_group`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
@@ -517,7 +517,7 @@ Default value: `'error'`
 
 ##### <a name="-nginx--pid"></a>`pid`
 
-Data type: `Any`
+Data type: `Variant[Stdlib::Absolutepath,Boolean]`
 
 
 
@@ -533,7 +533,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--root_group"></a>`root_group`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
@@ -549,7 +549,7 @@ Default value: `'root'`
 
 ##### <a name="-nginx--sites_available_group"></a>`sites_available_group`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
@@ -1520,7 +1520,7 @@ Default value: `'running'`
 
 ##### <a name="-nginx--service_enable"></a>`service_enable`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
