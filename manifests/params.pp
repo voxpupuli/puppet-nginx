@@ -19,6 +19,7 @@ class nginx::params {
     'mime_types'              => {
       'text/html'                                                                 => 'html htm shtml',
       'text/css'                                                                  => 'css',
+      'text/scss'                                                                 => 'scss',
       'text/xml'                                                                  => 'xml',
       'image/gif'                                                                 => 'gif',
       'image/jpeg'                                                                => 'jpeg jpg',
