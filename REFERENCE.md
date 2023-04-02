@@ -397,11 +397,11 @@ Default value: `[]`
 
 ##### <a name="-nginx--global_owner"></a>`global_owner`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
-Default value: `$nginx::params::global_owner`
+Default value: `'root'`
 
 ##### <a name="-nginx--global_group"></a>`global_group`
 
@@ -413,11 +413,11 @@ Default value: `$nginx::params::global_group`
 
 ##### <a name="-nginx--global_mode"></a>`global_mode`
 
-Data type: `Any`
+Data type: `Stdlib::Filemode`
 
 
 
-Default value: `$nginx::params::global_mode`
+Default value: `'0644'`
 
 ##### <a name="-nginx--limit_req_zone"></a>`limit_req_zone`
 
@@ -473,7 +473,7 @@ Data type: `Variant[String, Array[String]]`
 
 
 
-Default value: `"${log_dir}/${nginx::params::http_access_log_file}"`
+Default value: `"${log_dir}/access.log"`
 
 ##### <a name="-nginx--http_format_log"></a>`http_format_log`
 
@@ -505,7 +505,7 @@ Data type: `Variant[String, Array[String]]`
 
 
 
-Default value: `"${log_dir}/${nginx::params::nginx_error_log_file}"`
+Default value: `"${log_dir}/error.log"`
 
 ##### <a name="-nginx--nginx_error_log_severity"></a>`nginx_error_log_severity`
 
@@ -541,11 +541,11 @@ Default value: `$nginx::params::root_group`
 
 ##### <a name="-nginx--sites_available_owner"></a>`sites_available_owner`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
-Default value: `$nginx::params::sites_available_owner`
+Default value: `'root'`
 
 ##### <a name="-nginx--sites_available_group"></a>`sites_available_group`
 
@@ -557,11 +557,11 @@ Default value: `$nginx::params::sites_available_group`
 
 ##### <a name="-nginx--sites_available_mode"></a>`sites_available_mode`
 
-Data type: `Any`
+Data type: `Stdlib::Filemode`
 
 
 
-Default value: `$nginx::params::sites_available_mode`
+Default value: `'0644'`
 
 ##### <a name="-nginx--super_user"></a>`super_user`
 
@@ -569,15 +569,15 @@ Data type: `Boolean`
 
 
 
-Default value: `$nginx::params::super_user`
+Default value: `true`
 
 ##### <a name="-nginx--temp_dir"></a>`temp_dir`
 
-Data type: `Any`
+Data type: `Stdlib::Absolutepath`
 
 
 
-Default value: `$nginx::params::temp_dir`
+Default value: `'/tmp'`
 
 ##### <a name="-nginx--server_purge"></a>`server_purge`
 

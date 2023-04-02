@@ -202,24 +202,16 @@ class nginx::params {
   $log_user                = $_module_parameters['log_user']
   $log_group               = $_module_parameters['log_group']
   $log_mode                = $_module_parameters['log_mode']
-  $temp_dir                = '/tmp'
   $pid                     = $_module_parameters['pid']
   $include_modules_enabled = $_module_parameters['include_modules_enabled']
 
   $daemon_user             = $_module_parameters['daemon_user']
-  $global_owner            = 'root'
   $global_group            = $_module_parameters['root_group']
-  $global_mode             = '0644'
-  $http_access_log_file    = 'access.log'
   $manage_repo             = $_module_parameters['manage_repo']
   $mime_types              = $_module_parameters['mime_types']
-  $nginx_error_log_file    = 'error.log'
   $root_group              = $_module_parameters['root_group']
   $package_name            = $_module_parameters['package_name']
   $passenger_package_name  = $_module_parameters['passenger_package_name']
-  $sites_available_owner   = 'root'
   $sites_available_group   = $_module_parameters['root_group']
-  $sites_available_mode    = '0644'
-  $super_user              = true
   ### END Referenced Variables
 }
