@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.4.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.4.0) (2023-04-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.3.0...v4.4.0)
+
+**Implemented enhancements:**
+
+- Add EL 8/9 to supported OS [\#1543](https://github.com/voxpupuli/puppet-nginx/pull/1543) ([bastelfreak](https://github.com/bastelfreak))
+- Move static data from params.pp to init.pp and add some datatypes [\#1541](https://github.com/voxpupuli/puppet-nginx/pull/1541) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Fix legacy facts usage [\#1536](https://github.com/voxpupuli/puppet-nginx/pull/1536) ([smortex](https://github.com/smortex))
+
 ## [v4.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.3.0) (2023-01-10)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.2.0...v4.3.0)
