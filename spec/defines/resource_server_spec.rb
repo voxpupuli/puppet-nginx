@@ -82,6 +82,22 @@ describe 'nginx::resource::server' do
         describe 'server_header template content' do
           [
             {
+              title: 'should contain access and error logs directives inside the www rewrite',
+              attr: 'rewrite_www_to_non_www',
+              value: true,
+              match: %r{\s+return\s+301\s+http://rspec\.example\.com\$request_uri;\n
+              \s+access_log\s+/var/log/nginx/www.rspec.example.com.access.log;\n
+              \s+error_log\s+/var/log/nginx/www.rspec.example.com.error.log;\n}x
+            },
+            {
+              title: 'should contain access and error logs directives inside the www rewrite',
+              attr: 'rewrite_non_www_to_www',
+              value: true,
+              match: %r{\s+return\s+301\s+http://rspec\.example\.com\$request_uri;\n
+                \s+access_log\s+/var/log/nginx/rspec.example.com.access.log;\n
+              \s+error_log\s+/var/log/nginx/rspec.example.com.error.log;\n}x
+            },
+            {
               title: 'should not contain www to non-www rewrite',
               attr: 'rewrite_www_to_non_www',
               value: false,
