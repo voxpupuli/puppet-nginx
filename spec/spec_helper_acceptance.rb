@@ -5,7 +5,7 @@ require 'voxpupuli/acceptance/spec_helper_acceptance'
 configure_beaker do |host|
   case fact('os.family')
   when 'Debian'
-    on host, puppet('module', 'install', 'puppetlabs-apt'), acceptable_exit_codes: [0, 1]
+    install_puppet_module_via_pmt_on(host, 'puppetlabs-apt')
   when 'RedHat'
     # Soft dep on epel for Passenger
     install_package(host, 'epel-release')
