@@ -192,7 +192,7 @@ class nginx::params {
     }
   }
 
-  $_module_parameters = merge($_module_defaults, $_module_os_overrides)
+  $_module_parameters = stdlib::merge($_module_defaults, $_module_os_overrides)
   ### END Operating System Configuration
 
   ### Referenced Variables

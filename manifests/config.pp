@@ -81,7 +81,7 @@ class nginx::config {
   $map_hash_bucket_size           = $nginx::map_hash_bucket_size
   $map_hash_max_size              = $nginx::map_hash_max_size
   $mime_types                     = $nginx::mime_types_preserve_defaults ? {
-    true    => merge($nginx::params::mime_types,$nginx::mime_types),
+    true    => stdlib::merge($nginx::params::mime_types,$nginx::mime_types),
     default => $nginx::mime_types,
   }
   $multi_accept                   = $nginx::multi_accept
