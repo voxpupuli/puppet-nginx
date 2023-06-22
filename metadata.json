@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 4.1.0 < 8.0.0"
+      "version_requirement": ">= 4.1.0 < 10.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
