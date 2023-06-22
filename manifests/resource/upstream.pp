@@ -167,7 +167,7 @@ define nginx::resource::upstream (
 
   if ! empty($members) {
     $members.each |$member,$values| {
-      $member_values = merge($member_defaults, $values, { 'upstream' => $name, 'context' => $context })
+      $member_values = $member_defaults + $values + { 'upstream' => $name, 'context' => $context }
 
       if $context == 'stream' and $member_values['route'] {
         fail('The parameter "route" is not available for upstreams with context "stream"')
