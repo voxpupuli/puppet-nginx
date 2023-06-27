@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.4.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.4.0) (2023-04-03)
+## [v5.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v5.0.0) (2023-06-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.4.0...v5.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#1549](https://github.com/voxpupuli/puppet-nginx/pull/1549) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- puppetlabs/stdlib: Allow 9.x & puppetlabs/concat: Allow 8.x & 9.x [\#1558](https://github.com/voxpupuli/puppet-nginx/pull/1558) ([bastelfreak](https://github.com/bastelfreak))
+- Add puppet 8 support [\#1557](https://github.com/voxpupuli/puppet-nginx/pull/1557) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v4.4.0](https://github.com/voxpupuli/puppet-nginx/tree/v4.4.0) (2023-04-11)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.3.0...v4.4.0)
 
