@@ -111,7 +111,7 @@ class nginx (
   Integer $gzip_comp_level                                   = 1,
   String $gzip_disable                                       = 'msie6',
   Integer $gzip_min_length                                   = 20,
-  Variant[Enum['1.0','1.1'], Float] $gzip_http_version       = '1.1',
+  Enum['1.0','1.1'] $gzip_http_version                       = '1.1',
   Variant[Nginx::GzipProxied, Array[Nginx::GzipProxied]] $gzip_proxied = 'off',
   Optional[Variant[String[1],Array[String[1]]]] $gzip_types  = undef,
   Enum['on', 'off'] $gzip_vary                               = 'off',
@@ -123,7 +123,7 @@ class nginx (
   Enum['on', 'off'] $http_tcp_nodelay                        = 'on',
   Enum['on', 'off'] $http_tcp_nopush                         = 'off',
   Nginx::Time $keepalive_timeout                             = '65s',
-  Variant[Integer, String] $keepalive_requests               = 100,
+  Integer $keepalive_requests                                = 100,
   Hash[String[1], Nginx::LogFormat] $log_format              = {},
   Hash[String[1], Nginx::LogFormat] $stream_log_format       = {},
   Boolean $mail                                              = false,
@@ -244,13 +244,6 @@ class nginx (
 
   ### END Hiera Lookups ###
 ) inherits nginx::params {
-  if $gzip_http_version =~ Float {
-    deprecation('gzip_http_version', 'Passing a Float is deprecated, please pass a String')
-  }
-  if $keepalive_requests =~ String {
-    deprecation('keepalive_requests', 'Passing a String is deprecated, please pass a Integer')
-  }
-
   contain 'nginx::package'
   contain 'nginx::config'
   contain 'nginx::service'
