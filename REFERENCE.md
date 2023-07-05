@@ -629,7 +629,7 @@ Default value: `'on'`
 
 ##### <a name="-nginx--accept_mutex_delay"></a>`accept_mutex_delay`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -637,7 +637,7 @@ Default value: `'500ms'`
 
 ##### <a name="-nginx--client_body_buffer_size"></a>`client_body_buffer_size`
 
-Data type: `String`
+Data type: `Nginx::Size`
 
 
 
@@ -645,7 +645,7 @@ Default value: `'128k'`
 
 ##### <a name="-nginx--client_max_body_size"></a>`client_max_body_size`
 
-Data type: `String`
+Data type: `Nginx::Size`
 
 
 
@@ -653,7 +653,7 @@ Default value: `'10m'`
 
 ##### <a name="-nginx--client_body_timeout"></a>`client_body_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -661,7 +661,7 @@ Default value: `'60s'`
 
 ##### <a name="-nginx--send_timeout"></a>`send_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -669,7 +669,7 @@ Default value: `'60s'`
 
 ##### <a name="-nginx--lingering_timeout"></a>`lingering_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -709,7 +709,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--fastcgi_cache_inactive"></a>`fastcgi_cache_inactive`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -741,7 +741,7 @@ Default value: `'1'`
 
 ##### <a name="-nginx--fastcgi_cache_max_size"></a>`fastcgi_cache_max_size`
 
-Data type: `String`
+Data type: `Nginx::Size`
 
 
 
@@ -893,7 +893,7 @@ Default value: `'off'`
 
 ##### <a name="-nginx--keepalive_timeout"></a>`keepalive_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -1005,7 +1005,7 @@ Default value: `'32 4k'`
 
 ##### <a name="-nginx--proxy_buffer_size"></a>`proxy_buffer_size`
 
-Data type: `String`
+Data type: `Nginx::Size`
 
 
 
@@ -1013,7 +1013,7 @@ Default value: `'8k'`
 
 ##### <a name="-nginx--proxy_cache_inactive"></a>`proxy_cache_inactive`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -1037,7 +1037,7 @@ Default value: `'1'`
 
 ##### <a name="-nginx--proxy_cache_max_size"></a>`proxy_cache_max_size`
 
-Data type: `String`
+Data type: `Nginx::Size`
 
 
 
@@ -1085,7 +1085,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--proxy_connect_timeout"></a>`proxy_connect_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -1109,7 +1109,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--proxy_read_timeout"></a>`proxy_read_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -1125,7 +1125,7 @@ Default value: `undef`
 
 ##### <a name="-nginx--proxy_send_timeout"></a>`proxy_send_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -1352,7 +1352,7 @@ Default value: `'shared:SSL:10m'`
 
 ##### <a name="-nginx--ssl_session_timeout"></a>`ssl_session_timeout`
 
-Data type: `String`
+Data type: `Nginx::Time`
 
 
 
@@ -5171,13 +5171,13 @@ Variant[String[1], Struct[{
 
 The Nginx::Size data type.
 
-Alias of `Pattern[/^\d+[k|K|m|M]?$/]`
+Alias of `Variant[Integer[0], Pattern[/\A\d+[k|K|m|M]?\z/]]`
 
 ### <a name="Nginx--Time"></a>`Nginx::Time`
 
 The Nginx::Time data type.
 
-Alias of `Pattern[/^\d+(ms|s|m|h|d|w|M|y)?$/]`
+Alias of `Variant[Integer[0], Pattern[/^(?!$)((\d+y *)?(\d+M *)?(\d+w *)?(\d+d *)?(\d+h *)?(\d+m *)?(\d+s *)?(\d+ms)?|\d+)$/]]`
 
 ### <a name="Nginx--UpstreamCustomParameters"></a>`Nginx::UpstreamCustomParameters`
 
