@@ -805,11 +805,11 @@ Default value: `20`
 
 ##### <a name="-nginx--gzip_http_version"></a>`gzip_http_version`
 
-Data type: `Float`
+Data type: `Variant[Enum['1.0','1.1'], Float]`
 
 
 
-Default value: `1.1`
+Default value: `'1.1'`
 
 ##### <a name="-nginx--gzip_proxied"></a>`gzip_proxied`
 
@@ -901,11 +901,11 @@ Default value: `'65s'`
 
 ##### <a name="-nginx--keepalive_requests"></a>`keepalive_requests`
 
-Data type: `String`
+Data type: `Variant[Integer, String]`
 
 
 
-Default value: `'100'`
+Default value: `100`
 
 ##### <a name="-nginx--log_format"></a>`log_format`
 
