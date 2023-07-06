@@ -674,7 +674,7 @@ describe 'nginx' do
               {
                 title: 'should set keepalive_requests',
                 attr: 'keepalive_requests',
-                value: '345',
+                value: 345,
                 match: '  keepalive_requests  345;'
               },
               {
