@@ -1,0 +1,31 @@
+<%- |
+  Array[String]          $ipv6_listen_ip,
+  String                 $ipv6_listen_options,
+  Stdlib::Port           $ipv6_listen_port,
+  Array[String]          $listen_ip,
+  String                 $mailhost_append,
+  String[1]              $mailhost_common,
+  String                 $mailhost_prepend,
+  String[1]              $mailhost_ssl_settings,
+  String[1]              $nginx_version,
+  Optional[Stdlib::Port] $ssl_port,
+| -%>
+# MANAGED BY PUPPET
+server {
+<%= $mailhost_prepend -%>
+<%- $listen_ip.each |$ip| { -%>
+  listen                <%= $ip %>:<%= $ssl_port %><% if versioncmp($nginx_version, '1.15.0') >= 0 { %> ssl<% } %>;
+<%- } -%>
+<%- $ipv6_listen_ip.each |$ipv6| { -%>
+  listen                [<%= $ipv6 %>]:<%= $ssl_port %> <% if $ipv6_listen_options { %><%= $ipv6_listen_options %><% } %>;
+<%- } -%>
+<%= $mailhost_common -%>
+
+<%- if versioncmp($nginx_version, '1.15.0') < 0 { -%>
+  ssl                   on;
+<% } %>
+  starttls              off;
+
+<%= $mailhost_ssl_settings -%>
+<%= $mailhost_append -%>
+}

@@ -1,0 +1,22 @@
+<%- |
+  Hash $cfg_xpend,
+  Array[String] $raw_xpend,
+| -%>
+<%- $cfg_xpend.keys.sort.each |$key| { -%>
+  <%- $value = $cfg_xpend.get($key, []) -%>
+  <%- if $value =~ Hash { -%>
+    <%- $value.keys.sort.each |$subkey| { -%>
+      <%- $subvalue = $value.get($subkey, []) -%>
+      <%- Array($subvalue, true).each |$asubvalue| { -%>
+  <%= $key %> <%= $subkey %> <%= $asubvalue %>;
+      <%- } -%>
+    <%- } -%>
+  <%- } else { -%>
+    <%- Array($value, true).each |$asubvalue| { -%>
+  <%= $key %> <%= $asubvalue %>;
+    <%- } -%>
+  <%- } -%>
+<%- } -%>
+<%- $raw_xpend.each |$line| { -%>
+  <%= $line %>
+<%- } -%>
