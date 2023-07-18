@@ -92,8 +92,9 @@
 #   (after custom_cfg directives). NOTE: YOU are responsible for a semicolon on
 #   each line that requires one.
 # @param limit_zone
-#   Apply a limit_req_zone to the location. Expects a string indicating a
-#   previously defined limit_req_zone in the main nginx configuration
+#   Apply a limit_req_zone to the location. Expects a string or array of
+#   strings indicating a previously defined limit_req_zone in the main nginx
+#   configuration
 # @param location_custom_cfg
 #   Expects a hash with custom directives, cannot be used with other location
 #   types (proxy, fastcgi, root, or stub_status)
@@ -270,7 +271,7 @@ define nginx::resource::location (
   Boolean $ssl                                                     = false,
   Boolean $ssl_only                                                = false,
   Optional[String] $location_alias                                 = undef,
-  Optional[String[1]] $limit_zone                                  = undef,
+  Optional[Variant[String[1],Array[String[1],1]]] $limit_zone      = undef,
   Optional[Enum['any', 'all']] $location_satisfy                   = undef,
   Optional[Array] $location_allow                                  = undef,
   Optional[Array] $location_deny                                   = undef,
