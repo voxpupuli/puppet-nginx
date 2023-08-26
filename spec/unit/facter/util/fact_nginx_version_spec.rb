@@ -11,7 +11,7 @@ describe Facter::Util::Fact do
       allow(Facter::Util::Resolution).to receive(:which).with('openresty').and_return(false)
     end
 
-    it { expect(Facter.fact(:nginx_version).value).to eq(nil) }
+    it { expect(Facter.fact(:nginx_version).value).to be_nil }
   end
 
   context 'nginx' do
