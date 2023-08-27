@@ -18,6 +18,11 @@ class nginx::package::redhat {
     'VirtuozzoLinux' => 'centos',
     default          => 'rhel'
   }
+  
+  $_package_install_options ? {
+     $manage_repo => '--repo=nginx-release',
+     default      => '',
+  }
 
   $want_module_hotfixes = if versioncmp(fact('os.release.full'), '8.0') >= 0 {
     '1'
@@ -104,7 +109,8 @@ class nginx::package::redhat {
   }
 
   package { 'nginx':
-    ensure => $package_ensure,
-    name   => $package_name,
+    ensure          => $package_ensure,
+    name            => $package_name,
+    install_options => $_package_install_options,
   }
 }
