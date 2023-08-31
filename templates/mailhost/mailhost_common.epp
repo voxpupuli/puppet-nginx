@@ -1,0 +1,63 @@
+<%- |
+  Optional[String]  $auth_http,
+  Optional[String]  $auth_http_header,
+  Optional[String]  $imap_auth,
+  Optional[Array]   $imap_capabilities,
+  Optional[String]  $imap_client_buffer,
+  Optional[String]  $pop3_auth,
+  Optional[Array]   $pop3_capabilities,
+  Optional[Enum['imap', 'pop3', 'sieve', 'smtp']]
+                    $protocol,
+  String            $proxy_pass_error_message,
+  Enum['on', 'off'] $proxy_protocol,
+  Enum['on', 'off'] $proxy_smtp_auth,
+  Array             $server_name,
+  Optional[String]  $smtp_auth,
+  Optional[Array]   $smtp_capabilities,
+  Enum['on', 'off'] $xclient,
+| -%>
+  server_name           <%= $server_name.join(" ") %>;
+<%- if $protocol { -%>
+  protocol              <%= $protocol %>;
+<%- } -%>
+  xclient               <%= $xclient %>;
+  proxy_protocol        <%= $proxy_protocol %>;
+  proxy_smtp_auth       <%= $proxy_smtp_auth %>;
+<%- if $auth_http { -%>
+  auth_http             <%= $auth_http %>;
+<%- } -%>
+<%- if $auth_http_header { -%>
+  auth_http_header      <%= $auth_http_header %>;
+<%- } -%>
+
+  proxy_pass_error_message  <%= $proxy_pass_error_message %>;
+
+<%- case $protocol { -%>
+<%- 'imap': { -%>
+  <%- if $imap_auth { -%>
+  imap_auth           <%= $imap_auth %>;
+  <%- } -%>
+  <%- if $imap_capabilities { -%>
+  imap_capabilities   <%= $imap_capabilities.join(" ") %>;
+  <%- } -%>
+  <%- if $imap_client_buffer { -%>
+  imap_client_buffer  <%= $imap_client_buffer %>;
+  <%- } -%>
+<%- } -%>
+<%- 'pop3': { -%>
+  <%- if $pop3_auth { -%>
+  pop3_auth          <%= $pop3_auth %>;
+  <%- } -%>
+  <%- if $pop3_capabilities { -%>
+  pop3_capabilities  <%= $pop3_capabilities.join(" ") %>;
+  <%- } -%>
+<%- } -%>
+<%- 'smtp': { -%>
+  <%- if $smtp_auth { -%>
+  smtp_auth          <%= $smtp_auth %>;
+  <%- } -%>
+  <%- if $smtp_capabilities { -%>
+  smtp_capabilities  <%= $smtp_capabilities.join(" ") %>;
+  <%- } -%>
+<%- } -%>
+<%- } -%>

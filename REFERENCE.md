@@ -3005,41 +3005,57 @@ Default value: `[$name]`
 
 ##### <a name="-nginx--resource--mailhost--raw_prepend"></a>`raw_prepend`
 
-Data type: `Optional[Variant[Array, String]]`
+Data type: `Variant[Array[String], String]`
 
 A single string, or an array of strings to prepend to the server directive
 (after mailhost_cfg_prepend directive). NOTE: YOU are responsible for a
 semicolon on each line that requires one.
 
-Default value: `undef`
+Default value: `[]`
 
 ##### <a name="-nginx--resource--mailhost--raw_append"></a>`raw_append`
 
-Data type: `Optional[Variant[Array, String]]`
+Data type: `Variant[Array[String], String]`
 
 A single string, or an array of strings to append to the server directive
 (after mailhost_cfg_append directive). NOTE: YOU are responsible for a
 semicolon on each line that requires one.
 
-Default value: `undef`
+Default value: `[]`
 
 ##### <a name="-nginx--resource--mailhost--mailhost_cfg_append"></a>`mailhost_cfg_append`
 
-Data type: `Optional[Hash]`
+Data type:
+
+```puppet
+Hash[String, Variant[
+      String,
+      Array[String],
+      Hash[String, Variant[String, Array[String]]],
+  ]]
+```
 
 It expects a hash with custom directives to put after everything else
 inside server
 
-Default value: `undef`
+Default value: `{}`
 
 ##### <a name="-nginx--resource--mailhost--mailhost_cfg_prepend"></a>`mailhost_cfg_prepend`
 
-Data type: `Optional[Hash]`
+Data type:
+
+```puppet
+Hash[String, Variant[
+      String,
+      Array[String],
+      Hash[String, Variant[String, Array[String]]],
+  ]]
+```
 
 It expects a hash with custom directives to put before everything else
 inside server
 
-Default value: `undef`
+Default value: `{}`
 
 ##### <a name="-nginx--resource--mailhost--auth_http_header"></a>`auth_http_header`
 

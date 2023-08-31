@@ -1,0 +1,56 @@
+<%- |
+  Optional[String]  $ssl_cert,
+  String            $ssl_ciphers,
+  Optional[String]  $ssl_client_cert,
+  Optional[String]  $ssl_crl,
+  Optional[String]  $ssl_dhparam,
+  Optional[String]  $ssl_ecdh_curve,
+  Optional[String]  $ssl_key,
+  Optional[String]  $ssl_password_file,
+  Enum['on', 'off'] $ssl_prefer_server_ciphers,
+  String            $ssl_protocols,
+  Optional[String]  $ssl_session_cache,
+  Optional[String]  $ssl_session_ticket_key,
+  Optional[String]  $ssl_session_tickets,
+  String            $ssl_session_timeout,
+  Optional[String]  $ssl_trusted_cert,
+  Optional[Integer] $ssl_verify_depth,
+| -%>
+
+  ssl_certificate            <%= $ssl_cert %>;
+  ssl_certificate_key        <%= $ssl_key %>;
+  ssl_ciphers                <%= $ssl_ciphers %>;
+<%- if $ssl_client_cert { -%>
+  ssl_client_certificate     <%= $ssl_client_cert %>;
+  ssl_verify_client          on;
+<%- } -%>
+<%- if $ssl_verify_depth { -%>
+  ssl_verify_depth           <%= $ssl_verify_depth %>;
+<%- } -%>
+<%- if $ssl_crl { -%>
+  ssl_crl                    <%= $ssl_crl %>;
+<%- } -%>
+<%- if $ssl_dhparam { -%>
+  ssl_dhparam                <%= $ssl_dhparam %>;
+<%- } -%>
+<%- if $ssl_ecdh_curve { -%>
+  ssl_ecdh_curve             <%= $ssl_ecdh_curve %>;
+<%- } -%>
+<%- if $ssl_password_file { -%>
+  ssl_password_file          <%= $ssl_password_file %>;
+<%- } -%>
+  ssl_prefer_server_ciphers  <%= $ssl_prefer_server_ciphers %>;
+  ssl_protocols              <%= $ssl_protocols %>;
+<%- if $ssl_session_cache { -%>
+  ssl_session_cache          <%= $ssl_session_cache %>;
+<%- } -%>
+<%- if $ssl_session_ticket_key { -%>
+  ssl_session_ticket_key     <%= $ssl_session_ticket_key %>;
+<%- } -%>
+<%- if $ssl_session_tickets { -%>
+  ssl_session_tickets        <%= $ssl_session_tickets %>;
+<%- } -%>
+  ssl_session_timeout        <%= $ssl_session_timeout %>;
+<%- if $ssl_trusted_cert { -%>
+  ssl_trusted_certificate    <%= $ssl_trusted_cert %>;
+<%- } -%>
