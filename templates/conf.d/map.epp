@@ -1,0 +1,31 @@
+<%- |
+  Optional[String] $default = undef,
+  Boolean $hostnames,
+  Array[String] $include_files,
+  Nginx::StringMappings $mappings,
+  String $name,
+  String[2] $string,
+| -%>
+# MANAGED BY PUPPET
+map <%= $string %> $<%= $name %> {
+<% if $hostnames { -%>
+  hostnames;
+<% } -%>
+<% if $default { -%>
+  default <%= $default %>;
+<% } -%>
+<%- $include_files.each |$h| { -%>
+  include <%= $h %>;
+<%- } -%>
+
+<%-
+$m = $mappings ? {
+  Hash => $mappings.keys.sort.map |$k| { { key => $k, value => $mappings[$k] } },
+  default => $mappings,
+}
+$field_width = $m.map |$x| { $x['key'].length }.max
+-%>
+<%- $m.each |$h| { -%>
+  <%= sprintf("%-*s %s", $field_width, $h['key'], $h['value']) %>;
+<%- } -%>
+}

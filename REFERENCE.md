@@ -38,6 +38,7 @@
 * [`Nginx::GzipProxied`](#Nginx--GzipProxied): custom type for gzip_proxied
 * [`Nginx::LogFormat`](#Nginx--LogFormat)
 * [`Nginx::Size`](#Nginx--Size)
+* [`Nginx::StringMappings`](#Nginx--StringMappings): custom type for the `map` variable mapping
 * [`Nginx::Time`](#Nginx--Time)
 * [`Nginx::UpstreamCustomParameters`](#Nginx--UpstreamCustomParameters)
 * [`Nginx::UpstreamDefaults`](#Nginx--UpstreamDefaults)
@@ -3170,9 +3171,11 @@ Source string or variable to provide mapping for
 
 ##### <a name="-nginx--resource--map--mappings"></a>`mappings`
 
-Data type: `Variant[Array, Hash]`
+Data type: `Nginx::StringMappings`
 
 Hash of map lookup keys and resultant values
+
+Default value: `[]`
 
 ##### <a name="-nginx--resource--map--hostnames"></a>`hostnames`
 
@@ -5188,6 +5191,15 @@ Variant[String[1], Struct[{
 The Nginx::Size data type.
 
 Alias of `Variant[Integer[0], Pattern[/\A\d+[k|K|m|M]?\z/]]`
+
+### <a name="Nginx--StringMappings"></a>`Nginx::StringMappings`
+
+custom type for the `map` variable mapping
+
+* **See also**
+  * http://nginx.org/en/docs/http/ngx_http_map_module.html
+
+Alias of `Variant[Array[Struct[{ 'key' => String[1], 'value' => String }]], Hash[String[1], String]]`
 
 ### <a name="Nginx--Time"></a>`Nginx::Time`
 
