@@ -37,6 +37,7 @@
 * [`Nginx::ErrorLogSeverity`](#Nginx--ErrorLogSeverity)
 * [`Nginx::GzipProxied`](#Nginx--GzipProxied): custom type for gzip_proxied
 * [`Nginx::LogFormat`](#Nginx--LogFormat)
+* [`Nginx::Package_source`](#Nginx--Package_source): Where to download NGINX from  There are three versions of NGINX available: * stable (`nginx` or `nginx-stable`); * mainline (`nginx-mainline`
 * [`Nginx::Size`](#Nginx--Size)
 * [`Nginx::StringMappings`](#Nginx--StringMappings): custom type for the `map` variable mapping
 * [`Nginx::Time`](#Nginx--Time)
@@ -1449,7 +1450,7 @@ Default value: `$nginx::params::package_name`
 
 ##### <a name="-nginx--package_source"></a>`package_source`
 
-Data type: `String`
+Data type: `Nginx::Package_source`
 
 
 
@@ -5185,6 +5186,23 @@ Variant[String[1], Struct[{
     format           => String[1],
   }]]
 ```
+
+### <a name="Nginx--Package_source"></a>`Nginx::Package_source`
+
+Where to download NGINX from
+
+There are three versions of NGINX available:
+* stable (`nginx` or `nginx-stable`);
+* mainline (`nginx-mainline`);
+* passenger (`passenger`).
+
+The mainline branch gets new features and bugfixes sooner but might introduce new bugs as well. Critical bugfixes are backported to the stable branch.
+
+In general, the stable release is recommended, but the mainline release is typically quite stable as well.
+
+In addition, Phusion provide packages for NGINX + Passenger (`passenger`).
+
+Alias of `Enum['nginx', 'nginx-stable', 'nginx-mainline', 'passenger']`
 
 ### <a name="Nginx--Size"></a>`Nginx::Size`
 

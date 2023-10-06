@@ -200,7 +200,7 @@ class nginx (
   ### START Package Configuration ###
   String $package_ensure                                     = installed,
   String $package_name                                       = $nginx::params::package_name,
-  String $package_source                                     = 'nginx',
+  Nginx::Package_source $package_source                      = 'nginx',
   Optional[String] $package_flavor                           = undef,
   Boolean $manage_repo                                       = $nginx::params::manage_repo,
   Hash[String[1], String[1]] $mime_types                     = $nginx::params::mime_types,
