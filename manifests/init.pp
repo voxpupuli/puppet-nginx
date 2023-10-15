@@ -112,7 +112,7 @@ class nginx (
   String $gzip_disable                                       = 'msie6',
   Integer $gzip_min_length                                   = 20,
   Variant[Enum['1.0','1.1'], Float] $gzip_http_version       = '1.1',
-  Nginx::GzipProxied $gzip_proxied                           = 'off',
+  Variant[Nginx::GzipProxied, Array[Nginx::GzipProxied]] $gzip_proxied = 'off',
   Optional[Variant[String[1],Array[String[1]]]] $gzip_types  = undef,
   Enum['on', 'off'] $gzip_vary                               = 'off',
   Optional[Enum['on', 'off', 'always']] $gzip_static         = undef,

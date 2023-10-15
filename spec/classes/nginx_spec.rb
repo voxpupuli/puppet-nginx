@@ -1554,6 +1554,22 @@ describe 'nginx' do
             end
           end
 
+          context 'when gzip is non-default (on) set gzip_proxied' do
+            let(:params) { { gzip: 'on' } }
+
+            context 'set gzip_proxied to a single value' do
+              let(:params) { super().merge({ gzip_proxied: 'any' }) }
+
+              it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{  gzip_proxied      any;}) }
+            end
+
+            context 'set gzip_proxied to multiple values' do
+              let(:params) { super().merge({ gzip_proxied: %w[no-cache expired] }) }
+
+              it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content(%r{  gzip_proxied      no-cache expired;}) }
+            end
+          end
+
           context 'when gzip_static is non-default set gzip_static' do
             let(:params) do
               {

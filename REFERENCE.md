@@ -815,7 +815,7 @@ Default value: `'1.1'`
 
 ##### <a name="-nginx--gzip_proxied"></a>`gzip_proxied`
 
-Data type: `Nginx::GzipProxied`
+Data type: `Variant[Nginx::GzipProxied, Array[Nginx::GzipProxied]]`
 
 
 

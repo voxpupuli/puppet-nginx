@@ -166,7 +166,7 @@ http {
   gzip_min_length   <%= @gzip_min_length %>;
   gzip_http_version <%= @gzip_http_version %>;
 <% if @gzip_proxied -%>
-  gzip_proxied      <%= @gzip_proxied %>;
+  gzip_proxied      <%= Array(@gzip_proxied).uniq.join(' ') %>;
 <% end -%>
 <% if @gzip_types -%>
   gzip_types        <%= @gzip_types.kind_of?(Array) ? @gzip_types.join(' ') : @gzip_types %>;
