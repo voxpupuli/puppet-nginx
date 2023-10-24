@@ -359,6 +359,12 @@ describe 'nginx::resource::server' do
               ]
             },
             {
+              title: 'should set error_log severity level',
+              attr: 'nginx_error_log_severity',
+              value: 'warn',
+              match: '  error_log             /path/to/error.log warn;'
+            },
+            {
               title: 'should not include error_log in server when set to absent',
               attr: 'error_log',
               value: 'absent',
@@ -996,6 +1002,12 @@ describe 'nginx::resource::server' do
                 '  error_log             /path/to/error.log;',
                 '  error_log             syslog:server=localhost;'
               ]
+            },
+            {
+              title: 'should set error_log severity level',
+              attr: 'nginx_error_log_severity',
+              value: 'warn',
+              match: '  error_log             /path/to/error.log warn;'
             },
             {
               title: 'should not include error_log in server when set to absent',
