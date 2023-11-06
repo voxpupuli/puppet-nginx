@@ -115,7 +115,7 @@ describe 'nginx::resource::location' do
               value: %w[myzone1 myzone2],
               match: [
                 '    limit_req zone=myzone1;',
-                '    limit_req zone=myzone1;'
+                '    limit_req zone=myzone2;'
               ]
             },
             {
