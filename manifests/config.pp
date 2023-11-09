@@ -110,6 +110,7 @@ class nginx::config {
   $proxy_set_header               = $nginx::proxy_set_header
   $proxy_hide_header              = $nginx::proxy_hide_header
   $proxy_pass_header              = $nginx::proxy_pass_header
+  $proxy_bind                     = $nginx::proxy_bind
   $sendfile                       = $nginx::sendfile
   $server_tokens                  = $nginx::server_tokens
   $spdy                           = $nginx::spdy
