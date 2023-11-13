@@ -1,6 +1,9 @@
 <% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.15.0']) < 0 -%>
   ssl on;
 <% end -%>
+<% if scope.call_function('versioncmp', [scope['nginx::nginx_version'], '1.25.1']) >= 0 && @http2 -%>
+  http2 <%= @http2 %>;
+<% end -%>
 <% if @ssl_cert_real -%>
 <% @ssl_cert_real.each do | cert | -%>
   ssl_certificate           <%= cert %>;

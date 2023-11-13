@@ -687,6 +687,26 @@ describe 'nginx::resource::server' do
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{  ssl on;}) }
             end
 
+            context 'http2 on with fact nginx_version=1.25.1' do
+              let(:facts) { facts.merge(nginx_version: '1.25.1') }
+              let :params do
+                default_params.merge(
+                  http2: 'on',
+                  ssl: true,
+                  ssl_key: '/tmp/dummy.key',
+                  ssl_cert: '/tmp/dummy.crt'
+                )
+              end
+
+              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+http2\s+on;}) }
+            end
+
+            context 'with fact nginx_version=1.25.1' do
+              let(:facts) { facts.merge(nginx_version: '1.25.1') }
+
+              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+http2\s+off;}) }
+            end
+
             context 'with ssl cert and key definitions' do
               let(:pre_condition) do
                 <<-PUPPET
