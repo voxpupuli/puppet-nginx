@@ -2281,10 +2281,11 @@ Default value: `undef`
 
 ##### <a name="-nginx--resource--location--limit_zone"></a>`limit_zone`
 
-Data type: `Optional[String[1]]`
+Data type: `Optional[Variant[String[1],Array[String[1],1]]]`
 
-Apply a limit_req_zone to the location. Expects a string indicating a
-previously defined limit_req_zone in the main nginx configuration
+Apply a limit_req_zone to the location. Expects a string or array of
+strings indicating a previously defined limit_req_zone in the main nginx
+configuration
 
 Default value: `undef`
 

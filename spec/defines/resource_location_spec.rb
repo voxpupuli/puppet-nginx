@@ -110,6 +110,15 @@ describe 'nginx::resource::location' do
               match: '    limit_req zone=myzone1;'
             },
             {
+              title: 'should set multiple limit_zone',
+              attr: 'limit_zone',
+              value: %w[myzone1 myzone2],
+              match: [
+                '    limit_req zone=myzone1;',
+                '    limit_req zone=myzone2;'
+              ]
+            },
+            {
               title: 'should set expires',
               attr: 'expires',
               value: '33d',
