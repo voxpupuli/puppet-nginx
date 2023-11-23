@@ -25,7 +25,7 @@ server {
 <% elsif @access_log == 'off' -%>
   access_log            off;
 <% elsif not @access_log -%>
-  access_log            <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log<% if @format_log %> <%= @format_log%><% end %>;
+  access_log            <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log<% if @format_log %> <%= @format_log%><% end %>;
 <% else -%>
   access_log            <%= @access_log %><% if @format_log %> <%= @format_log%><% end %>;
 <% end -%>
@@ -35,7 +35,7 @@ server {
   <%- end -%>
 <% elsif @error_log == 'absent' -%>
 <% elsif not @error_log -%>
-  error_log             <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
 <% else -%>
   error_log             <%= @error_log %>;
 <% end -%>
@@ -123,7 +123,7 @@ server {
 <% elsif @access_log == 'off' -%>
   access_log            off;
 <% elsif not @access_log -%>
-  access_log            <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log<% if @format_log %> <%= @format_log%><% end %>;
+  access_log            <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.access.log<% if @format_log %> <%= @format_log%><% end %>;
 <% else -%>
   access_log            <%= @access_log %><% if @format_log %> <%= @format_log%><% end %>;
 <% end -%>
@@ -133,7 +133,7 @@ server {
   <%- end -%>
 <% elsif @error_log == 'absent' -%>
 <% elsif not @error_log -%>
-  error_log             <%= scope['::nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
 <% else -%>
   error_log             <%= @error_log %>;
 <% end -%>
