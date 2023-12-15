@@ -13,7 +13,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v1
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
     with:
       pidfile_workaround: 'false'
       unit_runs_on: 'cern-self-hosted'
