@@ -23,7 +23,7 @@ describe 'nginx::resource::server' do
 
       let :pre_condition do
         [
-          'include ::nginx'
+          'include nginx'
         ]
       end
 

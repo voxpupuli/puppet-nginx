@@ -639,9 +639,9 @@ define nginx::resource::server (
     }
   }
 
-  create_resources('::nginx::resource::map', $string_mappings)
-  create_resources('::nginx::resource::geo', $geo_mappings)
-  create_resources('::nginx::resource::location', $locations, {
+  create_resources('nginx::resource::map', $string_mappings)
+  create_resources('nginx::resource::geo', $geo_mappings)
+  create_resources('nginx::resource::location', $locations, {
       ensure   => $ensure,
       server   => $name_sanitized,
       ssl      => $ssl,

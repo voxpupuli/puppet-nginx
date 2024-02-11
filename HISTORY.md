@@ -607,7 +607,7 @@
 - 'undef' from left operand of 'in' expression is not a string at /etc/puppet/modules/nginx/manifests/params.pp:23 [\#601](https://github.com/voxpupuli/puppet-nginx/issues/601)
 - \[WIP\] Improve SSL support [\#599](https://github.com/voxpupuli/puppet-nginx/issues/599)
 - ssl vhost gives error  [\#585](https://github.com/voxpupuli/puppet-nginx/issues/585)
-- class ::nginx::config has not been evaluated [\#580](https://github.com/voxpupuli/puppet-nginx/issues/580)
+- class nginx::config has not been evaluated [\#580](https://github.com/voxpupuli/puppet-nginx/issues/580)
 - vagrant vhost files [\#577](https://github.com/voxpupuli/puppet-nginx/issues/577)
 - How to set document root in server block using hiera? [\#576](https://github.com/voxpupuli/puppet-nginx/issues/576)
 - Configure passenger through hiera. [\#568](https://github.com/voxpupuli/puppet-nginx/issues/568)
