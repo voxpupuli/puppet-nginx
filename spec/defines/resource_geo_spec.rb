@@ -31,6 +31,24 @@ describe 'nginx::resource::geo' do
       end
 
       describe 'os-independent items' do
+        let(:pre_condition) do
+          <<~PUPPET
+          class nginx::service {}
+          class nginx {
+            $root_group = 'root'
+            $conf_dir = '/etc/nginx'
+            $global_mode = '0644'
+
+            include nginx::service
+
+            file { [$conf_dir, "${conf_dir}/conf.d"]:
+              ensure => directory,
+            }
+          }
+          include nginx
+          PUPPET
+        end
+
         describe 'basic assumptions' do
           let(:params) { default_params }
 
