@@ -8,7 +8,8 @@ configure_beaker do |host|
     install_puppet_module_via_pmt_on(host, 'puppetlabs-apt')
   when 'RedHat'
     # Soft dep on epel for Passenger
-    install_package(host, 'epel-release')
+    install_puppet_module_via_pmt_on(host, 'puppet-epel')
+    apply_manifest('include epel')
   end
 
   # Fake keys.
