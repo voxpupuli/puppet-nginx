@@ -21,3 +21,5 @@
 .*.sw?
 /.yardoc/
 /Guardfile
+bolt-debug.log
+.rerun.json

@@ -131,19 +131,29 @@ You can install all needed gems for spec tests into the modules directory by
 running:
 
 ```sh
-bundle install --path .vendor/ --without development system_tests release --jobs "$(nproc)"
+bundle config set --local path '.vendor/'
+bundle config set --local without 'development system_tests release'
+bundle install --jobs "$(nproc)"
 ```
 
 If you also want to run acceptance tests:
 
 ```sh
-bundle install --path .vendor/ --with system_tests --without development release --jobs "$(nproc)"
+bundle config set --local path '.vendor/'
+bundle config set --local without 'development release'
+bundle config set --local with 'system_tests'
+bundle install --jobs "$(nproc)"
 ```
 
 Our all in one solution if you don't know if you need to install or update gems:
 
 ```sh
-bundle install --path .vendor/ --with system_tests --without development release --jobs "$(nproc)"; bundle update; bundle clean
+bundle config set --local path '.vendor/'
+bundle config set --local without 'development release'
+bundle config set --local with 'system_tests'
+bundle install --jobs "$(nproc)"
+bundle update
+bundle clean
 ```
 
 As an alternative to the `--jobs "$(nproc)` parameter, you can set an
