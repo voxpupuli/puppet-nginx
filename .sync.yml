@@ -1,4 +1,5 @@
 ---
 .github/workflows/ci.yml:
-  timeout_minutes: 60
-  unit_runs_on: 'cern-self-hosted'
+  with:
+    timeout_minutes: 60
+    unit_runs_on: 'cern-self-hosted'
