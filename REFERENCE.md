@@ -3322,6 +3322,7 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`include_files`](#-nginx--resource--server--include_files)
 * [`access_log`](#-nginx--resource--server--access_log)
 * [`error_log`](#-nginx--resource--server--error_log)
+* [`error_log_severity`](#-nginx--resource--server--error_log_severity)
 * [`passenger_cgi_param`](#-nginx--resource--server--passenger_cgi_param)
 * [`passenger_set_header`](#-nginx--resource--server--passenger_set_header)
 * [`passenger_env_var`](#-nginx--resource--server--passenger_env_var)
@@ -4177,9 +4178,16 @@ Default value: `undef`
 
 Data type: `Optional[Variant[String, Array]]`
 
-Where to write error log. May add additional options like error level to
-the end. May set to 'absent', in which case it will be omitted in this
+Where to write error log. May be set to 'absent', in which case it will be omitted in this
 server stanza (and default to nginx.conf setting)
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--error_log_severity"></a>`error_log_severity`
+
+Data type: `Optional[Nginx::ErrorLogSeverity]`
+
+Optional error level
 
 Default value: `undef`
 
