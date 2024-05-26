@@ -23,9 +23,6 @@ server {
 <%- } -%>
 <%= $mailhost_common -%>
 
-<%- if versioncmp($nginx_version, '1.15.0') < 0 { -%>
-  ssl                   off;
-<% } %>
   starttls              <%= $starttls %>;
 
 <% if $starttls != 'off' { %>

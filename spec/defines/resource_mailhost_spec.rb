@@ -548,7 +548,7 @@ describe 'nginx::resource::mailhost' do
               title: 'should set the IPv4 SSL listen port',
               attr: 'ssl_port',
               value: 45,
-              match: '  listen                *:45;'
+              match: '  listen                *:45 ssl;'
             },
             {
               title: 'should enable IPv6',

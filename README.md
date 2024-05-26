@@ -262,7 +262,7 @@ nginx::nginx_upstreams:
 
 ## Nginx with precompiled Passenger
 
-Example configuration for Debian and RHEL / CentOS (>6), pulling the Nginx and
+Example configuration for Debian and RHEL / CentOS, pulling the Nginx and
 Passenger packages from the Phusion repo. See additional notes in
 [https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md](https://github.com/voxpupuli/puppet-nginx/blob/master/docs/quickstart.md)
 

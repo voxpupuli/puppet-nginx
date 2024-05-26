@@ -20,7 +20,7 @@
 #   The version of nginx installed (or being installed).
 #   Unfortunately, different versions of nginx may need configuring
 #   differently.  The default is derived from the version of nginx
-#   already installed.  If the fact is unavailable, it defaults to '1.6.0'.
+#   already installed.  If the fact is unavailable, it defaults to '1.16.0'.
 #   You may need to set this manually to get a working and idempotent
 #   configuration.
 #
@@ -240,7 +240,7 @@ class nginx (
   Hash $nginx_upstreams                                   = {},
   Nginx::UpstreamDefaults $nginx_upstreams_defaults       = {},
   Boolean $purge_passenger_repo                           = true,
-  String[1] $nginx_version                                = pick(fact('nginx_version'), '1.6.0'),
+  String[1] $nginx_version                                = pick(fact('nginx_version'), '1.16.0'),
 
   ### END Hiera Lookups ###
 ) inherits nginx::params {
@@ -251,6 +251,9 @@ class nginx (
     deprecation('keepalive_requests', 'Passing a String is deprecated, please pass a Integer')
   }
 
+  if versioncmp($nginx_version, '1.15.0') < 0 {
+    fail("nginx::nginx_version must be at least 1.15.0, got ${nginx_version}")
+  }
   contain 'nginx::package'
   contain 'nginx::config'
   contain 'nginx::service'

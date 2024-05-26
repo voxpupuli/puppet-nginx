@@ -14,16 +14,13 @@
 server {
 <%= $mailhost_prepend -%>
 <%- $listen_ip.each |$ip| { -%>
-  listen                <%= $ip %>:<%= $ssl_port %><% if versioncmp($nginx_version, '1.15.0') >= 0 { %> ssl<% } %>;
+  listen                <%= $ip %>:<%= $ssl_port %> ssl;
 <%- } -%>
 <%- $ipv6_listen_ip.each |$ipv6| { -%>
   listen                [<%= $ipv6 %>]:<%= $ssl_port %> <% if $ipv6_listen_options { %><%= $ipv6_listen_options %><% } %>;
 <%- } -%>
 <%= $mailhost_common -%>
 
-<%- if versioncmp($nginx_version, '1.15.0') < 0 { -%>
-  ssl                   on;
-<% } %>
   starttls              off;
 
 <%= $mailhost_ssl_settings -%>

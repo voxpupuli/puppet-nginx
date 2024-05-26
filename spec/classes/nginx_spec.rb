@@ -38,6 +38,12 @@ describe 'nginx' do
         it { is_expected.to contain_nginx__resource__streamhost('streamhost1').with_proxy('streamproxy') }
       end
 
+      describe 'unsupported version' do
+        let(:params) { { nginx_version: '1.14.0' } }
+
+        it { is_expected.to compile.and_raise_error(%r{nginx::nginx_version must be at least 1.15.0, got 1.14.0}) }
+      end
+
       context 'nginx::package' do
         it { is_expected.to compile.with_all_deps }
 
@@ -189,13 +195,8 @@ describe 'nginx' do
             let(:params) { { package_source: 'passenger' } }
 
             it { is_expected.to contain_package('nginx') }
+            it { is_expected.to contain_package('libnginx-mod-http-passenger') }
 
-            if (facts.dig(:os, 'name') == 'Debian' && %w[11].include?(facts.dig(:os, 'release', 'major'))) ||
-               (facts.dig(:os, 'name') == 'Ubuntu' && %w[bionic focal jammy].include?(facts.dig(:os, 'distro', 'codename')))
-              it { is_expected.to contain_package('libnginx-mod-http-passenger') }
-            else
-              it { is_expected.to contain_package('passenger') }
-            end
             it do
               is_expected.to contain_apt__source('nginx').with(
                 'location' => 'https://oss-binaries.phusionpassenger.com/apt/passenger',

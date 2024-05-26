@@ -277,11 +277,11 @@ Data type: `String[1]`
 The version of nginx installed (or being installed).
 Unfortunately, different versions of nginx may need configuring
 differently.  The default is derived from the version of nginx
-already installed.  If the fact is unavailable, it defaults to '1.6.0'.
+already installed.  If the fact is unavailable, it defaults to '1.16.0'.
 You may need to set this manually to get a working and idempotent
 configuration.
 
-Default value: `pick(fact('nginx_version'), '1.6.0')`
+Default value: `pick(fact('nginx_version'), '1.16.0')`
 
 ##### <a name="-nginx--debug_connections"></a>`debug_connections`
 
