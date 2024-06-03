@@ -11,7 +11,10 @@ describe 'nginx::resource::server define:' do
         ensure   => present,
         www_root => '/var/www/www.puppetlabs.com',
       }
-      host { 'www.puppetlabs.com': ip => '127.0.0.1', }
+      file_line {'mock hosts':
+        path => '/etc/hosts',
+        line => '127.0.0.1 www.puppetlabs.com'
+      }
       file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
@@ -65,7 +68,10 @@ describe 'nginx::resource::server define:' do
         ssl_key  => '/etc/pki/tls/private/blah.key',
         www_root => '/var/www/www.puppetlabs.com',
       }
-      host { 'www.puppetlabs.com': ip => '127.0.0.1', }
+      file_line {'mock hosts':
+        path => '/etc/hosts',
+        line => '127.0.0.1 www.puppetlabs.com'
+      }
       file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
@@ -131,7 +137,10 @@ describe 'nginx::resource::server define:' do
         ssl_password_file => '/etc/pki/tls/private/crypted.pass',
         www_root          => '/var/www/www.puppetlabs.com',
       }
-      host { 'www.puppetlabs.com': ip => '127.0.0.1', }
+      file_line {'mock hosts':
+        path => '/etc/hosts',
+        line => '127.0.0.1 www.puppetlabs.com'
+      }
       file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
@@ -187,7 +196,10 @@ describe 'nginx::resource::server define:' do
         ssl         => false,
         server      => ['www.puppetlabs.com'],
       }
-      host { 'www.puppetlabs.com': ip => '127.0.0.1', }
+      file_line {'mock hosts':
+        path => '/etc/hosts',
+        line => '127.0.0.1 www.puppetlabs.com'
+      }
       file { ['/var/www','/var/www/www.puppetlabs.com','/var/www/letsencrypt','/var/www/letsencrypt/.well-known','/var/www/letsencrypt/.well-known/acme-challenge']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       file { '/var/www/letsencrypt/.well-known/acme-challenge/fb9bd98604be3d0c7d589fcc7561cb41': ensure  => file, content => 'LetsEncrypt\n', }

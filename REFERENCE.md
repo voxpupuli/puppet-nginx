@@ -3080,7 +3080,7 @@ Create a new mapping entry for NGINX
 nginx::resource::map { 'backend_pool':
   ensure    => present,
   hostnames => true,
-  default   => 'ny-pool-1,
+  default   => 'ny-pool-1',
   string    => '$http_host',
   mappings  => {
     '*.nyc.example.com' => 'ny-pool-1',
