@@ -281,7 +281,7 @@ already installed.  If the fact is unavailable, it defaults to '1.6.0'.
 You may need to set this manually to get a working and idempotent
 configuration.
 
-Default value: `pick(fact('nginx_version'), '1.6.0')`
+Default value: `pick(fact('nginx_version'), '1.16.0')`
 
 ##### <a name="-nginx--debug_connections"></a>`debug_connections`
 
@@ -2918,7 +2918,7 @@ Default value: `'on'`
 
 Data type: `Enum['on', 'off']`
 
-Wheter to use proxy_protocol
+Wheter to use proxy_protocol, only suppported with nginx >= 1.19.8
 
 Default value: `'off'`
 
@@ -2926,7 +2926,7 @@ Default value: `'off'`
 
 Data type: `Enum['on', 'off']`
 
-Wheter to use proxy_smtp_auth
+Wheter to use proxy_smtp_auth, only suppported with nginx >= 1.19.4
 
 Default value: `'off'`
 

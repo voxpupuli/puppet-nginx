@@ -672,7 +672,7 @@ describe 'nginx::resource::server' do
                 facts[:nginx_version] ? facts.delete(:nginx_version) : facts
               end
 
-              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
+              it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{listen       \*:443 ssl;}) }
             end
 
             context 'with fact nginx_version=1.14.1' do

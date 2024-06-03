@@ -240,7 +240,7 @@ class nginx (
   Hash $nginx_upstreams                                   = {},
   Nginx::UpstreamDefaults $nginx_upstreams_defaults       = {},
   Boolean $purge_passenger_repo                           = true,
-  String[1] $nginx_version                                = pick(fact('nginx_version'), '1.6.0'),
+  String[1] $nginx_version                                = pick(fact('nginx_version'), '1.16.0'),
 
   ### END Hiera Lookups ###
 ) inherits nginx::params {
