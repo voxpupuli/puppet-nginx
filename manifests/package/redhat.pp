@@ -19,12 +19,6 @@ class nginx::package::redhat {
     default          => 'rhel'
   }
 
-  $want_module_hotfixes = if versioncmp(fact('os.release.full'), '8.0') >= 0 {
-    '1'
-  } else {
-    'absent'
-  }
-
   if $manage_repo {
     case $package_source {
       'nginx', 'nginx-stable': {
@@ -36,7 +30,7 @@ class nginx::package::redhat {
           priority        => '1',
           gpgkey          => 'https://nginx.org/keys/nginx_signing.key',
           before          => Package['nginx'],
-          module_hotfixes => $want_module_hotfixes,
+          module_hotfixes => '1',
         }
 
         if $purge_passenger_repo {
@@ -55,7 +49,7 @@ class nginx::package::redhat {
           priority        => '1',
           gpgkey          => 'https://nginx.org/keys/nginx_signing.key',
           before          => Package['nginx'],
-          module_hotfixes => $want_module_hotfixes,
+          module_hotfixes => '1',
         }
 
         if $purge_passenger_repo {
@@ -66,35 +60,26 @@ class nginx::package::redhat {
         }
       }
       'passenger': {
-        if ($facts['os']['name'] in ['RedHat', 'CentOS', 'VirtuozzoLinux', 'Rocky', 'AlmaLinux']) and ($facts['os']['release']['major'] in ['6', '7', '8', '9']) {
-          # 2019-11: Passenger changed their gpg key from: `https://packagecloud.io/phusion/passenger/gpgkey`
-          # to: `https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt`
-          # Find the latest key by opening: https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+        yumrepo { 'passenger':
+          baseurl         => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
+          descr           => 'passenger repo',
+          enabled         => '1',
+          gpgcheck        => '0',
+          repo_gpgcheck   => '1',
+          priority        => '1',
+          gpgkey          => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+          before          => Package['nginx'],
+          module_hotfixes => '1',
+        }
 
-          # Also note: Since 6.0.5 there are no nginx packages in the phusion EL7 repository, and nginx packages are expected to come from epel instead
-          yumrepo { 'passenger':
-            baseurl         => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/${facts['os']['release']['major']}/\$basearch",
-            descr           => 'passenger repo',
-            enabled         => '1',
-            gpgcheck        => '0',
-            repo_gpgcheck   => '1',
-            priority        => '1',
-            gpgkey          => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
-            before          => Package['nginx'],
-            module_hotfixes => $want_module_hotfixes,
-          }
+        yumrepo { 'nginx-release':
+          ensure => absent,
+          before => Package['nginx'],
+        }
 
-          yumrepo { 'nginx-release':
-            ensure => absent,
-            before => Package['nginx'],
-          }
-
-          package { $passenger_package_name:
-            ensure  => $passenger_package_ensure,
-            require => Yumrepo['passenger'],
-          }
-        } else {
-          fail("${facts['os']['name']} version ${facts['os']['release']['major']} is unsupported with \$package_source 'passenger'")
+        package { $passenger_package_name:
+          ensure  => $passenger_package_ensure,
+          require => Yumrepo['passenger'],
         }
       }
       default: {
