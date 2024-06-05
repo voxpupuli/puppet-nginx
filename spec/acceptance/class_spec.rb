@@ -9,17 +9,12 @@ describe 'nginx class:' do
   when 'RedHat'
     pkg_cmd = 'yum info nginx | grep "^From repo"'
     pkg_remove_cmd = 'yum -y remove nginx nginx-filesystem passenger'
-    pkg_match = case fact('operatingsystemmajrelease')
-                when '7' # https://blog.phusion.nl/2020/05/29/passenger-6-0-5/
-                  %r{epel}
-                else
-                  test_passenger = false
-                end
+    test_passenger = false
   when 'Debian'
     pkg_cmd = 'dpkg -s nginx | grep ^Maintainer'
     pkg_remove_cmd = 'apt-get -y purge nginx nginx-common'
-    pkg_match = case fact('operatingsystemmajrelease')
-                when '11'
+    pkg_match = case fact('os.release.major')
+                when '11', '12'
                   %r{Debian Nginx Maintainers}
                 when '18.04', '20.04', '22.04'
                   %r{Ubuntu Developers}
