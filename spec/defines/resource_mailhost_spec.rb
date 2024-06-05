@@ -16,7 +16,7 @@ describe 'nginx::resource::mailhost' do
           ipv6_enable: true
         }
       end
-      let(:pre_condition) { ['include ::nginx'] }
+      let(:pre_condition) { ['include nginx'] }
 
       describe 'os-independent items' do
         describe 'basic assumptions' do
@@ -689,7 +689,7 @@ describe 'nginx::resource::mailhost' do
                 facts.merge(nginx_version: '1.16.0')
               end
 
-              let(:pre_condition) { ['include ::nginx'] }
+              let(:pre_condition) { ['include nginx'] }
 
               it 'has `ssl` at end of listen directive' do
                 content = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content]
