@@ -111,18 +111,6 @@ describe 'nginx::resource::mailhost' do
               match: '  xclient               off;'
             },
             {
-              title: 'should set proxy_protocol',
-              attr: 'proxy_protocol',
-              value: 'off',
-              match: '  proxy_protocol        off;'
-            },
-            {
-              title: 'should set proxy_smtp_auth',
-              attr: 'proxy_smtp_auth',
-              value: 'off',
-              match: '  proxy_smtp_auth       off;'
-            },
-            {
               title: 'should set auth_http',
               attr: 'auth_http',
               value: 'test-auth_http',
@@ -252,6 +240,23 @@ describe 'nginx::resource::mailhost' do
                   expect(lines & Array(param[:match])).to eq(Array(param[:match]))
                 end
               end
+            end
+          end
+          context 'mail proxy parameters' do
+            let(:pre_condition) { ['class { "nginx": nginx_version => "1.20.0"}'] }
+            let(:params) do
+              {
+                listen_port: 25,
+                ipv6_enable: true,
+                ssl_cert: 'dummy.crt',
+                ssl_key: 'dummy.key'
+              }
+            end
+
+            it 'configures mail proxy settings' do
+              content = catalogue.resource('concat::fragment', "#{title}-header").send(:parameters)[:content]
+              expect(content).to include('proxy_protocol        off;')
+              expect(content).to include('proxy_smtp_auth       off;')
             end
           end
         end
@@ -548,7 +553,7 @@ describe 'nginx::resource::mailhost' do
               title: 'should set the IPv4 SSL listen port',
               attr: 'ssl_port',
               value: 45,
-              match: '  listen                *:45;'
+              match: '  listen                *:45 ssl;'
             },
             {
               title: 'should enable IPv6',
@@ -597,18 +602,6 @@ describe 'nginx::resource::mailhost' do
               attr: 'xclient',
               value: 'off',
               match: '  xclient               off;'
-            },
-            {
-              title: 'should set proxy_protocol',
-              attr: 'proxy_protocol',
-              value: 'off',
-              match: '  proxy_protocol        off;'
-            },
-            {
-              title: 'should set proxy_smtp_auth',
-              attr: 'proxy_smtp_auth',
-              value: 'off',
-              match: '  proxy_smtp_auth       off;'
             },
             {
               title: 'should set auth_http',
@@ -710,6 +703,16 @@ describe 'nginx::resource::mailhost' do
               it 'also has `ssl` at end of listen directive' do
                 content = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content]
                 expect(content).to include('listen                *:587 ssl;')
+              end
+            end
+
+            context 'mail proxy parameters' do
+              let(:pre_condition) { ['class { "nginx": nginx_version => "1.20.0"}'] }
+
+              it 'configures mail proxy settings' do
+                content = catalogue.resource('concat::fragment', "#{title}-ssl").send(:parameters)[:content]
+                expect(content).to include('proxy_protocol        off;')
+                expect(content).to include('proxy_smtp_auth       off;')
               end
             end
           end

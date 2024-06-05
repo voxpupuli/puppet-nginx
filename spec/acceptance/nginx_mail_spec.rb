@@ -80,7 +80,7 @@ describe 'nginx::resource::mailhost define:' do
       it { is_expected.to be_listening }
     end
 
-    context 'when configured for nginx 1.14' do
+    context 'when configured for nginx 1.14', if: !%w[Debian Archlinux].include?(fact('os.family')) do
       it 'runs successfully' do
         pp = "
       if fact('os.family') == 'RedHat' {

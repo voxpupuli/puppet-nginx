@@ -73,9 +73,9 @@
 # @param xclient
 #   Whether to use xclient for smtp
 # @param proxy_protocol
-#   Wheter to use proxy_protocol
+#   Wheter to use proxy_protocol, only suppported with nginx >= 1.19.8
 # @param proxy_smtp_auth
-#   Wheter to use proxy_smtp_auth
+#   Wheter to use proxy_smtp_auth, only suppported with nginx >= 1.19.4
 # @param imap_auth
 #   Sets permitted methods of authentication for IMAP clients.
 # @param imap_capabilities
@@ -257,6 +257,7 @@ define nginx::resource::mailhost (
       smtp_auth                => $smtp_auth,
       smtp_capabilities        => $smtp_capabilities,
       xclient                  => $xclient,
+      nginx_version            => $nginx::nginx_version,
   })
 
   concat { $config_file:
