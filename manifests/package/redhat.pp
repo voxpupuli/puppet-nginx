@@ -16,6 +16,7 @@ class nginx::package::redhat {
   $_os = $facts['os']['name'] ? {
     'centos'         => 'centos',
     'VirtuozzoLinux' => 'centos',
+    'OracleLinux'    => 'centos',
     default          => 'rhel'
   }
 
