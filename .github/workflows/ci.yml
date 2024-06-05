@@ -21,4 +21,4 @@ jobs:
     uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
     with:
       timeout_minutes: 60
-      unit_runs_on: 'cern-self-hosted'
+      unit_runs_on: 'self-hosted'
