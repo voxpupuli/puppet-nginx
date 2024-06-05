@@ -20,5 +20,5 @@ jobs:
     name: Puppet
     uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
     with:
-      pidfile_workaround: 'false'
+      timeout_minutes: 60
       unit_runs_on: 'cern-self-hosted'
