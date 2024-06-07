@@ -31,13 +31,13 @@ server {
 <% end -%>
 <% if @error_log.is_a?(Array) -%>
   <%- @error_log.each do |log_item| -%>
-  error_log             <%= log_item %>;
+  error_log             <%= log_item %><% if @error_log_severity %> <%= @error_log_severity %><% end %>;
   <%- end -%>
 <% elsif @error_log == 'absent' -%>
 <% elsif not @error_log -%>
-  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log<% if @error_log_severity %> <%= @error_log_severity %><% end %>;
 <% else -%>
-  error_log             <%= @error_log %>;
+  error_log             <%= @error_log %><% if @error_log_severity %> <%= @error_log_severity %><% end %>;
 <% end -%>
 <%= scope.function_template(["nginx/server/server_ssl_settings.erb"]) %>
 
@@ -129,13 +129,13 @@ server {
 <% end -%>
 <% if @error_log.is_a?(Array) -%>
   <%- @error_log.each do |log_item| -%>
-  error_log             <%= log_item %>;
+  error_log             <%= log_item %><% if @error_log_severity %> <%= @error_log_severity %><% end %>;
   <%- end -%>
 <% elsif @error_log == 'absent' -%>
 <% elsif not @error_log -%>
-  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log;
+  error_log             <%= scope['nginx::config::log_dir'] %>/ssl-<%= @name_sanitized %>.error.log<% if @error_log_severity %> <%= @error_log_severity %><% end %>;
 <% else -%>
-  error_log             <%= @error_log %>;
+  error_log             <%= @error_log %><% if @error_log_severity %> <%= @error_log_severity %><% end %>;
 <% end -%>
 <% if @error_pages -%>
 
