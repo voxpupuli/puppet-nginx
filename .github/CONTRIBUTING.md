@@ -2,18 +2,16 @@
 
 ## Table of contents
 
-- [Contribution guidelines](#contribution-guidelines)
-  - [Table of contents](#table-of-contents)
-  - [Contributing](#contributing)
-  - [Writing proper commits - short version](#writing-proper-commits---short-version)
-  - [Writing proper commits - long version](#writing-proper-commits---long-version)
-  - [Dependencies](#dependencies)
-    - [Note for OS X users](#note-for-os-x-users)
-  - [The test matrix](#the-test-matrix)
-    - [Syntax and style](#syntax-and-style)
-    - [Running the unit tests](#running-the-unit-tests)
-      - [Unit tests in docker](#unit-tests-in-docker)
-    - [Integration tests](#integration-tests)
+* [Contributing](#contributing)
+* [Writing proper commits - short version](#writing-proper-commits-short-version)
+* [Writing proper commits - long version](#writing-proper-commits-long-version)
+* [Dependencies](#dependencies)
+  * [Note for OS X users](#note-for-os-x-users)
+* [The test matrix](#the-test-matrix)
+* [Syntax and style](#syntax-and-style)
+* [Running the unit tests](#running-the-unit-tests)
+* [Unit tests in docker](#unit-tests-in-docker)
+* [Integration tests](#integration-tests)
 
 This module has grown over time based on a range of contributions from
 people using it. If you follow these contributing guidelines your patch
@@ -253,6 +251,8 @@ The following strings are known to work:
 * ubuntu2004
 * ubuntu2204
 * debian11
+* centos7
+* centos8
 * centos9
 * almalinux8
 * almalinux9
