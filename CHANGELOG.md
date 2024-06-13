@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v6.0.0) (2024-06-13)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v5.0.0...v6.0.0)
+
+**Breaking changes:**
+
+- Drop RHEL 7, CentOS 7&8, VirtuozzoLinux 6&7 [\#1599](https://github.com/voxpupuli/puppet-nginx/pull/1599) ([TheMeier](https://github.com/TheMeier))
+- Drop Debian 10 [\#1595](https://github.com/voxpupuli/puppet-nginx/pull/1595) ([TheMeier](https://github.com/TheMeier))
+- Drop Ubuntu 18.04 [\#1573](https://github.com/voxpupuli/puppet-nginx/pull/1573) ([kenyon](https://github.com/kenyon))
+- Remove legacy data types [\#1566](https://github.com/voxpupuli/puppet-nginx/pull/1566) ([smortex](https://github.com/smortex))
+
+**Implemented enhancements:**
+
+- Add OracleLinux support [\#1601](https://github.com/voxpupuli/puppet-nginx/pull/1601) ([TheMeier](https://github.com/TheMeier))
+- Add Debian 12 support [\#1600](https://github.com/voxpupuli/puppet-nginx/pull/1600) ([TheMeier](https://github.com/TheMeier))
+- Allow specifying error\_log severity for servers [\#1594](https://github.com/voxpupuli/puppet-nginx/pull/1594) ([Enrice](https://github.com/Enrice))
+- Add `http2` directive instead of `listen` option [\#1579](https://github.com/voxpupuli/puppet-nginx/pull/1579) ([C24-AK](https://github.com/C24-AK))
+- Allow multiple values in `gzip_proxied` parameter [\#1578](https://github.com/voxpupuli/puppet-nginx/pull/1578) ([jay7x](https://github.com/jay7x))
+- Add support for multiple `limit_req` statements in `location` directives [\#1570](https://github.com/voxpupuli/puppet-nginx/pull/1570) ([ltning](https://github.com/ltning))
+- Convert some templates to EPP [\#1568](https://github.com/voxpupuli/puppet-nginx/pull/1568) ([jay7x](https://github.com/jay7x))
+- init.pp: Add missing datatypes [\#1560](https://github.com/voxpupuli/puppet-nginx/pull/1560) ([bastelfreak](https://github.com/bastelfreak))
+- Add access and error logs directives when `www_to_non_www` or `non_www_to_www` is used [\#1546](https://github.com/voxpupuli/puppet-nginx/pull/1546) ([m1keru](https://github.com/m1keru))
+
+**Fixed bugs:**
+
+- fix typo in nginx::resource::map documentation [\#1590](https://github.com/voxpupuli/puppet-nginx/pull/1590) ([toutoen](https://github.com/toutoen))
+
+**Merged pull requests:**
+
+- raise default version to 1.16.0 [\#1598](https://github.com/voxpupuli/puppet-nginx/pull/1598) ([TheMeier](https://github.com/TheMeier))
+- Remove legacy top-scope syntax [\#1584](https://github.com/voxpupuli/puppet-nginx/pull/1584) ([smortex](https://github.com/smortex))
+- Improve `nginx::package_source` documentation [\#1577](https://github.com/voxpupuli/puppet-nginx/pull/1577) ([smortex](https://github.com/smortex))
+- Use EPP template in nginx::resource::map [\#1575](https://github.com/voxpupuli/puppet-nginx/pull/1575) ([jay7x](https://github.com/jay7x))
+- CI: run unit tests on `self-hosted` [\#1564](https://github.com/voxpupuli/puppet-nginx/pull/1564) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v5.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v5.0.0) (2023-06-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v4.4.0...v5.0.0)
