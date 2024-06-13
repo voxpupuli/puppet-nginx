@@ -248,6 +248,69 @@ describe 'nginx::resource::location' do
               attr: 'reset_timedout_connection',
               value: 'on',
               match: %r{^\s+reset_timedout_connection\s+on;}
+            },
+            {
+              title: 'access_log undef',
+              attr: 'access_log',
+              value: :undef,
+              notmatch: %r{\s+access_log\s+.+;}
+            },
+            {
+              title: 'disabling access_log ',
+              attr: 'access_log',
+              value: 'off',
+              match: %r{\s+access_log\s+off;}
+            },
+            {
+              title: 'override access_log ',
+              attr: 'access_log',
+              value: '/var/log/nginx/specific-location.log',
+              match: %r{\s+access_log\s+/var/log/nginx/specific-location\.log;}
+            },
+            {
+              title: 'override access_log with an array',
+              attr: 'access_log',
+              value: [
+                '/var/log/nginx/specific-location.log',
+                'syslog:server=10.0.0.1'
+              ],
+              match: [
+                %r{\s+access_log\s+/var/log/nginx/specific-location\.log;},
+                %r{\s+access_log\s+syslog:server=10\.0\.0\.1\s*;}
+              ]
+            },
+            {
+              title: 'enabling logging errors not found',
+              attr: 'log_not_found',
+              value: 'off',
+              match: %r{\s+log_not_found\s+off;}
+            },
+            {
+              title: 'enabling logging errors not found',
+              attr: 'log_not_found',
+              value: 'on',
+              match: %r{\s+log_not_found\s+on;}
+            },
+            {
+              title: 'should set error_log',
+              attr: 'error_log',
+              value: '/path/to/error.log',
+              match: '  error_log             /path/to/error.log;'
+            },
+            {
+              title: 'should allow multiple error_log directives',
+              attr: 'error_log',
+              value: ['/path/to/error.log', 'syslog:server=localhost'],
+              match: [
+                '  error_log             /path/to/error.log;',
+                '  error_log             syslog:server=localhost;'
+              ]
+            },
+            {
+              title: 'should not include error_log in server when set to absent',
+              attr: 'error_log',
+              value: 'absent',
+              notmatch: 'error_log'
             }
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
