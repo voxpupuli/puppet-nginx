@@ -807,7 +807,7 @@ Default value: `20`
 
 ##### <a name="-nginx--gzip_http_version"></a>`gzip_http_version`
 
-Data type: `Variant[Enum['1.0','1.1'], Float]`
+Data type: `Enum['1.0','1.1']`
 
 
 
@@ -903,7 +903,7 @@ Default value: `'65s'`
 
 ##### <a name="-nginx--keepalive_requests"></a>`keepalive_requests`
 
-Data type: `Variant[Integer, String]`
+Data type: `Integer`
 
 
 
