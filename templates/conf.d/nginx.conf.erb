@@ -332,11 +332,6 @@ mail {
 <% end -%>
 <% if @stream -%>
 stream {
-  <%-# conf.stream.d gets included either way if $stream is enabled -%>
-  include <%= @conf_dir %>/conf.stream.d/*.conf;
-<% unless @confd_only -%>
-  include <%= @conf_dir %>/streams-enabled/*;
-<% end -%>
 <% unless @stream_log_format.empty? -%>
 
 <% @stream_log_format.sort.each do |key,value| -%>
@@ -346,6 +341,12 @@ stream {
 
 <%- Array(@stream_access_log).each do |log_item| -%>
   access_log <%= log_item %><% if @stream_custom_format_log %> <%= @stream_custom_format_log%><% end %>;
+<% end -%>
+
+  <%-# conf.stream.d gets included either way if $stream is enabled -%>
+  include <%= @conf_dir %>/conf.stream.d/*.conf;
+<% unless @confd_only -%>
+  include <%= @conf_dir %>/streams-enabled/*;
 <% end -%>
 }
 <% end -%>
