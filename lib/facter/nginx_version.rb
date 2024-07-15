@@ -2,7 +2,7 @@
 
 Facter.add(:nginx_version) do
   confine { Facter.value(:kernel) != 'windows' }
-  confine { Facter.value(:operatingsystem) != 'nexus' }
+  confine { Facter.value(:os)['name'] != 'nexus' }
   setcode do
     if Facter::Util::Resolution.which('nginx') || Facter::Util::Resolution.which('openresty')
       nginx_version_command = Facter::Util::Resolution.which('nginx') ? 'nginx -v 2>&1' : 'openresty -v 2>&1'

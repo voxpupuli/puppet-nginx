@@ -347,7 +347,7 @@ define web::nginx_ssl_with_redirect (
   $www_root             = "${full_web_path}/${name}/",
   $location_cfg_append  = undef,
 ) {
-  nginx::resource::server { "${name}.${::domain}":
+  nginx::resource::server { "${name}.${facts['networking']['domain']}":
     ensure              => present,
     www_root            => "${full_web_path}/${name}/",
     location_cfg_append => {
@@ -361,7 +361,7 @@ define web::nginx_ssl_with_redirect (
     $tmp_www_root = $www_root
   }
 
-  nginx::resource::server { "${name}.${::domain} ${name}":
+  nginx::resource::server { "${name}.${facts['networking']['domain']} ${name}":
     ensure                => present,
     listen_port           => 443,
     www_root              => $tmp_www_root,
@@ -379,7 +379,7 @@ define web::nginx_ssl_with_redirect (
       ensure          => present,
       ssl             => true,
       ssl_only        => true,
-      server           => "${name}.${::domain} ${name}",
+      server           => "${name}.${facts['networking']['domain']} ${name}",
       www_root        => "${full_web_path}/${name}/",
       location        => '~ \.php$',
       index_files     => ['index.php', 'index.html', 'index.htm'],
