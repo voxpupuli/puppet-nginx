@@ -41,14 +41,14 @@ describe 'nginx' do
       context 'nginx::package' do
         it { is_expected.to compile.with_all_deps }
 
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           context 'using defaults' do
             it { is_expected.to contain_package('nginx') }
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:os]['name']) ? 'centos' : 'rhel'}/#{facts[:os]['release']['major']}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
@@ -74,7 +74,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/",
+                'baseurl'  => "https://nginx.org/packages/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:os]['name']) ? 'centos' : 'rhel'}/#{facts[:os]['release']['major']}/$basearch/",
                 'descr'    => 'nginx repo',
                 'enabled'  => '1',
                 'gpgcheck' => '1',
@@ -91,7 +91,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_yumrepo('nginx-release').with(
-                'baseurl' => "https://nginx.org/packages/mainline/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:operatingsystem]) ? 'centos' : 'rhel'}/#{facts[:operatingsystemmajrelease]}/$basearch/"
+                'baseurl' => "https://nginx.org/packages/mainline/#{%w[CentOS VirtuozzoLinux OracleLinux].include?(facts[:os]['name']) ? 'centos' : 'rhel'}/#{facts[:os]['release']['major']}/$basearch/"
               )
             end
 
@@ -105,12 +105,12 @@ describe 'nginx' do
             it { is_expected.to contain_yumrepo('passenger').that_comes_before('Package[nginx]') }
           end
 
-          context 'package_source => passenger', unless: facts[:operatingsystemmajrelease] == '8' do
+          context 'package_source => passenger', unless: facts[:os]['release']['major'] == '8' do
             let(:params) { { package_source: 'passenger' } }
 
             it do
               is_expected.to contain_yumrepo('passenger').with(
-                'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:operatingsystemmajrelease]}/$basearch",
+                'baseurl'       => "https://oss-binaries.phusionpassenger.com/yum/passenger/el/#{facts[:os]['release']['major']}/$basearch",
                 'gpgcheck'      => '0',
                 'repo_gpgcheck' => '1',
                 'gpgkey'        => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt'
@@ -128,7 +128,7 @@ describe 'nginx' do
             it { is_expected.to contain_package('passenger').with('ensure' => 'installed') }
           end
 
-          describe 'installs the requested passenger package version', unless: facts[:operatingsystemmajrelease] == '8' do
+          describe 'installs the requested passenger package version', unless: facts[:os]['release']['major'] == '8' do
             let(:params) { { package_source: 'passenger', passenger_package_ensure: '4.1.0-1.el9' } }
 
             it 'installs specified version exactly' do
@@ -158,7 +158,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_apt__source('nginx').with(
-                'location' => "https://nginx.org/packages/#{facts[:operatingsystem].downcase}",
+                'location' => "https://nginx.org/packages/#{facts[:os]['name'].downcase}",
                 'repos'    => 'nginx',
                 'key'      => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
               )
@@ -180,7 +180,7 @@ describe 'nginx' do
 
             it do
               is_expected.to contain_apt__source('nginx').with(
-                'location' => "https://nginx.org/packages/mainline/#{facts[:operatingsystem].downcase}"
+                'location' => "https://nginx.org/packages/mainline/#{facts[:os]['name'].downcase}"
               )
             end
           end
@@ -358,7 +358,7 @@ describe 'nginx' do
             end
           end
 
-          case facts[:osfamily]
+          case facts[:os]['family']
           when 'RedHat'
             it { is_expected.to contain_file('/etc/nginx/nginx.conf').with_content %r{^user nginx;} }
 

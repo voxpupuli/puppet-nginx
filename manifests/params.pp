@@ -185,7 +185,7 @@ class nginx::params {
       }
     }
     default: {
-      ## For cases not covered in $::osfamily
+      ## For cases not covered in $facts['os']['family']
       case $facts['os']['name'] {
         default: { $_module_os_overrides = {} }
       }
