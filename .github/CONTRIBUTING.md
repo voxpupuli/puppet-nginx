@@ -245,15 +245,23 @@ with:
 BEAKER_PUPPET_COLLECTION=puppet7 BEAKER_setfile=debian11-64 bundle exec rake beaker
 ```
 
+or
+
+```sh
+BEAKER_PUPPET_COLLECTION=none BEAKER_setfile=archlinux-64 bundle exec rake beaker
+```
+
+This latter example will use the distribution's own version of Puppet.
+
 You can replace the string `debian11` with any common operating system.
 The following strings are known to work:
 
 * ubuntu2004
 * ubuntu2204
 * debian11
-* centos7
-* centos8
+* debian12
 * centos9
+* archlinux
 * almalinux8
 * almalinux9
 * fedora36
