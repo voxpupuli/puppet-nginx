@@ -55,9 +55,9 @@ events {
 
 http {
 <% if @http_raw_prepend && Array(@http_raw_prepend).size > 0 -%>
-    <%- Array(@http_raw_prepend).each do |line| -%>
-    <%= line %>
-    <%- end -%>
+  <%- Array(@http_raw_prepend).each do |line| -%>
+  <%= line %>
+  <%- end -%>
 <% end -%>
 
 <% if @http_cfg_prepend -%>
@@ -315,9 +315,9 @@ http {
 <% end -%>
 
 <% if @http_raw_append && Array(@http_raw_append).size > 0 -%>
-    <%- Array(@http_raw_append).each do |line| -%>
-    <%= line %>
-    <%- end -%>
+  <%- Array(@http_raw_append).each do |line| -%>
+  <%= line %>
+  <%- end -%>
 <% end -%>
 
   include <%= @conf_dir %>/conf.d/*.conf;
