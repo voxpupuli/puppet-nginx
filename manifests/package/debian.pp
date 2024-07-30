@@ -31,7 +31,7 @@ class nginx::package::debian {
         apt::source { 'nginx':
           location     => $stable_repo_source,
           repos        => 'nginx',
-          key          => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
+          keyring      => '/usr/share/keyrings/nginx-archive-keyring.gpg',
           release      => $release,
           architecture => $facts['os']['architecture'],
         }
@@ -44,7 +44,7 @@ class nginx::package::debian {
         apt::source { 'nginx':
           location     => $mainline_repo_source,
           repos        => 'nginx',
-          key          => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' },
+          keyring      => '/usr/share/keyrings/nginx-archive-keyring.gpg',
           release      => $release,
           architecture => $facts['os']['architecture'],
         }
