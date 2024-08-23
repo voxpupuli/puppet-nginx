@@ -160,7 +160,10 @@ describe 'nginx' do
               is_expected.to contain_apt__source('nginx').with(
                 'location' => "https://nginx.org/packages/#{facts[:os]['name'].downcase}",
                 'repos'    => 'nginx',
-                'key'      => { 'id' => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62' }
+                'key'      => {
+                  'source' => 'https://nginx.org/keys/nginx_signing.key',
+                  'name' => 'nginx.asc'
+                }
               )
             end
           end
@@ -195,7 +198,10 @@ describe 'nginx' do
               is_expected.to contain_apt__source('nginx').with(
                 'location' => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
                 'repos'    => 'main',
-                'key'      => { 'id' => '16378A33A6EF16762922526E561F9B9CAC40B2F7' }
+                'key'      => {
+                  'source' => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt',
+                  'name' => 'phusionpassenger.asc'
+                }
               )
             end
           end
