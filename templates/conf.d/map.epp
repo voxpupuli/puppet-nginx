@@ -17,6 +17,7 @@ map <%= $string %> $<%= $name %> {
 <%- $include_files.each |$h| { -%>
   include <%= $h %>;
 <%- } -%>
+<%- unless $mappings.empty { -%>
 
 <%-
 $m = $mappings ? {
@@ -27,5 +28,6 @@ $field_width = $m.map |$x| { $x['key'].length }.max
 -%>
 <%- $m.each |$h| { -%>
   <%= sprintf("%-*s %s", $field_width, $h['key'], $h['value']) %>;
+<%- } -%>
 <%- } -%>
 }
