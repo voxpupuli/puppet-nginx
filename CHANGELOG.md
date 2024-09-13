@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.0.1](https://github.com/voxpupuli/puppet-nginx/tree/v6.0.1) (2024-09-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v6.0.0...v6.0.1)
+
+**Fixed bugs:**
+
+- Fix use of `include_files` in `nginx::resource::map` [\#1613](https://github.com/voxpupuli/puppet-nginx/pull/1613) ([smortex](https://github.com/smortex))
+- Fix use of legacy facts [\#1607](https://github.com/voxpupuli/puppet-nginx/pull/1607) ([silug](https://github.com/silug))
+
 ## [v6.0.0](https://github.com/voxpupuli/puppet-nginx/tree/v6.0.0) (2024-06-13)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v5.0.0...v6.0.0)
