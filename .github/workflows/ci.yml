@@ -4,6 +4,7 @@
 
 name: CI
 
+# yamllint disable-line rule:truthy
 on:
   pull_request: {}
   push:
@@ -18,7 +19,7 @@ concurrency:
 jobs:
   puppet:
     name: Puppet
-    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v2
+    uses: voxpupuli/gha-puppet/.github/workflows/beaker.yml@v3
     with:
       timeout_minutes: 60
       unit_runs_on: 'cern-self-hosted'

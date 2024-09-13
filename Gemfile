@@ -26,7 +26,7 @@ end
 gem 'rake', :require => false
 gem 'facter', ENV['FACTER_GEM_VERSION'], :require => false, :groups => [:test]
 
-puppetversion = ENV['PUPPET_GEM_VERSION'] || '~> 7.24'
+puppetversion = ENV['PUPPET_GEM_VERSION'] || [">= 7.24", "< 9"]
 gem 'puppet', puppetversion, :require => false, :groups => [:test]
 
 # vim: syntax=ruby
