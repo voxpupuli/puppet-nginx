@@ -448,6 +448,12 @@ describe 'nginx' do
                 match: 'worker_rlimit_nofile 10000;'
               },
               {
+                title: 'should not set worker_rlimit_nofile',
+                attr: 'worker_rlimit_nofile',
+                value: 0,
+                notmatch: %r{worker_rlimit_nofile}
+              },
+              {
                 title: 'should set pcre_jit',
                 attr: 'pcre_jit',
                 value: 'on',

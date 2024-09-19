@@ -13,7 +13,7 @@ daemon <%= @daemon %>;
 user <%= @daemon_user %><% if @daemon_group -%> <%= @daemon_group %><% end -%>;
 <% end -%>
 worker_processes <%= @worker_processes %>;
-<% if @worker_rlimit_nofile -%>
+<% if @worker_rlimit_nofile > 0 -%>
 worker_rlimit_nofile <%= @worker_rlimit_nofile %>;
 <% end -%>
 <% if @pcre_jit -%>
