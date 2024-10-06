@@ -688,19 +688,19 @@ describe 'nginx::resource::server' do
             end
 
             context 'with fact nginx_version=1.14.1' do
-              let(:facts) { facts.merge(nginx_version: '1.14.1') }
+              let(:pre_condition) { 'class {"nginx": nginx_version => "1.14.1"}' }
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{  ssl on;}) }
             end
 
             context 'with fact nginx_version=1.15.1' do
-              let(:facts) { facts.merge(nginx_version: '1.15.1') }
+              let(:pre_condition) { 'class {"nginx": nginx_version => "1.15.1"}' }
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").without_content(%r{  ssl on;}) }
             end
 
             context 'http2 on with fact nginx_version=1.25.1' do
-              let(:facts) { facts.merge(nginx_version: '1.25.1') }
+              let(:pre_condition) { 'class {"nginx": nginx_version => "1.25.1"}' }
               let :params do
                 default_params.merge(
                   http2: 'on',
@@ -714,7 +714,7 @@ describe 'nginx::resource::server' do
             end
 
             context 'with fact nginx_version=1.25.1' do
-              let(:facts) { facts.merge(nginx_version: '1.25.1') }
+              let(:pre_condition) { 'class {"nginx": nginx_version => "1.25.1"}' }
 
               it { is_expected.to contain_concat__fragment("#{title}-ssl-header").with_content(%r{^\s+http2\s+off;}) }
             end
