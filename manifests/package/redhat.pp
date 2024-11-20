@@ -19,6 +19,11 @@ class nginx::package::redhat {
     'OracleLinux'    => 'centos',
     default          => 'rhel'
   }
+  
+  $_package_install_options ? {
+     $manage_repo => '--repo=nginx-release',
+     default      => '',
+  }
 
   if $manage_repo {
     case $package_source {
@@ -90,7 +95,8 @@ class nginx::package::redhat {
   }
 
   package { 'nginx':
-    ensure => $package_ensure,
-    name   => $package_name,
+    ensure          => $package_ensure,
+    name            => $package_name,
+    install_options => $_package_install_options,
   }
 }
