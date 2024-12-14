@@ -491,7 +491,7 @@ Data type: `Variant[String, Array[String]]`
 
 
 
-Default value: `"${log_dir}/stream-access.log"`
+Default value: `'off'`
 
 ##### <a name="-nginx--stream_custom_format_log"></a>`stream_custom_format_log`
 
