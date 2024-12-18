@@ -47,6 +47,10 @@
 #   nginx::resource::streamhost { 'test2.local':
 #     ensure   => present,
 #   }
+# @param allow
+#   Locations to allow connections from
+# @param deny
+#   Locations to deny connections from
 #
 define nginx::resource::streamhost (
   Enum['absent', 'present'] $ensure            = 'present',
@@ -66,6 +70,8 @@ define nginx::resource::streamhost (
   String $owner                                = $nginx::global_owner,
   String $group                                = $nginx::global_group,
   String $mode                                 = $nginx::global_mode,
+  Array $allow                                 = [],
+  Array $deny                                  = [],
 ) {
   if ! defined(Class['nginx']) {
     fail('You must include the nginx base class before using any defined resources')

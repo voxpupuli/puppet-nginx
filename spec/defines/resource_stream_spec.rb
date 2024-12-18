@@ -113,6 +113,18 @@ describe 'nginx::resource::streamhost' do
               match: %r{\s+resolver\s+203.0.113.1 203.0.113.2;}
             },
             {
+              title: 'should set allow(s)',
+              attr: 'allow',
+              value: ['203.0.113.1', '203.0.113.2'],
+              match: %r{\s+allow\s+203.0.113.1;}
+            },
+            {
+              title: 'should set deny(s)',
+              attr: 'deny',
+              value: ['203.0.113.1', '203.0.113.2'],
+              match: %r{\s+deny\s+203.0.113.1;}
+            },
+            {
               title: 'should contain raw_prepend directives',
               attr: 'raw_prepend',
               value: [
