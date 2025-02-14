@@ -1,0 +1,23 @@
+---
+# Managed by modulesync - DO NOT EDIT
+# https://voxpupuli.org/docs/updating-files-managed-with-modulesync/
+
+name: 'Prepare Release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Module version to be released. Must be a valid semver string without leading v. (1.2.3)'
+        required: false
+
+jobs:
+  release_prep:
+    uses: 'voxpupuli/gha-puppet/.github/workflows/prepare_release.yml@v3'
+    with:
+      version: ${{ github.event.inputs.version }}
+      allowed_owner: 'voxpupuli'
+    secrets:
+      # Configure secrets here:
+      #  https://docs.github.com/en/actions/security-guides/encrypted-secrets
+      github_pat: '${{ secrets.PCCI_PAT_RELEASE_PREP }}'

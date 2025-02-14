@@ -21,10 +21,3 @@ jobs:
       #  https://docs.github.com/en/actions/security-guides/encrypted-secrets
       username: ${{ secrets.PUPPET_FORGE_USERNAME }}
       api_key: ${{ secrets.PUPPET_FORGE_API_KEY }}
-
-  create-github-release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create GitHub release
-        uses: voxpupuli/gha-create-a-github-release@v1
