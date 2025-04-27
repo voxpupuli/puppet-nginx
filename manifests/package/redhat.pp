@@ -9,6 +9,7 @@ class nginx::package::redhat {
   $passenger_package_name   = $nginx::passenger_package_name
   $manage_repo              = $nginx::manage_repo
   $purge_passenger_repo     = $nginx::purge_passenger_repo
+  $dnfmodule                = $nginx::dnfmodule
 
   #Install the CentOS-specific packages on that OS, otherwise assume it's a RHEL
   #clone and provide the Red Hat-specific package. This comes into play when not
@@ -86,6 +87,16 @@ class nginx::package::redhat {
       default: {
         fail("\$package_source must be 'nginx-stable', 'nginx-mainline', or 'passenger'. It was set to '${package_source}'")
       }
+    }
+  }
+
+  if $dnfmodule and fact('os.family') == 'RedHat' and versioncmp(fact('os.release.major'), '8') >= 0 {
+    package { "nginx:${dnfmodule}":
+      ensure      => $dnfmodule,
+      name        => 'nginx',
+      provider    => 'dnfmodule',
+      before      => Package['nginx'],
+      enable_only => true,
     }
   }
 
