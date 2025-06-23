@@ -3747,11 +3747,11 @@ Default value: `undef`
 
 ##### <a name="-nginx--resource--server--ssl_verify_client"></a>`ssl_verify_client`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 Enables verification of client certificates.
 
-Default value: `'on'`
+Default value: `undef`
 
 ##### <a name="-nginx--resource--server--ssl_crl"></a>`ssl_crl`
 
