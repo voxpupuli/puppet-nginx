@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v7.1.0](https://github.com/voxpupuli/puppet-nginx/tree/v7.1.0) (2025-08-20)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v7.0.1...v7.1.0)
+
+**Breaking changes:**
+
+- Drop puppet, update openvox minimum version to 8.19 [\#1648](https://github.com/voxpupuli/puppet-nginx/pull/1648) ([TheMeier](https://github.com/TheMeier))
+
+**Implemented enhancements:**
+
+- Change proxy\_redirect parameter to Optional\[Variant\[Array\[String\],Str… [\#1650](https://github.com/voxpupuli/puppet-nginx/pull/1650) ([rgarifullin-bank131](https://github.com/rgarifullin-bank131))
+- Allow `ssl_verify_client` when only `ssl_trusted_cert` is set [\#1645](https://github.com/voxpupuli/puppet-nginx/pull/1645) ([ltning](https://github.com/ltning))
+- Add support for Ubuntu 24.04 "noble" [\#1641](https://github.com/voxpupuli/puppet-nginx/pull/1641) ([kenyon](https://github.com/kenyon))
+- Add ssl parameter to IPv6 listen directive [\#1632](https://github.com/voxpupuli/puppet-nginx/pull/1632) ([Cicco0](https://github.com/Cicco0))
+
+**Fixed bugs:**
+
+- Fix for \#1644 \(`ssl_verify_client` with only `ssl_trusted_certificate`\) breaks common use case [\#1646](https://github.com/voxpupuli/puppet-nginx/issues/1646)
+
+**Closed issues:**
+
+- Support `ssl_verify_client` when only `ssl_trusted_cert` is set [\#1644](https://github.com/voxpupuli/puppet-nginx/issues/1644)
+
+**Merged pull requests:**
+
+- Fix ssl verify client compat [\#1647](https://github.com/voxpupuli/puppet-nginx/pull/1647) ([ltning](https://github.com/ltning))
+
 ## [v7.0.1](https://github.com/voxpupuli/puppet-nginx/tree/v7.0.1) (2025-06-12)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v7.0.0...v7.0.1)
@@ -19,7 +46,7 @@ These should not affect the functionality of the module.
 **Breaking changes:**
 
 - Disable mail relay in nginx 1.14 [\#1634](https://github.com/voxpupuli/puppet-nginx/pull/1634) ([jstraw](https://github.com/jstraw))
-- Fix `apt-key` deprecated message [\#1610](https://github.com/voxpupuli/puppet-nginx/pull/1610) ([miluxhd](https://github.com/miluxhd))
+- Fix `apt-key` deprecated message [\#1610](https://github.com/voxpupuli/puppet-nginx/pull/1610) ([milad-zanganeh](https://github.com/milad-zanganeh))
 
 **Implemented enhancements:**
 
