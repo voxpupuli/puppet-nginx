@@ -72,6 +72,12 @@
     <%= line %>
     <%- end -%>
 <% end -%>
+<% if defined? @rewrite_by_lua -%>
+  rewrite_by_lua '<%= @rewrite_by_lua %>';
+<% end -%>
+<% if defined? @rewrite_by_lua_file -%>
+  rewrite_by_lua_file "<%= @rewrite_by_lua_file %>";
+<% end -%>
 <%- unless @rewrite_rules.nil? || @rewrite_rules.empty? -%>
     <%- @rewrite_rules.each do |rewrite_rule| -%>
     rewrite <%= rewrite_rule %>;
