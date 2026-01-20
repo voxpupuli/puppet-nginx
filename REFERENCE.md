@@ -2353,9 +2353,9 @@ Default value: `undef`
 
 Data type: `Optional[Hash]`
 
-Expects a array with extra directives to put before anything else inside
-location (used with all other types except custom_cfg). Used for logical
-structures such as if.
+Expects a hash with extra directives to put before anything else inside
+location (used with all other types except custom_cfg). Used for directives
+that should not have a semicolon appended.
 
 Default value: `undef`
 
@@ -2363,9 +2363,9 @@ Default value: `undef`
 
 Data type: `Optional[Hash]`
 
-Expects a array with extra directives to put after anything else inside
-location (used with all other types except custom_cfg). Used for logical
-structures such as if.
+Expects a hash with extra directives to put after anything else inside
+location (used with all other types except custom_cfg). Used for directives
+that should not have a semicolon appended.
 
 Default value: `undef`
 

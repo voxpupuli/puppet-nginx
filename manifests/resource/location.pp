@@ -102,13 +102,13 @@
 #   Expects a hash with extra directives to put before anything else inside
 #   location (used with all other types except custom_cfg)
 # @param location_custom_cfg_prepend
-#   Expects a array with extra directives to put before anything else inside
-#   location (used with all other types except custom_cfg). Used for logical
-#   structures such as if.
+#   Expects a hash with extra directives to put before anything else inside
+#   location (used with all other types except custom_cfg). Used for directives
+#   that should not have a semicolon appended.
 # @param location_custom_cfg_append
-#   Expects a array with extra directives to put after anything else inside
-#   location (used with all other types except custom_cfg). Used for logical
-#   structures such as if.
+#   Expects a hash with extra directives to put after anything else inside
+#   location (used with all other types except custom_cfg). Used for directives
+#   that should not have a semicolon appended.
 # @param location_cfg_append
 #   Expects a hash with extra directives to put
 #   after everything else inside location (used with all other types except
