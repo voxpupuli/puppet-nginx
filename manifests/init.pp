@@ -49,6 +49,9 @@
 # @param nginx_snippets_defaults
 #   Can be used to define default values for the parameter `nginx_snippets`.
 #
+# @param dnfmodule
+#   Specifies which dnf AppStream stream to enable for nginx package.
+#
 # @param client_body_temp_path
 # @param confd_only
 # @param confd_purge
@@ -405,6 +408,7 @@ class nginx (
   # This is optional, to allow it to be set to undef for systems that install it with nginx always
   Optional[String[1]] $mail_package_name                     = $nginx::params::mail_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source                     = undef,
+  Optional[String[1]] $dnfmodule                             = undef,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
