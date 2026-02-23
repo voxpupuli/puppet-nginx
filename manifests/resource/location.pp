@@ -104,13 +104,15 @@
 #   Expects a hash with extra directives to put before anything else inside
 #   location (used with all other types except custom_cfg)
 # @param location_custom_cfg_prepend
-#   Expects a array with extra directives to put before anything else inside
-#   location (used with all other types except custom_cfg). Used for logical
-#   structures such as if.
+#   Expects a hash or array with extra directives to put before anything else
+#   inside location (used with all other types except custom_cfg). Used for
+#   directives that should not have a semicolon appended. When an array is
+#   provided, each element is output as a raw line.
 # @param location_custom_cfg_append
-#   Expects a array with extra directives to put after anything else inside
-#   location (used with all other types except custom_cfg). Used for logical
-#   structures such as if.
+#   Expects a hash or array with extra directives to put after anything else
+#   inside location (used with all other types except custom_cfg). Used for
+#   directives that should not have a semicolon appended. When an array is
+#   provided, each element is output as a raw line.
 # @param location_cfg_append
 #   Expects a hash with extra directives to put
 #   after everything else inside location (used with all other types except
@@ -331,8 +333,8 @@ define nginx::resource::location (
   Optional[Hash] $location_custom_cfg                              = undef,
   Optional[Hash] $location_cfg_prepend                             = undef,
   Optional[Hash] $location_cfg_append                              = undef,
-  Optional[Hash] $location_custom_cfg_prepend                      = undef,
-  Optional[Hash] $location_custom_cfg_append                       = undef,
+  Optional[Variant[Hash, Array]] $location_custom_cfg_prepend      = undef,
+  Optional[Variant[Hash, Array]] $location_custom_cfg_append       = undef,
   Optional[Array] $include                                         = undef,
   Optional[Array] $try_files                                       = undef,
   Optional[String] $proxy_cache                                    = undef,

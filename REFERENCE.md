@@ -2413,21 +2413,23 @@ Default value: `undef`
 
 ##### <a name="-nginx--resource--location--location_custom_cfg_prepend"></a>`location_custom_cfg_prepend`
 
-Data type: `Optional[Hash]`
+Data type: `Optional[Variant[Hash, Array]]`
 
-Expects a array with extra directives to put before anything else inside
-location (used with all other types except custom_cfg). Used for logical
-structures such as if.
+Expects a hash or array with extra directives to put before anything else
+inside location (used with all other types except custom_cfg). Used for
+directives that should not have a semicolon appended. When an array is
+provided, each element is output as a raw line.
 
 Default value: `undef`
 
 ##### <a name="-nginx--resource--location--location_custom_cfg_append"></a>`location_custom_cfg_append`
 
-Data type: `Optional[Hash]`
+Data type: `Optional[Variant[Hash, Array]]`
 
-Expects a array with extra directives to put after anything else inside
-location (used with all other types except custom_cfg). Used for logical
-structures such as if.
+Expects a hash or array with extra directives to put after anything else
+inside location (used with all other types except custom_cfg). Used for
+directives that should not have a semicolon appended. When an array is
+provided, each element is output as a raw line.
 
 Default value: `undef`
 
