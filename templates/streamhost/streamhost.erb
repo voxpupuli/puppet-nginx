@@ -22,15 +22,26 @@ server {
   resolver              <% @resolver.each do |res| %> <%= res %><% end %>;
 <%- end -%>
 
-  <% Array(@raw_prepend).each do |line| -%>
-    <%= line %>
-  <% end %>
+<% if @allow -%>
+  <%- @allow.flatten.uniq.each do |allow_rule| -%>
+  allow <%= allow_rule %>;
+  <%- end -%>
+<% end -%>
+<% if @deny -%>
+  <%- @deny.uniq.each do |deny_rule| -%>
+  deny <%= deny_rule %>;
+  <%- end -%>
+<% end -%>
+
+<% Array(@raw_prepend).each do |line| -%>
+<%= line %>
+<% end %>
 
   proxy_timeout         <%= @proxy_read_timeout %>;
   proxy_connect_timeout <%= @proxy_connect_timeout %>;
   proxy_pass            <%= @proxy %>;
 
-  <% Array(@raw_append).each do |line| -%>
-    <%= line %>
-  <% end -%>
+<% Array(@raw_append).each do |line| -%>
+<%= line %>
+<% end -%>
 }
