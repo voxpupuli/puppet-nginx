@@ -865,17 +865,21 @@ Default value: `undef`
 
 ##### <a name="-nginx--http_cfg_prepend"></a>`http_cfg_prepend`
 
-Data type: `Optional[Variant[Hash, Array]]`
+Data type: `Optional[Variant[Hash[String, Variant[String, Array[String]]], Array[Variant[String, Tuple[String, String]]]]]`
 
-
+Adds custom directives to the beginning of the http block. Supports:
+- Hash: `{ 'key' => 'value' }` (sorted by key)
+- Hash with arrays: `{ 'key' => ['val1', 'val2'] }` (multiple values per key)
+- Array of pairs: `[['key', 'val1'], ['key', 'val2']]` (preserves order, allows duplicates)
+- Array of strings: `['directive value']` (semicolons added automatically)
 
 Default value: `undef`
 
 ##### <a name="-nginx--http_cfg_append"></a>`http_cfg_append`
 
-Data type: `Optional[Variant[Hash, Array]]`
+Data type: `Optional[Variant[Hash[String, Variant[String, Array[String]]], Array[Variant[String, Tuple[String, String]]]]]`
 
-
+Adds custom directives to the end of the http block. Supports same formats as http_cfg_prepend.
 
 Default value: `undef`
 

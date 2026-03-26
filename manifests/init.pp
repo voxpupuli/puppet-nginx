@@ -114,7 +114,13 @@
 # @param gzip_vary
 # @param gzip_static
 # @param http_cfg_prepend
+#   Adds custom directives to the beginning of the http block. Supports:
+#   - Hash: `{ 'key' => 'value' }` (sorted by key)
+#   - Hash with arrays: `{ 'key' => ['val1', 'val2'] }` (multiple values per key)
+#   - Array of pairs: `[['key', 'val1'], ['key', 'val2']]` (preserves order, allows duplicates)
+#   - Array of strings: `['directive value']` (semicolons added automatically)
 # @param http_cfg_append
+#   Adds custom directives to the end of the http block. Supports same formats as http_cfg_prepend.
 # @param http_raw_prepend
 # @param http_raw_append
 # @param http_tcp_nodelay
@@ -305,8 +311,8 @@ class nginx (
   Optional[Variant[String[1],Array[String[1]]]] $gzip_types  = undef,
   Enum['on', 'off'] $gzip_vary                               = 'off',
   Optional[Enum['on', 'off', 'always']] $gzip_static         = undef,
-  Optional[Variant[Hash, Array]] $http_cfg_prepend           = undef,
-  Optional[Variant[Hash, Array]] $http_cfg_append            = undef,
+  Optional[Variant[Hash[String, Variant[String, Array[String]]], Array[Variant[String, Tuple[String, String]]]]] $http_cfg_prepend = undef,
+  Optional[Variant[Hash[String, Variant[String, Array[String]]], Array[Variant[String, Tuple[String, String]]]]] $http_cfg_append = undef,
   Optional[Variant[Array[String], String]] $http_raw_prepend = undef,
   Optional[Variant[Array[String], String]] $http_raw_append  = undef,
   Enum['on', 'off'] $http_tcp_nodelay                        = 'on',

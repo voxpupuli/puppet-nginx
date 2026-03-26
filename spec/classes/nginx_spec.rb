@@ -796,6 +796,28 @@ describe 'nginx' do
                 ],
               },
               {
+                title: 'should preserve order of directives from array of pairs',
+                attr: 'http_cfg_prepend',
+                value: [['allow', 'value 3'], ['allow', 'value 1'], ['allow', 'value 2']],
+                match: %r{allow\s+value 3;.*allow\s+value 1;.*allow\s+value 2;}m
+              },
+              {
+                title: 'should contain directives from array of strings',
+                attr: 'http_cfg_prepend',
+                value: ['allow 192.168.1.0/24', 'allow 10.0.0.0/8', 'deny all'],
+                match: [
+                  '  allow 192.168.1.0/24;',
+                  '  allow 10.0.0.0/8;',
+                  '  deny all;'
+                ]
+              },
+              {
+                title: 'should preserve order of directives from array of strings',
+                attr: 'http_cfg_prepend',
+                value: ['allow 3', 'allow 1', 'allow 2'],
+                match: %r{allow 3;.*allow 1;.*allow 2;}m
+              },
+              {
                 title: 'should contain http_raw_append directives',
                 attr: 'http_raw_append',
                 value: [
@@ -825,6 +847,12 @@ describe 'nginx' do
                 ],
               },
               {
+                title: 'should preserve order of directives from array of pairs',
+                attr: 'http_cfg_append',
+                value: [['allow', 'value 3'], ['allow', 'value 1'], ['allow', 'value 2']],
+                match: %r{allow\s+value 3;.*allow\s+value 1;.*allow\s+value 2;}m
+              },
+              {
                 title: 'should contain duplicate appended directives from array values',
                 attr: 'http_cfg_append',
                 value: { 'test1' => ['test value 1', 'test value 2', 'test value 3'] },
@@ -832,6 +860,22 @@ describe 'nginx' do
                   '  test1 test value 1;',
                   '  test1 test value 2;',
                 ],
+              },
+              {
+                title: 'should contain directives from array of strings',
+                attr: 'http_cfg_append',
+                value: ['allow 192.168.1.0/24', 'allow 10.0.0.0/8', 'deny all'],
+                match: [
+                  '  allow 192.168.1.0/24;',
+                  '  allow 10.0.0.0/8;',
+                  '  deny all;'
+                ]
+              },
+              {
+                title: 'should preserve order of directives from array of strings',
+                attr: 'http_cfg_append',
+                value: ['allow 3', 'allow 1', 'allow 2'],
+                match: %r{allow 3;.*allow 1;.*allow 2;}m
               },
               {
                 title: 'should contain ordered appended directives from hash',

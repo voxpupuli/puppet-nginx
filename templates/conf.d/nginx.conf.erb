@@ -62,12 +62,23 @@ http {
 <% end -%>
 
 <% if @http_cfg_prepend -%>
+<% if @http_cfg_prepend.is_a?(Hash) -%>
   <%- field_width = @http_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @http_cfg_prepend.sort_by{|k,v| k}.each do |key,value| -%>
   <%- Array(value).each do |asubvalue| -%>
   <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
   <%- end -%>
   <%- end -%>
+<% elsif @http_cfg_prepend.first.is_a?(Array) -%>
+  <%- field_width = @http_cfg_prepend.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+  <%- @http_cfg_prepend.each do |key,value| -%>
+  <%= sprintf("%-*s", field_width, key) %> <%= value %>;
+  <%- end -%>
+<% else -%>
+  <%- @http_cfg_prepend.each do |line| -%>
+  <%= line %>;
+  <%- end -%>
+<% end -%>
 <% end -%>
 <% if @mime_types_path.is_a? String and @mime_types_path.empty? == false -%>
   include       <%= @mime_types_path %>;
@@ -332,6 +343,7 @@ http {
   ssl_password_file         <%= @ssl_password_file %>;
 <% end -%>
 <% if @http_cfg_append -%>
+<% if @http_cfg_append.is_a?(Hash) -%>
 
   <%- field_width = @http_cfg_append.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
   <%- @http_cfg_append.sort_by{|k,v| k}.each do |key,value| -%>
@@ -339,6 +351,16 @@ http {
   <%= sprintf("%-*s", field_width, key) %> <%= asubvalue %>;
   <%- end -%>
   <%- end -%>
+<% elsif @http_cfg_append.first.is_a?(Array) -%>
+  <%- field_width = @http_cfg_append.inject(0) { |l,(k,v)| k.size > l ? k.size : l } -%>
+  <%- @http_cfg_append.each do |key,value| -%>
+  <%= sprintf("%-*s", field_width, key) %> <%= value %>;
+  <%- end -%>
+<% else -%>
+  <%- @http_cfg_append.each do |line| -%>
+  <%= line %>;
+  <%- end -%>
+<% end -%>
 <% end -%>
 
 <% if @http_raw_append && Array(@http_raw_append).size > 0 -%>
