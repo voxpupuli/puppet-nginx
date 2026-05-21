@@ -2965,7 +2965,7 @@ Default value: `$listen_port`
 
 ##### <a name="-nginx--resource--mailhost--ipv6_listen_options"></a>`ipv6_listen_options`
 
-Data type: `Optional[String[1]]`
+Data type: `Optional[String]`
 
 Extra options for listen directive like 'default' to catchall. Defaults to
 'ipv6only=on'. If listen_options is set, those options are inherited with
@@ -3726,7 +3726,7 @@ Default value: `$listen_port`
 
 ##### <a name="-nginx--resource--server--ipv6_listen_options"></a>`ipv6_listen_options`
 
-Data type: `Optional[String[1]]`
+Data type: `Optional[String]`
 
 Extra options for listen directive like 'default' to catchall. Defaults to
 'ipv6only=on'. If listen_options is set, those options are inherited with
@@ -4972,7 +4972,7 @@ Default value: `$listen_port`
 
 ##### <a name="-nginx--resource--streamhost--ipv6_listen_options"></a>`ipv6_listen_options`
 
-Data type: `Optional[String[1]]`
+Data type: `Optional[String]`
 
 Extra options for listen directive like 'default' to catchall. Defaults to
 'ipv6only=on'. If listen_options is set, those options are inherited with
