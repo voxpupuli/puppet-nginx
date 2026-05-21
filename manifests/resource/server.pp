@@ -336,7 +336,7 @@ define nginx::resource::server (
   Boolean $ipv6_enable = false,
   Variant[Array, String] $ipv6_listen_ip = '::',
   Stdlib::Port $ipv6_listen_port = $listen_port,
-  Optional[String[1]] $ipv6_listen_options = undef,
+  Optional[String] $ipv6_listen_options = undef,
   Hash $add_header = {},
   Boolean $ssl = false,
   Boolean $ssl_listen_option = true,
