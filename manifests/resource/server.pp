@@ -635,6 +635,15 @@ define nginx::resource::server (
     $root = $www_root
   }
 
+  if $www_root {
+    ensure_resource('file', $www_root, {
+      'ensure' => 'directory',
+      'owner'  => 'root',
+      'group'  => 'root',
+      'mode'   => '0755',
+    })
+  }
+
   # Only try to manage these files if they're the default one (as you presumably
   # usually don't want the default template if you're using a custom file.
 
