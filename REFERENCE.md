@@ -226,6 +226,8 @@ The following parameters are available in the `nginx` class:
 * [`ssl_trusted_certificate`](#-nginx--ssl_trusted_certificate)
 * [`ssl_verify_depth`](#-nginx--ssl_verify_depth)
 * [`ssl_password_file`](#-nginx--ssl_password_file)
+* [`ssl_reject_handshake`](#-nginx--ssl_reject_handshake)
+* [`ssl_early_data`](#-nginx--ssl_early_data)
 * [`package_ensure`](#-nginx--package_ensure)
 * [`package_name`](#-nginx--package_name)
 * [`package_source`](#-nginx--package_source)
@@ -1491,6 +1493,22 @@ Default value: `undef`
 ##### <a name="-nginx--ssl_password_file"></a>`ssl_password_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-nginx--ssl_reject_handshake"></a>`ssl_reject_handshake`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-nginx--ssl_early_data"></a>`ssl_early_data`
+
+Data type: `Optional[Enum['on', 'off']]`
 
 
 
@@ -3563,6 +3581,8 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`ssl_trusted_cert`](#-nginx--resource--server--ssl_trusted_cert)
 * [`ssl_verify_depth`](#-nginx--resource--server--ssl_verify_depth)
 * [`ssl_password_file`](#-nginx--resource--server--ssl_password_file)
+* [`ssl_reject_handshake`](#-nginx--resource--server--ssl_reject_handshake)
+* [`ssl_early_data`](#-nginx--resource--server--ssl_early_data)
 * [`spdy`](#-nginx--resource--server--spdy)
 * [`http2`](#-nginx--resource--server--http2)
 * [`server_name`](#-nginx--resource--server--server_name)
@@ -4258,6 +4278,22 @@ Default value: `undef`
 Data type: `Optional[Stdlib::Absolutepath]`
 
 File containing the password for the SSL Key file.
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--ssl_reject_handshake"></a>`ssl_reject_handshake`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+If enabled, SSL handshakes in the server block will be rejected.
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--ssl_early_data"></a>`ssl_early_data`
+
+Data type: `Optional[Enum['on', 'off']]`
+
+Enables or disables TLS 1.3 early data.
 
 Default value: `undef`
 

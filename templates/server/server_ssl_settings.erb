@@ -84,4 +84,10 @@
   <%- if @ssl_password_file -%>
   ssl_password_file         <%= @ssl_password_file %>;
   <%- end -%>
+  <%- if @ssl_reject_handshake -%>
+  ssl_reject_handshake      <%= @ssl_reject_handshake %>;
+  <%- end -%>
+  <%- if @ssl_early_data -%>
+  ssl_early_data            <%= @ssl_early_data %>;
+  <%- end -%>
 <% end -%>

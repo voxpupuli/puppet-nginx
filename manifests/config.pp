@@ -136,6 +136,8 @@ class nginx::config {
   $ssl_prefer_server_ciphers = $nginx::ssl_prefer_server_ciphers
   $ssl_protocols = $nginx::ssl_protocols
   $ssl_verify_depth = $nginx::ssl_verify_depth
+  $ssl_reject_handshake = $nginx::ssl_reject_handshake
+  $ssl_early_data = $nginx::ssl_early_data
   $types_hash_bucket_size = $nginx::types_hash_bucket_size
   $types_hash_max_size = $nginx::types_hash_max_size
   $worker_connections = $nginx::worker_connections
