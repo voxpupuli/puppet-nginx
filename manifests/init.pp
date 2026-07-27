@@ -200,6 +200,8 @@
 # @param ssl_trusted_certificate
 # @param ssl_verify_depth
 # @param ssl_password_file
+# @param ssl_reject_handshake
+# @param ssl_early_data
 # @param package_ensure
 # @param package_name
 # @param package_source
@@ -389,6 +391,8 @@ class nginx (
   Optional[Stdlib::Absolutepath] $ssl_trusted_certificate = undef,
   Optional[Integer] $ssl_verify_depth = undef,
   Optional[Stdlib::Absolutepath] $ssl_password_file = undef,
+  Optional[Enum['on', 'off']] $ssl_reject_handshake = undef,
+  Optional[Enum['on', 'off']] $ssl_early_data = undef,
   Optional[Enum['on', 'off']] $reset_timedout_connection = undef,
   Optional[Integer] $variables_hash_bucket_size = undef,
   Optional[Integer] $variables_hash_max_size = undef,

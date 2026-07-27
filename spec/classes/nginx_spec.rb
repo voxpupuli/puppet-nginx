@@ -1161,6 +1161,30 @@ describe 'nginx' do
                 notmatch: 'ssl_verify_depth',
               },
               {
+                title: 'should set ssl_reject_handshake on',
+                attr: 'ssl_reject_handshake',
+                value: 'on',
+                match: %r{\s+ssl_reject_handshake\s+on;},
+              },
+              {
+                title: 'should set ssl_reject_handshake off',
+                attr: 'ssl_reject_handshake',
+                value: 'off',
+                match: %r{\s+ssl_reject_handshake\s+off;},
+              },
+              {
+                title: 'should set ssl_early_data on',
+                attr: 'ssl_early_data',
+                value: 'on',
+                match: %r{\s+ssl_early_data\s+on;},
+              },
+              {
+                title: 'should set ssl_early_data off',
+                attr: 'ssl_early_data',
+                value: 'off',
+                match: %r{\s+ssl_early_data\s+off;},
+              },
+              {
                 title: 'should set ssl_verify_depth',
                 attr: 'ssl_verify_depth',
                 value: 5,

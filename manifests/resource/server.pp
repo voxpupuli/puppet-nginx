@@ -180,6 +180,10 @@
 #   Sets the verification depth in the client certificates chain.
 # @param ssl_password_file
 #   File containing the password for the SSL Key file.
+# @param ssl_reject_handshake
+#   If enabled, SSL handshakes in the server block will be rejected.
+# @param ssl_early_data
+#   Enables or disables TLS 1.3 early data.
 # @param spdy
 #   Toggles SPDY protocol.
 # @param http2
@@ -367,6 +371,8 @@ define nginx::resource::server (
   Optional[String] $ssl_trusted_cert = undef,
   Optional[Integer] $ssl_verify_depth = undef,
   Optional[Stdlib::Absolutepath] $ssl_password_file = undef,
+  Optional[Enum['on', 'off']] $ssl_reject_handshake = undef,
+  Optional[Enum['on', 'off']] $ssl_early_data = undef,
   Enum['on', 'off'] $spdy = $nginx::spdy,
   Enum['on', 'off'] $http2 = $nginx::http2,
   Optional[String] $proxy = undef,

@@ -1014,6 +1014,30 @@ describe 'nginx::resource::server' do
               match: %r{^\s+ssl_verify_depth\s+2;},
             },
             {
+              title: 'should set ssl_reject_handshake on',
+              attr: 'ssl_reject_handshake',
+              value: 'on',
+              match: %r{\s+ssl_reject_handshake\s+on;},
+            },
+            {
+              title: 'should set ssl_reject_handshake off',
+              attr: 'ssl_reject_handshake',
+              value: 'off',
+              match: %r{\s+ssl_reject_handshake\s+off;},
+            },
+            {
+              title: 'should set ssl_early_data on',
+              attr: 'ssl_early_data',
+              value: 'on',
+              match: %r{\s+ssl_early_data\s+on;},
+            },
+            {
+              title: 'should set ssl_early_data off',
+              attr: 'ssl_early_data',
+              value: 'off',
+              match: %r{\s+ssl_early_data\s+off;},
+            },
+            {
               title: 'should set the SSL cache',
               attr: 'ssl_cache',
               value: 'shared:SSL:1m',
