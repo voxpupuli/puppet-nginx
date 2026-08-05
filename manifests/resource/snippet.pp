@@ -30,7 +30,7 @@ define nginx::resource::snippet (
     owner   => $owner,
     group   => $group,
     mode    => $mode,
-    notify  => Class['nginx::service'],
+    notify  => $nginx::reload,
     require => File[$nginx::snippets_dir],
     tag     => 'nginx_config_file',
   }

@@ -218,6 +218,9 @@
 # @param service_restart
 # @param service_name
 # @param service_manage
+# @param reload
+#   Resource to notify when config changes. Set to `undef` to disable
+#   automatic nginx reloads on configuration changes.
 # @param geo_mappings
 # @param geo_mappings_defaults
 # @param string_mappings
@@ -420,6 +423,7 @@ class nginx (
   Optional[String] $service_restart = undef,
   String $service_name = 'nginx',
   Boolean $service_manage = true,
+  Variant[Type, Undef] $reload = Class['nginx::service'],
   Boolean $service_config_check = false,
   String $service_config_check_command = 'nginx -t',
   ### END Service Configuration ###
@@ -462,6 +466,10 @@ class nginx (
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
   # a transitive relationship to the composite class.
-  Class['nginx::package'] -> Class['nginx::config'] ~> Class['nginx::service']
-  Class['nginx::package'] ~> Class['nginx::service']
+  if $reload {
+    Class['nginx::package'] -> Class['nginx::config'] ~> Class['nginx::service']
+    Class['nginx::package'] ~> Class['nginx::service']
+  } else {
+    Class['nginx::package'] -> Class['nginx::config'] -> Class['nginx::service']
+  }
 }

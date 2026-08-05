@@ -179,13 +179,13 @@ class nginx::config {
       File["${conf_dir}/conf.d"] {
         purge   => true,
         recurse => true,
-        notify  => Class['nginx::service'],
+        notify  => $nginx::reload,
       }
 
       File["${conf_dir}/conf.stream.d"] {
         purge   => true,
         recurse => true,
-        notify  => Class['nginx::service'],
+        notify  => $nginx::reload,
       }
     }
   }

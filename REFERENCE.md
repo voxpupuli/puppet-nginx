@@ -244,6 +244,7 @@ The following parameters are available in the `nginx` class:
 * [`service_restart`](#-nginx--service_restart)
 * [`service_name`](#-nginx--service_name)
 * [`service_manage`](#-nginx--service_manage)
+* [`reload`](#-nginx--reload)
 * [`geo_mappings`](#-nginx--geo_mappings)
 * [`geo_mappings_defaults`](#-nginx--geo_mappings_defaults)
 * [`string_mappings`](#-nginx--string_mappings)
@@ -1641,6 +1642,15 @@ Data type: `Boolean`
 
 
 Default value: `true`
+
+##### <a name="-nginx--reload"></a>`reload`
+
+Data type: `Variant[Type, Undef]`
+
+Resource to notify when config changes. Set to `undef` to disable
+automatic nginx reloads on configuration changes.
+
+Default value: `Class['nginx::service']`
 
 ##### <a name="-nginx--geo_mappings"></a>`geo_mappings`
 

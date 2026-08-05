@@ -96,7 +96,7 @@ define nginx::resource::streamhost (
     owner   => $owner,
     group   => $group,
     mode    => $mode,
-    notify  => Class['nginx::service'],
+    notify  => $nginx::reload,
     require => File[$streamhost_dir],
     tag     => 'nginx_config_file',
   }
@@ -116,7 +116,7 @@ define nginx::resource::streamhost (
       group   => $group,
       mode    => $mode,
       require => Concat[$config_file],
-      notify  => Class['nginx::service'],
+      notify  => $nginx::reload,
     }
   }
 }
