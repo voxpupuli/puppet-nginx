@@ -1,0 +1,203 @@
+---
+name: Puppet
+
+on:
+  workflow_call:
+    inputs:
+      rubocop:
+        description: Whether to run Rubocop
+        default: true
+        required: false
+        type: boolean
+      timeout_minutes:
+        description: The maximum time (in minutes) for a job to take.
+        default: 45
+        required: false
+        type: number
+      working-directory:
+        description: The working directory where all jobs should be executed. Used for modules in subdirectories like a monorepo or a control repository.
+        default: '.'
+        required: false
+        type: string
+      cache-version:
+        description: The cache version to pass to setup-ruby
+        default: '0'
+        required: false
+        type: string
+      additional_packages:
+        description: String of additional packages that should be installed
+        default: ''
+        required: false
+        type: string
+      beaker_hypervisor:
+        description: The hypervisor beaker will use to start containers/VMs
+        default: container_podman
+        required: false
+        type: string
+      install_vagrant_dependencies:
+        description: When true and beaker_hypervisor==vagrant_libvirt, we will install vagrant + libvirt
+        default: true
+        required: false
+        type: boolean
+      beaker_facter:
+        description: Expand the Beaker matrix based on a fact
+        default: 'false'
+        required: false
+        type: string
+      beaker_hosts:
+        description: Expand the Beaker setfile with hosts and roles
+        default: 'false'
+        required: false
+        type: string
+      domain:
+        description: The domain that will be used for the beaker instances
+        default: "example.com"
+        required: false
+        type: string
+      unit_runs_on:
+        description: the runner group used for unit jobs run on
+        default: ubuntu-24.04
+        required: false
+        type: string
+      acceptance_runs_on:
+        description: the runner group used for acceptance jobs run on
+        default: ubuntu-24.04
+        required: false
+        type: string
+    secrets:
+      beaker_hcloud_token:
+        description: token to access the Hetzner Cloud API
+        required: false
+
+#env:
+#  BEAKER_HYPERVISOR: ${{ inputs.beaker_hypervisor }}
+
+jobs:
+  setup_matrix:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    name: Static validations
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    outputs:
+      puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+      puppet_beaker_test_matrix: ${{ steps.get-outputs.outputs.puppet_beaker_test_matrix }}
+    env:
+      BUNDLE_WITHOUT: development:system_tests:release
+      PUPPET_GEM_VERSION: ">= 7.0"
+      OPENVOX_GEM_VERSION: ">= 7.0"
+    steps:
+      - uses: actions/checkout@v6
+      - name: install additional packages
+        if: ${{ inputs.additional_packages != '' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional_packages }}
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          cache-version: ${{ inputs.cache-version }}
+          working-directory: ${{ inputs.working-directory }}
+      - name: Display Ruby environment
+        run: bundle env
+      - name: Run static validations
+        run: bundle exec rake validate lint check
+      - name: Run rake rubocop
+        run: bundle exec rake rubocop
+        if: ${{ inputs.rubocop }}
+      - name: Setup Test Matrix
+        id: get-outputs
+        run: bundle exec metadata2gha --domain ${{ inputs.domain }} --beaker-facter "${{ inputs.beaker_facter }}" --beaker-hosts "${{ inputs.beaker_hosts }}"
+
+  unit:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    needs: setup_matrix
+    container:
+      image: ghcr.io/voxpupuli/voxbox:8.24.2-main
+    runs-on: ${{ inputs.unit_runs_on }}
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
+    env:
+      BUNDLE_WITHOUT: development:system_tests:release
+      PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+      OPENVOX_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
+    name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run tests
+        run: |
+          bundle config set --local without 'development system_tests release'
+          bundle install
+          bundle exec rake parallel_spec
+  acceptance:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    needs: setup_matrix
+    runs-on: ${{ inputs.acceptance_runs_on }}
+    env:
+      BUNDLE_WITHOUT: development:test:release
+      BEAKER_HCLOUD_TOKEN: '${{ secrets.beaker_hcloud_token }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_beaker_test_matrix)}}
+    name: "${{ matrix.name }}"
+    steps:
+      - uses: actions/checkout@v6
+      - name: disable apparmor
+        run: |
+          # https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2093797
+          sudo aa-teardown || true
+          sudo systemctl disable --now apparmor.service
+      - name: install additional packages
+        if: ${{ inputs.additional_packages != '' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ inputs.additional_packages }}
+      - name: Setup podman
+        if: ${{ inputs.beaker_hypervisor == 'container_podman' }}
+        run: |
+          systemctl start --user podman.socket
+          echo "DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock" >> "$GITHUB_ENV"
+      - name: Setup libvirt for Vagrant
+        if: ${{ inputs.beaker_hypervisor == 'vagrant_libvirt' && inputs.install_vagrant_dependencies == true }}
+        run: |
+          sudo add-apt-repository ppa:evgeni/vagrant
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends vagrant vagrant-libvirt libvirt-daemon-system libvirt-daemon qemu-system-x86 qemu-utils dnsmasq
+          sudo chmod 666 /var/run/libvirt/libvirt-sock
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          cache-version: ${{ inputs.cache-version }}
+          working-directory: ${{ inputs.working-directory }}
+          self-hosted: ${{ ! startsWith(inputs.acceptance_runs_on, 'ubuntu-') }}
+      - name: Display Ruby environment
+        run: bundle env
+      - name: Run tests
+        run: bundle exec rake beaker
+        env: ${{ matrix.env }}
+
+  tests:
+    if: always()
+    needs:
+      - unit
+      # - acceptance
+    runs-on: ubuntu-24.04
+    name: Test suite
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
