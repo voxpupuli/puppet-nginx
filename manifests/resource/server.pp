@@ -97,6 +97,9 @@
 #   Specify the limits the number of possible tries for passing a request to the next server.
 # @param proxy_next_upstream_timeout
 #   Specify the limits the time during which a request can be passed to the next server
+# @param proxy_cookie_domain
+#   Sets a text that should be changed in the domain attribute of the “Set-Cookie”
+#   header fields of a proxied server response.
 # @param grpc
 #   Sets the gRPC server address (`grpc_pass`)
 # @param resolver
@@ -401,6 +404,7 @@ define nginx::resource::server (
   Optional[String] $proxy_request_buffering = undef,
   Optional[Nginx::Size] $proxy_max_temp_file_size = undef,
   Optional[Nginx::Size] $proxy_busy_buffers_size = undef,
+  Optional[Variant[Array[String], String]] $proxy_cookie_domain = undef,
   Optional[String] $grpc = undef,
   Array $resolver = [],
   Optional[String] $fastcgi = undef,
@@ -599,6 +603,7 @@ define nginx::resource::server (
       proxy_next_upstream           => $proxy_next_upstream,
       proxy_next_upstream_tries     => $proxy_next_upstream_tries,
       proxy_next_upstream_timeout   => $proxy_next_upstream_timeout,
+      proxy_cookie_domain           => $proxy_cookie_domain,
       grpc                          => $grpc,
       fastcgi                       => $fastcgi,
       fastcgi_index                 => $fastcgi_index,

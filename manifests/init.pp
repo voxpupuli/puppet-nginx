@@ -156,6 +156,7 @@
 # @param proxy_ignore_header
 # @param proxy_max_temp_file_size
 # @param proxy_busy_buffers_size
+# @param proxy_cookie_domain
 # @param grpc
 #   Sets the gRPC server address (`grpc_pass`)
 # @param real_ip_header
@@ -357,6 +358,7 @@ class nginx (
   Array $proxy_ignore_header = [],
   Optional[Nginx::Size] $proxy_max_temp_file_size = undef,
   Optional[Nginx::Size] $proxy_busy_buffers_size = undef,
+  Optional[Variant[Array[String], String]] $proxy_cookie_domain = undef,
   Optional[String] $grpc = undef,
   Optional[String[1]] $real_ip_header = undef,
   Optional[Enum['on', 'off']] $real_ip_recursive = undef,

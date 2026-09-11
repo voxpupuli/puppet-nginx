@@ -111,6 +111,7 @@ class nginx::config {
   $proxy_set_header = $nginx::proxy_set_header
   $proxy_hide_header = $nginx::proxy_hide_header
   $proxy_pass_header = $nginx::proxy_pass_header
+  $proxy_cookie_domain = $nginx::proxy_cookie_domain
   $real_ip_header = $nginx::real_ip_header
   $real_ip_recursive = $nginx::real_ip_recursive
   $set_real_ip_from = $nginx::set_real_ip_from

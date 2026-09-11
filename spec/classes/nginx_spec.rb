@@ -1241,6 +1241,18 @@ describe 'nginx' do
                 value: 512,
                 match: '  proxy_headers_hash_max_size 512;',
               },
+              {
+                title: 'should set proxy_cookie_domain',
+                attr: 'proxy_cookie_domain',
+                value: 'value',
+                match: %r{^\s+proxy_cookie_domain\s+value;},
+              },
+              {
+                title: 'should not set proxy_cookie_domain',
+                attr: 'proxy_cookie_domain',
+                value: :undef,
+                notmatch: %r{proxy_cookie_domain\b},
+              },
             ].each do |param|
               context "when #{param[:attr]} is #{param[:value]}" do
                 let(:params) { { param[:attr].to_sym => param[:value] } }

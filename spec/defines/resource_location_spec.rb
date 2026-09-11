@@ -1294,6 +1294,18 @@ describe 'nginx::resource::location' do
               value: '16k',
               match: %r{\s+proxy_busy_buffers_size\s+16k;},
             },
+            {
+              title: 'should set proxy_cookie_domain',
+              attr: 'proxy_cookie_domain',
+              value: 'value',
+              match: %r{^\s+proxy_cookie_domain\s+value;},
+            },
+            {
+              title: 'should not set proxy_cookie_domain',
+              attr: 'proxy_cookie_domain',
+              value: :undef,
+              notmatch: %r{proxy_cookie_domain\b},
+            },
           ].each do |param|
             context "when #{param[:attr]} is #{param[:value]}" do
               let(:default_params) { { location: 'location', proxy: 'proxy_value', server: 'server1' } }

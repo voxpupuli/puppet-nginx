@@ -192,6 +192,7 @@ The following parameters are available in the `nginx` class:
 * [`proxy_ignore_header`](#-nginx--proxy_ignore_header)
 * [`proxy_max_temp_file_size`](#-nginx--proxy_max_temp_file_size)
 * [`proxy_busy_buffers_size`](#-nginx--proxy_busy_buffers_size)
+* [`proxy_cookie_domain`](#-nginx--proxy_cookie_domain)
 * [`grpc`](#-nginx--grpc)
 * [`real_ip_header`](#-nginx--real_ip_header)
 * [`real_ip_recursive`](#-nginx--real_ip_recursive)
@@ -1220,6 +1221,14 @@ Data type: `Optional[Nginx::Size]`
 
 Default value: `undef`
 
+##### <a name="-nginx--proxy_cookie_domain"></a>`proxy_cookie_domain`
+
+Data type: `Optional[Variant[Array[String], String]]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-nginx--grpc"></a>`grpc`
 
 Data type: `Optional[String]`
@@ -2002,6 +2011,7 @@ The following parameters are available in the `nginx::resource::location` define
 * [`proxy_next_upstream`](#-nginx--resource--location--proxy_next_upstream)
 * [`proxy_next_upstream_tries`](#-nginx--resource--location--proxy_next_upstream_tries)
 * [`proxy_next_upstream_timeout`](#-nginx--resource--location--proxy_next_upstream_timeout)
+* [`proxy_cookie_domain`](#-nginx--resource--location--proxy_cookie_domain)
 * [`grpc`](#-nginx--resource--location--grpc)
 * [`fastcgi`](#-nginx--resource--location--fastcgi)
 * [`fastcgi_param`](#-nginx--resource--location--fastcgi_param)
@@ -2284,6 +2294,15 @@ Default value: `undef`
 Data type: `Optional[Nginx::Time]`
 
 Specify the limits the time during which a request can be passed to the next server
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--location--proxy_cookie_domain"></a>`proxy_cookie_domain`
+
+Data type: `Optional[Variant[Array[String], String]]`
+
+Sets a text that should be changed in the domain attribute of the “Set-Cookie”
+header fields of a proxied server response.
 
 Default value: `undef`
 
@@ -3547,6 +3566,7 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`proxy_next_upstream`](#-nginx--resource--server--proxy_next_upstream)
 * [`proxy_next_upstream_tries`](#-nginx--resource--server--proxy_next_upstream_tries)
 * [`proxy_next_upstream_timeout`](#-nginx--resource--server--proxy_next_upstream_timeout)
+* [`proxy_cookie_domain`](#-nginx--resource--server--proxy_cookie_domain)
 * [`grpc`](#-nginx--resource--server--grpc)
 * [`resolver`](#-nginx--resource--server--resolver)
 * [`fastcgi`](#-nginx--resource--server--fastcgi)
@@ -3991,6 +4011,15 @@ Default value: `undef`
 Data type: `Optional[Nginx::Time]`
 
 Specify the limits the time during which a request can be passed to the next server
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--proxy_cookie_domain"></a>`proxy_cookie_domain`
+
+Data type: `Optional[Variant[Array[String], String]]`
+
+Sets a text that should be changed in the domain attribute of the “Set-Cookie”
+header fields of a proxied server response.
 
 Default value: `undef`
 
