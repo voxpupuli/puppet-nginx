@@ -287,6 +287,9 @@ http {
   <%- if @proxy_cache_loader_sleep %> loader_sleep=<%= @proxy_cache_loader_sleep %><% end -%>
   <%- if @proxy_cache_loader_threshold %> loader_threshold=<%= @proxy_cache_loader_threshold %><% end -%>;
 <% end -%>
+<% if @proxy_cookie_domain -%>
+    proxy_cookie_domain      <%= @proxy_cookie_domain %>;
+<% end -%>
 <% if @fastcgi_cache_path.is_a?(Hash) -%>
 <% @fastcgi_cache_path.sort_by{|k,v| k}.each do |key,value| -%>
   fastcgi_cache_path      <%= key %> levels=<%= @fastcgi_cache_levels %> keys_zone=<%= value %> max_size=<%= @fastcgi_cache_max_size %> inactive=<%= @fastcgi_cache_inactive %>;

@@ -96,4 +96,7 @@
 <% if @proxy_next_upstream_timeout -%>
     proxy_next_upstream_timeout      <%= @proxy_next_upstream_timeout %>;
 <% end -%>
+<% if @proxy_cookie_domain -%>
+    proxy_cookie_domain      <%= @proxy_cookie_domain %>;
+<% end -%>
 <% end -%>
