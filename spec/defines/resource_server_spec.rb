@@ -52,6 +52,48 @@ describe 'nginx::resource::server' do
           end
         end
 
+        describe 'www_root directory management' do
+          context 'when www_root is set' do
+            let(:params) { default_params.merge(www_root: '/var/www/example') }
+
+            it 'ensures the www_root directory exists' do
+              is_expected.to contain_file('/var/www/example').with(
+                'ensure' => 'directory',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0755',
+              )
+            end
+          end
+
+          context 'when www_root is undef (proxy server)' do
+            let(:params) do
+              {
+                proxy: 'http://backend',
+              }
+            end
+
+            it 'does not declare a File resource for any www_root' do
+              is_expected.not_to contain_file('/var/www/example')
+            end
+          end
+
+          context 'when multiple servers share the same www_root' do
+            let(:params) { default_params.merge(www_root: '/var/www/shared') }
+            let(:pre_condition) do
+              [
+                'include nginx',
+                "nginx::resource::server { 'other.example.com': www_root => '/var/www/shared' }",
+              ]
+            end
+
+            it 'compiles without duplicate resource errors' do
+              is_expected.to compile
+              is_expected.to contain_file('/var/www/shared').with_ensure('directory')
+            end
+          end
+        end
+
         describe 'with $confd_only enabled' do
           let(:pre_condition) { 'class { "nginx": confd_only => true }' }
           let(:params) { default_params }
