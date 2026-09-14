@@ -23,7 +23,7 @@ class nginx::params {
       'text/xml'                                                                  => 'xml',
       'image/gif'                                                                 => 'gif',
       'image/jpeg'                                                                => 'jpeg jpg',
-      'application/javascript'                                                    => 'js',
+      'application/javascript'                                                    => 'js mjs',
       'application/atom+xml'                                                      => 'atom',
       'application/rss+xml'                                                       => 'rss',
       'text/mathml'                                                               => 'mml',
