@@ -512,7 +512,7 @@ define nginx::resource::server (
       'absent' => absent,
       default  => 'file',
     },
-    notify => Class['nginx::service'],
+    notify => $nginx::reload,
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -545,7 +545,7 @@ define nginx::resource::server (
     owner   => $owner,
     group   => $group,
     mode    => $mode,
-    notify  => Class['nginx::service'],
+    notify  => $nginx::reload,
     require => File[$server_dir],
     tag     => 'nginx_config_file',
   }
@@ -633,7 +633,7 @@ define nginx::resource::server (
       rewrite_rules                 => $rewrite_rules,
       raw_prepend                   => $location_raw_prepend,
       raw_append                    => $location_raw_append,
-      notify                        => Class['nginx::service'],
+      notify                        => $nginx::reload,
     }
     $root = undef
   } else {
@@ -708,7 +708,7 @@ define nginx::resource::server (
       path    => "${server_enable_dir}/${name_sanitized}.conf",
       target  => $config_file,
       require => [File[$server_dir], Concat[$config_file]],
-      notify  => Class['nginx::service'],
+      notify  => $nginx::reload,
     }
   }
 
