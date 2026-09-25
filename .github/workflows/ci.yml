@@ -51,4 +51,5 @@ jobs:
       beaker_collection: ${{ inputs.beaker_collection }}
       beaker_staging_version: ${{ inputs.beaker_staging_version }}
       timeout_minutes: 60
-      unit_runs_on: 'cern-self-hosted'
+      unit_runs_on: 'runnerset-voxpupuli'
+      additional_packages: 'build-essential ruby-dev libffi-dev libyaml-dev'
