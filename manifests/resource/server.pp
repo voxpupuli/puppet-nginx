@@ -248,6 +248,10 @@
 #   A single string, or an array of strings to append to the server directive
 #   (after cfg append directives). NOTE: YOU are responsible for a semicolon on
 #   each line that requires one.
+# @param raw_prepend_ssl
+#   A single string, or an array of strings to prepend only to the ssl server directive
+#   (after cfg prepend directives). NOTE: YOU are responsible for a semicolon
+#   on each line that requires one.
 # @param location_raw_prepend
 #   A single string, or an array of strings to prepend to the location
 #   directive (after custom_cfg directives). NOTE: YOU are responsible for a
@@ -452,6 +456,7 @@ define nginx::resource::server (
   $client_max_body_size = undef,
   Optional[Variant[Array[String], String]] $raw_prepend = undef,
   Optional[Variant[Array[String], String]] $raw_append = undef,
+  Optional[Variant[Array[String], String]] $raw_prepend_ssl = undef,
   Optional[Variant[Array[String], String]] $location_raw_prepend = undef,
   Optional[Variant[Array[String], String]] $location_raw_append = undef,
   Optional[Hash] $server_cfg_prepend = undef,

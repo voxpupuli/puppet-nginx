@@ -189,6 +189,9 @@ server {
 <% Array(@raw_prepend).each do |line| -%>
   <%= line %>
 <% end -%>
+<% Array(@raw_prepend_ssl).each do |line| -%>
+  <%= line %>
+<% end -%>
 <% if @root -%>
   root <%= @root %>;
 <% end -%>
