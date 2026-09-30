@@ -3630,6 +3630,7 @@ The following parameters are available in the `nginx::resource::server` defined 
 * [`client_header_timeout`](#-nginx--resource--server--client_header_timeout)
 * [`raw_prepend`](#-nginx--resource--server--raw_prepend)
 * [`raw_append`](#-nginx--resource--server--raw_append)
+* [`raw_prepend_ssl`](#-nginx--resource--server--raw_prepend_ssl)
 * [`location_raw_prepend`](#-nginx--resource--server--location_raw_prepend)
 * [`location_raw_append`](#-nginx--resource--server--location_raw_append)
 * [`server_cfg_append`](#-nginx--resource--server--server_cfg_append)
@@ -4546,6 +4547,16 @@ Data type: `Optional[Variant[Array[String], String]]`
 A single string, or an array of strings to append to the server directive
 (after cfg append directives). NOTE: YOU are responsible for a semicolon on
 each line that requires one.
+
+Default value: `undef`
+
+##### <a name="-nginx--resource--server--raw_prepend_ssl"></a>`raw_prepend_ssl`
+
+Data type: `Optional[Variant[Array[String], String]]`
+
+A single string, or an array of strings to prepend only to the ssl server directive
+(after cfg prepend directives). NOTE: YOU are responsible for a semicolon
+on each line that requires one.
 
 Default value: `undef`
 

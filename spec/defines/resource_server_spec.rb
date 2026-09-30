@@ -270,6 +270,16 @@ describe 'nginx::resource::server' do
               match: %r{^\s+if \(a\) \{\n\s++b;\n\s+\}},
             },
             {
+              title: 'should not contain raw_prepend_ssl directives',
+              attr: 'raw_prepend_ssl',
+              value: [
+                'if (c) {',
+                '  d;',
+                '}',
+              ],
+              notmatch: %r{^\s+if \(c\) \{\n\s++d;\n\s+\}},
+            },
+            {
               title: 'should contain ordered prepended directives',
               attr: 'server_cfg_prepend',
               value: { 'test1' => ['test value 1a', 'test value 1b'], 'test2' => 'test value 2', 'allow' => 'test value 3' },
@@ -1208,6 +1218,16 @@ describe 'nginx::resource::server' do
                 '}',
               ],
               match: %r{^\s+if \(a\) \{\n\s++b;\n\s+\}},
+            },
+            {
+              title: 'should contain raw_prepend_ssl directives',
+              attr: 'raw_prepend_ssl',
+              value: [
+                'if (c) {',
+                '  d;',
+                '}',
+              ],
+              match: %r{^\s+if \(c\) \{\n\s++d;\n\s+\}},
             },
             {
               title: 'should contain ordered prepend directives',
