@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v8.3.0) (2026-10-01)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v8.2.0...v8.3.0)
+
+**Implemented enhancements:**
+
+- add server::$raw\_prepend\_ssl [\#1710](https://github.com/voxpupuli/puppet-nginx/pull/1710) ([foxxx0](https://github.com/foxxx0))
+- Replace deprecated calls with `Facter::Core::Execution` [\#1709](https://github.com/voxpupuli/puppet-nginx/pull/1709) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- Add missing params `ssl_early_data`, `ssl_reject_handshake` [\#1707](https://github.com/voxpupuli/puppet-nginx/pull/1707) ([theurw101](https://github.com/theurw101))
+
+**Fixed bugs:**
+
+- Add missing `proxy_cookie_domain` param [\#1708](https://github.com/voxpupuli/puppet-nginx/pull/1708) ([theurw101](https://github.com/theurw101))
+
+**Closed issues:**
+
+- Support `ssl_reject_handshake` and `ssl_early_data` [\#1583](https://github.com/voxpupuli/puppet-nginx/issues/1583)
+- Add proxy\_cookie\_domain support [\#1493](https://github.com/voxpupuli/puppet-nginx/issues/1493)
+
 ## [v8.2.0](https://github.com/voxpupuli/puppet-nginx/tree/v8.2.0) (2026-07-01)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v8.1.1...v8.2.0)
@@ -57,7 +76,7 @@ These should not affect the functionality of the module.
 - Add Debian 13 support [\#1687](https://github.com/voxpupuli/puppet-nginx/pull/1687) ([bastelfreak](https://github.com/bastelfreak))
 - Add proxy\_next\_upstream to server resource and pass it to the location [\#1686](https://github.com/voxpupuli/puppet-nginx/pull/1686) ([sebastianrakel](https://github.com/sebastianrakel))
 - Add grpc support [\#1681](https://github.com/voxpupuli/puppet-nginx/pull/1681) ([yachub](https://github.com/yachub))
-- Add GB size unit support [\#1663](https://github.com/voxpupuli/puppet-nginx/pull/1663) ([artonix101](https://github.com/artonix101))
+- Add GB size unit support [\#1663](https://github.com/voxpupuli/puppet-nginx/pull/1663) ([theurw101](https://github.com/theurw101))
 - Add parameter `uwsgi_param` for default vhost in server resource [\#1662](https://github.com/voxpupuli/puppet-nginx/pull/1662) ([Heidistein](https://github.com/Heidistein))
 - add some missing directives: `variables_hash_bucket_size`, `variables_hash_max_size`, `proxy_headers_hash_max_size` [\#1659](https://github.com/voxpupuli/puppet-nginx/pull/1659) ([Enrice](https://github.com/Enrice))
 - Change proxy\_redirect parameter to Optional\[Variant\[Array\[String\],Str… [\#1650](https://github.com/voxpupuli/puppet-nginx/pull/1650) ([rgarifullin-bank131](https://github.com/rgarifullin-bank131))
