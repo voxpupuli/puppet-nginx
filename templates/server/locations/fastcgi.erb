@@ -1,6 +1,6 @@
 <% if @fastcgi -%>
-<% if defined? @www_root -%>
-    root          <%= @www_root %>;
+<% if defined?(@root) && !@root.empty? && !(defined?(@location_lias) && !@location_alias.empty?) -%>
+    root          <%= @root %>;
 <% end -%>
 <% if defined? @fastcgi_params -%>
     include       <%= @fastcgi_params %>;

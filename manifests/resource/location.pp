@@ -19,7 +19,7 @@
 #   Locations to deny connections from.
 # @param www_root
 #   Specifies the location on disk for files to be read from. Cannot be set in
-#   conjunction with $proxy
+#   conjunction with $proxy or $location_alias
 # @param autoindex
 #   Set it on 'on' to activate autoindex directory listing.
 # @param autoindex_exact_size
@@ -410,6 +410,9 @@ define nginx::resource::location (
   if ($www_root and $proxy) {
     fail("Cannot define both directory and proxy in ${server}:${title}")
   }
+
+  # The 'root' directive must *not* be set in alias locations
+  $root = if ($location_alias) { undef } else { $www_root }
 
   # Use proxy, fastcgi or uwsgi template if $proxy is defined, otherwise use directory template.
   # fastcgi_script is deprecated
