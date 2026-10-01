@@ -568,6 +568,7 @@ describe 'nginx::resource::location' do
               location: 'location',
               server: 'server1',
               location_alias: 'value',
+              www_root: '/some/path',
             }
           end
 
@@ -589,6 +590,11 @@ describe 'nginx::resource::location' do
             it "doesn't set autoindex" do
               is_expected.to contain_concat__fragment("server1-500-#{Digest::MD5.hexdigest('location')}")
                 .without_content(%r{^ +autoindex[^;]+;})
+            end
+
+            it "doesn't set root" do
+              is_expected.to contain_concat__fragment("server1-500-#{Digest::MD5.hexdigest('location')}")
+                .without_content(%r{^ +root[^;]+;})
             end
           end
 

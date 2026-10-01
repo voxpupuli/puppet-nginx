@@ -2144,7 +2144,7 @@ Default value: `undef`
 Data type: `Optional[String]`
 
 Specifies the location on disk for files to be read from. Cannot be set in
-conjunction with $proxy
+conjunction with $proxy or $location_alias
 
 Default value: `undef`
 
