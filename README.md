@@ -9,6 +9,12 @@
 
 This module was migrated from James Fryman <james@frymanet.com> to Vox Pupuli.
 
+## WARNING: This module is no longer tested on Puppet Enterprise or Puppet Core
+
+Due to [Puppet and Facter being taken private](https://www.puppet.com/blog/open-source-puppet-updates-2025) and the [inflexibility of the developer EULA](https://voxpupuli.org/blog/2025/05/19/perforce-eula/), we can no longer verify functionality of Vox Pupuli modules with Puppet Core or Puppet Enterprise.
+Before using this module with Puppet Core or Puppet Enterprise, we suggest [testing it yourself](https://www.puppet.com/docs/pdk/latest/pdk_testing.html).
+We also recommend migrating to [OpenVox](https://voxpupuli.org/openvox/) when possible.
+
 ## INSTALLING OR UPGRADING
 
 This module manages NGINX configuration.
