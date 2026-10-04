@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v8.3.1](https://github.com/voxpupuli/puppet-nginx/tree/v8.3.1) (2026-10-04)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v8.3.0...v8.3.1)
+
+**Fixed bugs:**
+
+- avoid 'root' directive in 'alias' locations [\#1712](https://github.com/voxpupuli/puppet-nginx/pull/1712) ([foxxx0](https://github.com/foxxx0))
+
 ## [v8.3.0](https://github.com/voxpupuli/puppet-nginx/tree/v8.3.0) (2026-10-01)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-nginx/compare/v8.2.0...v8.3.0)
