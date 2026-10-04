@@ -1,6 +1,6 @@
 <% if @uwsgi -%>
-<% if defined? @www_root -%>
-    root  <%= @www_root %>;
+<% if defined?(@root) && !@root.empty? && !(defined?(@location_lias) && !@location_alias.empty?) -%>
+    root  <%= @root %>;
 <% end -%>
     include <%= @uwsgi_params %>;
     uwsgi_pass <%= @uwsgi %>;
