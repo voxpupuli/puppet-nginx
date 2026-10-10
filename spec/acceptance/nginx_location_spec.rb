@@ -6,6 +6,7 @@ describe 'nginx::resource::location define:' do
   it 'runs successfully' do
     pp = "
     class { 'nginx': }
+    file { ['/var/www']: ensure => directory }
     nginx::resource::server { 'www.puppetlabs.com':
       ensure   => present,
       www_root => '/var/www/www.puppetlabs.com',

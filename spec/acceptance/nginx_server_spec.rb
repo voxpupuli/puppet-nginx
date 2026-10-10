@@ -15,7 +15,7 @@ describe 'nginx::resource::server define:' do
         path => '/etc/hosts',
         line => '127.0.0.1 www.puppetlabs.com'
       }
-      file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
+      file { ['/var/www']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
 
@@ -72,7 +72,7 @@ describe 'nginx::resource::server define:' do
         path => '/etc/hosts',
         line => '127.0.0.1 www.puppetlabs.com'
       }
-      file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
+      file { ['/var/www']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
 
@@ -141,7 +141,7 @@ describe 'nginx::resource::server define:' do
         path => '/etc/hosts',
         line => '127.0.0.1 www.puppetlabs.com'
       }
-      file { ['/var/www','/var/www/www.puppetlabs.com']: ensure => directory }
+      file { ['/var/www']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       "
 
@@ -200,7 +200,7 @@ describe 'nginx::resource::server define:' do
         path => '/etc/hosts',
         line => '127.0.0.1 www.puppetlabs.com'
       }
-      file { ['/var/www','/var/www/www.puppetlabs.com','/var/www/letsencrypt','/var/www/letsencrypt/.well-known','/var/www/letsencrypt/.well-known/acme-challenge']: ensure => directory }
+      file { ['/var/www','/var/www/letsencrypt','/var/www/letsencrypt/.well-known','/var/www/letsencrypt/.well-known/acme-challenge']: ensure => directory }
       file { '/var/www/www.puppetlabs.com/index.html': ensure  => file, content => 'Hello from www\n', }
       file { '/var/www/letsencrypt/.well-known/acme-challenge/fb9bd98604be3d0c7d589fcc7561cb41': ensure  => file, content => 'LetsEncrypt\n', }
       "

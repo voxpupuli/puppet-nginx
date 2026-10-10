@@ -9,6 +9,7 @@ describe 'nginx class' do
       pp = "
       include nginx
 
+      file { ['/var/www']: ensure => directory }
       nginx::resource::server { 'example.com':
         ensure   => present,
         www_root => '/var/www/html',
@@ -49,6 +50,7 @@ describe 'nginx class' do
         service_config_check => true,
       }
 
+      file { ['/var/www']: ensure => directory }
       nginx::resource::server { 'example.com':
         ensure   => present,
         www_root => '/var/www/html',
