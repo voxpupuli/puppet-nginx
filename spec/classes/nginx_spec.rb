@@ -179,6 +179,45 @@ describe 'nginx' do
             end
           end
 
+          context 'repo_key_source' do
+            let(:params) { { repo_key_source: 'puppet:///modules/profile/nginx_signing.key' } }
+
+            it do
+              is_expected.to contain_apt__source('nginx').with(
+                'key' => {
+                  'source' => 'puppet:///modules/profile/nginx_signing.key',
+                  'name' => 'nginx.asc',
+                },
+              )
+            end
+          end
+
+          context 'repo_key_source with package_source => nginx-mainline' do
+            let(:params) { { package_source: 'nginx-mainline', repo_key_source: '/srv/keys/nginx_signing.key' } }
+
+            it do
+              is_expected.to contain_apt__source('nginx').with(
+                'key' => {
+                  'source' => '/srv/keys/nginx_signing.key',
+                  'name' => 'nginx.asc',
+                },
+              )
+            end
+          end
+
+          context 'repo_key_source with package_source => passenger' do
+            let(:params) { { package_source: 'passenger', repo_key_source: 'puppet:///modules/profile/passenger.asc' } }
+
+            it do
+              is_expected.to contain_apt__source('nginx').with(
+                'key' => {
+                  'source' => 'puppet:///modules/profile/passenger.asc',
+                  'name' => 'phusionpassenger.asc',
+                },
+              )
+            end
+          end
+
           context 'package_source => nginx-mainline' do
             let(:params) { { package_source: 'nginx-mainline' } }
 

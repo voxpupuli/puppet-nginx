@@ -10,6 +10,7 @@ class nginx::package::debian {
   $manage_repo = $nginx::manage_repo
   $release = $nginx::repo_release
   $repo_source = $nginx::repo_source
+  $repo_key_source = $nginx::repo_key_source
 
   $distro = downcase($facts['os']['name'])
 
@@ -33,7 +34,7 @@ class nginx::package::debian {
           repos        => 'nginx',
           key          => {
             'name'   => 'nginx.asc',
-            'source' => 'https://nginx.org/keys/nginx_signing.key',
+            'source' => pick($repo_key_source, 'https://nginx.org/keys/nginx_signing.key'),
           },
           release      => $release,
           architecture => $facts['os']['architecture'],
@@ -49,7 +50,7 @@ class nginx::package::debian {
           repos        => 'nginx',
           key          => {
             'name'   => 'nginx.asc',
-            'source' => 'https://nginx.org/keys/nginx_signing.key',
+            'source' => pick($repo_key_source, 'https://nginx.org/keys/nginx_signing.key'),
           },
           release      => $release,
           architecture => $facts['os']['architecture'],
@@ -65,7 +66,7 @@ class nginx::package::debian {
           repos        => 'main',
           key          => {
             'name'   => 'phusionpassenger.asc',
-            'source' => 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt',
+            'source' => pick($repo_key_source, 'https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt'),
           },
           architecture => $facts['os']['architecture'],
         }

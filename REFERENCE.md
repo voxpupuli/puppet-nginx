@@ -239,6 +239,7 @@ The following parameters are available in the `nginx` class:
 * [`repo_release`](#-nginx--repo_release)
 * [`passenger_package_ensure`](#-nginx--passenger_package_ensure)
 * [`repo_source`](#-nginx--repo_source)
+* [`repo_key_source`](#-nginx--repo_key_source)
 * [`service_ensure`](#-nginx--service_ensure)
 * [`service_enable`](#-nginx--service_enable)
 * [`service_flags`](#-nginx--service_flags)
@@ -1600,6 +1601,19 @@ Default value: `installed`
 Data type: `Optional[Stdlib::HTTPUrl]`
 
 
+
+Default value: `undef`
+
+##### <a name="-nginx--repo_key_source"></a>`repo_key_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+Source of the apt signing key for the repository selected by
+`package_source`, as any `file` resource source (`puppet:///`, a local
+path, or a URL). Debian family only. Defaults to the vendor URL for the
+selected repository, which is fetched on every agent run to compare it with
+the key on disk. Setting it to a `puppet:///` source keeps the key in your
+control repository instead.
 
 Default value: `undef`
 
@@ -5886,4 +5900,3 @@ Alias of `Pattern[/^[-_\.A-Za-z0-9]*:\d+[k|K|m|M]$/]`
 Type Alias for Nginx::UpstreamZone
 
 Alias of `Pattern[/^[-_\.A-Za-z0-9]* \d+[k|K|m|M]$/]`
-
