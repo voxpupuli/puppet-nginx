@@ -213,6 +213,13 @@
 # @param repo_release
 # @param passenger_package_ensure
 # @param repo_source
+# @param repo_key_source
+#   Source of the apt signing key for the repository selected by
+#   `package_source`, as any `file` resource source (`puppet:///`, a local
+#   path, or a URL). Debian family only. Defaults to the vendor URL for the
+#   selected repository, which is fetched on every agent run to compare it with
+#   the key on disk. Setting it to a `puppet:///` source keeps the key in your
+#   control repository instead.
 # @param service_ensure
 # @param service_enable
 # @param service_flags
@@ -413,6 +420,7 @@ class nginx (
   # This is optional, to allow it to be set to undef for systems that install it with nginx always
   Optional[String[1]] $mail_package_name = $nginx::params::mail_package_name,
   Optional[Stdlib::HTTPUrl] $repo_source = undef,
+  Optional[Stdlib::Filesource] $repo_key_source = undef,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
