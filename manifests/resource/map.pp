@@ -103,7 +103,7 @@ define nginx::resource::map (
         'string'        => $string,
       },
     ),
-    notify  => Class['nginx::service'],
+    notify  => $nginx::reload,
     tag     => 'nginx_config_file',
   }
 }

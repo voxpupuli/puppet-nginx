@@ -298,7 +298,7 @@ define nginx::resource::mailhost (
     owner   => 'root',
     group   => $nginx::root_group,
     mode    => $nginx::global_mode,
-    notify  => Class['nginx::service'],
+    notify  => $nginx::reload,
     require => File[$config_dir],
     tag     => 'nginx_config_file',
   }
